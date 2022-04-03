@@ -1,9 +1,14 @@
 <template>
-  <main class="px-4 py-10 text-center text-gray-700 dark:text-gray-200">
-    <router-view />
-    <Footer />
-    <div class="mt-5 mx-auto text-center opacity-25 text-sm">
-      [Home Layout]
+  <main h-full>
+    <Header />
+    <div class="content">
+      <router-view />
     </div>
   </main>
 </template>
+
+<style scoped>
+.content {
+  height: calc(100% - 80px)
+}
+</style>

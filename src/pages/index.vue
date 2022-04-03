@@ -1,60 +1,21 @@
 <script setup lang="ts">
-import { useUserStore } from '~/stores/user'
-
-const user = useUserStore()
-const name = $ref(user.savedName)
-
-const router = useRouter()
-const go = () => {
-  if (name)
-    router.push(`/hi/${encodeURIComponent(name)}`)
-}
-
 const { t } = useI18n()
+const router = useRouter()
 </script>
 
 <template>
-  <div>
-    <div text-4xl>
-      <div i-carbon-campsite inline-block />
-    </div>
-    <p>
-      <a rel="noreferrer" href="https://github.com/antfu/vitesse" target="_blank">
-        Vitesse
-      </a>
-    </p>
-    <p>
-      <em text-sm opacity-75>{{ t('intro.desc') }}</em>
-    </p>
-
-    <div py-4 />
-
-    <input
-      id="input"
-      v-model="name"
-      :placeholder="t('intro.whats-your-name')"
-      :aria-label="t('intro.whats-your-name')"
-      type="text"
-      autocomplete="false"
-      p="x4 y2"
-      w="250px"
-      text="center"
-      bg="transparent"
-      border="~ rounded gray-200 dark:gray-700"
-      outline="none active:none"
-      @keydown.enter="go"
-    >
-    <label class="hidden" for="input">{{ t('intro.whats-your-name') }}</label>
-
-    <div>
+  <div class="h-full flex flex-col justify-center items-center">
+    <h1 class="font-normal text-6xl text-black text-center leading-[4.875rem]">
+      {{ t('home.title') }}
+    </h1>
+    <div mt-16>
       <button
-        btn m-3 text-sm
-        :disabled="!name"
-        @click="go"
+        h-12 bg-primary-100 rounded-xl text-white px-10 py-3
+        @click="router.push('layout')"
       >
-        <span i-custom:about w-6 h-6 text-primary-100 />
-        <span ml-1 vertical-middle>
-          {{ t('button.go') }}
+        <span i-custom:about w-6 h-6 />
+        <span class="font-normal text-lg leading-[1.375rem] vertical-middle ml-2">
+          {{ t('home.button.start_cv') }}
         </span>
       </button>
     </div>

@@ -1,3 +1,17 @@
+home:
+  title: Hello! Welcome to CV Icreem.
+  button:
+    start_cv: Start Building My CV
+layout:
+  title: Choose the layout you like.
+  button:
+    upload_cv: Upload my CV
+    next_step: Next Step
+template:
+  title: Choose the template you like.
+  button:
+    back: Back
+    next_step: Next Step
 button:
   about: About
   back: Back
