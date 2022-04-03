@@ -52,7 +52,10 @@ const { t } = useI18n()
         :disabled="!name"
         @click="go"
       >
-        {{ t('button.go') }}
+        <span i-custom:about w-6 h-6 text-primary-100 />
+        <span ml-1 vertical-middle>
+          {{ t('button.go') }}
+        </span>
       </button>
     </div>
   </div>

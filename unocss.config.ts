@@ -8,6 +8,7 @@ import {
   transformerDirectives,
   transformerVariantGroup,
 } from 'unocss'
+import { FileSystemIconLoader } from '@iconify/utils/lib/loader/node-loaders'
 
 export default defineConfig({
   shortcuts: [
@@ -18,12 +19,23 @@ export default defineConfig({
     presetUno(),
     presetAttributify(),
     presetIcons({
-      scale: 1.2,
+      scale: 1,
       warn: true,
+      collections: {
+        custom: FileSystemIconLoader( // class="i-custom:<svg_filename>"
+          './src/assets/icons',
+          svg => svg.replace('fill="none"', '').replace(/^<svg /, '<svg fill="currentColor" '),
+        ),
+      },
+      extraProperties: {
+        'display': 'inline-block',
+        'vertical-align': 'middle',
+      },
     }),
     presetTypography(),
     presetWebFonts({
       fonts: {
+        mark: 'Mark Pro',
         sans: 'DM Sans',
         serif: 'DM Serif Display',
         mono: 'DM Mono',
@@ -35,4 +47,24 @@ export default defineConfig({
     transformerVariantGroup(),
   ],
   safelist: 'prose prose-sm m-auto text-left'.split(' '),
+  theme: {
+    colors: {
+      primary: { // class="text-primary-100"
+        10: '#fef4f1',
+        20: '#fce8e1',
+        40: '#fad1c4',
+        70: '#f6af98',
+        100: '#f18b6b',
+      },
+      blacks: { // class="text-blacks-100"
+        10: 'rgba(34, 34, 34, 0.1)',
+        20: '#d3d3d3',
+        40: '#a7a7a7',
+        70: '#656565',
+        100: '#222222',
+      },
+      success: '#72b355',
+      warning: '#de6d6d',
+    },
+  },
 })
