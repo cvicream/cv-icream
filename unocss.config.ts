@@ -66,5 +66,8 @@ export default defineConfig({
       success: '#72b355',
       warning: '#de6d6d',
     },
+    boxShadow: {
+      custom: '2px 2px 10px rgba(241, 139, 107, 0.2)',
+    },
   },
 })
