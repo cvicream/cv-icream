@@ -9,25 +9,45 @@ const router = useRouter()
       {{ t('template.title') }}
     </h1>
     <fieldset class="inline-flex">
-      <div class="text-center p-6">
+      <div class="text-center px-8">
         <img src="../../assets/images/template-UIUXDesigner.png">
-        <input id="template-1" type="radio" name="template" value="1">
-        <label for="template-1" />
+        <div class="text-xl py-5">
+          {{ t('template.job.designer') }}
+        </div>
+        <div>
+          <input id="template-1" type="radio" name="template" value="1">
+          <label for="template-1" />
+        </div>
       </div>
-      <div class="text-center p-6">
+      <div class="text-center px-8">
         <img src="../../assets/images/template-Developer.png">
-        <input id="template-2" type="radio" name="template" value="2">
-        <label for="template-2" />
+        <div class="text-xl py-5">
+          {{ t('template.job.develop') }}
+        </div>
+        <div>
+          <input id="template-2" type="radio" name="template" value="2">
+          <label for="template-2" />
+        </div>
       </div>
-      <div class="text-center p-6">
+      <div class="text-center px-8">
         <img src="../../assets/images/template-ProjectManager.png">
-        <input id="template-3" type="radio" name="template" value="3">
-        <label for="template-3" />
+        <div class="text-xl py-5">
+          {{ t('template.job.manager') }}
+        </div>
+        <div>
+          <input id="template-3" type="radio" name="template" value="3">
+          <label for="template-3" />
+        </div>
       </div>
-      <div class="text-center p-6">
+      <div class="text-center px-8">
         <img src="../../assets/images/template-BuildfromScratch.png">
-        <input id="template-4" type="radio" name="template" value="4">
-        <label for="template-4" />
+        <div class="text-xl py-5">
+          {{ t('template.job.others') }}
+        </div>
+        <div>
+          <input id="template-4" type="radio" name="template" value="4">
+          <label for="template-4" />
+        </div>
       </div>
     </fieldset>
     <div class="flex gap-10">
@@ -72,7 +92,6 @@ input[type="radio"] {
     cursor: default;
     appearance: auto;
     box-sizing: border-box;
-    margin: 32px 0px 0px 0px;
 }
 
 </style>
