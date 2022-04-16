@@ -28,6 +28,7 @@ template:
   job:
     designer: UI/UX Designer
     develop: Developer
+    developer: Developer
     manager: Project Manager
     others: Build from Scratch
   title: Choose the template you like.

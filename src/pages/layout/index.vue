@@ -5,28 +5,31 @@ const router = useRouter()
 </script>
 
 <template>
-  <div class="h-full flex flex-col items-center gap-10 mt-16">
+  <div class="h-full flex flex-col items-center gap-16 mt-16">
     <h1 class="font-normal text-6xl text-black text-center leading-[4.875rem]">
       {{ t('layout.title') }}
     </h1>
-    <fieldset class="inline-flex">
-      <div class="text-center p-6">
-        <img src="../../assets/images/layout-1.png">
-        <input id="layout-1" type="radio" name="layout" value="1">
-        <label for="layout-1" />
+    <div class="flex gap-16">
+      <div class="text-center">
+        <label for="layout-1">
+          <img src="../../assets/images/layout-1.png">
+        </label>
+        <input id="layout-1" class="btn-radio mt-8" type="radio" name="layout" value="1">
       </div>
-      <div class="text-center p-6">
-        <img src="../../assets/images/layout-2.png">
-        <input id="layout-2" type="radio" name="layout" value="2">
-        <label for="layout-2" />
+      <div class="text-center">
+        <label for="layout-2">
+          <img src="../../assets/images/layout-2.png">
+        </label>
+        <input id="layout-2" class="btn-radio mt-8" type="radio" name="layout" value="2">
       </div>
-      <div class="text-center p-6">
-        <img src="../../assets/images/layout-3.png">
-        <input id="layout-3" type="radio" name="layout" value="3">
-        <label for="layout-3" />
+      <div class="text-center">
+        <label for="layout-3">
+          <img src="../../assets/images/layout-3.png">
+        </label>
+        <input id="layout-3" class="btn-radio mt-8" type="radio" name="layout" value="3">
       </div>
-    </fieldset>
-    <div class="flex gap-10">
+    </div>
+    <div class="flex gap-8">
       <button
         h-12 border border-primary-100 rounded-xl text-white px-10 py-3
       >
@@ -52,22 +55,3 @@ const router = useRouter()
 meta:
   layout: home
 </route>
-
-<style scoped>
-input[name="layout"] {
-  accent-color: black;
-  width: 20px;
-  height: 20px;
-  display: inline-block;
-  vertical-align: middle;
-}
-
-input[type="radio"] {
-    background-color: initial;
-    cursor: default;
-    appearance: auto;
-    box-sizing: border-box;
-    margin: 32px 0px 0px 0px;
-}
-
-</style>

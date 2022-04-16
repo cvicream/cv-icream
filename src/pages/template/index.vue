@@ -4,52 +4,56 @@ const router = useRouter()
 </script>
 
 <template>
-  <div class="h-full flex flex-col items-center gap-10 mt-16">
+  <div class="h-full flex flex-col items-center gap-16 mt-16">
     <h1 class="font-normal text-6xl text-black text-center leading-[4.875rem]">
       {{ t('template.title') }}
     </h1>
-    <fieldset class="inline-flex">
-      <div class="text-center px-8">
-        <img src="../../assets/images/template-UIUXDesigner.png">
-        <div class="text-xl py-5">
-          {{ t('template.job.designer') }}
-        </div>
+    <div class="flex gap-16">
+      <div class="text-center">
+        <label for="template-1" class="flex flex-col gap-5">
+          <img src="../../assets/images/template-UIUXDesigner.png">
+          <span class="text-xl">
+            {{ t('template.job.designer') }}
+          </span>
+        </label>
         <div>
-          <input id="template-1" type="radio" name="template" value="1">
-          <label for="template-1" />
+          <input id="template-1" class="btn-radio mt-8" type="radio" name="template" value="1">
         </div>
       </div>
-      <div class="text-center px-8">
-        <img src="../../assets/images/template-Developer.png">
-        <div class="text-xl py-5">
-          {{ t('template.job.develop') }}
-        </div>
+      <div class="text-center">
+        <label for="template-2" class="flex flex-col gap-5">
+          <img src="../../assets/images/template-Developer.png">
+          <span class="text-xl">
+            {{ t('template.job.developer') }}
+          </span>
+        </label>
         <div>
-          <input id="template-2" type="radio" name="template" value="2">
-          <label for="template-2" />
+          <input id="template-2" class="btn-radio mt-8" type="radio" name="template" value="2">
         </div>
       </div>
-      <div class="text-center px-8">
-        <img src="../../assets/images/template-ProjectManager.png">
-        <div class="text-xl py-5">
-          {{ t('template.job.manager') }}
-        </div>
+      <div class="text-center">
+        <label for="template-3" class="flex flex-col gap-5">
+          <img src="../../assets/images/template-ProjectManager.png">
+          <span class="text-xl">
+            {{ t('template.job.manager') }}
+          </span>
+        </label>
         <div>
-          <input id="template-3" type="radio" name="template" value="3">
-          <label for="template-3" />
+          <input id="template-3" class="btn-radio mt-8" type="radio" name="template" value="3">
         </div>
       </div>
-      <div class="text-center px-8">
-        <img src="../../assets/images/template-BuildfromScratch.png">
-        <div class="text-xl py-5">
-          {{ t('template.job.others') }}
-        </div>
+      <div class="text-center">
+        <label for="template-4" class="flex flex-col gap-5">
+          <img src="../../assets/images/template-BuildfromScratch.png">
+          <div class="text-xl">
+            {{ t('template.job.others') }}
+          </div>
+        </label>
         <div>
-          <input id="template-4" type="radio" name="template" value="4">
-          <label for="template-4" />
+          <input id="template-4" class="btn-radio mt-8" type="radio" name="template" value="4">
         </div>
       </div>
-    </fieldset>
+    </div>
     <div class="flex gap-10">
       <button
         h-12 border border-primary-100 rounded-xl text-white px-10 py-3
@@ -77,21 +81,3 @@ const router = useRouter()
 meta:
   layout: home
 </route>
-
-<style scoped>
-input[name="template"] {
-  accent-color: black;
-  width: 20px;
-  height: 20px;
-  display: inline-block;
-  vertical-align: middle;
-}
-
-input[type="radio"] {
-    background-color: initial;
-    cursor: default;
-    appearance: auto;
-    box-sizing: border-box;
-}
-
-</style>
