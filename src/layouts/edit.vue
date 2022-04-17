@@ -1,17 +1,15 @@
 <template>
-  <main h-full>
+  <main class="h-full">
     <Header />
-    <div sm:flex sm:flex-row class="content">
-      <Toolbar sm:w-24 />
-      <CVPreview text-center bg-white sm:flex-1 sm:border sm:border-t-0 border-gray-400 />
-      <Sidebar sm:w-96 />
+    <div class="sm:border-t border-blacks-20" />
+    <div class="h-[calc(100%-81px)] sm:flex sm:flex-row">
+      <Toolbar class="sm:w-24" />
+      <div class="sm:border-l border-blacks-20" />
+      <CVPreview class="text-center sm:flex-1" />
+      <div class="sm:border-l border-blacks-20" />
+      <Sidebar>
+        <router-view />
+      </Sidebar>
     </div>
-    <router-view />
   </main>
 </template>
-
-<style scoped>
-.content {
-  height: calc(100% - 80px)
-}
-</style>
