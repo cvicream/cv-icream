@@ -1,17 +1,3 @@
-home:
-  title: Hello! Welcome to CV Icreem.
-  button:
-    start_cv: Start Building My CV
-layout:
-  title: Choose the layout you like.
-  button:
-    upload_cv: Upload my CV
-    next_step: Next Step
-template:
-  title: Choose the template you like.
-  button:
-    back: Back
-    next_step: Next Step
 button:
   about: About
   back: Back
@@ -19,10 +5,30 @@ button:
   home: Home
   toggle_dark: Toggle dark mode
   toggle_langs: Change languages
+home:
+  button:
+    start_cv: Start Building My CV
+  title: Hello! Welcome to CV Icreem.
 intro:
+  aka: Also known as
   desc: Opinionated Vite Starter Template
   dynamic-route: Demo of dynamic route
   hi: Hi, {name}!
-  aka: Also known as
   whats-your-name: What's your name?
+layout:
+  button:
+    next_step: Next Step
+    upload_cv: Upload my CV
+  title: Choose the layout you like.
 not-found: Not found
+template:
+  button:
+    back: Back
+    next_step: Next Step
+  job:
+    designer: UI/UX Designer
+    develop: Developer
+    developer: Developer
+    manager: Project Manager
+    others: Build from Scratch
+  title: Choose the template you like.
