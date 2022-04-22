@@ -2,8 +2,12 @@
   <main h-full>
     <Header is-edit="true" />
     <div sm:flex sm:flex-row class="content">
-      <Toolbar sm:w-24 />
-      <CVPreview text-center bg-white sm:flex-1 sm:border sm:border-t-0 border-gray-400 />
+      <div class="text-center bg-white sm:flex-1 sm:border sm:border-t-0 border-blacks-20">
+        <CVPreview />
+        <div class="fixed items-center bottom-1/4 z-1">
+          <Toolbar />
+        </div>
+      </div>
       <Sidebar sm:w-96 />
     </div>
     <router-view />
