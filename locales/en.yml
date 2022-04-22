@@ -15,6 +15,14 @@ intro:
   dynamic-route: Demo of dynamic route
   hi: Hi, {name}!
   whats-your-name: What's your name?
+initial:
+  title: Let's Start! Would You Like...
+  action: 
+    new: Create a New CV
+    upload: Upload your CV Draft
+  hint:
+    new: Create a CV with the delightful templates in easy 4 steps.
+    upload: Upload your CV draft here if you have used the editor and saved your file previously.
 layout:
   button:
     next_step: Next Step
