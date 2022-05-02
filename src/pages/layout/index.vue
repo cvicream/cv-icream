@@ -10,6 +10,7 @@ const router = useRouter()
     </h1>
     <div class="flex gap-10">
       <button
+        class="w-[294px]"
         h-12 border border-primary-100 rounded-xl text-white px-10 py-3
       >
         <span i-custom:add w-6 h-6 text-blacks-70 />
@@ -18,6 +19,7 @@ const router = useRouter()
         </span>
       </button>
       <button
+        class="w-[294px]"
         h-12 bg-primary-100 rounded-xl text-white px-10 py-3
         @click="router.push('template')"
       >

@@ -53,10 +53,10 @@ const isActivePath = (targetPath: string) => {
 </script>
 
 <template>
-  <div class="flex">
+  <div class="flex relative sm:static">
     <div
-      class="py-5 flex flex-col gap-2 transition-all"
-      :class="isOpen ? 'px-5' : 'px-1'"
+      class="py-5 bg-white sm:h-full sm:absolute sm:top-0 sm:right-[326px] z-1 transition-all duration-100 sm:border-l border-blacks-20 flex flex-col gap-2"
+      :class="isOpen ? 'sm:w-[218px] px-5' : 'sm:w-[64px] px-1'"
     >
       <button
         :class="isOpen ? 'self-end' : 'self-center'"
@@ -77,8 +77,8 @@ const isActivePath = (targetPath: string) => {
         <span :class="!isOpen && 'hidden'">{{ menu.name }}</span>
       </router-link>
     </div>
-    <div class="w-full sm:w-[20.625rem] px-4 py-8">
-      <slot />
+    <div class="w-[calc(100%-64px)] sm:w-[326px] sm:h-full absolute top-0 right-0 flex flex-col gap-6 px-4 py-8">
+      <router-view />
     </div>
   </div>
 </template>
