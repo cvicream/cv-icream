@@ -47,8 +47,76 @@
             </div>
           </section>
         </div>
-        <div class="w-[25%]">
-          Skill
+        <div class="px-2 w-[25%]">
+          <section class="pb-2">
+            <div class="py-1 subtitle-default text-primary-100">
+              SKill
+            </div>
+            <div class="pt-2 pb-1 subtitle-default text-blacks-40">
+              Tool
+            </div>
+            <div class="paragraph-default  text-blacks-70">
+              Webflow
+            </div>
+
+            <div class="pt-1">
+              <div class="py-2 subtitle-default text-blacks-40">
+                Language
+                <div class=" paragraph-default text-blacks-70">
+                  English (fluent)
+                </div>
+              </div>
+            </div>
+          </section>
+          <section>
+            <div class="py-1">
+              <div class="subtitle-default text-primary-100">
+                EDUCATION
+              </div>
+            </div>
+            <div class="py-2 pb-1">
+              <div class="title-default text-blacks-100">
+                MA Illustration and Book Arts
+              </div>
+              <span class="subtitle-default text-blacks-40">
+                Anglia Ruskin University
+              </span>
+
+              <p class="paragraph-default  text-blacks-70">
+                Graduated/ Jan 2021
+                Cambridge, UK
+              </p>
+            </div>
+          </section>
+          <section>
+            <div class="pt-5 py-1 subtitle-default text-primary-100">
+              CONTACT
+            </div>
+            <div class="">
+              <div class="pt-2 pb-1 subtitle-default text-blacks-40">
+                Personal
+              </div>
+              <div class="mt-px paragraph-default text-blacks-70 break-words">
+                <p>+4475 9100 8940</p>
+                <p>sunshanillustration@gmail.com</p>
+                56 Blackhorse Drive,
+                Old Stratford, Milton Keynes,
+                MK19 6FH, UK
+              </div>
+            </div>
+            <div class="pt-2" />
+            <div class="pt-2 pb-1 subtitle-default text-blacks-40">
+              Social
+            </div>
+            <div class="paragraph-default flex flex-col text-blacks-70">
+              <a href="https://www.linkedin.com/feed/">
+                LinkedIn
+              </a>
+              <a href="https://www.behance.net/">
+                Behance
+              </a>
+            </div>
+          </section>
         </div>
       </div>
     </div>
