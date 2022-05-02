@@ -19,6 +19,15 @@ export default defineConfig({
     ['icon-header', 'inline-block w-8 h-8 text-blacks-70'],
     ['btn-toolbar', 'flex justify-center items-center text-blacks-70 hover:bg-primary-10 hover:rounded-full'],
     ['btn-group-toolbar', 'flex justify-center items-center gap-2 bg-white rounded-[69px] shadow-custom px-2 py-2'],
+    ['hashtag', 'px-2 py-1 font-gill-sans font-normal text-11 leading-[13px] rounded'],
+    ['heading-default', 'font-gill-sans font-normal text-4xl leading-[41px]'],
+    ['title-default', 'font-gill-sans font-normal text-sm leading-4'],
+    ['subtitle-default', 'font-gill-sans font-normal text-11 leading-[13px]'],
+    ['paragraph-default', 'font-gill-sans font-normal text-10 leading-[13px]'],
+    ['heading-large', 'font-gill-sans font-normal text-4xl leading-[41px]'],
+    ['title-large', 'font-gill-sans font-normal text-base leading-[19px]'],
+    ['subtitle-large', 'font-gill-sans font-normal text-sm leading-4'],
+    ['paragraph-large', 'font-gill-sans font-normal text-xs leading-[14px]'],
   ],
   presets: [
     presetUno(),
@@ -40,10 +49,11 @@ export default defineConfig({
     presetTypography(),
     presetWebFonts({
       fonts: {
-        mark: 'Mark Pro',
-        sans: 'DM Sans',
-        serif: 'DM Serif Display',
-        mono: 'DM Mono',
+        'mark': 'Mark Pro',
+        'gill-sans': 'Gill Sans',
+        'sans': 'DM Sans',
+        'serif': 'DM Serif Display',
+        'mono': 'DM Mono',
       },
     }),
   ],
@@ -53,6 +63,10 @@ export default defineConfig({
   ],
   safelist: 'prose prose-sm m-auto text-left'.split(' '),
   theme: {
+    fontSize: {
+      10: '10px',
+      11: '11px',
+    },
     colors: {
       primary: { // class="text-primary-100"
         10: '#fef4f1',
