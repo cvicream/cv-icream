@@ -1,5 +1,5 @@
 <template>
-  <div class="w-110 h-20 text-center flex justify-between px-4 py-4 rounded-xl shadow-custom">
+  <div class="w-110 h-20 text-center bg-white flex justify-between px-4 py-4 rounded-xl shadow-custom">
     <div class="btn-group-toolbar w-22 h-12">
       <div class="btn-toolbar">
         <button class="i-custom:undo w-8 h-8" />
