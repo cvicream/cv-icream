@@ -58,7 +58,6 @@ const toggleShow = () => {
       </div>
       <div>
         <label class="note text-blacks-70">Hashtag 3</label>
-
         <input
           v-model="summary.hashtags[2]"
           type="text"

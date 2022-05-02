@@ -36,8 +36,8 @@ export default defineConfig({
     ['paragraph', 'font-mark font-normal text-base leading-[22px]'],
     ['note', 'font-mark font-normal text-sm leading-[18px]'],
     ['form-label', 'font-normal text-sm text-blacks-70 leading-[1.125rem] block'],
-    ['form-input', 'w-full h-[46px] bg-white rounded-xl outline-none font-normal text-base text-blacks-40 placeholder-blacks-40 mt-1 px-4 py-3 border-1 border-white hover:border-blacks-100 hover:disabled:border-white focus:text-blacks-100'],
-    ['form-textarea', 'w-full h-[130px] bg-white rounded-xl outline-none font-normal text-base text-blacks-40 placeholder-blacks-40 mt-1 px-4 py-3 border-1 border-white hover:border-blacks-100 hover:disabled:border-white focus:text-blacks-100'],
+    ['form-input', 'w-full h-[46px] bg-white rounded-xl outline-none font-normal text-base text-blacks-100 disabled:text-blacks-40 placeholder-blacks-40 focus:placeholder-transparent mt-1 px-4 py-3 border-1 border-white hover:border-blacks-100 hover:disabled:border-white focus:text-blacks-100'],
+    ['form-textarea', 'w-full h-[130px] bg-white rounded-xl outline-none font-normal text-base text-blacks-100 disabled:text-blacks-40 placeholder-blacks-40 focus:placeholder-transparent mt-1 px-4 py-3 border-1 border-white hover:border-blacks-100 hover:disabled:border-white focus:text-blacks-100'],
   ],
   presets: [
     presetUno(),
