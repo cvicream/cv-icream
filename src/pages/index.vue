@@ -11,7 +11,7 @@ const router = useRouter()
     <div mt-16>
       <button
         h-12 bg-primary-100 rounded-xl text-white px-10 py-3
-        @click="router.push('layout')"
+        @click="router.push('/layout')"
       >
         <span i-custom:about w-6 h-6 />
         <span class="font-normal text-lg leading-[1.375rem] vertical-middle ml-2">

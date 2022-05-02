@@ -28,6 +28,16 @@ export default defineConfig({
     ['title-large', 'font-gill-sans font-normal text-base leading-[19px]'],
     ['subtitle-large', 'font-gill-sans font-normal text-sm leading-4'],
     ['paragraph-large', 'font-gill-sans font-normal text-xs leading-[14px]'],
+    ['h1', 'font-mark font-normal text-6xl leading-[78px]'],
+    ['h1-mobile', 'font-mark font-normal text-40 leading-[52px]'],
+    ['h2', 'font-mark font-normal text-32 leading-[44px]'],
+    ['leading', 'font-mark font-normal text-xl leading-[44px]'],
+    ['subleading', 'font-mark font-normal text-lg leading-[22px]'],
+    ['paragraph', 'font-mark font-normal text-base leading-[22px]'],
+    ['note', 'font-mark font-normal text-sm leading-[18px]'],
+    ['form-label', 'font-normal text-sm text-blacks-70 leading-[1.125rem] block'],
+    ['form-input', 'w-full h-[46px] bg-white rounded-xl outline-none font-normal text-base text-blacks-100 disabled:text-blacks-40 placeholder-blacks-40 focus:placeholder-transparent mt-1 px-4 py-3 border-1 border-white hover:border-blacks-100 hover:disabled:border-white focus:text-blacks-100'],
+    ['form-textarea', 'w-full h-[130px] bg-white rounded-xl outline-none font-normal text-base text-blacks-100 disabled:text-blacks-40 placeholder-blacks-40 focus:placeholder-transparent mt-1 px-4 py-3 border-1 border-white hover:border-blacks-100 hover:disabled:border-white focus:text-blacks-100'],
   ],
   presets: [
     presetUno(),
@@ -66,6 +76,8 @@ export default defineConfig({
     fontSize: {
       10: '10px',
       11: '11px',
+      32: '32px',
+      40: '40px',
     },
     colors: {
       primary: { // class="text-primary-100"
