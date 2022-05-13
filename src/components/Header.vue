@@ -7,7 +7,7 @@ export default {
 </script>
 
 <template>
-  <header class="h-20 leading-80px text-center bg-white border-b border-b-gray-400 flex justify-between px-8 py-4">
+  <header class="h-[80px] leading-80px text-center bg-white border-b border-b-gray-400 flex justify-between px-8 py-4">
     <div class="flex gap-8">
       <span class="btn-header bg-primary-10" />
       <button

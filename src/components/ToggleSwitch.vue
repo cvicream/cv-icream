@@ -1,5 +1,5 @@
 <template>
-  <label class="w-12 h-6 inline-block relative">
+  <label class="w-12 h-6 inline-block relative shrink-0">
     <input
       v-bind="$attrs"
       type="checkbox"
