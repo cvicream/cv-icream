@@ -13,7 +13,93 @@ export const useUserStore = defineStore('user', {
     },
     experience: {
       isShow: true,
-      content: [],
+      name: 'EXPERIENCE',
+      list: [
+        {
+          isShow: true,
+          isCollapsed: false,
+          title: 'UI Designer',
+          subtitle1: 'New Socks Media',
+          subtitle2: 'Feb 2021 - Current',
+          paragraph: `To work closely with CEO, UX designer, solution architect, and developer to build digital products, including website and mobile applications.
+            2+ year experience of user-centric design
+            Translated business requirements and customer insights into wireframes, UI mock-ups and specifications, and interactive prototypes
+            Conducted User experience research through stack holder and user interviews
+            Familiar with developing brand guidelines and component libraries
+            Built SaaS products and got involved from the very early stage
+          `,
+        },
+      ],
+    },
+    project: {
+      isShow: true,
+      name: 'PROJECT',
+      list: [
+        {
+          isShow: true,
+          isCollapsed: false,
+          title: '',
+          subtitle1: '',
+          subtitle2: '',
+          paragraph: '',
+        },
+      ],
+    },
+    skill: {
+      isShow: true,
+      name: 'SKILL',
+      list: [
+        {
+          isShow: true,
+          isCollapsed: false,
+          title: '',
+          subtitle1: '',
+          subtitle2: '',
+          paragraph: '',
+        },
+      ],
+    },
+    education: {
+      isShow: true,
+      name: 'EDUCATION',
+      list: [
+        {
+          isShow: true,
+          isCollapsed: false,
+          title: '',
+          subtitle1: '',
+          subtitle2: '',
+          paragraph: '',
+        },
+      ],
+    },
+    certificate: {
+      isShow: true,
+      name: 'CERTIFICATE',
+      list: [
+        {
+          isShow: true,
+          isCollapsed: false,
+          title: '',
+          subtitle1: '',
+          subtitle2: '',
+          paragraph: '',
+        },
+      ],
+    },
+    contact: {
+      isShow: true,
+      name: 'CONTACT',
+      list: [
+        {
+          isShow: true,
+          isCollapsed: false,
+          title: '',
+          subtitle1: '',
+          subtitle2: '',
+          paragraph: '',
+        },
+      ],
     },
   }),
 })

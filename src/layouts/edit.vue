@@ -1,14 +1,14 @@
 <template>
-  <main h-full>
+  <main h-screen>
     <Header is-edit="true" />
-    <div sm:flex sm:flex-row class="content sm:h-[calc(100%-81px)] sm:relative">
-      <div class="w-full px-45 py-16 bg-white relative sm:w-[calc(100%-390px)] sm:flex sm:border sm:border-t-0 border-blacks-20">
+    <div class="relative sm:flex sm:flex-row h-[calc(100%-160px)] overflow-hidden sm:h-[calc(100%-80px)]">
+      <Sidebar />
+      <div class="px-4 py-11 my-[20px] overflow-auto custom-scrollbar sm:w-[calc(100%-394px)] sm:flex">
         <CVPreview />
-        <div class="flex justify-center absolute bottom-50px left-0 right-0">
+        <div class="flex justify-center fixed bottom-0 left-0 right-0 z-2 sm:bottom-8 sm:right-[390px] sm:z-0">
           <Toolbar />
         </div>
       </div>
-      <Sidebar />
     </div>
   </main>
 </template>

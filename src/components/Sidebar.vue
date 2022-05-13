@@ -53,9 +53,9 @@ const isActivePath = (targetPath: string) => {
 </script>
 
 <template>
-  <div class="flex relative sm:static">
+  <div class="w-full h-full absolute z-1 bg-white flex sm:w-[390px] sm:top-0 sm:right-0 sm:bottom-0">
     <div
-      class="py-5 bg-white sm:h-full sm:absolute sm:top-0 sm:right-[326px] z-1 transition-all duration-100 sm:border-l border-blacks-20 flex flex-col gap-2"
+      class="py-5 bg-white sm:h-full sm:overflow-y-auto sm:absolute sm:top-0 sm:right-[326px] z-1 transition-all duration-100 sm:border-l border-blacks-20 flex flex-col gap-4"
       :class="isOpen ? 'sm:w-[218px] px-5' : 'sm:w-[64px] px-1'"
     >
       <button
@@ -67,17 +67,19 @@ const isActivePath = (targetPath: string) => {
         <span v-else class="i-custom:collapse sm:i-custom:expand w-6 h-6 text-blacks-40" />
       </button>
 
-      <router-link
-        v-for="menu in sidebarMenus"
-        :key="menu.path"
-        :to="menu.path"
-        :class="isActivePath(menu.path) && 'bg-primary-10 rounded'"
-      >
-        <span class="w-8 h-8 text-blacks-70" :class="menu.icon " />
-        <span :class="!isOpen && 'hidden'">{{ menu.name }}</span>
-      </router-link>
+      <div class="flex flex-col gap-4 overflow-y-auto disable-scrollbar">
+        <router-link
+          v-for="menu in sidebarMenus"
+          :key="menu.path"
+          :to="menu.path"
+          :class="isActivePath(menu.path) && 'bg-primary-10 rounded'"
+        >
+          <span class="w-8 h-8 text-blacks-70" :class="menu.icon " />
+          <span :class="!isOpen && 'hidden'">{{ menu.name }}</span>
+        </router-link>
+      </div>
     </div>
-    <div class="w-[calc(100%-64px)] sm:w-[326px] sm:h-full absolute top-0 right-0 flex flex-col gap-6 px-4 py-8">
+    <div class="w-[calc(100%-64px)] h-full bg-white sm:w-[326px] absolute top-0 right-0 flex flex-col gap-6 px-4 py-8">
       <router-view />
     </div>
   </div>

@@ -3,11 +3,11 @@ import { storeToRefs } from 'pinia'
 import { useUserStore } from '~/stores/user'
 
 const user = useUserStore()
-const { about, summary } = storeToRefs(user)
+const { about, summary, experience } = storeToRefs(user)
 </script>
 
 <template>
-  <div class="p-6 shadow-custom">
+  <div class="w-[210mm] h-[297mm] flex-shrink-0 p-6 mx-auto shadow-custom invisible sm:visible">
     <div class="p-2 flex items-baseline gap-4">
       <span class="font-normal text-primary-100 text-4xl leading-[41px]">{{ about.name }}</span>
       <span class="font-normal text-blacks-100 text-sm leading-4">{{ about.jobTitle }}</span>
@@ -30,27 +30,26 @@ const { about, summary } = storeToRefs(user)
         </section>
         <section>
           <div class="px-2 py-1 subtitle-default text-primary-100">
-            EXPERIENCE
+            {{ experience.name }}
           </div>
-          <div class="p-2 flex flex-col gap-1">
+          <div
+            v-for="(item, index) in experience.list"
+            :key="index"
+            class="p-2 flex flex-col gap-1"
+          >
             <span class="title-default text-blacks-100">
-              UI Designer
+              {{ item.title }}
             </span>
             <div class="flex justify-between">
               <span class="subtitle-default text-blacks-40">
-                New Socks Media
+                {{ item.subtitle1 }}
               </span>
               <span class="subtitle-default text-blacks-40">
-                Feb 2021 - Current
+                {{ item.subtitle2 }}
               </span>
             </div>
             <p class="paragraph-default text-blacks-70">
-              To work closely with CEO, UX designer, solution architect, and developer to build digital products, including website and mobile applications.
-              2+ year experience of user-centric design
-              Translated business requirements and customer insights into wireframes, UI mock-ups and specifications, and interactive prototypes
-              Conducted User experience research through stack holder and user interviews
-              Familiar with developing brand guidelines and component libraries
-              Built SaaS products and got involved from the very early stage
+              {{ item.paragraph }}
             </p>
           </div>
         </section>
@@ -58,7 +57,7 @@ const { about, summary } = storeToRefs(user)
       <div class="px-2 w-[25%]">
         <section class="pb-2">
           <div class="py-1 subtitle-default text-primary-100">
-            SKill
+            SKILL
           </div>
           <div class="pt-2 pb-1 subtitle-default text-blacks-40">
             Tool
