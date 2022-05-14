@@ -28,29 +28,30 @@ const { about, summary, experience } = storeToRefs(user)
             {{ summary.paragraph }}
           </p>
         </section>
-        <section>
+        <section v-if="experience.isShow">
           <div class="px-2 py-1 subtitle-default text-primary-100">
             {{ experience.name }}
           </div>
-          <div
-            v-for="(item, index) in experience.list"
-            :key="index"
-            class="p-2 flex flex-col gap-1"
-          >
-            <span class="title-default text-blacks-100">
-              {{ item.title }}
-            </span>
-            <div class="flex justify-between">
-              <span class="subtitle-default text-blacks-40">
-                {{ item.subtitle1 }}
+          <div v-for="(item, index) in experience.list" :key="index">
+            <div
+              v-if="item.isShow"
+              class="p-2 flex flex-col gap-1"
+            >
+              <span class="title-default text-blacks-100">
+                {{ item.title }}
               </span>
-              <span class="subtitle-default text-blacks-40">
-                {{ item.subtitle2 }}
-              </span>
+              <div class="flex justify-between">
+                <span class="subtitle-default text-blacks-40">
+                  {{ item.subtitle1 }}
+                </span>
+                <span class="subtitle-default text-blacks-40">
+                  {{ item.subtitle2 }}
+                </span>
+              </div>
+              <p class="paragraph-default text-blacks-70">
+                {{ item.paragraph }}
+              </p>
             </div>
-            <p class="paragraph-default text-blacks-70">
-              {{ item.paragraph }}
-            </p>
           </div>
         </section>
       </div>
