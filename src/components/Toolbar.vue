@@ -9,9 +9,14 @@
       </div>
     </div>
     <div class="btn-group-toolbar w-42 h-12">
-      <div class="btn-toolbar">
-        <button class="i-custom:template w-8 h-8" />
-      </div>
+      <DropdownMenu label="Layout" icon="i-custom:template">
+        <div class="btn-toolbar">
+          <button class="i-custom:template icon-48" />
+        </div>
+        <div class="btn-toolbar">
+          <button class="i-custom:template icon-48" />
+        </div>
+      </DropdownMenu>
       <div class="btn-toolbar w-8 h-8">
         <div class="icon-colour" />
       </div>
