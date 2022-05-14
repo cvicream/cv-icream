@@ -13,10 +13,14 @@ import { FileSystemIconLoader } from '@iconify/utils/lib/loader/node-loaders'
 export default defineConfig({
   shortcuts: [
     ['btn', 'px-4 py-1 rounded inline-block bg-teal-600 text-white cursor-pointer hover:bg-teal-700 disabled:cursor-default disabled:bg-gray-600 disabled:opacity-50'],
-    ['icon-btn', 'text-[0.9em] inline-block cursor-pointer select-none opacity-75 transition duration-200 ease-in-out hover:opacity-100 hover:text-teal-600'],
-    ['btn-radio', 'w-6 h-6 appearance-none border border-blacks-70 rounded-full bg-clip-content p-[3px] m-0 checked:bg-primary-70'],
+    ['icon-btn', 'text-[0.9em] inline-block cursor-pointer select-none opacity-75 transition duration-200 ease-in-out hover:opacity-100 hover:text-teal-600 cursor-pointer'],
+    ['btn-radio', 'w-6 h-6 appearance-none border border-blacks-70 rounded-full bg-clip-content p-[3px] m-0 checked:bg-primary-70 cursor-pointer'],
     ['btn-header', 'flex inline-block w-12 h-12 p-2 bg-white rounded-full shadow-custom'],
-    ['icon-header', 'inline-block w-8 h-8 text-blacks-70'],
+    ['icon-header', 'inline-block w-8 h-8 text-blacks-70 cursor-pointer'],
+    ['icon-32', 'w-8 h-8 text-blacks-70'],
+    ['icon-24', 'w-6 h-6 text-blacks-40 hover:text-blacks-70'],
+    ['btn-toolbar', 'flex justify-center items-center text-blacks-70 hover:bg-primary-10 hover:rounded-full'],
+    ['btn-group-toolbar', 'flex justify-center items-center gap-2 bg-white rounded-[69px] shadow-custom px-2 py-2'],
     ['hashtag', 'px-2 py-1 font-gill-sans font-normal text-11 leading-[13px] rounded'],
     ['heading-default', 'font-gill-sans font-normal text-4xl leading-[41px]'],
     ['title-default', 'font-gill-sans font-normal text-sm leading-4'],
@@ -26,6 +30,16 @@ export default defineConfig({
     ['title-large', 'font-gill-sans font-normal text-base leading-[19px]'],
     ['subtitle-large', 'font-gill-sans font-normal text-sm leading-4'],
     ['paragraph-large', 'font-gill-sans font-normal text-xs leading-[14px]'],
+    ['h1', 'font-mark font-normal text-6xl leading-[78px]'],
+    ['h1-mobile', 'font-mark font-normal text-40 leading-[52px]'],
+    ['h2', 'font-mark font-normal text-32 leading-[44px]'],
+    ['leading', 'font-mark font-normal text-xl leading-[24px]'],
+    ['subleading', 'font-mark font-normal text-lg leading-[22px]'],
+    ['paragraph', 'font-mark font-normal text-base leading-[22px]'],
+    ['note', 'font-mark font-normal text-sm leading-[18px]'],
+    ['form-label', 'font-normal text-sm text-blacks-70 leading-[1.125rem] block'],
+    ['form-input', 'w-full h-[46px] bg-white rounded-xl outline-none font-normal text-base text-blacks-100 disabled:text-blacks-40 placeholder-blacks-40 focus:placeholder-transparent mt-1 pl-4 pr-2 py-3 border-1 border-transparent hover:border-blacks-100 hover:disabled:border-white focus:text-blacks-100'],
+    ['form-textarea', 'w-full h-[130px] bg-white rounded-xl outline-none font-normal text-base text-blacks-100 resize-none disabled:text-blacks-40 placeholder-blacks-40 focus:placeholder-transparent mt-1 px-4 py-3 border-1 border-white hover:border-blacks-100 hover:disabled:border-white focus:text-blacks-100'],
   ],
   presets: [
     presetUno(),
@@ -64,6 +78,8 @@ export default defineConfig({
     fontSize: {
       10: '10px',
       11: '11px',
+      32: '32px',
+      40: '40px',
     },
     colors: {
       primary: { // class="text-primary-100"

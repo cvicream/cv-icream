@@ -1,17 +1,14 @@
 <template>
-  <main h-full>
+  <main h-screen>
     <Header is-edit="true" />
-    <div sm:flex sm:flex-row class="content">
-      <Toolbar sm:w-24 />
-      <CVPreview bg-white sm:flex-1 sm:border sm:border-t-0 border-gray-400 />
-      <Sidebar sm:w-96 />
+    <div class="relative sm:flex sm:flex-row h-[calc(100%-160px)] overflow-hidden sm:h-[calc(100%-80px)]">
+      <Sidebar />
+      <div class="px-4 py-11 my-[20px] overflow-auto custom-scrollbar sm:w-[calc(100%-394px)] sm:flex">
+        <CVPreview />
+        <div class="flex justify-center fixed bottom-0 left-0 right-0 z-2 sm:bottom-8 sm:right-[390px] sm:z-0">
+          <Toolbar />
+        </div>
+      </div>
     </div>
-    <router-view />
   </main>
 </template>
-
-<style scoped>
-.content {
-  height: calc(100% - 80px)
-}
-</style>
