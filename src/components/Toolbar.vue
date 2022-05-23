@@ -25,7 +25,22 @@
           <button class="icon-colour icon-48" />
         </div>
         <div class="btn-toolbar w-12 h-12">
-          <button class="icon-colour-yellow icon-48" />
+          <button class="icon-colour icon-colour-yellow icon-48" />
+        </div>
+        <div class="btn-toolbar w-12 h-12">
+          <button class="icon-colour icon-colour-green icon-48" />
+        </div>
+        <div class="btn-toolbar w-12 h-12">
+          <button class="icon-colour icon-colour-blue icon-48" />
+        </div>
+        <div class="btn-toolbar w-12 h-12">
+          <button class="icon-colour icon-colour-indigo icon-48" />
+        </div>
+        <div class="btn-toolbar w-12 h-12">
+          <button class="icon-colour icon-colour-purple icon-48" />
+        </div>
+        <div class="btn-toolbar w-12 h-12">
+          <button class="icon-colour icon-colour-black icon-48" />
         </div>
       </DropdownMenu>
       <DropdownMenu label="Font Size" icon="i-custom:font-size text-blacks-70">
@@ -54,12 +69,20 @@
 <style>
 :root {
   --default-color: #F18B6BFF;
+  --default-color: #F18B6BFF;
   --yellow-color:  #FAAA1EFF;
   --green-color:   #507F39FF;
   --blue-color:    #4BA1B4FF;
   --indigo-color:  #005B84FF;
   --purple-color:  #766E8EFF;
   --black-color:   #222222FF;
+  --default-color-20: #F18B6B33;
+  --yellow-color-20:  #FAAA1E33;
+  --green-color-20:   #507F3933;
+  --blue-color-20:    #4BA1B433;
+  --indigo-color-20:  #005B8433;
+  --purple-color-20:  #766E8E33;
+  --black-color-20:   #22222233;
 }
 
 .icon-colour {
@@ -73,13 +96,45 @@
 }
 
 .icon-colour-yellow {
-  width: 19.2px;
-  height: 19.2px;
   background-color: var(--yellow-color);
-  border-radius: 50%;
   box-shadow:
     0 0 0 0.4px #FFFFFFFF,
-    0 0 0 2.4px calc(var(--yellow-color)- var(#0x33))
+    0 0 0 2.4px var(--yellow-color-20);
+}
+
+.icon-colour-green {
+  background-color: var(--green-color);
+  box-shadow:
+    0 0 0 0.4px #FFFFFFFF,
+    0 0 0 2.4px var(--green-color-20);
+}
+
+.icon-colour-blue {
+  background-color: var(--blue-color);
+  box-shadow:
+    0 0 0 0.4px #FFFFFFFF,
+    0 0 0 2.4px var(--blue-color-20);
+}
+
+.icon-colour-indigo {
+  background-color: var(--indigo-color);
+  box-shadow:
+    0 0 0 0.4px #FFFFFFFF,
+    0 0 0 2.4px var(--indigo-color-20);
+}
+
+.icon-colour-purple {
+  background-color: var(--purple-color);
+  box-shadow:
+    0 0 0 0.4px #FFFFFFFF,
+    0 0 0 2.4px var(--purple-color-20);
+}
+
+.icon-colour-black {
+  background-color: var(--black-color);
+  box-shadow:
+    0 0 0 0.4px #FFFFFFFF,
+    0 0 0 2.4px var(--black-color-20);
 }
 
 </style>
