@@ -1,3 +1,23 @@
+<script setup lang="ts">
+import { onUnmounted } from 'vue'
+import { storeToRefs } from 'pinia'
+import { useToolbarStore } from '~/stores/toolbar'
+
+const toolbar = useToolbarStore()
+const { dropdownMenu } = storeToRefs(toolbar)
+
+const onClick = () => {
+  if (Object.values(dropdownMenu.value).some(item => item))
+    toolbar.toggle('')
+}
+
+onUnmounted(() => {
+  window.removeEventListener('click', onClick)
+})
+
+window.addEventListener('click', onClick, false)
+</script>
+
 <template>
   <div class="w-full h-20 text-center bg-white flex justify-between gap-4 px-4 py-4 border-t-1 border-blacks-20 sm:w-auto sm:border-0 sm:rounded-xl sm:shadow-custom">
     <div class="btn-group-toolbar w-22 h-12">
@@ -9,7 +29,7 @@
       </div>
     </div>
     <div class="btn-group-toolbar w-42 h-12 relative">
-      <DropdownMenu label="Layout" icon="i-custom:template text-blacks-70">
+      <DropdownMenu id="layout" label="Layout" icon="i-custom:template text-blacks-70">
         <div class="btn-toolbar w-12 h-12">
           <button class="i-custom:template-right w-8 h-8" />
         </div>
@@ -20,7 +40,7 @@
           <button class="i-custom:template-full w-8 h-8" />
         </div>
       </DropdownMenu>
-      <DropdownMenu label="Colour" icon="icon-colour">
+      <DropdownMenu id="colour" label="Colour" icon="icon-colour">
         <div class="btn-toolbar w-12 h-12">
           <button class="icon-colour icon-48" />
         </div>
@@ -43,7 +63,7 @@
           <button class="icon-colour icon-colour-black icon-48" />
         </div>
       </DropdownMenu>
-      <DropdownMenu label="Font Size" icon="i-custom:font-size text-blacks-70">
+      <DropdownMenu id="fontSize" label="Font Size" icon="i-custom:font-size text-blacks-70">
         <div class="btn-toolbar w-12 h-12">
           <button class="i-custom:font-size w-6 h-6" />
         </div>

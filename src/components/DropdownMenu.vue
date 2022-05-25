@@ -1,22 +1,20 @@
 <script lang="ts">
-import { ref } from 'vue'
+import { mapActions, mapState, mapStores } from 'pinia'
+import { useToolbarStore } from '~/stores/toolbar'
 
 export default {
   props: {
+    id: String,
     label: String,
     icon: String,
   },
-  setup() {
-    const isOpen = ref(false)
-
-    function toggle() {
-      isOpen.value = !isOpen.value
-    }
-
-    return {
-      isOpen,
-      toggle,
-    }
+  setup() {},
+  computed: {
+    ...mapStores(useToolbarStore),
+    ...mapState(useToolbarStore, ['dropdownMenu']),
+  },
+  methods: {
+    ...mapActions(useToolbarStore, ['toggle']),
   },
 }
 </script>
@@ -27,10 +25,10 @@ export default {
       <button
         class="w-8 h-8"
         :class="icon"
-        @click="toggle"
+        @click.stop="toggle(id)"
       />
     </div>
-    <div v-if="isOpen" class="w-[232px] h-[168px] bg-white shadow-custom rounded-[20px] p-4 absolute left-0 bottom-[72px]">
+    <div v-if="dropdownMenu[id]" class="w-[232px] h-[168px] bg-white shadow-custom rounded-[20px] p-4 absolute left-0 bottom-[72px]">
       <div class="flex justify-between items-center">
         <div class="flex gap-2 items-center">
           <span
@@ -41,7 +39,7 @@ export default {
         </div>
         <span
           class="i-custom:cancel icon-24 cursor-pointer"
-          @click="toggle"
+          @click.stop="toggle(id)"
         />
       </div>
       <div class="mt-4 px-2 flex gap-2">
