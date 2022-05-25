@@ -1,6 +1,18 @@
 <script setup lang="ts">
+import { useUserStore } from '~/stores/user'
+
+const user = useUserStore()
 const { t } = useI18n()
 const router = useRouter()
+
+const onTemplateChange = (event: Event) => {
+  user.$patch((state) => {
+    const element = event.currentTarget as HTMLInputElement
+    const value = element.value
+    state.template = value
+    state.about.jobTitle = value
+  })
+}
 </script>
 
 <template>
@@ -17,7 +29,15 @@ const router = useRouter()
           </span>
         </label>
         <div>
-          <input id="template-1" class="btn-radio mt-8" type="radio" name="template" value="1">
+          <input
+            id="template-1"
+            class="btn-radio mt-8"
+            type="radio"
+            name="template"
+            value="UI/UX Designer"
+            checked
+            @change="onTemplateChange($event)"
+          >
         </div>
       </div>
       <div class="text-center">
@@ -28,7 +48,15 @@ const router = useRouter()
           </span>
         </label>
         <div>
-          <input id="template-2" class="btn-radio mt-8" type="radio" name="template" value="2">
+          <input
+            id="template-2"
+            class="btn-radio mt-8"
+            type="radio"
+            name="template"
+            value="Developer"
+            checked
+            @change="onTemplateChange($event)"
+          >
         </div>
       </div>
       <div class="text-center">
@@ -39,7 +67,15 @@ const router = useRouter()
           </span>
         </label>
         <div>
-          <input id="template-3" class="btn-radio mt-8" type="radio" name="template" value="3">
+          <input
+            id="template-3"
+            class="btn-radio mt-8"
+            type="radio"
+            name="template"
+            value="Project Manager"
+            checked
+            @change="onTemplateChange($event)"
+          >
         </div>
       </div>
       <div class="text-center">
@@ -50,7 +86,15 @@ const router = useRouter()
           </div>
         </label>
         <div>
-          <input id="template-4" class="btn-radio mt-8" type="radio" name="template" value="4">
+          <input
+            id="template-4"
+            class="btn-radio mt-8"
+            type="radio"
+            name="template"
+            value="Build from Scratch"
+            checked
+            @change="onTemplateChange($event)"
+          >
         </div>
       </div>
     </div>

@@ -1,6 +1,6 @@
 <template>
   <main h-screen>
-    <Header is-edit="true" />
+    <Header :is-edit="true" />
     <div class="relative sm:flex sm:flex-row h-[calc(100%-160px)] overflow-hidden sm:h-[calc(100%-80px)]">
       <Sidebar />
       <div class="px-4 py-11 my-[20px] overflow-auto custom-scrollbar sm:w-[calc(100%-394px)] sm:flex">
