@@ -18,15 +18,12 @@ export default {
       toggle,
     }
   },
-  method: {
-
-  },
 }
 </script>
 
 <template>
   <div class="">
-    <div class="btn-toolbar">
+    <div class="btn-toolbar w-8 h-8">
       <button
         class="w-8 h-8"
         :class="icon"
