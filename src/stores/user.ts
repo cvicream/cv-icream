@@ -2,6 +2,8 @@ import { acceptHMRUpdate, defineStore } from 'pinia'
 
 export const useUserStore = defineStore('user', {
   state: () => ({
+    layout: 1,
+    template: 'UI/UX Designer',
     about: {
       name: 'Pei-Shan Yu',
       jobTitle: 'UI Designer',
