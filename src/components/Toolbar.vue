@@ -4,11 +4,15 @@ import { storeToRefs } from 'pinia'
 import { useToolbarStore } from '~/stores/toolbar'
 
 const toolbar = useToolbarStore()
-const { dropdownMenu } = storeToRefs(toolbar)
+const { dropdownMenu, colours } = storeToRefs(toolbar)
 
 const onClick = () => {
   if (Object.values(dropdownMenu.value).some(item => item))
     toolbar.toggle('')
+}
+
+const onColourChange = (index) => {
+  toolbar.changeColour(index)
 }
 
 onUnmounted(() => {
@@ -41,6 +45,20 @@ window.addEventListener('click', onClick, false)
         </div>
       </DropdownMenu>
       <DropdownMenu id="colour" label="Colour" icon="icon-colour">
+        <div
+          v-for="(item, index) in colours"
+          :key="index"
+          class="btn-toolbar w-12 h-12"
+        >
+          <button
+            :style="{
+              '--colour-primary': item.primary,
+              '--colour-secondary': item.secondary
+            }"
+            class="icon-colour-item"
+            @click="onColourChange(index)"
+          />
+        </div>
         <div class="btn-toolbar w-12 h-12">
           <button class="icon-colour icon-48" />
         </div>
@@ -72,23 +90,25 @@ window.addEventListener('click', onClick, false)
         </div>
       </DropdownMenu>
       <DropdownMenu id="fontFamily" label="Font Family" icon="i-custom:font-family text-blacks-70">
-        <div class="font-mark">
-          MARK
-        </div>
-        <div class="font-times-new-roman">
-          times-new-Roman
-        </div>
-        <div class="font-helvetica">
-          Helvetica
-        </div>
-        <div class="font-arial">
-          Arial
-        </div>
-        <div class="font-georgia">
-          Georgia
-        </div>
-        <div class="font-lato">
-          LATO
+        <div class="w-full h-22 overflow-auto custom-scrollbar">
+          <div class="font-mark">
+            MARK
+          </div>
+          <div class="font-times-new-roman">
+            times-new-Roman
+          </div>
+          <div class="font-helvetica">
+            Helvetica
+          </div>
+          <div class="font-arial">
+            Arial
+          </div>
+          <div class="font-georgia">
+            Georgia
+          </div>
+          <div class="font-lato">
+            LATO
+          </div>
         </div>
       </DropdownMenu>
     </div>
@@ -106,7 +126,6 @@ window.addEventListener('click', onClick, false)
 <style>
 :root {
   --default-color: #F18B6BFF;
-  --default-color: #F18B6BFF;
   --yellow-color:  #FAAA1EFF;
   --green-color:   #507F39FF;
   --blue-color:    #4BA1B4FF;
@@ -122,7 +141,16 @@ window.addEventListener('click', onClick, false)
   --black-color-20:   #22222233;
 }
 
-.icon-colour {
+.icon-colour,
+.icon-colour-item {
+  @apply w-8 h-8 p-1 bg-transparent relative;
+}
+.icon-colour::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   width: 19.2px;
   height: 19.2px;
   background-color: var(--default-color);
@@ -130,6 +158,21 @@ window.addEventListener('click', onClick, false)
   box-shadow:
     0 0 0 0.4px #FFFFFFFF,
     0 0 0 2.4px rgb(252, 232, 225, 1);
+}
+
+.icon-colour-item::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 19.2px;
+  height: 19.2px;
+  background-color: var(--colour-primary);
+  border-radius: 50%;
+  box-shadow:
+    0 0 0 0.4px #FFFFFFFF,
+    0 0 0 2.4px var(--colour-secondary);
 }
 
 .icon-colour-yellow {
