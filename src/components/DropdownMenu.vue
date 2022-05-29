@@ -28,8 +28,10 @@ export default {
         @click.stop="toggle(id)"
       />
     </div>
-    <div v-if="dropdownMenu[id]" class="w-[232px] h-[168px] bg-white shadow-custom rounded-[20px] p-4 absolute left-0 bottom-[72px]">
-      <div class="flex justify-between items-center">
+    <div v-if="dropdownMenu[id]" class="w-[232px] h-[168px] bg-white shadow-custom rounded-[20px] px-2 py-4 absolute left-0 bottom-[72px]">
+      <!-- <div v-if="id==='colour'" class="px-3 flex justify-between items-center" /> -->
+      <!-- <div v-else class="flex px-2 justify-between items-center"> -->
+      <div class="flex px-3 justify-between items-center">
         <div class="flex gap-2 items-center">
           <span
             class="w-8 h-8"
@@ -42,7 +44,7 @@ export default {
           @click.stop="toggle(id)"
         />
       </div>
-      <div class="mt-4 px-2 flex gap-2">
+      <div class="mt-4 flex flex-wrap gap-2">
         <slot />
       </div>
     </div>

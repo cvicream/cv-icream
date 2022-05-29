@@ -71,9 +71,26 @@ window.addEventListener('click', onClick, false)
           <button class="i-custom:font-size  w-8 h-8" />
         </div>
       </DropdownMenu>
-      <div class="btn-toolbar">
-        <button class="i-custom:font-family w-8 h-8" />
-      </div>
+      <DropdownMenu id="fontFamily" label="Font Family" icon="i-custom:font-family text-blacks-70">
+        <div class="font-mark">
+          MARK
+        </div>
+        <div class="font-times-new-roman">
+          times-new-Roman
+        </div>
+        <div class="font-helvetica">
+          Helvetica
+        </div>
+        <div class="font-arial">
+          Arial
+        </div>
+        <div class="font-georgia">
+          Georgia
+        </div>
+        <div class="font-lato">
+          LATO
+        </div>
+      </DropdownMenu>
     </div>
     <div class="btn-group-toolbar w-22 h-12">
       <div class="btn-toolbar">
