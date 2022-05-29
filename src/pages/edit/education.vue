@@ -56,6 +56,13 @@ function toggleShowItem(index: number) {
   })
 }
 
+function duplicateItem(index: number) {
+  user.$patch((state) => {
+    const currentItem = JSON.parse(JSON.stringify(state.education.list[index]))
+    state.education.list.splice(index, 0, currentItem)
+  })
+}
+
 function deleteItem(index: number) {
   if (user.education.list.length <= 1) return
 
@@ -112,7 +119,7 @@ function deleteItem(index: number) {
               :class="item.isShow ? 'i-custom:show' : 'i-custom:hide'"
             />
           </button>
-          <button>
+          <button @click="duplicateItem(index)">
             <span class="i-custom:variant icon-24" />
           </button>
           <button @click="deleteItem(index)">
