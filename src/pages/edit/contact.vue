@@ -139,7 +139,7 @@ function deleteItem(index: number) {
             v-model="item.title"
             type="search"
             name="title"
-            placeholder="Title"
+            placeholder=""
             class="form-input"
             :disabled="!item.isShow"
           >
@@ -151,7 +151,7 @@ function deleteItem(index: number) {
               v-model="item.subtitle1"
               type="search"
               name="subtitle"
-              placeholder="Personal"
+              placeholder=""
               class="form-input"
               :disabled="!item.isShow"
             >
@@ -161,10 +161,7 @@ function deleteItem(index: number) {
             <textarea
               v-model="item.paragraph"
               name="paragraph"
-              placeholder="+4475 9100 8940 sunshanillustration@gmail.com
-              56 Blackhorse Drive,
-              Old Stratford, Milton Keynes,
-              MK19 6FH, UK"
+              placeholder=""
               class="form-textarea custom-scrollbar"
               :disabled="!item.isShow"
             />

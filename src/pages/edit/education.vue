@@ -139,7 +139,7 @@ function deleteItem(index: number) {
             v-model="item.title"
             type="search"
             name="title"
-            placeholder="MA Illustration and Book Arts"
+            placeholder=""
             class="form-input"
             :disabled="!item.isShow"
           >
@@ -151,7 +151,7 @@ function deleteItem(index: number) {
               v-model="item.subtitle1"
               type="search"
               name="subtitle"
-              placeholder="Anglia Ruskin University "
+              placeholder=""
               class="form-input"
               :disabled="!item.isShow"
             >
@@ -161,7 +161,7 @@ function deleteItem(index: number) {
             <textarea
               v-model="item.paragraph"
               name="paragraph"
-              placeholder="Graduated/ Jan 2021 Cambridge, UK"
+              placeholder=""
               class="form-textarea custom-scrollbar"
               :disabled="!item.isShow"
             />
