@@ -1,14 +1,8 @@
 <template>
   <main h-full>
     <Header />
-    <div class="content">
+    <div class="px-8 py-16">
       <router-view />
     </div>
   </main>
 </template>
-
-<style scoped>
-.content {
-  height: calc(100% - 80px)
-}
-</style>

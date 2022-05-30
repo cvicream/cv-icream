@@ -16,11 +16,11 @@ const onTemplateChange = (event: Event) => {
 </script>
 
 <template>
-  <div class="h-full flex flex-col items-center gap-16 mt-16">
+  <div class="h-full flex flex-col items-center gap-16">
     <h1 class="font-normal text-6xl text-black text-center leading-[4.875rem]">
       {{ t('template.title') }}
     </h1>
-    <div class="flex gap-16">
+    <div class="flex flex-col gap-16 sm:flex-row">
       <div class="text-center">
         <label for="template-1" class="flex flex-col gap-5 cursor-pointer">
           <img src="../../assets/images/template-UIUXDesigner.png">
@@ -98,7 +98,7 @@ const onTemplateChange = (event: Event) => {
         </div>
       </div>
     </div>
-    <div class="flex gap-10">
+    <div class="flex flex-col gap-10 sm:flex-row">
       <button class="w-[294px] h-12 border border-primary-100 rounded-xl text-white px-10 py-3" @click="router.back()">
         <span i-custom:expand w-6 h-6 text-blacks-70 />
         <span class="font-normal text-lg text-blacks-100 leading-[1.375rem] vertical-middle ml-2">
