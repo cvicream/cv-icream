@@ -139,7 +139,7 @@ function deleteItem(index: number) {
             v-model="item.title"
             type="search"
             name="title"
-            placeholder=""
+            placeholder="Certificate name"
             class="form-input"
             :disabled="!item.isShow"
           >
@@ -151,7 +151,7 @@ function deleteItem(index: number) {
               v-model="item.subtitle1"
               type="search"
               name="subtitle"
-              placeholder=""
+              placeholder="Institute"
               class="form-input"
               :disabled="!item.isShow"
             >
@@ -161,7 +161,7 @@ function deleteItem(index: number) {
             <textarea
               v-model="item.paragraph"
               name="paragraph"
-              placeholder=""
+              placeholder="Describe about what this certificate is for..."
               class="form-textarea custom-scrollbar"
               :disabled="!item.isShow"
             />
