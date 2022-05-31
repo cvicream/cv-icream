@@ -1,14 +1,44 @@
 <script setup lang="ts">
+import { onMounted, ref } from 'vue'
+import * as htmlToImage from 'html-to-image'
+import { toPng } from 'html-to-image'
+import { jsPDF as JsPDF } from 'jspdf'
 import { storeToRefs } from 'pinia'
 import { useUserStore } from '~/stores/user'
 
 const router = useRouter()
 const user = useUserStore()
-const { summary } = storeToRefs(user)
+const { about, summary } = storeToRefs(user)
 
 const toggleShow = () => {
   user.$patch((state) => {
     state.summary.isShow = !state.summary.isShow
+  })
+}
+
+const imgSrc = ref(null)
+
+onMounted(() => {
+  htmlToImage.toPng(document.getElementById('cv-preview'))
+    .then((dataUrl) => {
+      imgSrc.value = dataUrl
+    })
+    .catch((error) => {
+      console.error('Oops, something went wrong!', error)
+    })
+})
+
+const downloadPDF = () => {
+  const doc = new JsPDF({
+    orientation: 'p',
+    unit: 'pt',
+    format: 'a4',
+    putOnlyUsedFonts: true,
+  })
+  doc.html(document.getElementById('cv-preview'), {
+    callback(doc) {
+      doc.save(`${about.value.jobTitle} - ${about.value.name}.pdf`)
+    },
   })
 }
 </script>
@@ -31,22 +61,24 @@ const toggleShow = () => {
       >
         <div>
           <label class="note text-blacks-70">File Type</label>
-          <input
-            v-model="summary.hashtags[0]"
-            type="search"
-            name="hashtag1"
-            placeholder="#TeamPlayer"
-            class="form-input"
-            :disabled="!summary.isShow"
-          >
+          <select value="pdf" class="block form-input">
+            <option value="pdf">
+              PDF
+            </option>
+          </select>
         </div>
         <div>
           <label class="note text-blacks-70">Preview</label>
-          <div class="h-[370px] bg-white border border-blacks-70 rounded-xl" />
+          <img
+            v-if="imgSrc"
+            :src="imgSrc"
+            class="h-[370px] bg-white border border-blacks-70 rounded-xl"
+          >
         </div>
       </form>
       <button
         class="w-full rounded-xl font-normal text-lg leading-[1.375rem] text-white inline-flex justify-center items-center py-3 mt-6 bg-primary-100"
+        @click="downloadPDF"
       >
         <span class="i-custom:add w-6 h-6" />
         <span>Download</span>

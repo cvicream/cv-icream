@@ -7,9 +7,9 @@ const { about, summary, experience } = storeToRefs(user)
 </script>
 
 <template>
-  <div class="w-[210mm] h-[297mm] flex-shrink-0 p-6 mx-auto shadow-custom invisible sm:visible">
+  <div id="cv-preview" class="w-full h-full flex-shrink-0 p-6 shadow-custom invisible sm:visible">
     <div class="p-2 flex items-baseline gap-4">
-      <span class="font-normal text-primary-100 text-4xl leading-[41px]">{{ about.name }}</span>
+      <span class="font-normal text-primary-100 text-4xl leading-[41px] whitespace-nowrap">{{ about.name }}</span>
       <span class="font-normal text-blacks-100 text-sm leading-4">{{ about.jobTitle }}</span>
     </div>
     <div class="flex">
