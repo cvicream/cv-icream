@@ -94,6 +94,20 @@ export const useToolbarStore = defineStore('toolbar', {
         isActive: false,
       },
     ],
+    layout: [
+      {
+        name: 'main-right',
+        isActive: true,
+      },
+      {
+        name: 'main-left',
+        isActive: false,
+      },
+      {
+        name: 'main-full',
+        isActive: false,
+      },
+    ],
   }),
   actions: {
     toggle(value: string) {
@@ -117,6 +131,11 @@ export const useToolbarStore = defineStore('toolbar', {
     changeFontFamily(index: number) {
       this.fontFamily.forEach((fontFamily, i) => {
         fontFamily.isActive = i === index
+      })
+    },
+    changeLayout(layoutType: string) {
+      this.layout.forEach((layout) => {
+        layout.isActive = (layout.name === layoutType)
       })
     },
   },
