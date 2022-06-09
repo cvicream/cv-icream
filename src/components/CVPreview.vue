@@ -3,19 +3,38 @@ import { storeToRefs } from 'pinia'
 import { useUserStore } from '~/stores/user'
 
 const user = useUserStore()
-const { about, summary, experience } = storeToRefs(user)
+const { layout, about, summary, experience, project, skill, education, certificate, contact } = storeToRefs(user)
 </script>
 
 <template>
-  <div id="cv-preview" class="w-full h-full flex-shrink-0 p-6 shadow-custom invisible sm:visible">
-    <div class="p-2 flex items-baseline gap-4">
-      <span class="font-normal text-primary-100 text-4xl leading-[41px] whitespace-nowrap">{{ about.name }}</span>
-      <span class="font-normal text-blacks-100 text-sm leading-4">{{ about.jobTitle }}</span>
+  <div id="cv-preview" class="w-full h-full flex-shrink-0 p-6 shadow-custom">
+    <div
+      class="p-2 flex items-baseline gap-4"
+      :class="{ 'ml-[25%]': layout === 2 }"
+    >
+      <span
+        v-if="about.name"
+        class="font-normal text-primary-100 text-4xl leading-[41px]"
+      >
+        {{ about.name }}
+      </span>
+      <span
+        v-if="about.jobTitle"
+        class="font-normal text-blacks-100 text-sm leading-4"
+      >
+        {{ about.jobTitle }}
+      </span>
     </div>
-    <div class="flex">
-      <div class="flex flex-col gap-4 w-[75%]">
+    <div :class="{ 'flex': layout !== 3 }">
+      <div
+        class="flex flex-col gap-4"
+        :class="{ 'w-[75%]': layout !== 3, 'order-2': layout === 2 }"
+      >
         <section v-show="summary.isShow" class="p-2 flex flex-col gap-2">
-          <div class="flex gap-4">
+          <div
+            v-if="summary.hashtags && summary.hashtags.length"
+            class="flex gap-4"
+          >
             <span
               v-for="item in summary.hashtags.filter(tag => !!tag)"
               :key="item"
@@ -28,100 +47,175 @@ const { about, summary, experience } = storeToRefs(user)
             {{ summary.paragraph }}
           </p>
         </section>
-        <section>
+        <section v-if="experience.isShow">
           <div class="px-2 py-1 subtitle-default text-primary-100">
             {{ experience.name }}
           </div>
-          <div
-            v-for="(item, index) in experience.list"
-            :key="index"
-            class="p-2 flex flex-col gap-1"
-          >
-            <span class="title-default text-blacks-100">
-              {{ item.title }}
-            </span>
-            <div class="flex justify-between">
-              <span class="subtitle-default text-blacks-40">
-                {{ item.subtitle1 }}
+          <div v-for="(item, index) in experience.list" :key="index">
+            <div
+              v-if="item.isShow"
+              class="p-2 flex flex-col gap-1"
+            >
+              <span class="title-default text-blacks-100">
+                {{ item.title }}
               </span>
-              <span class="subtitle-default text-blacks-40">
-                {{ item.subtitle2 }}
-              </span>
+              <div class="flex justify-between">
+                <span class="subtitle-default text-blacks-40">
+                  {{ item.subtitle1 }}
+                </span>
+                <span class="subtitle-default text-blacks-40">
+                  {{ item.subtitle2 }}
+                </span>
+              </div>
+              <p class="paragraph-default text-blacks-70">
+                {{ item.paragraph }}
+              </p>
             </div>
-            <p class="paragraph-default text-blacks-70">
-              {{ item.paragraph }}
-            </p>
+          </div>
+        </section>
+        <section v-if="project.isShow">
+          <div class="px-2 py-1 subtitle-default text-primary-100">
+            {{ project.name }}
+          </div>
+          <div v-for="(item, index) in project.list" :key="index">
+            <div
+              v-if="item.isShow"
+              class="p-2 flex flex-col gap-1"
+            >
+              <span class="title-default text-blacks-100">
+                {{ item.title }}
+              </span>
+              <div class="flex justify-between">
+                <span class="subtitle-default text-blacks-40">
+                  {{ item.subtitle1 }}
+                </span>
+                <span class="subtitle-default text-blacks-40">
+                  {{ item.subtitle2 }}
+                </span>
+              </div>
+              <p class="paragraph-default text-blacks-70">
+                {{ item.paragraph }}
+              </p>
+            </div>
           </div>
         </section>
       </div>
-      <div class="px-2 w-[25%]">
-        <section class="pb-2">
+      <div
+        class="px-2"
+        :class="{ 'w-[25%]': layout !== 3, 'order-1': layout === 2}"
+      >
+        <section
+          v-if="skill.isShow"
+          class="pb-2"
+        >
           <div class="py-1 subtitle-default text-primary-100">
-            SKILL
+            {{ skill.name }}
           </div>
-          <div class="pt-2 pb-1 subtitle-default text-blacks-40">
-            Tool
+          <div v-for="(item, index) in skill.list" :key="index">
+            <div
+              v-if="item.isShow"
+              class="pt-2 pb-1 subtitle-default text-blacks-40"
+            >
+              {{ item.subtitle1 }}
+            </div>
+            <div
+              v-if="item.isShow"
+              class="paragraph-default  text-blacks-70"
+            >
+              <span style="white-space: pre-wrap;">
+                {{ item.paragraph }}
+              </span>
+            </div>
           </div>
-          <div class="paragraph-default  text-blacks-70">
-            Webflow
+        </section>
+        <section>
+          <div class="py-1">
+            <div
+              v-if="certificate.isShow"
+              class="subtitle-default text-primary-100"
+            >
+              {{ certificate.name }}
+            </div>
           </div>
+          <div v-for="(item, index) in certificate.list" :key="index">
+            <div
+              v-if="item.isShow"
+              class="py-2 pb-1"
+            >
+              <div class="title-default text-blacks-100">
+                {{ item.title }}
+              </div>
+              <span class="subtitle-default text-blacks-40">
+                {{ item.subtitle1 }}
+              </span>
 
-          <div class="pt-1">
-            <div class="py-2 subtitle-default text-blacks-40">
-              Language
-              <div class=" paragraph-default text-blacks-70">
-                English (fluent)
+              <div class="paragraph-default  text-blacks-70">
+                <span style="white-space: pre-wrap;">
+                  {{ item.paragraph }}
+                </span>
               </div>
             </div>
           </div>
         </section>
         <section>
           <div class="py-1">
-            <div class="subtitle-default text-primary-100">
-              EDUCATION
+            <div
+              v-if="education.isShow"
+              class="subtitle-default text-primary-100"
+            >
+              {{ education.name }}
             </div>
           </div>
-          <div class="py-2 pb-1">
-            <div class="title-default text-blacks-100">
-              MA Illustration and Book Arts
+          <div v-for="(item, index) in education.list" :key="index">
+            <div
+              v-if="item.isShow"
+              class="py-2 pb-1"
+            >
+              <div class="title-default text-blacks-100">
+                {{ item.title }}
+              </div>
+              <span class="subtitle-default text-blacks-40">
+                {{ item.subtitle1 }}
+              </span>
+              <div class="paragraph-default  text-blacks-70">
+                <span style="white-space: pre-wrap;">
+                  {{ item.paragraph }}
+                </span>
+              </div>
             </div>
-            <span class="subtitle-default text-blacks-40">
-              Anglia Ruskin University
-            </span>
-
-            <p class="paragraph-default  text-blacks-70">
-              Graduated/ Jan 2021
-              Cambridge, UK
-            </p>
           </div>
         </section>
         <section>
-          <div class="pt-5 py-1 subtitle-default text-primary-100">
-            CONTACT
+          <div
+            v-if="contact.isShow"
+            class="pt-5 py-1 subtitle-default text-primary-100"
+          >
+            {{ contact.name }}
           </div>
-          <div class="">
+          <div v-for="(item, index) in contact.list" :key="index">
+            <div
+              v-if="item.isShow"
+              class=""
+            >
+              <div class="pt-2 pb-1 subtitle-default text-blacks-40">
+                {{ item.subtitle1 }}
+              </div>
+              <div class="mt-px paragraph-default text-blacks-70 break-words">
+                <p>  {{ item.paragraph }}</p>
+              </div>
+            </div>
+            <div class="pt-2" />
             <div class="pt-2 pb-1 subtitle-default text-blacks-40">
-              Personal
+              Social
             </div>
-            <div class="mt-px paragraph-default text-blacks-70 break-words">
-              <p>+4475 9100 8940</p>
-              <p>sunshanillustration@gmail.com</p>
-              56 Blackhorse Drive,
-              Old Stratford, Milton Keynes,
-              MK19 6FH, UK
+            <div class="paragraph-default flex flex-col text-blacks-70">
+              <a href="https://www.linkedin.com/feed/">
+                LinkedIn
+              </a>
+              <a href="https://www.behance.net/">
+                Behance
+              </a>
             </div>
-          </div>
-          <div class="pt-2" />
-          <div class="pt-2 pb-1 subtitle-default text-blacks-40">
-            Social
-          </div>
-          <div class="paragraph-default flex flex-col text-blacks-70">
-            <a href="https://www.linkedin.com/feed/">
-              LinkedIn
-            </a>
-            <a href="https://www.behance.net/">
-              Behance
-            </a>
           </div>
         </section>
       </div>

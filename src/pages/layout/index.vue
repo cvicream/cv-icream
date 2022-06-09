@@ -1,37 +1,38 @@
 <script setup lang="ts">
+import { ref } from 'vue'
 import { useUserStore } from '~/stores/user'
 
 const user = useUserStore()
 const { t } = useI18n()
 const router = useRouter()
 
-const onLayoutChange = (event: Event) => {
+const selectedLayout = ref(user.layout || 1)
+
+const onNext = () => {
   user.$patch((state) => {
-    const element = event.currentTarget as HTMLInputElement
-    const value = element.value
-    state.layout = parseInt(value)
+    state.layout = selectedLayout.value
   })
+  router.push('/template')
 }
 </script>
 
 <template>
-  <div class="h-full flex flex-col items-center gap-16 mt-16">
-    <h1 class="font-normal text-6xl text-black text-center leading-[4.875rem]">
+  <div class="h-full flex flex-col items-center gap-16">
+    <h1 class="heading1-mobile sm:heading1 text-center">
       {{ t('layout.title') }}
     </h1>
-    <div class="flex gap-16">
+    <div class="flex flex-col gap-16 sm:flex-row">
       <div class="text-center">
         <label for="layout-1" class="cursor-pointer">
           <img src="../../assets/images/layout-1.png">
         </label>
         <input
           id="layout-1"
+          v-model="selectedLayout"
           class="btn-radio mt-8"
           type="radio"
           name="layout"
-          value="1"
-          checked
-          @change="onLayoutChange($event)"
+          :value="1"
         >
       </div>
       <div class="text-center">
@@ -40,11 +41,11 @@ const onLayoutChange = (event: Event) => {
         </label>
         <input
           id="layout-2"
+          v-model="selectedLayout"
           class="btn-radio mt-8"
           type="radio"
           name="layout"
-          value="2"
-          @change="onLayoutChange($event)"
+          :value="2"
         >
       </div>
       <div class="text-center">
@@ -53,27 +54,27 @@ const onLayoutChange = (event: Event) => {
         </label>
         <input
           id="layout-3"
+          v-model="selectedLayout"
           class="btn-radio mt-8"
           type="radio"
           name="layout"
-          value="3"
-          @change="onLayoutChange($event)"
+          :value="3"
         >
       </div>
     </div>
-    <div class="flex gap-8">
-      <button class="w-[294px] h-12 border border-primary-100 rounded-xl text-white px-10 py-3">
-        <span i-custom:add w-6 h-6 text-blacks-70 />
-        <span class="font-normal text-lg text-blacks-100 leading-[1.375rem] vertical-middle ml-2">
+    <div class="flex flex-col gap-8 sm:flex-row fix-padding-bottom">
+      <button class="w-[294px] btn-secondary">
+        <span class="i-custom:add w-6 h-6 text-blacks-70" />
+        <span class="subleading vertical-middle ml-2">
           {{ t('layout.button.upload_cv') }}
         </span>
       </button>
       <button
-        class="w-[294px] h-12 bg-primary-100 rounded-xl text-white px-10 py-3"
-        @click="router.push('/template')"
+        class="w-[294px] btn-primary"
+        @click="onNext"
       >
-        <span i-custom:collapse w-6 h-6 />
-        <span class="font-normal text-lg leading-[1.375rem] vertical-middle ml-2">
+        <span class="i-custom:collapse w-6 h-6" />
+        <span class="subleading vertical-middle ml-2">
           {{ t('layout.button.next_step') }}
         </span>
       </button>
@@ -85,3 +86,9 @@ const onLayoutChange = (event: Event) => {
 meta:
   layout: home
 </route>
+
+<style scoped>
+.fix-padding-bottom > *:last-child {
+  margin-bottom: 4rem;
+}
+</style>

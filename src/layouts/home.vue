@@ -1,14 +1,8 @@
 <template>
-  <main h-full>
+  <main class="h-screen">
     <Header />
-    <div class="content">
+    <div class="h-[calc(100%-80px)] p-16 flex flex-col justify-center overflow-auto custom-scrollbar">
       <router-view />
     </div>
   </main>
 </template>
-
-<style scoped>
-.content {
-  height: calc(100% - 80px)
-}
-</style>
