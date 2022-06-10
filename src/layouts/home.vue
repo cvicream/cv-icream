@@ -1,7 +1,7 @@
 <template>
-  <main h-full>
+  <main class="h-screen">
     <Header />
-    <div class="px-8 py-16">
+    <div class="h-[calc(100%-80px)] p-16 flex flex-col justify-center overflow-auto custom-scrollbar">
       <router-view />
     </div>
   </main>
