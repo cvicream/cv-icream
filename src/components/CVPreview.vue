@@ -1,15 +1,46 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
 import { useUserStore } from '~/stores/user'
+import { useToolbarStore } from '~/stores/toolbar'
 
 const user = useUserStore()
 const { about, summary, experience, project, skill, education, certificate, contact } = storeToRefs(user)
+
+const toolbar = useToolbarStore()
+const { currentState } = storeToRefs(toolbar)
+
+// [Font size]
+// export default {
+//   data() {
+//     if (currentState.value.fontSizeScale === 1) {
+//       return {
+//         titleScale: 'title-scale-default',
+//         SubtitleScale: 'subtitle-scale-default',
+//         ParagraphScale: 'paragraph-scale-default',
+//       }
+//     }
+//     else {
+//       return {
+//         titleScale: 'title-scale-large',
+//         SubtitleScale: 'subtitle-scale-large',
+//         ParagraphScale: 'paragraph-scale-large',
+//       }
+//     }
+//   },
+// }
+
 </script>
 
 <template>
-  <div class="w-[210mm] h-[297mm] flex-shrink-0 p-6 mx-auto shadow-custom invisible sm:visible">
+  <div
+    :class="currentState.fontFamily"
+    class="w-[210mm] h-[297mm] flex-shrink-0 p-6 mx-auto shadow-custom invisible sm:visible"
+  >
     <div class="p-2 flex items-baseline gap-4">
-      <span class="font-normal text-primary-100 text-4xl leading-[41px]">{{ about.name }}</span>
+      <span
+        :style="{'--text-colour-code': currentState.primaryColour}"
+        class="font-normal text-set-colour text-4xl leading-[41px]"
+      >{{ about.name }}</span>
       <span class="font-normal text-blacks-100 text-sm leading-4">{{ about.jobTitle }}</span>
     </div>
     <div class="flex">
@@ -19,7 +50,11 @@ const { about, summary, experience, project, skill, education, certificate, cont
             <span
               v-for="item in summary.hashtags.filter(tag => !!tag)"
               :key="item"
-              class="hashtag text-primary-100 bg-primary-10"
+              :style="{
+                '--text-colour-code': currentState.primaryColour,
+                '--bg-colour-code': currentState.secondaryColour
+              }"
+              class="hashtag text-set-colour bg-set-colour"
             >
               {{ item }}
             </span>
@@ -29,7 +64,10 @@ const { about, summary, experience, project, skill, education, certificate, cont
           </p>
         </section>
         <section v-if="experience.isShow">
-          <div class="px-2 py-1 subtitle-default text-primary-100">
+          <div
+            :style="{'--text-colour-code': currentState.primaryColour}"
+            class="px-2 py-1 subtitle-default text-set-colour"
+          >
             {{ experience.name }}
           </div>
           <div v-for="(item, index) in experience.list" :key="index">
@@ -55,7 +93,10 @@ const { about, summary, experience, project, skill, education, certificate, cont
           </div>
         </section>
         <section v-if="project.isShow">
-          <div class="px-2 py-1 subtitle-default text-primary-100">
+          <div
+            :style="{'--text-colour-code': currentState.primaryColour}"
+            class="px-2 py-1 subtitle-default text-set-colour"
+          >
             {{ project.name }}
           </div>
           <div v-for="(item, index) in project.list" :key="index">
@@ -86,7 +127,10 @@ const { about, summary, experience, project, skill, education, certificate, cont
           v-if="skill.isShow"
           class="pb-2"
         >
-          <div class="py-1 subtitle-default text-primary-100">
+          <div
+            :style="{'--text-colour-code': currentState.primaryColour}"
+            class="py-1 subtitle-default text-set-colour"
+          >
             {{ skill.name }}
           </div>
           <div v-for="(item, index) in skill.list" :key="index">
@@ -119,7 +163,8 @@ const { about, summary, experience, project, skill, education, certificate, cont
           <div class="py-1">
             <div
               v-if="certificate.isShow"
-              class="subtitle-default text-primary-100"
+              :style="{'--text-colour-code': currentState.primaryColour}"
+              class="subtitle-default text-set-colour"
             >
               {{ certificate.name }}
             </div>
@@ -148,7 +193,8 @@ const { about, summary, experience, project, skill, education, certificate, cont
           <div class="py-1">
             <div
               v-if="education.isShow"
-              class="subtitle-default text-primary-100"
+              :style="{'--text-colour-code': currentState.primaryColour}"
+              class="subtitle-default text-set-colour"
             >
               {{ education.name }}
             </div>
@@ -175,7 +221,8 @@ const { about, summary, experience, project, skill, education, certificate, cont
         <section>
           <div
             v-if="contact.isShow"
-            class="pt-5 py-1 subtitle-default text-primary-100"
+            :style="{'--text-colour-code': currentState.primaryColour}"
+            class="pt-5 py-1 subtitle-default text-set-colour"
           >
             {{ contact.name }}
           </div>
@@ -209,3 +256,38 @@ const { about, summary, experience, project, skill, education, certificate, cont
     </div>
   </div>
 </template>
+
+<!-- <style scoped>
+//change to REM
+/* .title-scale-default{
+
+  font-size: 14px;
+  line-height: 16px;
+}
+
+.subtitle-scale-default{
+  font-size: 11px;
+  line-height: 13px;
+}
+
+.paragraph-scale-default{
+  font-size: 10px;
+  line-height: 13px;
+}
+
+.title-scale-large{
+  font-size: 16px;
+  line-height: 19px;
+}
+
+.subtitle-scale-large{
+  font-size: 14px;
+  line-height: 16px;
+}
+
+.paragraph-scale-large{
+  font-size: 12px;
+  line-height: 14px;
+} */
+
+</style> -->

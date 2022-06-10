@@ -8,11 +8,17 @@ export const useToolbarStore = defineStore('toolbar', {
       fontSize: false,
       fontFamily: false,
     },
+    currentState: {
+      primaryColour: '#F18B6B',
+      secondaryColour: '#FEF4F1',
+      fontSizeScale: 1,
+      fontFamily: 'font-gill-sans',
+    },
     colours: [
       {
         name: 'default',
         primary: '#F18B6B',
-        secondary: '#FCE8E1',
+        secondary: '#FEF4F1',
         isActive: true,
       },
       {
@@ -54,42 +60,44 @@ export const useToolbarStore = defineStore('toolbar', {
     ],
     fontSize: [
       {
-        name: 'small',
-        isActive: false,
-      },
-      {
         name: 'default',
         isActive: true,
+        scale: 1,
+      },
+      {
+        name: 'large',
+        isActive: false,
+        scale: 2,
       },
     ],
     fontFamily: [
       {
-        name: 'arial',
+        name: 'font-arial',
         label: 'Arial',
         isActive: false,
       },
       {
-        name: 'georgia',
+        name: 'font-georgia',
         label: 'Georgia',
         isActive: false,
       },
       {
-        name: 'gill-sans',
+        name: 'font-gill-sans',
         label: 'Gill Sans',
         isActive: true,
       },
       {
-        name: 'helvetica',
+        name: 'font-helvetica',
         label: 'Helvetica',
         isActive: false,
       },
       {
-        name: 'times-new-roman',
+        name: 'font-times-new-roman',
         label: 'Times New Roman',
         isActive: false,
       },
       {
-        name: 'lato',
+        name: 'font-lato',
         label: 'Lato',
         isActive: false,
       },
@@ -121,16 +129,24 @@ export const useToolbarStore = defineStore('toolbar', {
     changeColour(index: number) {
       this.colours.forEach((colour, i) => {
         colour.isActive = i === index
+        if (colour.isActive) {
+          this.currentState.primaryColour = colour.primary
+          this.currentState.secondaryColour = colour.secondary
+        }
       })
     },
     changeFontSize(sizeType: string) {
       this.fontSize.forEach((fontSize) => {
         fontSize.isActive = (fontSize.name === sizeType)
+        if (fontSize.isActive)
+          this.currentState.fontSizeScale = fontSize.scale
       })
     },
     changeFontFamily(index: number) {
       this.fontFamily.forEach((fontFamily, i) => {
         fontFamily.isActive = i === index
+        if (fontFamily.isActive)
+          this.currentState.fontFamily = fontFamily.name
       })
     },
     changeLayout(layoutType: string) {
