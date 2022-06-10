@@ -22,7 +22,9 @@
     "paths": {
       "~/*": ["src/*"]
     },
-    "jsx": "preserve"
+    "jsx": "preserve",
+    "noImplicitAny": false,
+    "allowJs": true
   },
   "exclude": ["dist", "node_modules", "cypress"]
 }

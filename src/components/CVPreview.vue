@@ -7,7 +7,7 @@ const { layout, about, summary, experience, project, skill, education, certifica
 </script>
 
 <template>
-  <div class="w-[210mm] h-[297mm] flex-shrink-0 p-6 mx-auto shadow-custom">
+  <div id="cv-preview" class="w-full h-full flex-shrink-0 p-6 shadow-custom">
     <div
       class="p-2 flex items-baseline gap-4"
       :class="{ 'ml-[25%]': layout === 2 }"
