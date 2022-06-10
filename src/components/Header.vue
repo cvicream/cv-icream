@@ -1,10 +1,17 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
 import { useUserStore } from '~/stores/user'
+import { useToolbarStore } from '~/stores/toolbar'
+
+const props = defineProps<{
+  isEdit: boolean
+}>()
+
+const router = useRouter()
 
 const user = useUserStore()
+const toolbar = useToolbarStore()
 const {
-  layout,
   template,
   about,
   summary,
@@ -15,16 +22,18 @@ const {
   certificate,
   contact,
 } = storeToRefs(user)
-
-const props = defineProps<{
-  isEdit: boolean
-}>()
-
-const router = useRouter()
+const { currentState } = storeToRefs(toolbar)
+const {
+  layout, fontFamily, fontSizeScale, primaryColour, secondaryColour,
+} = currentState.value
 
 function exportJsonFile() {
   const jsonData = {
-    layout: layout.value,
+    layout,
+    fontFamily,
+    fontSizeScale,
+    primaryColour,
+    secondaryColour,
     template: template.value,
     about: about.value,
     summary: summary.value,
@@ -55,6 +64,9 @@ async function importJsonFile() {
   Object.keys(obj).forEach((key) => {
     user.$patch((state) => {
       state[key] = obj[key]
+    })
+    toolbar.$patch((state) => {
+      state.currentState[key] = obj[key]
     })
   })
 }

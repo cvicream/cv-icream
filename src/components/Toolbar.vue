@@ -23,6 +23,10 @@ const onFontFamilyChange = (index: number) => {
   toolbar.changeFontFamily(index)
 }
 
+const onLayoutChange = (layoutType: number) => {
+  toolbar.changeLayout(layoutType)
+}
+
 onUnmounted(() => {
   window.removeEventListener('click', onClick)
 })
@@ -31,6 +35,7 @@ window.addEventListener('click', onClick, false)
 </script>
 
 <template>
+  <div class="font-arial font-gill-sans font-helvetica font-times-new-roman font-georgia font-lato" />
   <div class="w-full h-20 text-center bg-white flex justify-between gap-4 px-4 py-4 border-t-1 border-blacks-20 sm:w-auto sm:border-0 sm:rounded-xl sm:shadow-custom">
     <div class="btn-group-toolbar w-22 h-12">
       <div class="btn-toolbar">
@@ -43,13 +48,22 @@ window.addEventListener('click', onClick, false)
     <div class="btn-group-toolbar w-42 h-12 relative">
       <DropdownMenu id="layout" label="Layout" icon="i-custom:template text-blacks-70">
         <div class="btn-toolbar w-12 h-12">
-          <button class="i-custom:template-right w-8 h-8" />
+          <button
+            class="i-custom:template-right w-8 h-8"
+            @click="onLayoutChange(1)"
+          />
         </div>
         <div class="btn-toolbar w-12 h-12">
-          <button class="i-custom:template-left w-8 h-8" />
+          <button
+            class="i-custom:template-left w-8 h-8"
+            @click="onLayoutChange(2)"
+          />
         </div>
         <div class="btn-toolbar w-12 h-12">
-          <button class="i-custom:template-full w-8 h-8" />
+          <button
+            class="i-custom:template-full w-8 h-8"
+            @click="onLayoutChange(3)"
+          />
         </div>
       </DropdownMenu>
       <DropdownMenu id="colour" label="Colour" icon="icon-colour">
@@ -72,13 +86,13 @@ window.addEventListener('click', onClick, false)
         <div class="btn-toolbar w-12 h-12">
           <button
             class="i-custom:font-size w-6 h-6"
-            @click="onFontSizeChange('small')"
+            @click="onFontSizeChange('default')"
           />
         </div>
         <div class="btn-toolbar w-12 h-12">
           <button
             class="i-custom:font-size  w-8 h-8"
-            @click="onFontSizeChange('default')"
+            @click="onFontSizeChange('large')"
           />
         </div>
       </DropdownMenu>
@@ -89,8 +103,8 @@ window.addEventListener('click', onClick, false)
             :key="index"
           >
             <button
+              :class="item.name"
               class="w-full h-[46px] text-left text-base px-4 py-3 hover:bg-primary-10"
-              :class="'font-'+item.name"
               @click="onFontFamilyChange(index)"
             >
               {{ item.label }}

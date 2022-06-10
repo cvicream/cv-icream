@@ -2,7 +2,6 @@ import { acceptHMRUpdate, defineStore } from 'pinia'
 
 export const useUserStore = defineStore('user', {
   state: () => ({
-    layout: 1,
     template: 1,
     about: {
       name: '',

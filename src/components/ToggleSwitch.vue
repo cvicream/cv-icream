@@ -1,3 +1,9 @@
+<script setup lang="ts">
+import { storeToRefs } from 'pinia'
+import { useToolbarStore } from '~/stores/toolbar'
+const toolbar = useToolbarStore()
+const { currentState } = storeToRefs(toolbar)
+</script>
 <template>
   <label class="w-12 h-6 inline-block relative shrink-0">
     <input
@@ -7,7 +13,10 @@
     >
     <span class="slider round" />
     <span class="tick round">
-      <span class="i-custom:ok w-3 h-3 text-primary-100 hidden" />
+      <span
+        :style="{'--text-colour-code': currentState.primaryColour}"
+        class="i-custom:ok w-3 h-3 text-set-colour hidden"
+      />
     </span>
   </label>
 </template>

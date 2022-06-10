@@ -1,20 +1,50 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
 import { useUserStore } from '~/stores/user'
+import { useToolbarStore } from '~/stores/toolbar'
 
 const user = useUserStore()
-const { layout, about, summary, experience, project, skill, education, certificate, contact } = storeToRefs(user)
+const { about, summary, experience, project, skill, education, certificate, contact } = storeToRefs(user)
+
+const toolbar = useToolbarStore()
+const { currentState } = storeToRefs(toolbar)
+
+// [Font size]
+// export default {
+//   data() {
+//     if (value.fontSizeScale === 1) {
+//       return {
+//         titleScale: 'title-scale-default',
+//         SubtitleScale: 'subtitle-scale-default',
+//         ParagraphScale: 'paragraph-scale-default',
+//       }
+//     }
+//     else {
+//       return {
+//         titleScale: 'title-scale-large',
+//         SubtitleScale: 'subtitle-scale-large',
+//         ParagraphScale: 'paragraph-scale-large',
+//       }
+//     }
+//   },
+// }
+
 </script>
 
 <template>
-  <div id="cv-preview" class="w-full h-full flex-shrink-0 p-6 shadow-custom">
+  <div
+    id="cv-preview"
+    class="w-full h-full flex-shrink-0 p-6 shadow-custom"
+    :class="currentState.fontFamily"
+  >
     <div
       class="p-2 flex items-baseline gap-4"
-      :class="{ 'ml-[25%]': layout === 2 }"
+      :class="{ 'ml-[25%]': currentState.layout === 2 }"
     >
       <span
         v-if="about.name"
-        class="font-normal text-primary-100 text-4xl leading-[41px]"
+        :style="{'--text-colour-code': currentState.primaryColour}"
+        class="font-normal text-set-colour text-4xl leading-[41px]"
       >
         {{ about.name }}
       </span>
@@ -25,10 +55,10 @@ const { layout, about, summary, experience, project, skill, education, certifica
         {{ about.jobTitle }}
       </span>
     </div>
-    <div :class="{ 'flex': layout !== 3 }">
+    <div :class="{ 'flex': currentState.layout !== 3 }">
       <div
         class="flex flex-col gap-4"
-        :class="{ 'w-[75%]': layout !== 3, 'order-2': layout === 2 }"
+        :class="{ 'w-[75%]': currentState.layout !== 3, 'order-2': currentState.layout === 2 }"
       >
         <section v-show="summary.isShow" class="p-2 flex flex-col gap-2">
           <div
@@ -38,7 +68,11 @@ const { layout, about, summary, experience, project, skill, education, certifica
             <span
               v-for="item in summary.hashtags.filter(tag => !!tag)"
               :key="item"
-              class="hashtag text-primary-100 bg-primary-10"
+              :style="{
+                '--text-colour-code': currentState.primaryColour,
+                '--bg-colour-code': currentState.secondaryColour
+              }"
+              class="hashtag text-set-colour bg-set-colour"
             >
               {{ item }}
             </span>
@@ -48,7 +82,10 @@ const { layout, about, summary, experience, project, skill, education, certifica
           </p>
         </section>
         <section v-if="experience.isShow">
-          <div class="px-2 py-1 subtitle-default text-primary-100">
+          <div
+            :style="{'--text-colour-code': currentState.primaryColour}"
+            class="px-2 py-1 subtitle-default text-set-colour"
+          >
             {{ experience.name }}
           </div>
           <div v-for="(item, index) in experience.list" :key="index">
@@ -74,7 +111,10 @@ const { layout, about, summary, experience, project, skill, education, certifica
           </div>
         </section>
         <section v-if="project.isShow">
-          <div class="px-2 py-1 subtitle-default text-primary-100">
+          <div
+            :style="{'--text-colour-code': currentState.primaryColour}"
+            class="px-2 py-1 subtitle-default text-set-colour"
+          >
             {{ project.name }}
           </div>
           <div v-for="(item, index) in project.list" :key="index">
@@ -102,13 +142,16 @@ const { layout, about, summary, experience, project, skill, education, certifica
       </div>
       <div
         class="px-2"
-        :class="{ 'w-[25%]': layout !== 3, 'order-1': layout === 2}"
+        :class="{ 'w-[25%]': currentState.layout !== 3, 'order-1': currentState.layout === 2}"
       >
         <section
           v-if="skill.isShow"
           class="pb-2"
         >
-          <div class="py-1 subtitle-default text-primary-100">
+          <div
+            :style="{'--text-colour-code': currentState.primaryColour}"
+            class="py-1 subtitle-default text-set-colour"
+          >
             {{ skill.name }}
           </div>
           <div v-for="(item, index) in skill.list" :key="index">
@@ -132,7 +175,8 @@ const { layout, about, summary, experience, project, skill, education, certifica
           <div class="py-1">
             <div
               v-if="certificate.isShow"
-              class="subtitle-default text-primary-100"
+              :style="{'--text-colour-code': currentState.primaryColour}"
+              class="subtitle-default text-set-colour"
             >
               {{ certificate.name }}
             </div>
@@ -161,7 +205,8 @@ const { layout, about, summary, experience, project, skill, education, certifica
           <div class="py-1">
             <div
               v-if="education.isShow"
-              class="subtitle-default text-primary-100"
+              :style="{'--text-colour-code': currentState.primaryColour}"
+              class="subtitle-default text-set-colour"
             >
               {{ education.name }}
             </div>
@@ -188,7 +233,8 @@ const { layout, about, summary, experience, project, skill, education, certifica
         <section>
           <div
             v-if="contact.isShow"
-            class="pt-5 py-1 subtitle-default text-primary-100"
+            :style="{'--text-colour-code': currentState.primaryColour}"
+            class="pt-5 py-1 subtitle-default text-set-colour"
           >
             {{ contact.name }}
           </div>
@@ -222,3 +268,38 @@ const { layout, about, summary, experience, project, skill, education, certifica
     </div>
   </div>
 </template>
+
+<!-- <style scoped>
+//change to REM
+/* .title-scale-default{
+
+  font-size: 14px;
+  line-height: 16px;
+}
+
+.subtitle-scale-default{
+  font-size: 11px;
+  line-height: 13px;
+}
+
+.paragraph-scale-default{
+  font-size: 10px;
+  line-height: 13px;
+}
+
+.title-scale-large{
+  font-size: 16px;
+  line-height: 19px;
+}
+
+.subtitle-scale-large{
+  font-size: 14px;
+  line-height: 16px;
+}
+
+.paragraph-scale-large{
+  font-size: 12px;
+  line-height: 14px;
+} */
+
+</style> -->

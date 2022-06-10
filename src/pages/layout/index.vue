@@ -1,16 +1,16 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { useUserStore } from '~/stores/user'
+import { useToolbarStore } from '~/stores/toolbar'
 
-const user = useUserStore()
+const toolbar = useToolbarStore()
 const { t } = useI18n()
 const router = useRouter()
 
-const selectedLayout = ref(user.layout || 1)
+const selectedLayout = ref(toolbar.currentState.layout || 1)
 
 const onNext = () => {
-  user.$patch((state) => {
-    state.layout = selectedLayout.value
+  toolbar.$patch((state) => {
+    state.currentState.layout = selectedLayout.value
   })
   router.push('/template')
 }
