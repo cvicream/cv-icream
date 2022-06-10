@@ -23,7 +23,7 @@ const onFontFamilyChange = (index: number) => {
   toolbar.changeFontFamily(index)
 }
 
-const onLayoutChange = (layoutType: string) => {
+const onLayoutChange = (layoutType: number) => {
   toolbar.changeLayout(layoutType)
 }
 
@@ -50,19 +50,19 @@ window.addEventListener('click', onClick, false)
         <div class="btn-toolbar w-12 h-12">
           <button
             class="i-custom:template-right w-8 h-8"
-            @click="onLayoutChange('main-right')"
+            @click="onLayoutChange(1)"
           />
         </div>
         <div class="btn-toolbar w-12 h-12">
           <button
             class="i-custom:template-left w-8 h-8"
-            @click="onLayoutChange('main-left')"
+            @click="onLayoutChange(2)"
           />
         </div>
         <div class="btn-toolbar w-12 h-12">
           <button
             class="i-custom:template-full w-8 h-8"
-            @click="onLayoutChange('main-full')"
+            @click="onLayoutChange(3)"
           />
         </div>
       </DropdownMenu>

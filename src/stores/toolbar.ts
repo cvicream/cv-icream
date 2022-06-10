@@ -13,6 +13,7 @@ export const useToolbarStore = defineStore('toolbar', {
       secondaryColour: '#FEF4F1',
       fontSizeScale: 1,
       fontFamily: 'font-gill-sans',
+      layout: 1,
     },
     colours: [
       {
@@ -149,10 +150,8 @@ export const useToolbarStore = defineStore('toolbar', {
           this.currentState.fontFamily = fontFamily.name
       })
     },
-    changeLayout(layoutType: string) {
-      this.layout.forEach((layout) => {
-        layout.isActive = (layout.name === layoutType)
-      })
+    changeLayout(layoutType: number) {
+      this.currentState.layout = layoutType
     },
   },
 })

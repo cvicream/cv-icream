@@ -4,7 +4,7 @@ import { useUserStore } from '~/stores/user'
 import { useToolbarStore } from '~/stores/toolbar'
 
 const user = useUserStore()
-const { layout, about, summary, experience, project, skill, education, certificate, contact } = storeToRefs(user)
+const { about, summary, experience, project, skill, education, certificate, contact } = storeToRefs(user)
 
 const toolbar = useToolbarStore()
 const { currentState } = storeToRefs(toolbar)
@@ -12,7 +12,7 @@ const { currentState } = storeToRefs(toolbar)
 // [Font size]
 // export default {
 //   data() {
-//     if (currentState.value.fontSizeScale === 1) {
+//     if (value.fontSizeScale === 1) {
 //       return {
 //         titleScale: 'title-scale-default',
 //         SubtitleScale: 'subtitle-scale-default',
@@ -39,7 +39,7 @@ const { currentState } = storeToRefs(toolbar)
   >
     <div
       class="p-2 flex items-baseline gap-4"
-      :class="{ 'ml-[25%]': layout === 2 }"
+      :class="{ 'ml-[25%]': currentState.layout === 2 }"
     >
       <span
         v-if="about.name"
@@ -55,10 +55,10 @@ const { currentState } = storeToRefs(toolbar)
         {{ about.jobTitle }}
       </span>
     </div>
-    <div :class="{ 'flex': layout !== 3 }">
+    <div :class="{ 'flex': currentState.layout !== 3 }">
       <div
         class="flex flex-col gap-4"
-        :class="{ 'w-[75%]': layout !== 3, 'order-2': layout === 2 }"
+        :class="{ 'w-[75%]': currentState.layout !== 3, 'order-2': currentState.layout === 2 }"
       >
         <section v-show="summary.isShow" class="p-2 flex flex-col gap-2">
           <div
@@ -142,7 +142,7 @@ const { currentState } = storeToRefs(toolbar)
       </div>
       <div
         class="px-2"
-        :class="{ 'w-[25%]': layout !== 3, 'order-1': layout === 2}"
+        :class="{ 'w-[25%]': currentState.layout !== 3, 'order-1': currentState.layout === 2}"
       >
         <section
           v-if="skill.isShow"
