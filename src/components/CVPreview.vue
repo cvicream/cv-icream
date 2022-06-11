@@ -15,7 +15,8 @@ const { currentState } = storeToRefs(toolbar)
   <div class="title-default subtitle-default paragraph-default title-large subtitle-large paragraph-default" />
   <div
     id="cv-preview"
-    class="w-full h-full flex-shrink-0 p-6 shadow-custom"
+    :style="{'--colour-secondary': currentState.secondaryColour}"
+    class="w-full h-full flex-shrink-0 p-6 shadow-set-colour"
     :class="currentState.fontFamily"
   >
     <div
