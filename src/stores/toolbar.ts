@@ -11,9 +11,11 @@ export const useToolbarStore = defineStore('toolbar', {
     currentState: {
       primaryColour: '#F18B6B',
       secondaryColour: '#FEF4F1',
-      fontSizeScale: 1,
       fontFamily: 'font-gill-sans',
       layout: 1,
+      titleScale: 'title-default',
+      subtitleScale: 'subtitle-default',
+      paragraphScale: 'paragraph-default',
     },
     colours: [
       {
@@ -139,8 +141,11 @@ export const useToolbarStore = defineStore('toolbar', {
     changeFontSize(sizeType: string) {
       this.fontSize.forEach((fontSize) => {
         fontSize.isActive = (fontSize.name === sizeType)
-        if (fontSize.isActive)
-          this.currentState.fontSizeScale = fontSize.scale
+        if (fontSize.isActive) {
+          this.currentState.titleScale = `title-${fontSize.name}`
+          this.currentState.subtitleScale = `subtitle-${fontSize.name}`
+          this.currentState.paragraphScale = `paragraph-${fontSize.name}`
+        }
       })
     },
     changeFontFamily(index: number) {
