@@ -12,6 +12,7 @@ const { currentState } = storeToRefs(toolbar)
 </script>
 
 <template>
+  <div class="title-default subtitle-default paragraph-default title-large subtitle-large paragraph-default" />
   <div
     id="cv-preview"
     class="w-full h-full flex-shrink-0 p-6 shadow-custom"
