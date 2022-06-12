@@ -3,6 +3,7 @@ export const TEMPLATES = [
   {
     id: 1,
     about: {
+      isShow: true,
       name: '',
       jobTitle: 'UI/UX Designer',
     },
@@ -71,6 +72,7 @@ HTML and CSS`,
   {
     id: 2,
     about: {
+      isShow: true,
       name: '',
       jobTitle: 'Software Developer',
     },
@@ -121,6 +123,7 @@ Other: Machine Learning and Data Structures`,
   {
     id: 3,
     about: {
+      isShow: true,
       name: '',
       jobTitle: 'Project Manager',
     },
