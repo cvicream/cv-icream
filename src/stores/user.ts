@@ -5,7 +5,7 @@ export const useUserStore = defineStore('user', {
     template: 1,
     about: {
       isShow: true,
-      name: '',
+      name: 'Name',
       jobTitle: '',
     },
     summary: {

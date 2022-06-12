@@ -94,11 +94,11 @@ export default defineConfig({
     },
     colors: {
       primary: { // class="text-primary-100"
-        10: '#fef4f1',
+        10: 'var(--secondary-color)',
         20: '#fce8e1',
         40: '#fad1c4',
         70: '#f6af98',
-        100: '#f18b6b',
+        100: 'var(--primary-color)',
       },
       blacks: { // class="text-blacks-100"
         10: 'rgba(34, 34, 34, 0.1)',
@@ -111,7 +111,7 @@ export default defineConfig({
       warning: '#de6d6d',
     },
     boxShadow: {
-      custom: '2px 2px 10px rgba(241, 139, 107, 0.2)',
+      custom: '2px 2px 10px var(--shadow-color)',
     },
   },
 })

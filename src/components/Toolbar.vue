@@ -4,7 +4,7 @@ import { storeToRefs } from 'pinia'
 import { useToolbarStore } from '~/stores/toolbar'
 
 const toolbar = useToolbarStore()
-const { dropdownMenu, colours, fontFamily } = storeToRefs(toolbar)
+const { dropdownMenu, currentState, colours, fontFamily } = storeToRefs(toolbar)
 
 const onClick = () => {
   if (Object.values(dropdownMenu.value).some(item => item))
@@ -66,7 +66,14 @@ window.addEventListener('click', onClick, false)
           />
         </div>
       </DropdownMenu>
-      <DropdownMenu id="colour" label="Colour" icon="icon-colour">
+      <DropdownMenu
+        id="colour"
+        :style="{
+          '--colour-primary': currentState.primaryColour,
+          '--colour-secondary': currentState.secondaryColour
+        }"
+        label="Colour" icon="icon-colour-item"
+      >
         <div
           v-for="(item, index) in colours"
           :key="index"

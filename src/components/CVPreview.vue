@@ -15,8 +15,7 @@ const { currentState } = storeToRefs(toolbar)
   <div class="title-default subtitle-default paragraph-default title-large subtitle-large paragraph-default" />
   <div
     id="cv-preview"
-    :style="{'--colour-secondary': currentState.secondaryColour}"
-    class="w-full h-full flex-shrink-0 p-6 shadow-set-colour"
+    class="w-full h-full flex-shrink-0 p-6 shadow-custom"
     :class="currentState.fontFamily"
   >
     <div
@@ -25,8 +24,7 @@ const { currentState } = storeToRefs(toolbar)
     >
       <span
         v-if="about.name"
-        :style="{'--text-colour-code': currentState.primaryColour}"
-        class="font-normal text-set-colour text-4xl leading-[41px]"
+        class="font-normal text-primary-100 text-4xl leading-[41px]"
       >
         {{ about.name }}
       </span>
@@ -50,11 +48,7 @@ const { currentState } = storeToRefs(toolbar)
             <span
               v-for="item in summary.hashtags.filter(tag => !!tag)"
               :key="item"
-              :style="{
-                '--text-colour-code': currentState.primaryColour,
-                '--bg-colour-code': currentState.secondaryColour
-              }"
-              class="hashtag text-set-colour bg-set-colour"
+              class="hashtag text-primary-100 bg-primary-10"
             >
               {{ item }}
             </span>
@@ -68,9 +62,8 @@ const { currentState } = storeToRefs(toolbar)
         </section>
         <section v-if="experience.isShow">
           <div
-            :style="{'--text-colour-code': currentState.primaryColour}"
             :class="currentState.subtitleScale"
-            class="px-2 py-1 text-set-colour"
+            class="px-2 py-1 text-primary-100"
           >
             {{ experience.name }}
           </div>
@@ -110,9 +103,8 @@ const { currentState } = storeToRefs(toolbar)
         </section>
         <section v-if="project.isShow">
           <div
-            :style="{'--text-colour-code': currentState.primaryColour}"
             :class="currentState.subtitleScale"
-            class="px-2 py-1 text-set-colour"
+            class="px-2 py-1 text-primary-100"
           >
             {{ project.name }}
           </div>
@@ -160,9 +152,8 @@ const { currentState } = storeToRefs(toolbar)
           class="pb-2"
         >
           <div
-            :style="{'--text-colour-code': currentState.primaryColour}"
             :class="currentState.subtitleScale"
-            class="py-1 text-set-colour"
+            class="py-1 text-primary-100"
           >
             {{ skill.name }}
           </div>
@@ -189,9 +180,8 @@ const { currentState } = storeToRefs(toolbar)
           <div class="py-1">
             <div
               v-if="certificate.isShow"
-              :style="{'--text-colour-code': currentState.primaryColour}"
               :class="currentState.subtitleScale"
-              class="text-set-colour"
+              class="text-primary-100"
             >
               {{ certificate.name }}
             </div>
@@ -229,9 +219,8 @@ const { currentState } = storeToRefs(toolbar)
           <div class="py-1">
             <div
               v-if="education.isShow"
-              :style="{'--text-colour-code': currentState.primaryColour}"
               :class="currentState.subtitleScale"
-              class="text-set-colour"
+              class="text-primary-100"
             >
               {{ education.name }}
             </div>
@@ -267,9 +256,8 @@ const { currentState } = storeToRefs(toolbar)
         <section>
           <div
             v-if="contact.isShow"
-            :style="{'--text-colour-code': currentState.primaryColour}"
             :class="currentState.subtitleScale"
-            class="pt-5 py-1 text-set-colour"
+            class="pt-5 py-1 text-primary-100"
           >
             {{ contact.name }}
           </div>
