@@ -177,7 +177,7 @@ function deleteItem(index: number) {
       </form>
     </div>
     <button
-      class="w-full rounded-xl font-normal text-lg leading-[1.375rem] text-blacks-40 inline-flex justify-center items-center py-3 border-transparent border-1 group"
+      class="w-full rounded-xl text-blacks-40 inline-flex justify-center items-center py-3 border-transparent border-1 group"
       :class="education.isShow ? 'bg-primary-10 hover:border-primary-100 ' : 'bg-blacks-10'"
       :disabled="!education.isShow"
       @click="addItem"
@@ -186,7 +186,7 @@ function deleteItem(index: number) {
         class="i-custom:add w-6 h-6 text-blacks-40"
         :class="education.isShow && 'group-hover:text-blacks-70'"
       />
-      <span :class="education.isShow && 'group-hover:text-blacks-100'">
+      <span class="subleading" :class="education.isShow && 'group-hover:text-blacks-100'">
         Add {{ education.name.toLowerCase() }}
       </span>
     </button>

@@ -1,4 +1,8 @@
 <script setup lang="ts">
+import { useUserStore } from '~/stores/user'
+
+const user = useUserStore()
+
 const router = useRouter()
 const sidebarMenus = ref([
   {
@@ -75,8 +79,22 @@ const isActivePath = (targetPath: string) => {
           :to="menu.path"
           :class="isActivePath(menu.path) && 'bg-primary-10 rounded'"
         >
-          <span class="w-8 h-8 text-blacks-70" :class="menu.icon " />
-          <span :class="!isOpen && 'hidden'">{{ menu.name }}</span>
+          <span
+            class="w-8 h-8"
+            :class="
+              user[menu.name.toLocaleLowerCase()].isShow
+                ? `${menu.icon} text-blacks-70` : `${menu.icon} text-blacks-40`"
+          />
+          <span
+            class="leading ml-4"
+            :class="{
+              'hidden': !isOpen,
+              'text-blacks-70': user[menu.name.toLocaleLowerCase()].isShow,
+              'text-blacks-40': !user[menu.name.toLocaleLowerCase()].isShow
+            }"
+          >
+            {{ menu.name }}
+          </span>
         </router-link>
       </div>
     </div>
@@ -92,8 +110,5 @@ const isActivePath = (targetPath: string) => {
 <style scoped>
 a {
   @apply flex items-center px-3 py-2 hover:bg-primary-10 hover:rounded
-}
-a > span:last-child {
-  @apply font-normal text-xl text-blacks-100 leading-6 ml-4
 }
 </style>

@@ -4,6 +4,7 @@ export const useUserStore = defineStore('user', {
   state: () => ({
     template: 1,
     about: {
+      isShow: true,
       name: '',
       jobTitle: '',
     },
