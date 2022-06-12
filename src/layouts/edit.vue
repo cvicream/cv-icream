@@ -1,10 +1,14 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { storeToRefs } from 'pinia'
+import { useToolbarStore } from '~/stores/toolbar'
 
-const isCVPreviewVisible = ref(true)
+const toolbar = useToolbarStore()
+const { isCVPreviewVisible } = storeToRefs(toolbar)
 
 function toggleCVPreview() {
-  isCVPreviewVisible.value = !isCVPreviewVisible.value
+  toolbar.$patch((state) => {
+    state.isCVPreviewVisible = !state.isCVPreviewVisible
+  })
 }
 </script>
 

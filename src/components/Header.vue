@@ -88,6 +88,13 @@ function getJsonUpload() {
   })
 }
 
+function download() {
+  toolbar.$patch((state) => {
+    state.isCVPreviewVisible = false
+  })
+  router.push('/edit/download')
+}
+
 </script>
 
 <template>
@@ -105,7 +112,7 @@ function getJsonUpload() {
       <button class="btn-icon-48" @click="importJsonFile">
         <span class="i-custom:load icon-32" />
       </button>
-      <button class="btn-icon-48-fill" @click="router.push('/edit/download')">
+      <button class="btn-icon-48-fill" @click="download">
         <span class="i-custom:download icon-32-fill" />
       </button>
     </div>
