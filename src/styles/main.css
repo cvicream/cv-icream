@@ -23,6 +23,12 @@
        url('../fonts/lato-v23-latin-regular.svg#Lato') format('svg'); /* Legacy iOS */
 }
 
+:root {
+  --primary-color: #F18B6B;
+  --secondary-color: #FEF4F1;
+  --shadow-color: #FCE8E1;
+}
+
 html,
 body,
 #app {
