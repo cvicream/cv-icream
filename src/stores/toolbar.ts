@@ -8,6 +8,7 @@ export const useToolbarStore = defineStore('toolbar', {
       fontSize: false,
       fontFamily: false,
     },
+    isCVPreviewVisible: false,
     currentState: {
       primaryColour: '#F18B6B',
       secondaryColour: '#FEF4F1',
