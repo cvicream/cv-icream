@@ -9,32 +9,14 @@ const { about, summary, experience, project, skill, education, certificate, cont
 const toolbar = useToolbarStore()
 const { currentState } = storeToRefs(toolbar)
 
-// [Font size]
-// export default {
-//   data() {
-//     if (value.fontSizeScale === 1) {
-//       return {
-//         titleScale: 'title-scale-default',
-//         SubtitleScale: 'subtitle-scale-default',
-//         ParagraphScale: 'paragraph-scale-default',
-//       }
-//     }
-//     else {
-//       return {
-//         titleScale: 'title-scale-large',
-//         SubtitleScale: 'subtitle-scale-large',
-//         ParagraphScale: 'paragraph-scale-large',
-//       }
-//     }
-//   },
-// }
-
 </script>
 
 <template>
+  <div class="title-default subtitle-default paragraph-default title-large subtitle-large paragraph-default" />
   <div
     id="cv-preview"
-    class="w-full h-full flex-shrink-0 p-6 shadow-custom"
+    :style="{'--colour-secondary': currentState.secondaryColour}"
+    class="w-full h-full flex-shrink-0 p-6 shadow-set-colour"
     :class="currentState.fontFamily"
   >
     <div
@@ -77,14 +59,18 @@ const { currentState } = storeToRefs(toolbar)
               {{ item }}
             </span>
           </div>
-          <p class="paragraph-default text-blacks-70">
+          <p
+            :class="currentState.paragraphScale"
+            class="text-blacks-70"
+          >
             {{ summary.paragraph }}
           </p>
         </section>
         <section v-if="experience.isShow">
           <div
             :style="{'--text-colour-code': currentState.primaryColour}"
-            class="px-2 py-1 subtitle-default text-set-colour"
+            :class="currentState.subtitleScale"
+            class="px-2 py-1 text-set-colour"
           >
             {{ experience.name }}
           </div>
@@ -93,18 +79,30 @@ const { currentState } = storeToRefs(toolbar)
               v-if="item.isShow"
               class="p-2 flex flex-col gap-1"
             >
-              <span class="title-default text-blacks-100">
+              <span
+                :class="currentState.titleScale"
+                class="text-blacks-100"
+              >
                 {{ item.title }}
               </span>
               <div class="flex justify-between">
-                <span class="subtitle-default text-blacks-40">
+                <span
+                  :class="currentState.subtitleScale"
+                  class="text-blacks-40"
+                >
                   {{ item.subtitle1 }}
                 </span>
-                <span class="subtitle-default text-blacks-40">
+                <span
+                  :class="currentState.subtitleScale"
+                  class="text-blacks-40"
+                >
                   {{ item.subtitle2 }}
                 </span>
               </div>
-              <p class="paragraph-default text-blacks-70">
+              <p
+                :class="currentState.paragraphScale"
+                class="text-blacks-70"
+              >
                 {{ item.paragraph }}
               </p>
             </div>
@@ -113,7 +111,8 @@ const { currentState } = storeToRefs(toolbar)
         <section v-if="project.isShow">
           <div
             :style="{'--text-colour-code': currentState.primaryColour}"
-            class="px-2 py-1 subtitle-default text-set-colour"
+            :class="currentState.subtitleScale"
+            class="px-2 py-1 text-set-colour"
           >
             {{ project.name }}
           </div>
@@ -122,18 +121,30 @@ const { currentState } = storeToRefs(toolbar)
               v-if="item.isShow"
               class="p-2 flex flex-col gap-1"
             >
-              <span class="title-default text-blacks-100">
+              <span
+                :class="currentState.titleScale"
+                class="text-blacks-100"
+              >
                 {{ item.title }}
               </span>
               <div class="flex justify-between">
-                <span class="subtitle-default text-blacks-40">
+                <span
+                  :class="currentState.subtitleScale"
+                  class="text-blacks-40"
+                >
                   {{ item.subtitle1 }}
                 </span>
-                <span class="subtitle-default text-blacks-40">
+                <span
+                  :class="currentState.subtitleScale"
+                  class="text-blacks-40"
+                >
                   {{ item.subtitle2 }}
                 </span>
               </div>
-              <p class="paragraph-default text-blacks-70">
+              <p
+                :class="currentState.paragraphScale"
+                class="text-blacks-70"
+              >
                 {{ item.paragraph }}
               </p>
             </div>
@@ -150,20 +161,23 @@ const { currentState } = storeToRefs(toolbar)
         >
           <div
             :style="{'--text-colour-code': currentState.primaryColour}"
-            class="py-1 subtitle-default text-set-colour"
+            :class="currentState.subtitleScale"
+            class="py-1 text-set-colour"
           >
             {{ skill.name }}
           </div>
           <div v-for="(item, index) in skill.list" :key="index">
             <div
               v-if="item.isShow"
-              class="pt-2 pb-1 subtitle-default text-blacks-40"
+              :class="currentState.subtitleScale"
+              class="pt-2 pb-1 text-blacks-40"
             >
               {{ item.subtitle1 }}
             </div>
             <div
               v-if="item.isShow"
-              class="paragraph-default  text-blacks-70"
+              :class="currentState.paragraphScale"
+              class="text-blacks-70"
             >
               <span style="white-space: pre-wrap;">
                 {{ item.paragraph }}
@@ -176,7 +190,8 @@ const { currentState } = storeToRefs(toolbar)
             <div
               v-if="certificate.isShow"
               :style="{'--text-colour-code': currentState.primaryColour}"
-              class="subtitle-default text-set-colour"
+              :class="currentState.subtitleScale"
+              class="text-set-colour"
             >
               {{ certificate.name }}
             </div>
@@ -186,14 +201,23 @@ const { currentState } = storeToRefs(toolbar)
               v-if="item.isShow"
               class="py-2 pb-1"
             >
-              <div class="title-default text-blacks-100">
+              <div
+                :class="currentState.titleScale"
+                class="text-blacks-100"
+              >
                 {{ item.title }}
               </div>
-              <span class="subtitle-default text-blacks-40">
+              <span
+                :class="currentState.subtitleScale"
+                class="text-blacks-40"
+              >
                 {{ item.subtitle1 }}
               </span>
 
-              <div class="paragraph-default  text-blacks-70">
+              <div
+                :class="currentState.paragraphScale"
+                class="text-blacks-70"
+              >
                 <span style="white-space: pre-wrap;">
                   {{ item.paragraph }}
                 </span>
@@ -206,7 +230,8 @@ const { currentState } = storeToRefs(toolbar)
             <div
               v-if="education.isShow"
               :style="{'--text-colour-code': currentState.primaryColour}"
-              class="subtitle-default text-set-colour"
+              :class="currentState.subtitleScale"
+              class="text-set-colour"
             >
               {{ education.name }}
             </div>
@@ -216,13 +241,22 @@ const { currentState } = storeToRefs(toolbar)
               v-if="item.isShow"
               class="py-2 pb-1"
             >
-              <div class="title-default text-blacks-100">
+              <div
+                :class="currentState.titleScale"
+                class="text-blacks-100"
+              >
                 {{ item.title }}
               </div>
-              <span class="subtitle-default text-blacks-40">
+              <span
+                :class="currentState.subtitleScale"
+                class="text-blacks-40"
+              >
                 {{ item.subtitle1 }}
               </span>
-              <div class="paragraph-default  text-blacks-70">
+              <div
+                :class="currentState.paragraphScale"
+                class="text-blacks-70"
+              >
                 <span style="white-space: pre-wrap;">
                   {{ item.paragraph }}
                 </span>
@@ -234,7 +268,8 @@ const { currentState } = storeToRefs(toolbar)
           <div
             v-if="contact.isShow"
             :style="{'--text-colour-code': currentState.primaryColour}"
-            class="pt-5 py-1 subtitle-default text-set-colour"
+            :class="currentState.subtitleScale"
+            class="pt-5 py-1 text-set-colour"
           >
             {{ contact.name }}
           </div>
@@ -243,18 +278,30 @@ const { currentState } = storeToRefs(toolbar)
               v-if="item.isShow"
               class=""
             >
-              <div class="pt-2 pb-1 subtitle-default text-blacks-40">
+              <div
+                :class="currentState.subtitleScale"
+                class="pt-2 pb-1 text-blacks-40"
+              >
                 {{ item.subtitle1 }}
               </div>
-              <div class="mt-px paragraph-default text-blacks-70 break-words">
+              <div
+                :class="currentState.paragraphScale"
+                class="mt-px text-blacks-70 break-words"
+              >
                 <p>  {{ item.paragraph }}</p>
               </div>
             </div>
             <div class="pt-2" />
-            <div class="pt-2 pb-1 subtitle-default text-blacks-40">
+            <div
+              :class="currentState.paragraphScale"
+              class="pt-2 pb-1 text-blacks-40"
+            >
               Social
             </div>
-            <div class="paragraph-default flex flex-col text-blacks-70">
+            <div
+              :class="currentState.paragraphScale"
+              class="flex flex-col text-blacks-70"
+            >
               <a href="https://www.linkedin.com/feed/">
                 LinkedIn
               </a>
@@ -268,38 +315,3 @@ const { currentState } = storeToRefs(toolbar)
     </div>
   </div>
 </template>
-
-<!-- <style scoped>
-//change to REM
-/* .title-scale-default{
-
-  font-size: 14px;
-  line-height: 16px;
-}
-
-.subtitle-scale-default{
-  font-size: 11px;
-  line-height: 13px;
-}
-
-.paragraph-scale-default{
-  font-size: 10px;
-  line-height: 13px;
-}
-
-.title-scale-large{
-  font-size: 16px;
-  line-height: 19px;
-}
-
-.subtitle-scale-large{
-  font-size: 14px;
-  line-height: 16px;
-}
-
-.paragraph-scale-large{
-  font-size: 12px;
-  line-height: 14px;
-} */
-
-</style> -->
