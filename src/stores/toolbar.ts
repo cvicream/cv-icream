@@ -115,15 +115,15 @@ export const useToolbarStore = defineStore('toolbar', {
     ],
     layout: [
       {
-        name: 'main-right',
+        name: 'i-custom:template-right',
         isActive: true,
       },
       {
-        name: 'main-left',
+        name: 'i-custom:template-left',
         isActive: false,
       },
       {
-        name: 'main-full',
+        name: 'i-custom:template-full',
         isActive: false,
       },
     ],
@@ -168,6 +168,9 @@ export const useToolbarStore = defineStore('toolbar', {
     },
     changeLayout(layoutType: number) {
       this.currentState.layout = layoutType
+      this.layout.forEach((layout, i) => {
+        layout.isActive = i === layoutType
+      })
     },
   },
 })

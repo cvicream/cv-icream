@@ -4,7 +4,7 @@ import { storeToRefs } from 'pinia'
 import { useToolbarStore } from '~/stores/toolbar'
 
 const toolbar = useToolbarStore()
-const { dropdownMenu, currentState, colours, fontFamily } = storeToRefs(toolbar)
+const { dropdownMenu, currentState, colours, fontFamily, layout, fontSize } = storeToRefs(toolbar)
 
 const onClick = () => {
   if (Object.values(dropdownMenu.value).some(item => item))
@@ -45,21 +45,43 @@ window.addEventListener('click', onClick, false)
         <button class="i-custom:redo w-8 h-8" />
       </div>
     </div>
+    <div class="icon" />
     <div class="btn-group-toolbar w-42 h-12 relative">
       <DropdownMenu id="layout" label="Layout" icon="i-custom:template text-blacks-70">
-        <div class="btn-toolbar w-12 h-12">
+        <!-- <div
+          v-for="(item, index) in layout"
+          :key="index"
+          class="btn-toolbar w-12 h-12"
+          :class="(item.isActive)?'bg-primary-10 rounded-full':''"
+        >
+          <button
+            class="w-8 h-8"
+            :class="item.name"
+            @click="onLayoutChange(index)"
+          />
+        </div> -->
+        <div
+          class="btn-toolbar w-12 h-12"
+          :class="(layout[0].isActive)?'bg-primary-10 rounded-full':''"
+        >
           <button
             class="i-custom:template-right w-8 h-8"
             @click="onLayoutChange(1)"
           />
         </div>
-        <div class="btn-toolbar w-12 h-12">
+        <div
+          :class="(layout[1].isActive)?'bg-primary-10 rounded-full':''"
+          class="btn-toolbar w-12 h-12"
+        >
           <button
             class="i-custom:template-left w-8 h-8"
             @click="onLayoutChange(2)"
           />
         </div>
-        <div class="btn-toolbar w-12 h-12">
+        <div
+          class="btn-toolbar w-12 h-12"
+          :class="(layout[2].isActive)?'bg-primary-10 rounded-full':''"
+        >
           <button
             class="i-custom:template-full w-8 h-8"
             @click="onLayoutChange(3)"
@@ -78,25 +100,32 @@ window.addEventListener('click', onClick, false)
           v-for="(item, index) in colours"
           :key="index"
           class="btn-toolbar w-12 h-12"
+          :class="(item.isActive)?'bg-primary-10 rounded-full':''"
         >
           <button
             :style="{
               '--colour-primary': item.primary,
               '--colour-secondary': item.secondary
             }"
-            class="icon-colour-item"
+            class="icon-colour-item "
             @click="onColourChange(index)"
           />
         </div>
       </DropdownMenu>
       <DropdownMenu id="fontSize" label="Font Size" icon="i-custom:font-size text-blacks-70">
-        <div class="btn-toolbar w-12 h-12">
+        <div
+          class="btn-toolbar w-12 h-12"
+          :class="(fontSize[0].isActive)?'bg-primary-10 rounded-full':''"
+        >
           <button
             class="i-custom:font-size w-6 h-6"
             @click="onFontSizeChange('default')"
           />
         </div>
-        <div class="btn-toolbar w-12 h-12">
+        <div
+          class="btn-toolbar w-12 h-12"
+          :class="(fontSize[1].isActive)?'bg-primary-10 rounded-full':''"
+        >
           <button
             class="i-custom:font-size  w-8 h-8"
             @click="onFontSizeChange('large')"
@@ -108,6 +137,7 @@ window.addEventListener('click', onClick, false)
           <div
             v-for="(item, index) in fontFamily"
             :key="index"
+            :class="(item.isActive)?'bg-primary-10':''"
           >
             <button
               :class="item.name"
@@ -120,13 +150,10 @@ window.addEventListener('click', onClick, false)
         </div>
       </DropdownMenu>
     </div>
-    <div class="btn-group-toolbar w-22 h-12">
+    <!-- <div class="btn-group-toolbar w-12 h-12">
       <div class="btn-toolbar">
         <button class="i-custom:note w-8 h-8" />
       </div>
-      <div class="btn-toolbar">
-        <button class="i-custom:feedback w-8 h-8" />
-      </div>
-    </div>
+    </div> -->
   </div>
 </template>

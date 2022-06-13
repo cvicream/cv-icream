@@ -14,8 +14,7 @@ const { currentState } = storeToRefs(toolbar)
     <span class="slider round" />
     <span class="tick round">
       <span
-        :style="{'--text-colour-code': currentState.primaryColour}"
-        class="i-custom:ok w-3 h-3 text-set-colour hidden"
+        class="i-custom:ok w-3 h-3 text-primary-100 hidden"
       />
     </span>
   </label>
