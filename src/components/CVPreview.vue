@@ -2,12 +2,23 @@
 import { storeToRefs } from 'pinia'
 import { useUserStore } from '~/stores/user'
 import { useToolbarStore } from '~/stores/toolbar'
+import vuedraggable from 'vuedraggable'
 
 const user = useUserStore()
 const { about, summary, experience, project, skill, education, certificate, contact } = storeToRefs(user)
 
 const toolbar = useToolbarStore()
 const { currentState } = storeToRefs(toolbar)
+export default {
+  components: {
+    	vuedraggable,
+  },
+  data() {
+    return {
+      sections: [],
+    };
+  },
+};
 
 // [Font size]
 // export default {
@@ -77,10 +88,12 @@ const { currentState } = storeToRefs(toolbar)
               {{ item }}
             </span>
           </div>
+        
           <p class="paragraph-default text-blacks-70">
             {{ summary.paragraph }}
           </p>
         </section>
+      <vuedraggable list="sections" groups="sections">
         <section v-if="experience.isShow">
           <div
             :style="{'--text-colour-code': currentState.primaryColour}"
@@ -110,6 +123,8 @@ const { currentState } = storeToRefs(toolbar)
             </div>
           </div>
         </section>
+      </vuedraggable>
+      <vuedraggable list="sections" groups="sections">
         <section v-if="project.isShow">
           <div
             :style="{'--text-colour-code': currentState.primaryColour}"
@@ -139,6 +154,7 @@ const { currentState } = storeToRefs(toolbar)
             </div>
           </div>
         </section>
+      </vuedraggable>
       </div>
       <div
         class="px-2"
