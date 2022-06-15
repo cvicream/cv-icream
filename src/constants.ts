@@ -72,6 +72,74 @@ HTML and CSS`,
     id: 2,
     about: {
       name: '',
+      jobTitle: 'UX Designer',
+    },
+    summary: {
+      isShow: true,
+      hashtags: [],
+      paragraph: 'I care about the details and consider the UI/UX design of affordances to be crucial in creating effective, intuitive interfaces. I consider prototyping to be my weapon of choice in thinking through interaction models and new possibilities. I thrive on learning new things — I enjoy exploring new paths to familiar places. I really love snowboarding (I like both park and powder days). I also really enjoy exploring the amazing trails and landscapes around the bay area on my mountain bike. I’ve traveled a lot and enjoy seeing things from a fresh perspective :)',
+    },
+    experience: {
+      isShow: true,
+      name: 'EXPERIENCE',
+      list: [
+        {
+          isShow: true,
+          isCollapsed: false,
+          title: 'Product Designer',
+          subtitle1: 'Company Name',
+          subtitle2: 'February 2015 - Present',
+          paragraph: 'Creating functional prototype for an iPad Register product with Flinto alongside various web and client side components. Building a dashboard style guide to unify the design process across Square’s Dashboard. Launched a beta program for Online Store which involved the UX and Visuals for simplified onboarding experience, custom site editor, various templates, and order management.',
+        },
+        {
+          isShow: true,
+          isCollapsed: false,
+          title: 'Visual Designer',
+          subtitle1: 'Company Name',
+          subtitle2: 'June 2011 - Present',
+          paragraph: 'Redesigned websites, illustrated technical drawings for a fashion design firm. Produced logos, advertising materials both for print and digital marketing, promotional items, mockups and reports for local businesses.',
+        },
+      ],
+    },
+    skill: {
+      isShow: true,
+      name: 'SKILL',
+      list: [
+        {
+          isShow: true,
+          isCollapsed: false,
+          title: '',
+          subtitle1: 'Tool',
+          subtitle2: '',
+          paragraph:
+`Webflow 
+Figma 
+Sketch 
+InVision 
+Adobe Illustrator Photoshop 
+HTML and CSS`,
+        },
+      ],
+    },
+    contact: {
+      isShow: true,
+      name: 'CONTACT',
+      list: [
+        {
+          isShow: true,
+          isCollapsed: false,
+          title: '',
+          subtitle1: 'City, UK',
+          subtitle2: 'example@email.co.uk',
+          paragraph: '+4470 1234 5678',
+        },
+      ],
+    },
+  },
+  {
+    id: 3,
+    about: {
+      name: '',
       jobTitle: 'Software Developer',
     },
     summary: {
@@ -119,7 +187,7 @@ Other: Machine Learning and Data Structures`,
     },
   },
   {
-    id: 3,
+    id: 4,
     about: {
       name: '',
       jobTitle: 'Project Manager',

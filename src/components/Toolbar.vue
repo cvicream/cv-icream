@@ -117,9 +117,6 @@ window.addEventListener('click', onClick, false)
       <div class="btn-toolbar">
         <button class="i-custom:note w-8 h-8" />
       </div>
-      <div class="btn-toolbar">
-        <button class="i-custom:feedback w-8 h-8" />
-      </div>
     </div>
   </div>
 </template>

@@ -61,11 +61,11 @@ const downloadPDF = () => {
       >
         <div>
           <label class="note text-blacks-70">File Type</label>
-          <select value="pdf" class="block form-input">
+          <div value="pdf" class="block form-input">
             <option value="pdf">
               PDF
             </option>
-          </select>
+          </div>
         </div>
         <div>
           <label class="note text-blacks-70">Preview</label>

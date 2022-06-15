@@ -28,9 +28,9 @@ const onNext = () => {
     <div class="flex flex-col gap-16 sm:flex-row">
       <div class="text-center">
         <label for="template-1" class="flex flex-col gap-5 cursor-pointer">
-          <img src="../../assets/images/template-UIUXDesigner.png">
+          <img src="../../assets/images/template-UIDesigner.png">
           <span class="leading text-blacks-100">
-            {{ t('template.job.designer') }}
+            {{ t('template.job.uidesigner') }}
           </span>
         </label>
         <input
@@ -44,9 +44,9 @@ const onNext = () => {
       </div>
       <div class="text-center">
         <label for="template-2" class="flex flex-col gap-5 cursor-pointer">
-          <img src="../../assets/images/template-Developer.png">
+          <img src="../../assets/images/template-UXDesigner.png">
           <span class="leading text-blacks-100">
-            {{ t('template.job.developer') }}
+            {{ t('template.job.uxdesigner') }}
           </span>
         </label>
         <input
@@ -60,9 +60,9 @@ const onNext = () => {
       </div>
       <div class="text-center">
         <label for="template-3" class="flex flex-col gap-5 cursor-pointer">
-          <img src="../../assets/images/template-ProjectManager.png">
+          <img src="../../assets/images/template-Developer.png">
           <span class="leading text-blacks-100">
-            {{ t('template.job.manager') }}
+            {{ t('template.job.developer') }}
           </span>
         </label>
         <input
@@ -72,6 +72,22 @@ const onNext = () => {
           type="radio"
           name="template"
           :value="3"
+        >
+      </div>
+      <div class="text-center">
+        <label for="template-4" class="flex flex-col gap-5 cursor-pointer">
+          <img src="../../assets/images/template-ProductManager.png">
+          <span class="leading text-blacks-100">
+            {{ t('template.job.manager') }}
+          </span>
+        </label>
+        <input
+          id="template-4"
+          v-model="selectedTemplate"
+          class="btn-radio mt-8"
+          type="radio"
+          name="template"
+          :value="4"
         >
       </div>
       <div class="text-center">

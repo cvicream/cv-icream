@@ -93,9 +93,14 @@ function getJsonUpload() {
 <template>
   <header class="h-[80px] leading-80px text-center bg-white border-b border-b-blacks-20 flex justify-between px-8 py-4">
     <div class="flex gap-8">
-      <span class="btn-header bg-primary-10" />
-      <button class="btn-icon-48">
+      <span  class="btn-icon-32">
+      <span class="i-custom:logo icon-32" />
+      </span>
+      <button class="btn-icon-32">
         <span class="i-custom:idea icon-32" />
+      </button>
+      <button class="btn-icon-32">
+        <span class="i-custom:feedback icon-32" />
       </button>
     </div>
     <div v-if="isEdit" class="flex gap-8">
@@ -107,7 +112,7 @@ function getJsonUpload() {
       </button>
       <button class="btn-icon-48-fill" @click="router.push('/edit/download')">
         <span class="i-custom:download icon-32-fill" />
-      </button>
+      </button>      
     </div>
   </header>
 </template>
