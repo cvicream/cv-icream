@@ -10,6 +10,7 @@ export const useToolbarStore = defineStore('toolbar', {
     },
     isCVPreviewVisible: false,
     currentState: {
+      fontScale: 1,
       primaryColour: '#F18B6B',
       secondaryColour: '#FEF4F1',
       fontFamily: 'font-gill-sans',

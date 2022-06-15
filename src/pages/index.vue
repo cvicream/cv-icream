@@ -13,8 +13,8 @@ const router = useRouter()
         class="btn-primary"
         @click="router.push('/layout')"
       >
-        <span class="i-custom:about w-6 h-6" />
-        <span class="subleading vertical-middle ml-2">
+        <span class="i-custom:about w-8 h-8" />
+        <span class="subleading ml-2">
           {{ t('home.button.start_cv') }}
         </span>
       </button>
