@@ -4,7 +4,7 @@ import { storeToRefs } from 'pinia'
 import { useToolbarStore } from '~/stores/toolbar'
 
 const toolbar = useToolbarStore()
-const { dropdownMenu, currentState, colours, fontFamily } = storeToRefs(toolbar)
+const { isCVPreviewVisible, dropdownMenu, currentState, colours, fontFamily } = storeToRefs(toolbar)
 
 const onClick = () => {
   if (Object.values(dropdownMenu.value).some(item => item))
@@ -36,7 +36,7 @@ window.addEventListener('click', onClick, false)
 
 <template>
   <div class="font-arial font-gill-sans font-helvetica font-times-new-roman font-georgia font-lato" />
-  <div class="w-full h-20 text-center bg-white flex justify-between gap-4 px-4 py-4 border-t-1 border-blacks-20 sm:w-auto sm:border-0 sm:rounded-xl sm:shadow-custom">
+  <div class="w-full h-20 text-center bg-white flex justify-between gap-4 px-4 py-4 border-t-1 border-blacks-20 sm:w-auto sm:border-0 sm:rounded-xl sm:shadow-custom overflow-x-auto disable-scrollbar">
     <div class="btn-group-toolbar w-22 h-12">
       <div class="btn-toolbar">
         <button class="i-custom:undo w-8 h-8" />
@@ -45,7 +45,10 @@ window.addEventListener('click', onClick, false)
         <button class="i-custom:redo w-8 h-8" />
       </div>
     </div>
-    <div class="btn-group-toolbar w-42 h-12 relative">
+    <div
+      class="btn-group-toolbar w-42 h-12 relative sm:flex"
+      :class="{ 'hidden': !isCVPreviewVisible }"
+    >
       <DropdownMenu id="layout" label="Layout" icon="i-custom:template text-blacks-70">
         <div class="btn-toolbar w-12 h-12">
           <button
