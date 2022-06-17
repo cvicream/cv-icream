@@ -25,7 +25,7 @@ const toggleShow = () => {
     />
   </div>
   <div class="flex flex-col gap-6 pr-2 -mr-3 overflow-y-scroll custom-scrollbar">
-    <p v-if="!summary.isShow">
+    <p v-if="!summary.isShow" class="paragraph text-blacks-70">
       {{ HIDDEN_INFORMATION }}
     </p>
     <div>
