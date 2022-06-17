@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { onBeforeMount, onUnmounted } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useToolbarStore } from '~/stores/toolbar'
 
@@ -10,6 +11,23 @@ function toggleCVPreview() {
     state.isCVPreviewVisible = !state.isCVPreviewVisible
   })
 }
+
+onBeforeMount(() => {
+  window.addEventListener('beforeunload', onBeforeUnload)
+})
+
+onUnmounted(() => {
+  window.removeEventListener('beforeunload', onBeforeUnload)
+})
+
+function onBeforeUnload(event) {
+  // cancel the event as stated by the standard
+  event.preventDefault()
+  // chrome requires returnValue to be set
+  event.returnValue = ''
+  return false
+}
+
 </script>
 
 <template>
