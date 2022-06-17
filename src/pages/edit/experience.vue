@@ -97,7 +97,7 @@ function deleteItem(index: number) {
     />
   </div>
   <div class="flex flex-col gap-6 pr-2 -mr-3 overflow-y-scroll custom-scrollbar">
-    <p v-if="!experience.isShow">
+    <p v-if="!experience.isShow" class="paragraph text-blacks-70">
       {{ HIDDEN_INFORMATION }}
     </p>
     <div
