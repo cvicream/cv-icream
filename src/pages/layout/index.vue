@@ -1,12 +1,19 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useToolbarStore } from '~/stores/toolbar'
+import { isEditing } from '~/utils'
 
 const toolbar = useToolbarStore()
 const { t } = useI18n()
 const router = useRouter()
 
 const selectedLayout = ref(toolbar.currentState.layout || 1)
+
+const modalVisible = ref(isEditing())
+
+function onLoadFromStorage() {
+  router.push('/edit/about')
+}
 
 const onNext = () => {
   toolbar.$patch((state) => {
@@ -79,6 +86,38 @@ const onNext = () => {
         </span>
       </button>
     </div>
+
+    <Modal
+      v-show="modalVisible"
+      @close="modalVisible = false"
+    >
+      <div class="leading text-primary-100 mt-1 px-2">
+        Recover your information?
+      </div>
+      <div class="paragraph text-blacks-100 mt-6 px-2">
+        Would you like to recover your information?
+      </div>
+      <div class="flex flex-col gap-6 px-2 pt-6 pb-2 sm:flex-row">
+        <button
+          class="btn-secondary px-8 flex-shrink-0"
+          @click="modalVisible = false"
+        >
+          <span class="subleading">
+            No, thanks.
+          </span>
+        </button>
+        <button
+          class="btn-primary px-8 flex-shrink-0"
+          @click="
+            onLoadFromStorage
+          "
+        >
+          <span class="subleading">
+            Yes, please.
+          </span>
+        </button>
+      </div>
+    </Modal>
   </div>
 </template>
 

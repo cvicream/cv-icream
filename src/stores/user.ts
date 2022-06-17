@@ -2,6 +2,7 @@ import { acceptHMRUpdate, defineStore } from 'pinia'
 
 export const useUserStore = defineStore('user', {
   state: () => ({
+    isEditing: false,
     template: 1,
     about: {
       isShow: true,
