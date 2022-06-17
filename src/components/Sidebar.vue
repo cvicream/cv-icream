@@ -53,7 +53,7 @@ const isActivePath = (targetPath: string) => {
 </script>
 
 <template>
-  <div class="w-full h-full absolute z-1 bg-white flex sm:w-[390px] sm:top-0 sm:right-0 sm:bottom-0">
+  <div class="w-full h-full absolute z-0 bg-white flex sm:w-[390px] sm:top-0 sm:right-0 sm:bottom-0">
     <div class="sm:border-l border-blacks-20" />
     <div
       class="py-5 bg-white sm:h-full sm:overflow-y-auto sm:absolute sm:top-0 sm:right-[326px] z-1 transition-all duration-100 sm:border-l border-blacks-20 flex flex-col gap-4"

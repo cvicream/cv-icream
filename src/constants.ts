@@ -3,8 +3,8 @@ export const TEMPLATES = [
   {
     id: 1,
     about: {
-      name: '',
-      jobTitle: 'UI/UX Designer',
+      name: 'Your Name',
+      jobTitle: 'UI Designer',
     },
     summary: {
       isShow: true,
@@ -71,13 +71,13 @@ HTML and CSS`,
   {
     id: 2,
     about: {
-      name: '',
+      name: 'Your Name',
       jobTitle: 'UX Designer',
     },
     summary: {
       isShow: true,
       hashtags: [],
-      paragraph: 'I care about the details and consider the UI/UX design of affordances to be crucial in creating effective, intuitive interfaces. I consider prototyping to be my weapon of choice in thinking through interaction models and new possibilities. I thrive on learning new things — I enjoy exploring new paths to familiar places. I really love snowboarding (I like both park and powder days). I also really enjoy exploring the amazing trails and landscapes around the bay area on my mountain bike. I’ve traveled a lot and enjoy seeing things from a fresh perspective :)',
+      paragraph: 'A UX Designer and Researcher with 2+ years of experience in studying human behaviour in fundamental and applied research settings. Communication, problem solving, user research and writing are core competencies. Currently working towards a UX Design Certificate due to commitment of lifelong learning.',
     },
     experience: {
       isShow: true,
@@ -86,18 +86,10 @@ HTML and CSS`,
         {
           isShow: true,
           isCollapsed: false,
-          title: 'Product Designer',
+          title: 'Project Coordinator',
           subtitle1: 'Company Name',
-          subtitle2: 'February 2015 - Present',
-          paragraph: 'Creating functional prototype for an iPad Register product with Flinto alongside various web and client side components. Building a dashboard style guide to unify the design process across Square’s Dashboard. Launched a beta program for Online Store which involved the UX and Visuals for simplified onboarding experience, custom site editor, various templates, and order management.',
-        },
-        {
-          isShow: true,
-          isCollapsed: false,
-          title: 'Visual Designer',
-          subtitle1: 'Company Name',
-          subtitle2: 'June 2011 - Present',
-          paragraph: 'Redesigned websites, illustrated technical drawings for a fashion design firm. Produced logos, advertising materials both for print and digital marketing, promotional items, mockups and reports for local businesses.',
+          subtitle2: 'August 2015 - April 2017',
+          paragraph: 'Worked with 26 Professors to research and write a grant proposal for an interdisciplinary collaborative research centre, as well as coordinated a Ph.D program in the Psychology Department. Organised workshops and professional development classes, provided ongoing support to Ph.D. students, controlled all project finances, as well as provided ongoing website maintenance support with SO improvements and content updates.',
         },
       ],
     },
@@ -112,12 +104,23 @@ HTML and CSS`,
           subtitle1: 'Tool',
           subtitle2: '',
           paragraph:
-`Webflow 
-Figma 
-Sketch 
-InVision 
-Adobe Illustrator Photoshop 
-HTML and CSS`,
+`Research
+User Surveys
+User Interviews
+Statistics & Data Analysis
+Competitive Analysis
+User Personas
+Information Architecture
+Paper Prototyping
+Wireframing
+Usability Testing
+Visual Design
+A/B Testing & Analytics
+Sketch
+InVision
+Microsoft Office
+R & SPSS Statistics Software
+Basic HTML`,
         },
       ],
     },
@@ -139,7 +142,7 @@ HTML and CSS`,
   {
     id: 3,
     about: {
-      name: '',
+      name: 'Your Name',
       jobTitle: 'Software Developer',
     },
     summary: {
@@ -189,8 +192,8 @@ Other: Machine Learning and Data Structures`,
   {
     id: 4,
     about: {
-      name: '',
-      jobTitle: 'Project Manager',
+      name: 'Your Name',
+      jobTitle: 'Product Manager',
     },
     summary: {
       isShow: true,
@@ -231,6 +234,78 @@ Project Budgeting
 Strategic Planning
 Subcontractor
 Management`,
+        },
+      ],
+    },
+  },
+  {
+    id: 5,
+    about: {
+      name: 'Your Name',
+      jobTitle: 'Job Title',
+    },
+    summary: {
+      isShow: true,
+      hashtags: [],
+      paragraph: 'Describe more detials about yourself...',
+    },
+    experience: {
+      isShow: true,
+      name: 'EXPERIENCE',
+      list: [
+        {
+          isShow: true,
+          isCollapsed: false,
+          title: 'Job Title',
+          subtitle1: 'Company Name',
+          subtitle2: 'Timeline',
+          paragraph:
+          'Describe more detials for this experience...'
+        },
+      ],
+    },
+    project: {
+      isShow: true,
+      name: 'PROJECT',
+      list: [
+        {
+          isShow: true,
+          isCollapsed: false,
+          title: 'Project Name',
+          subtitle1: 'Team Name',
+          subtitle2: 'Timeline',
+          paragraph:
+          'Describe more detials for this project...'
+        },
+      ],
+    },
+    skill: {
+      isShow: true,
+      name: 'SKILL',
+      list: [
+        {
+          isShow: true,
+          isCollapsed: false,
+          title: '',
+          subtitle1: '',
+          subtitle2: '',
+          paragraph:
+`Skill 1, Skill 2, ...`,
+        },
+      ],
+    },
+    certificate: {
+      isShow: true,
+      name: 'CERTIFICATE',
+      list: [
+        {
+          isShow: true,
+          isCollapsed: false,
+          title: '',
+          subtitle1: '',
+          subtitle2: '',
+          paragraph:
+`Describe about what this certificate is for...`,
         },
       ],
     },

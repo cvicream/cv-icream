@@ -60,6 +60,10 @@ export default defineConfig({
           './src/assets/icons',
           svg => svg.replace('fill="none"', '').replace(/^<svg /, '<svg fill="currentColor" '),
         ),
+        origin: FileSystemIconLoader( // class="i-origin:<svg_filename>" which is for logo
+        './src/assets/icons',
+        svg => svg,
+        ),
       },
       extraProperties: {
         'display': 'inline-block',

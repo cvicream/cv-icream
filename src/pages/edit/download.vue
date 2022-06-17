@@ -77,10 +77,10 @@ const downloadPDF = () => {
         </div>
       </form>
       <button
-        class="w-full rounded-xl font-normal text-lg leading-[1.375rem] text-white inline-flex justify-center items-center py-3 mt-6 bg-primary-100"
+        class="w-full rounded-xl font-normal text-lg  gap-[12.5px] leading-[1.375rem] text-white inline-flex justify-center items-center py-3 mt-6 bg-primary-100"
         @click="downloadPDF"
       >
-        <span class="i-custom:add w-6 h-6" />
+        <span class="i-custom:download w-6 h-6" />
         <span>Download</span>
       </button>
     </div>
