@@ -1,10 +1,12 @@
+export const LOCAL_STORAGE_KEY = 'cvicream'
 export const HIDDEN_INFORMATION = 'The session is currently hidden on CV. Click the toggle if you would like to show it on CV.'
 export const TEMPLATES = [
   {
     id: 1,
+    isEditing: true,
     about: {
       isShow: true,
-      name: '',
+      name: 'Name',
       jobTitle: 'UI/UX Designer',
     },
     summary: {
@@ -71,9 +73,10 @@ HTML and CSS`,
   },
   {
     id: 2,
+    isEditing: true,
     about: {
       isShow: true,
-      name: '',
+      name: 'Name',
       jobTitle: 'Software Developer',
     },
     summary: {
@@ -122,9 +125,10 @@ Other: Machine Learning and Data Structures`,
   },
   {
     id: 3,
+    isEditing: true,
     about: {
       isShow: true,
-      name: '',
+      name: 'Name',
       jobTitle: 'Project Manager',
     },
     summary: {
