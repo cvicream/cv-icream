@@ -28,7 +28,7 @@ export const TEMPLATES = [
     isEditing: true,
     about: {
       isShow: true,
-      name: 'Name',
+      name: 'Your Name',
       jobTitle: 'UI Designer',
     },
     summary: {
@@ -98,7 +98,7 @@ HTML and CSS`,
     isEditing: true,
     about: {
       isShow: true,
-      name: 'Name',
+      name: 'Your Name',
       jobTitle: 'UX Designer',
     },
     summary: {
@@ -172,7 +172,7 @@ Mandarin (native)`,
     isEditing: true,
     about: {
       isShow: true,
-      name: 'Name',
+      name: 'Your Name',
       jobTitle: 'Software Developer',
     },
     summary: {
@@ -224,7 +224,7 @@ Other: Machine Learning and Data Structures`,
     isEditing: true,
     about: {
       isShow: true,
-      name: 'Name',
+      name: 'Your Name',
       jobTitle: 'Product Manager',
     },
     summary: {
@@ -275,7 +275,7 @@ Management`,
     isEditing: true,
     about: {
       isShow: true,
-      name: 'Name',
+      name: 'Your Name',
       jobTitle: '',
     },
     summary: {
