@@ -1,15 +1,15 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+import { storeToRefs } from 'pinia'
 import { useUserStore } from '~/stores/user'
 import { useToolbarStore } from '~/stores/toolbar'
 import { getJsonUpload, isEditing } from '~/utils'
 
 const user = useUserStore()
 const toolbar = useToolbarStore()
+const { currentState } = storeToRefs(toolbar)
 const { t } = useI18n()
 const router = useRouter()
-
-const selectedLayout = ref(toolbar.currentState.layout || 1)
 
 const modalVisible = ref(isEditing())
 
@@ -26,14 +26,24 @@ async function upload() {
 
 async function importJsonFile() {
   const jsonFile = await getJsonUpload()
-  const obj = JSON.parse(jsonFile)
+  const obj = JSON.parse(jsonFile as string)
   Object.keys(obj).forEach((key) => {
-    user.$patch((state) => {
-      state[key] = obj[key]
-    })
-    toolbar.$patch((state) => {
-      state.currentState[key] = obj[key]
-    })
+    if (key === 'user') {
+      const subObj = obj[key]
+      Object.keys(subObj).forEach((subKey) => {
+        user.$patch((state) => {
+          state[subKey] = subObj[subKey]
+        })
+      })
+    }
+    else if (key === 'toolbar') {
+      const subObj = obj[key]
+      Object.keys(subObj).forEach((subKey) => {
+        toolbar.$patch((state) => {
+          state.currentState[subKey] = subObj[subKey]
+        })
+      })
+    }
   })
 }
 
@@ -42,9 +52,6 @@ function redirectToEdit() {
 }
 
 function onNext() {
-  toolbar.$patch((state) => {
-    state.currentState.layout = selectedLayout.value
-  })
   router.push('/template')
 }
 </script>
@@ -61,7 +68,7 @@ function onNext() {
         </label>
         <input
           id="layout-1"
-          v-model="selectedLayout"
+          v-model="currentState.layout"
           class="btn-radio mt-8"
           type="radio"
           name="layout"
@@ -74,7 +81,7 @@ function onNext() {
         </label>
         <input
           id="layout-2"
-          v-model="selectedLayout"
+          v-model="currentState.layout"
           class="btn-radio mt-8"
           type="radio"
           name="layout"
@@ -87,7 +94,7 @@ function onNext() {
         </label>
         <input
           id="layout-3"
-          v-model="selectedLayout"
+          v-model="currentState.layout"
           class="btn-radio mt-8"
           type="radio"
           name="layout"

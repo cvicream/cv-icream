@@ -3,10 +3,11 @@ import { onBeforeMount, onMounted, onUnmounted } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useUserStore } from '~/stores/user'
 import { useToolbarStore } from '~/stores/toolbar'
+import { setCssVariable } from '~/utils'
 
 const user = useUserStore()
 const toolbar = useToolbarStore()
-const { isCVPreviewVisible } = storeToRefs(toolbar)
+const { isCVPreviewVisible, currentState } = storeToRefs(toolbar)
 
 function toggleCVPreview() {
   toolbar.$patch((state) => {
@@ -22,6 +23,10 @@ onMounted(() => {
   user.$patch((state) => {
     state.isEditing = true
   })
+
+  setCssVariable('--primary-color', currentState.value.primaryColour)
+  setCssVariable('--secondary-color', currentState.value.secondaryColour)
+  setCssVariable('--shadow-color', currentState.value.shadowColour)
 })
 
 onUnmounted(() => {

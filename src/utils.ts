@@ -29,7 +29,7 @@ function getJsonUpload() {
     inputFileElement.setAttribute('accept', '.cvicream')
 
     inputFileElement.addEventListener('change', (event) => {
-      const { files } = event.target
+      const { files } = event.target as HTMLInputElement
       if (!files) return
 
       resolve(files[0].text())
@@ -69,6 +69,17 @@ function hexToRgb(hex) {
   return null
 }
 
+/**
+ * Set CSS variable
+ *
+ * @param  {string} key
+ * @param  {string} value
+ *
+ */
+function setCssVariable(key: string, value: string) {
+  document.documentElement.style.setProperty(key, value)
+}
+
 export {
   hasStorage,
   getStorage,
@@ -77,4 +88,5 @@ export {
   getJsonUpload,
   rgbToHex,
   hexToRgb,
+  setCssVariable,
 }
