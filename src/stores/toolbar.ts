@@ -14,7 +14,7 @@ export const useToolbarStore = defineStore('toolbar', {
       secondaryColour: '#FEF4F1',
       shadowColour: '#FCE8E1',
       fontFamily: 'font-gill-sans',
-      layout: 1,
+      layout: 'layout-right',
       fontScale: 1,
       titleScale: 'title-default',
       subtitleScale: 'subtitle-default',
@@ -115,20 +115,6 @@ export const useToolbarStore = defineStore('toolbar', {
         isActive: false,
       },
     ],
-    layout: [
-      {
-        name: 'i-custom:template-right',
-        isActive: true,
-      },
-      {
-        name: 'i-custom:template-left',
-        isActive: false,
-      },
-      {
-        name: 'i-custom:template-full',
-        isActive: false,
-      },
-    ],
   }),
   actions: {
     toggle(value: string) {
@@ -166,11 +152,8 @@ export const useToolbarStore = defineStore('toolbar', {
           this.currentState.fontFamily = fontFamily.name
       })
     },
-    changeLayout(layoutType: number) {
-      this.currentState.layout = layoutType
-      this.layout.forEach((layout, i) => {
-        layout.isActive = i === layoutType
-      })
+    changeLayout(id: string) {
+      this.currentState.layout = id
     },
   },
 })

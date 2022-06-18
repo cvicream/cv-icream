@@ -1,5 +1,27 @@
 export const LOCAL_STORAGE_KEY = 'cvicream'
 export const HIDDEN_INFORMATION = 'The session is currently hidden on CV. Click the toggle if you would like to show it on CV.'
+
+export const LAYOUTS = [
+  {
+    id: 'layout-right',
+    name: 'Layout Right',
+    icon: 'i-custom:template-right',
+    image: 'layout-right.png',
+  },
+  {
+    id: 'layout-left',
+    name: 'Layout Left',
+    icon: 'i-custom:template-left',
+    image: 'layout-left.png',
+  },
+  {
+    id: 'layout-full',
+    name: 'Layout Full',
+    icon: 'i-custom:template-full',
+    image: 'layout-full.png',
+  },
+]
+
 export const TEMPLATES = [
   {
     template: 1,

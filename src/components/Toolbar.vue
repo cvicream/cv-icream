@@ -2,9 +2,10 @@
 import { onUnmounted } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useToolbarStore } from '~/stores/toolbar'
+import { LAYOUTS } from '~/constants'
 
 const toolbar = useToolbarStore()
-const { isCVPreviewVisible, dropdownMenu, currentState, colours, fontFamily, layout, fontSize } = storeToRefs(toolbar)
+const { isCVPreviewVisible, dropdownMenu, currentState, colours, fontFamily, fontSize } = storeToRefs(toolbar)
 
 const onClick = () => {
   if (Object.values(dropdownMenu.value).some(item => item))
@@ -23,8 +24,8 @@ const onFontFamilyChange = (index: number) => {
   toolbar.changeFontFamily(index)
 }
 
-const onLayoutChange = (layoutType: number) => {
-  toolbar.changeLayout(layoutType)
+const onLayoutChange = (id: string) => {
+  toolbar.changeLayout(id)
 }
 
 onUnmounted(() => {
@@ -52,30 +53,15 @@ window.addEventListener('click', onClick, false)
     >
       <DropdownMenu id="layout" label="Layout" icon="i-custom:template text-blacks-70">
         <div
+          v-for="item in LAYOUTS"
+          :key="item.id"
           class="btn-toolbar w-12 h-12"
-          :class="(layout[0].isActive)?'bg-primary-10 rounded-full':''"
+          :class="{ 'bg-primary-10 rounded-full': currentState.layout === item.id }"
         >
           <button
-            class="i-custom:template-right w-8 h-8"
-            @click="onLayoutChange(0)"
-          />
-        </div>
-        <div
-          :class="(layout[1].isActive)?'bg-primary-10 rounded-full':''"
-          class="btn-toolbar w-12 h-12"
-        >
-          <button
-            class="i-custom:template-left w-8 h-8"
-            @click="onLayoutChange(1)"
-          />
-        </div>
-        <div
-          class="btn-toolbar w-12 h-12"
-          :class="(layout[2].isActive)?'bg-primary-10 rounded-full':''"
-        >
-          <button
-            class="i-custom:template-full w-8 h-8"
-            @click="onLayoutChange(2)"
+            class="w-8 h-8"
+            :class="item.icon"
+            @click="onLayoutChange(item.id)"
           />
         </div>
       </DropdownMenu>
@@ -91,7 +77,7 @@ window.addEventListener('click', onClick, false)
           v-for="(item, index) in colours"
           :key="index"
           class="btn-toolbar w-12 h-12"
-          :class="(item.isActive)?'bg-primary-10 rounded-full':''"
+          :class="item.isActive ? 'bg-primary-10 rounded-full' : ''"
         >
           <button
             :style="{
@@ -106,7 +92,7 @@ window.addEventListener('click', onClick, false)
       <DropdownMenu id="fontSize" label="Font Size" icon="i-custom:font-size text-blacks-70">
         <div
           class="btn-toolbar w-12 h-12"
-          :class="(fontSize[0].isActive)?'bg-primary-10 rounded-full':''"
+          :class="fontSize[0].isActive ? 'bg-primary-10 rounded-full' : ''"
         >
           <button
             class="i-custom:font-size w-6 h-6"
@@ -115,7 +101,7 @@ window.addEventListener('click', onClick, false)
         </div>
         <div
           class="btn-toolbar w-12 h-12"
-          :class="(fontSize[1].isActive)?'bg-primary-10 rounded-full':''"
+          :class="fontSize[1].isActive ? 'bg-primary-10 rounded-full' : ''"
         >
           <button
             class="i-custom:font-size  w-8 h-8"
@@ -128,7 +114,7 @@ window.addEventListener('click', onClick, false)
           <div
             v-for="(item, index) in fontFamily"
             :key="index"
-            :class="(item.isActive)?'bg-primary-10':''"
+            :class="item.isActive ? 'bg-primary-10' : ''"
           >
             <button
               :class="item.name"

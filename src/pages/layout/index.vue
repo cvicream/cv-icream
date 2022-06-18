@@ -4,6 +4,7 @@ import { storeToRefs } from 'pinia'
 import { useUserStore } from '~/stores/user'
 import { useToolbarStore } from '~/stores/toolbar'
 import { getJsonUpload, isEditing } from '~/utils'
+import { LAYOUTS } from '~/constants'
 
 const user = useUserStore()
 const toolbar = useToolbarStore()
@@ -62,43 +63,21 @@ function onNext() {
       {{ t('layout.title') }}
     </h1>
     <div class="flex flex-col gap-16 sm:flex-row">
-      <div class="text-center">
-        <label for="layout-1" class="cursor-pointer">
-          <img src="../../assets/images/layout-1.png">
+      <div
+        v-for="item in LAYOUTS"
+        :key="item.id"
+        class="text-center"
+      >
+        <label :for="item.id" class="cursor-pointer">
+          <img :src="`/images/${item.image}`" :alt="item.name">
         </label>
         <input
-          id="layout-1"
+          :id="item.id"
           v-model="currentState.layout"
           class="btn-radio mt-8"
           type="radio"
           name="layout"
-          :value="1"
-        >
-      </div>
-      <div class="text-center">
-        <label for="layout-2" class="cursor-pointer">
-          <img src="../../assets/images/layout-2.png">
-        </label>
-        <input
-          id="layout-2"
-          v-model="currentState.layout"
-          class="btn-radio mt-8"
-          type="radio"
-          name="layout"
-          :value="2"
-        >
-      </div>
-      <div class="text-center">
-        <label for="layout-3" class="cursor-pointer">
-          <img src="../../assets/images/layout-3.png">
-        </label>
-        <input
-          id="layout-3"
-          v-model="currentState.layout"
-          class="btn-radio mt-8"
-          type="radio"
-          name="layout"
-          :value="3"
+          :value="item.id"
         >
       </div>
     </div>

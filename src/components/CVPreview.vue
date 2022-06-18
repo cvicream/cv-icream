@@ -20,7 +20,7 @@ const { currentState } = storeToRefs(toolbar)
   >
     <div
       class="p-2 flex items-baseline gap-4"
-      :class="{ 'ml-[25%]': currentState.layout === 2 }"
+      :class="{ 'ml-[25%]': currentState.layout === 'layout-left' }"
     >
       <span
         v-if="about.name"
@@ -35,10 +35,10 @@ const { currentState } = storeToRefs(toolbar)
         {{ about.jobTitle }}
       </span>
     </div>
-    <div :class="{ 'flex': currentState.layout !== 3 }">
+    <div :class="{ 'flex': currentState.layout !== 'layout-full' }">
       <div
         class="flex flex-col gap-4"
-        :class="{ 'w-[75%]': currentState.layout !== 3, 'order-2': currentState.layout === 2 }"
+        :class="{ 'w-[75%]': currentState.layout !== 'layout-full', 'order-2': currentState.layout === 'layout-left' }"
       >
         <section v-show="summary.isShow" class="p-2 flex flex-col gap-2">
           <div
@@ -145,7 +145,7 @@ const { currentState } = storeToRefs(toolbar)
       </div>
       <div
         class="px-2"
-        :class="{ 'w-[25%]': currentState.layout !== 3, 'order-1': currentState.layout === 2}"
+        :class="{ 'w-[25%]': currentState.layout !== 'layout-full', 'order-1': currentState.layout === 'layout-left' }"
       >
         <section
           v-if="skill.isShow"
