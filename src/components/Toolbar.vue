@@ -2,10 +2,10 @@
 import { onUnmounted } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useToolbarStore } from '~/stores/toolbar'
-import { LAYOUTS } from '~/constants'
+import { FONT_SIZES, LAYOUTS } from '~/constants'
 
 const toolbar = useToolbarStore()
-const { isCVPreviewVisible, dropdownMenu, currentState, colours, fontFamily, fontSize } = storeToRefs(toolbar)
+const { isCVPreviewVisible, dropdownMenu, currentState, colours, fontFamily } = storeToRefs(toolbar)
 
 const onClick = () => {
   if (Object.values(dropdownMenu.value).some(item => item))
@@ -16,8 +16,8 @@ const onColourChange = (index: number) => {
   toolbar.changeColour(index)
 }
 
-const onFontSizeChange = (fontSizeType: string) => {
-  toolbar.changeFontSize(fontSizeType)
+const onFontSizeChange = (id: string) => {
+  toolbar.changeFontSize(id)
 }
 
 const onFontFamilyChange = (index: number) => {
@@ -91,21 +91,14 @@ window.addEventListener('click', onClick, false)
       </DropdownMenu>
       <DropdownMenu id="fontSize" label="Font Size" icon="i-custom:font-size text-blacks-70">
         <div
+          v-for="item in FONT_SIZES"
+          :key="item.id"
           class="btn-toolbar w-12 h-12"
-          :class="fontSize[0].isActive ? 'bg-primary-10 rounded-full' : ''"
+          :class="{ 'bg-primary-10 rounded-full': currentState.fontSize === item.id }"
         >
           <button
-            class="i-custom:font-size w-6 h-6"
-            @click="onFontSizeChange('default')"
-          />
-        </div>
-        <div
-          class="btn-toolbar w-12 h-12"
-          :class="fontSize[1].isActive ? 'bg-primary-10 rounded-full' : ''"
-        >
-          <button
-            class="i-custom:font-size  w-8 h-8"
-            @click="onFontSizeChange('large')"
+            :class="item.icon"
+            @click="onFontSizeChange(item.id)"
           />
         </div>
       </DropdownMenu>

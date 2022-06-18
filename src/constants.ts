@@ -239,3 +239,16 @@ Management`,
     },
   },
 ]
+
+export const FONT_SIZES = [
+  {
+    id: 'default',
+    icon: 'i-custom:font-size w-6 h-6',
+    scale: 1,
+  },
+  {
+    id: 'large',
+    icon: 'i-custom:font-size w-8 h-8',
+    scale: 2,
+  },
+]
