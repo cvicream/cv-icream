@@ -1,15 +1,14 @@
 <script setup lang="ts">
+import { ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useUserStore } from '~/stores/user'
 import { useToolbarStore } from '~/stores/toolbar'
-import { onUnmounted } from 'vue'
 
 const props = defineProps<{
   isEdit: boolean
-  isActionActive: boolean
 }>()
 
-const isActionActive = false;
+const isActionActive = ref(false)
 
 const router = useRouter()
 
@@ -26,12 +25,18 @@ const {
   certificate,
   contact,
 } = storeToRefs(user)
-const { currentState, } = storeToRefs(toolbar)
+const { currentState } = storeToRefs(toolbar)
 const {
   layout, fontFamily, fontSizeScale, primaryColour, secondaryColour,
 } = currentState.value
 
+function redirectToDownload() {
+  router.push('/edit/download')
+  closeAction()
+}
+
 function exportJsonFile() {
+  closeAction()
   const jsonData = {
     layout,
     fontFamily,
@@ -63,6 +68,7 @@ function exportJsonFile() {
 }
 
 async function importJsonFile() {
+  closeAction()
   const jsonFile = await getJsonUpload()
   const obj = JSON.parse(jsonFile)
   Object.keys(obj).forEach((key) => {
@@ -92,30 +98,28 @@ function getJsonUpload() {
   })
 }
 
-
-
-function cvAction() {
- const isActionActive = true;
- console.log("cv" + isActionActive);
-
+function onFocusOut() {
+  // TODO: better solution
+  setTimeout(() => {
+    closeAction()
+  }, 150)
 }
 
-function closeCvAction() {
-  const isActionActive = false;
-  console.log("closeCvAction" + isActionActive);
+function toggle() {
+  isActionActive.value = !isActionActive.value
 }
 
-onMounted(() => {
-  window.removeEventListener('click', closeCvAction)
-})
+function closeAction() {
+  isActionActive.value = false
+}
 
 </script>
 
 <template>
   <header class="h-[80px] leading-80px text-center bg-white border-b border-b-blacks-20 flex justify-between px-8 py-4">
     <div class="flex gap-8">
-      <span  class="btn-icon-32">
-      <span class="i-origin:logo icon-32" />
+      <span class="btn-icon-32">
+        <span class="i-origin:logo icon-32" />
       </span>
       <button class="btn-icon-32">
         <span class="i-custom:idea icon-32" />
@@ -124,29 +128,31 @@ onMounted(() => {
         <span class="i-custom:feedback icon-32" />
       </button>
     </div>
-    <div v-if="isEdit" class="flex gap-8">
-      <button class="btn-icon-32 text-blacks-70" @click="cvAction">
-        <span class="i-custom:download icon-32"></span>
+    <div v-if="isEdit" class="flex gap-8" @focusout="onFocusOut">
+      <button class="btn-icon-32 text-blacks-70" @click="toggle">
+        <span class="i-custom:download icon-32" />
       </button>
-      
-      <div  v-if="isActionActive" class="w-[232px] h-[145px] bg-white overflow-auto border rounded-[20px] px-4 py-3 z-1 absolute right-2 top-[84px]">
-        <button 
-          class="w-full h-[46px] text-left text-base absolute left-0 top-0 px-4 py-3 hover:bg-primary-10"
-          @click="router.push('/edit/download')"
-        >Download</button>
-          
-        <button 
-          class="w-full h-[46px] text-left text-base absolute left-0 top-[46px] px-4 py-3 hover:bg-primary-10"
-          @click="exportJsonFile"
-        >Save</button>
 
-        <button 
-          class="w-full h-[46px] text-left text-base absolute left-0 top-[96px] px-4 py-3 hover:bg-primary-10"
+      <div v-if="isActionActive" class="w-[230px] bg-white outline outline-1 outline-blacks-100 rounded z-1 absolute right-2 top-[88px]">
+        <button
+          class="w-full h-[46px] flex justify-start items-center px-4 py-3 rounded-t hover:bg-primary-10"
+          @click="redirectToDownload"
+        >
+          <span class="paragraph text-blacks-100">Download</span>
+        </button>
+        <button
+          class="w-full h-[46px] flex justify-start items-center px-4 py-3 hover:bg-primary-10"
+          @click="exportJsonFile"
+        >
+          <span class="paragraph text-blacks-100">Save</span>
+        </button>
+        <button
+          class="w-full h-[46px] flex justify-start items-center px-4 py-3 rounded-b hover:bg-primary-10"
           @click="importJsonFile"
-        >Import</button>
-        
+        >
+          <span class="paragraph text-blacks-100">Import</span>
+        </button>
       </div>
     </div>
-      
   </header>
 </template>
