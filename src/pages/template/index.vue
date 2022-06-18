@@ -89,7 +89,7 @@ const onNext = () => {
         </label>
         <input
           id="template-5"
-          v-model="selectedTemplate"
+          v-model="user.template"
           class="btn-radio mt-8"
           type="radio"
           name="template"
