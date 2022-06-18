@@ -51,7 +51,7 @@ window.addEventListener('click', onClick, false)
       class="btn-group-toolbar w-42 h-12 relative sm:flex"
       :class="{ 'hidden': !isCVPreviewVisible }"
     >
-      <DropdownMenu id="layout" label="Layout" icon="i-custom:template text-blacks-70">
+      <DropdownMenu id="layout" label="Layout" icon="i-custom:layout text-blacks-70">
         <div
           v-for="item in LAYOUTS"
           :key="item.id"
