@@ -65,7 +65,7 @@ const onNext = () => {
     <div class="flex flex-col gap-8 sm:flex-row fix-padding-bottom">
       <button class="w-[294px] btn-secondary">
         <span class="i-custom:add w-6 h-6 text-blacks-70" />
-        <span class="subleading vertical-middle ml-2">
+        <span class="subleading vertical-text-top ml-2">
           {{ t('layout.button.upload_cv') }}
         </span>
       </button>
@@ -74,7 +74,7 @@ const onNext = () => {
         @click="onNext"
       >
         <span class="i-custom:collapse w-6 h-6" />
-        <span class="subleading vertical-middle ml-2">
+        <span class="subleading vertical-text-top ml-2">
           {{ t('layout.button.next_step') }}
         </span>
       </button>

@@ -97,7 +97,7 @@ const onNext = () => {
         @click="router.back()"
       >
         <span class="i-custom:expand w-6 h-6 text-blacks-70" />
-        <span class="subleading vertical-middle ml-2">
+        <span class="subleading vertical-text-top ml-2">
           {{ t('template.button.back') }}
         </span>
       </button>
@@ -106,7 +106,7 @@ const onNext = () => {
         @click="onNext"
       >
         <span class="i-custom:collapse w-6 h-6" />
-        <span class="subleading vertical-middle ml-2">
+        <span class="subleading vertical-text-top ml-2">
           {{ t('template.button.next_step') }}
         </span>
       </button>

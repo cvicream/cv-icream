@@ -24,13 +24,13 @@ const { currentState } = storeToRefs(toolbar)
     >
       <span
         v-if="about.name"
-        class="font-normal text-primary-100 text-4xl leading-[41px]"
+        class="font-normal text-primary-100 text-size-[36px] leading-[41px]"
       >
         {{ about.name }}
       </span>
       <span
         v-if="about.jobTitle"
-        class="font-normal text-blacks-100 text-sm leading-4"
+        class="font-normal text-blacks-100 text-size-[14px] leading-[16px]"
       >
         {{ about.jobTitle }}
       </span>

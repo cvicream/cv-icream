@@ -14,7 +14,7 @@ const router = useRouter()
         @click="router.push('/layout')"
       >
         <span class="i-custom:about w-8 h-8" />
-        <span class="subleading ml-2">
+        <span class="subleading vertical-text-top ml-2">
           {{ t('home.button.start_cv') }}
         </span>
       </button>
