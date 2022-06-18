@@ -85,7 +85,11 @@ export default defineConfig({
     transformerDirectives(),
     transformerVariantGroup(),
   ],
-  safelist: 'prose prose-sm m-auto text-left'.split(' '),
+  safelist: [
+    'prose', 'prose-sm', 'm-auto', 'text-left',
+    'i-custom:layout-right', 'i-custom:layout-left', 'i-custom:layout-full',
+    'font-arial', 'font-georgia', 'font-gill-sans', 'font-helvetica', 'font-times-new-roman', 'font-lato',
+  ],
   theme: {
     fontSize: {
       10: '10px',
