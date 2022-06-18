@@ -61,11 +61,11 @@ const downloadPDF = () => {
       >
         <div>
           <label class="note text-blacks-70">File Type</label>
-          <select value="pdf" class="block form-input">
+          <div value="pdf" class="block form-input">
             <option value="pdf">
               PDF
             </option>
-          </select>
+          </div>
         </div>
         <div>
           <label class="note text-blacks-70">Preview</label>
@@ -77,10 +77,10 @@ const downloadPDF = () => {
         </div>
       </form>
       <button
-        class="w-full rounded-xl text-white inline-flex justify-center items-center py-3 mt-6 bg-primary-100 border-1 border-transparent transition duration-300 ease-out hover:border-primary-20"
+        class="w-full rounded-xl text-white inline-flex justify-center items-center gap-2 py-3 mt-6 bg-primary-100 border-1 border-transparent transition duration-300 ease-out hover:border-primary-20"
         @click="downloadPDF"
       >
-        <span class="i-custom:add w-6 h-6" />
+        <span class="i-custom:download w-6 h-6" />
         <span class="subleading">Download</span>
       </button>
     </div>

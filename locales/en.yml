@@ -8,7 +8,7 @@ button:
 home:
   button:
     start_cv: Start Building My CV
-  title: Hello! Welcome to CV Icreem.
+  title: Hello! Welcome to CV Icecream.
 intro:
   aka: Also known as
   desc: Opinionated Vite Starter Template
@@ -26,9 +26,10 @@ template:
     back: Back
     next_step: Next Step
   job:
-    designer: UI/UX Designer
+    uidesigner: UI Designer
+    uxdesigner: UX Designer
     develop: Developer
     developer: Developer
-    manager: Project Manager
+    manager: Prduct Manager
     others: Build from Scratch
   title: Choose the template you like.
