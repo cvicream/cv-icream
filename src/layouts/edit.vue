@@ -1,8 +1,10 @@
 <script setup lang="ts">
-import { onBeforeMount, onUnmounted } from 'vue'
+import { onBeforeMount, onMounted, onUnmounted } from 'vue'
 import { storeToRefs } from 'pinia'
+import { useUserStore } from '~/stores/user'
 import { useToolbarStore } from '~/stores/toolbar'
 
+const user = useUserStore()
 const toolbar = useToolbarStore()
 const { isCVPreviewVisible } = storeToRefs(toolbar)
 
@@ -14,6 +16,12 @@ function toggleCVPreview() {
 
 onBeforeMount(() => {
   window.addEventListener('beforeunload', onBeforeUnload)
+})
+
+onMounted(() => {
+  user.$patch((state) => {
+    state.isEditing = true
+  })
 })
 
 onUnmounted(() => {

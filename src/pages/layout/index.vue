@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+import { useUserStore } from '~/stores/user'
 import { useToolbarStore } from '~/stores/toolbar'
 import { isEditing } from '~/utils'
 
+const user = useUserStore()
 const toolbar = useToolbarStore()
 const { t } = useI18n()
 const router = useRouter()
@@ -11,11 +13,17 @@ const selectedLayout = ref(toolbar.currentState.layout || 1)
 
 const modalVisible = ref(isEditing())
 
-function onLoadFromStorage() {
+function loadStorage() {
   router.push('/edit/about')
 }
 
-const onNext = () => {
+function createNew() {
+  user.$reset()
+  toolbar.$reset()
+  modalVisible.value = false
+}
+
+function onNext() {
   toolbar.$patch((state) => {
     state.currentState.layout = selectedLayout.value
   })
@@ -100,7 +108,7 @@ const onNext = () => {
       <div class="flex flex-col gap-6 px-2 pt-6 pb-2 sm:flex-row">
         <button
           class="btn-secondary px-8 flex-shrink-0"
-          @click="modalVisible = false"
+          @click="createNew"
         >
           <span class="subleading">
             No, thanks.
@@ -108,9 +116,7 @@ const onNext = () => {
         </button>
         <button
           class="btn-primary px-8 flex-shrink-0"
-          @click="
-            onLoadFromStorage
-          "
+          @click="loadStorage"
         >
           <span class="subleading">
             Yes, please.
