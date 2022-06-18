@@ -10,11 +10,12 @@ export const useToolbarStore = defineStore('toolbar', {
     },
     isCVPreviewVisible: false,
     currentState: {
-      fontScale: 1,
       primaryColour: '#F18B6B',
       secondaryColour: '#FEF4F1',
+      shadowColour: '#FCE8E1',
       fontFamily: 'font-gill-sans',
       layout: 1,
+      fontScale: 1,
       titleScale: 'title-default',
       subtitleScale: 'subtitle-default',
       paragraphScale: 'paragraph-default',
@@ -144,9 +145,7 @@ export const useToolbarStore = defineStore('toolbar', {
         if (colour.isActive) {
           this.currentState.primaryColour = colour.primary
           this.currentState.secondaryColour = colour.secondary
-          document.documentElement.style.setProperty('--primary-color', colour.primary)
-          document.documentElement.style.setProperty('--secondary-color', colour.secondary)
-          document.documentElement.style.setProperty('--shadow-color', colour.shadow)
+          this.currentState.shadowColour = colour.shadow
         }
       })
     },

@@ -1,6 +1,10 @@
 <script setup lang="ts">
 const { t } = useI18n()
 const router = useRouter()
+
+function start() {
+  router.push('/layout')
+}
 </script>
 
 <template>
@@ -11,7 +15,7 @@ const router = useRouter()
     <div class="mt-16">
       <button
         class="btn-primary"
-        @click="router.push('/layout')"
+        @click="start"
       >
         <span class="i-custom:about w-8 h-8" />
         <span class="subleading vertical-text-top ml-2">
