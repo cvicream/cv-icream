@@ -72,16 +72,16 @@ const downloadPDF = () => {
           <img
             v-if="imgSrc"
             :src="imgSrc"
-            class="h-[370px] bg-white border border-blacks-70 rounded-xl"
+            class="w-full h-[370px] bg-white border border-blacks-70 rounded-xl"
           >
         </div>
       </form>
       <button
-        class="w-full rounded-xl font-normal text-lg  gap-[12.5px] leading-[1.375rem] text-white inline-flex justify-center items-center py-3 mt-6 bg-primary-100"
+        class="w-full rounded-xl text-white inline-flex justify-center items-center gap-2 py-3 mt-6 bg-primary-100 border-1 border-transparent transition duration-300 ease-out hover:border-primary-20"
         @click="downloadPDF"
       >
         <span class="i-custom:download w-6 h-6" />
-        <span>Download</span>
+        <span class="subleading">Download</span>
       </button>
     </div>
   </div>

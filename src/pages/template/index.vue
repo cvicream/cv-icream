@@ -1,21 +1,11 @@
 <script setup lang="ts">
-import { ref } from 'vue'
 import { useUserStore } from '~/stores/user'
-import { TEMPLATES } from '~/constants'
 
 const user = useUserStore()
 const { t } = useI18n()
 const router = useRouter()
 
-const selectedTemplate = ref(user.template || 1)
-
 const onNext = () => {
-  user.$patch((state) => {
-    state.template = selectedTemplate.value
-    const defaultTemplate = TEMPLATES.find(t => t.id === state.template)
-    if (defaultTemplate)
-      Object.assign(state, defaultTemplate)
-  })
   router.push('/edit/about')
 }
 </script>
@@ -35,7 +25,7 @@ const onNext = () => {
         </label>
         <input
           id="template-1"
-          v-model="selectedTemplate"
+          v-model="user.template"
           class="btn-radio mt-8"
           type="radio"
           name="template"
@@ -51,7 +41,7 @@ const onNext = () => {
         </label>
         <input
           id="template-2"
-          v-model="selectedTemplate"
+          v-model="user.template"
           class="btn-radio mt-8"
           type="radio"
           name="template"
@@ -67,7 +57,7 @@ const onNext = () => {
         </label>
         <input
           id="template-3"
-          v-model="selectedTemplate"
+          v-model="user.template"
           class="btn-radio mt-8"
           type="radio"
           name="template"
@@ -83,7 +73,7 @@ const onNext = () => {
         </label>
         <input
           id="template-4"
-          v-model="selectedTemplate"
+          v-model="user.template"
           class="btn-radio mt-8"
           type="radio"
           name="template"
@@ -113,7 +103,7 @@ const onNext = () => {
         @click="router.back()"
       >
         <span class="i-custom:expand w-6 h-6 text-blacks-70" />
-        <span class="subleading vertical-middle ml-2">
+        <span class="subleading vertical-text-top ml-2">
           {{ t('template.button.back') }}
         </span>
       </button>
@@ -122,7 +112,7 @@ const onNext = () => {
         @click="onNext"
       >
         <span class="i-custom:collapse w-6 h-6" />
-        <span class="subleading vertical-middle ml-2">
+        <span class="subleading vertical-text-top ml-2">
           {{ t('template.button.next_step') }}
         </span>
       </button>

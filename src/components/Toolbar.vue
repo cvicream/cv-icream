@@ -2,29 +2,31 @@
 import { onUnmounted } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useToolbarStore } from '~/stores/toolbar'
+import { COLORS, FONT_FAMILIES, FONT_SIZES, LAYOUTS } from '~/constants'
+import { getColor } from '~/utils'
 
 const toolbar = useToolbarStore()
-const { dropdownMenu, colours, fontFamily } = storeToRefs(toolbar)
+const { isCVPreviewVisible, dropdownMenu, currentState } = storeToRefs(toolbar)
 
 const onClick = () => {
   if (Object.values(dropdownMenu.value).some(item => item))
     toolbar.toggle('')
 }
 
-const onColourChange = (index: number) => {
-  toolbar.changeColour(index)
+const onColorChange = (id: string) => {
+  toolbar.changeColor(id)
 }
 
-const onFontSizeChange = (fontSizeType: string) => {
-  toolbar.changeFontSize(fontSizeType)
+const onFontSizeChange = (id: string) => {
+  toolbar.changeFontSize(id)
 }
 
-const onFontFamilyChange = (index: number) => {
-  toolbar.changeFontFamily(index)
+const onFontFamilyChange = (id: string) => {
+  toolbar.changeFontFamily(id)
 }
 
-const onLayoutChange = (layoutType: number) => {
-  toolbar.changeLayout(layoutType)
+const onLayoutChange = (id: string) => {
+  toolbar.changeLayout(id)
 }
 
 onUnmounted(() => {
@@ -35,7 +37,6 @@ window.addEventListener('click', onClick, false)
 </script>
 
 <template>
-  <div class="font-arial font-gill-sans font-helvetica font-times-new-roman font-georgia font-lato" />
   <div class="w-full h-20 text-center bg-white flex justify-between gap-4 px-4 py-4 border-t-1 border-blacks-20 sm:w-auto sm:border-0 sm:rounded-xl sm:shadow-custom">
     <div class="btn-group-toolbar w-22 h-12">
       <div class="btn-toolbar">
@@ -45,67 +46,73 @@ window.addEventListener('click', onClick, false)
         <button class="i-custom:redo w-8 h-8" />
       </div>
     </div>
-    <div class="btn-group-toolbar w-42 h-12 relative">
-      <DropdownMenu id="layout" label="Layout" icon="i-custom:template text-blacks-70">
-        <div class="btn-toolbar w-12 h-12">
+    <div class="icon" />
+    <div
+      class="btn-group-toolbar w-42 h-12 relative sm:flex"
+      :class="{ 'hidden': !isCVPreviewVisible }"
+    >
+      <DropdownMenu id="layout" label="Layout" icon="i-custom:layout text-blacks-70">
+        <div
+          v-for="item in LAYOUTS"
+          :key="item.id"
+          class="btn-toolbar w-12 h-12"
+          :class="{ 'bg-primary-10 rounded-full': currentState.layout === item.id }"
+        >
           <button
-            class="i-custom:template-right w-8 h-8"
-            @click="onLayoutChange(1)"
-          />
-        </div>
-        <div class="btn-toolbar w-12 h-12">
-          <button
-            class="i-custom:template-left w-8 h-8"
-            @click="onLayoutChange(2)"
-          />
-        </div>
-        <div class="btn-toolbar w-12 h-12">
-          <button
-            class="i-custom:template-full w-8 h-8"
-            @click="onLayoutChange(3)"
+            class="w-8 h-8"
+            :class="item.icon"
+            @click="onLayoutChange(item.id)"
           />
         </div>
       </DropdownMenu>
-      <DropdownMenu id="colour" label="Colour" icon="icon-colour">
+      <DropdownMenu
+        id="color"
+        :style="{
+          '--color-primary': getColor(currentState.color).primary,
+          '--color-secondary': getColor(currentState.color).secondary
+        }"
+        label="Colour" icon="icon-color-item"
+      >
         <div
-          v-for="(item, index) in colours"
-          :key="index"
+          v-for="item in COLORS"
+          :key="item.id"
           class="btn-toolbar w-12 h-12"
+          :class="{ 'bg-primary-10 rounded-full': currentState.color === item.id }"
         >
           <button
             :style="{
-              '--colour-primary': item.primary,
-              '--colour-secondary': item.secondary
+              '--color-primary': item.primary,
+              '--color-secondary': item.secondary
             }"
-            class="icon-colour-item"
-            @click="onColourChange(index)"
+            class="icon-color-item "
+            @click="onColorChange(item.id)"
           />
         </div>
       </DropdownMenu>
       <DropdownMenu id="fontSize" label="Font Size" icon="i-custom:font-size text-blacks-70">
-        <div class="btn-toolbar w-12 h-12">
+        <div
+          v-for="item in FONT_SIZES"
+          :key="item.id"
+          class="btn-toolbar w-12 h-12"
+          :class="{ 'bg-primary-10 rounded-full': currentState.fontSize === item.id }"
+        >
           <button
-            class="i-custom:font-size w-6 h-6"
-            @click="onFontSizeChange('default')"
-          />
-        </div>
-        <div class="btn-toolbar w-12 h-12">
-          <button
-            class="i-custom:font-size  w-8 h-8"
-            @click="onFontSizeChange('large')"
+            :class="item.icon"
+            @click="onFontSizeChange(item.id)"
           />
         </div>
       </DropdownMenu>
       <DropdownMenu id="fontFamily" label="Font Family" icon="i-custom:font-family text-blacks-70">
         <div class="w-full h-22 overflow-auto custom-scrollbar">
           <div
-            v-for="(item, index) in fontFamily"
-            :key="index"
+            v-for="item in FONT_FAMILIES"
+            :key="item.id"
+            :class="{ 'bg-primary-10': currentState.fontFamily === item.id }"
           >
             <button
-              :class="item.name"
+              :class="item.id"
               class="w-full h-[46px] text-left text-base px-4 py-3 hover:bg-primary-10"
-              @click="onFontFamilyChange(index)"
+              @click="onFontFamilyChange(item.id)"
             >
               {{ item.label }}
             </button>
@@ -113,10 +120,10 @@ window.addEventListener('click', onClick, false)
         </div>
       </DropdownMenu>
     </div>
-    <div class="btn-group-toolbar w-22 h-12">
+    <!-- <div class="btn-group-toolbar w-12 h-12">
       <div class="btn-toolbar">
         <button class="i-custom:note w-8 h-8" />
       </div>
-    </div>
+    </div> -->
   </div>
 </template>

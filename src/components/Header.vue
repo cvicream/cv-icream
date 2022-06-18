@@ -3,6 +3,7 @@ import { ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useUserStore } from '~/stores/user'
 import { useToolbarStore } from '~/stores/toolbar'
+import { getJsonUpload } from '~/utils'
 
 const props = defineProps<{
   isEdit: boolean
@@ -26,11 +27,11 @@ const {
   contact,
 } = storeToRefs(user)
 const { currentState } = storeToRefs(toolbar)
-const {
-  layout, fontFamily, fontSizeScale, primaryColour, secondaryColour,
-} = currentState.value
 
 function redirectToDownload() {
+  toolbar.$patch((state) => {
+    state.isCVPreviewVisible = false
+  })
   router.push('/edit/download')
   closeAction()
 }
@@ -38,20 +39,23 @@ function redirectToDownload() {
 function exportJsonFile() {
   closeAction()
   const jsonData = {
-    layout,
-    fontFamily,
-    fontSizeScale,
-    primaryColour,
-    secondaryColour,
-    template: template.value,
-    about: about.value,
-    summary: summary.value,
-    experience: experience.value,
-    project: project.value,
-    skill: skill.value,
-    education: education.value,
-    certificate: certificate.value,
-    contact: contact.value,
+    toolbar: {
+      layout: currentState.value.layout,
+      fontSize: currentState.value.fontSize,
+      color: currentState.value.color,
+      fontFamily: currentState.value.fontFamily,
+    },
+    user: {
+      template: template.value,
+      about: about.value,
+      summary: summary.value,
+      experience: experience.value,
+      project: project.value,
+      skill: skill.value,
+      education: education.value,
+      certificate: certificate.value,
+      contact: contact.value,
+    },
   }
   const dataStr = JSON.stringify(jsonData)
   const dataUri = `data:application/json;charset=utf-8,${encodeURIComponent(dataStr)}`
@@ -70,31 +74,24 @@ function exportJsonFile() {
 async function importJsonFile() {
   closeAction()
   const jsonFile = await getJsonUpload()
-  const obj = JSON.parse(jsonFile)
+  const obj = JSON.parse(jsonFile as string)
   Object.keys(obj).forEach((key) => {
-    user.$patch((state) => {
-      state[key] = obj[key]
-    })
-    toolbar.$patch((state) => {
-      state.currentState[key] = obj[key]
-    })
-  })
-}
-
-function getJsonUpload() {
-  return new Promise((resolve) => {
-    const inputFileElement = document.createElement('input')
-    inputFileElement.setAttribute('type', 'file')
-    inputFileElement.setAttribute('multiple', 'false')
-    inputFileElement.setAttribute('accept', '.cvicream')
-
-    inputFileElement.addEventListener('change', (event) => {
-      const { files } = event.target
-      if (!files) return
-
-      resolve(files[0].text())
-    }, false)
-    inputFileElement.click()
+    if (key === 'user') {
+      const subObj = obj[key]
+      Object.keys(subObj).forEach((subKey) => {
+        user.$patch((state) => {
+          state[subKey] = subObj[subKey]
+        })
+      })
+    }
+    else if (key === 'toolbar') {
+      const subObj = obj[key]
+      Object.keys(subObj).forEach((subKey) => {
+        toolbar.$patch((state) => {
+          state.currentState[subKey] = subObj[subKey]
+        })
+      })
+    }
   })
 }
 

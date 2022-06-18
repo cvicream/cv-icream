@@ -1,10 +1,35 @@
+export const LOCAL_STORAGE_KEY = 'cvicream'
 export const HIDDEN_INFORMATION = 'The session is currently hidden on CV. Click the toggle if you would like to show it on CV.'
+
+export const LAYOUTS = [
+  {
+    id: 'layout-right',
+    name: 'Layout Right',
+    icon: 'i-custom:layout-right',
+    image: 'layout-right.png',
+  },
+  {
+    id: 'layout-left',
+    name: 'Layout Left',
+    icon: 'i-custom:layout-left',
+    image: 'layout-left.png',
+  },
+  {
+    id: 'layout-full',
+    name: 'Layout Full',
+    icon: 'i-custom:layout-full',
+    image: 'layout-full.png',
+  },
+]
+
 export const TEMPLATES = [
   {
-    id: 1,
+    template: 1,
+    isEditing: true,
     about: {
-      name: 'Your Name',
-      jobTitle: 'UI Designer',
+      isShow: true,
+      name: 'Name',
+      jobTitle: 'UI/UX Designer',
     },
     summary: {
       isShow: true,
@@ -69,80 +94,11 @@ HTML and CSS`,
     },
   },
   {
-    id: 2,
+    template: 2,
+    isEditing: true,
     about: {
-      name: 'Your Name',
-      jobTitle: 'UX Designer',
-    },
-    summary: {
       isShow: true,
-      hashtags: [],
-      paragraph: 'A UX Designer and Researcher with 2+ years of experience in studying human behaviour in fundamental and applied research settings. Communication, problem solving, user research and writing are core competencies. Currently working towards a UX Design Certificate due to commitment of lifelong learning.',
-    },
-    experience: {
-      isShow: true,
-      name: 'EXPERIENCE',
-      list: [
-        {
-          isShow: true,
-          isCollapsed: false,
-          title: 'Project Coordinator',
-          subtitle1: 'Company Name',
-          subtitle2: 'August 2015 - April 2017',
-          paragraph: 'Worked with 26 Professors to research and write a grant proposal for an interdisciplinary collaborative research centre, as well as coordinated a Ph.D program in the Psychology Department. Organised workshops and professional development classes, provided ongoing support to Ph.D. students, controlled all project finances, as well as provided ongoing website maintenance support with SO improvements and content updates.',
-        },
-      ],
-    },
-    skill: {
-      isShow: true,
-      name: 'SKILL',
-      list: [
-        {
-          isShow: true,
-          isCollapsed: false,
-          title: '',
-          subtitle1: 'Tool',
-          subtitle2: '',
-          paragraph:
-`Research
-User Surveys
-User Interviews
-Statistics & Data Analysis
-Competitive Analysis
-User Personas
-Information Architecture
-Paper Prototyping
-Wireframing
-Usability Testing
-Visual Design
-A/B Testing & Analytics
-Sketch
-InVision
-Microsoft Office
-R & SPSS Statistics Software
-Basic HTML`,
-        },
-      ],
-    },
-    contact: {
-      isShow: true,
-      name: 'CONTACT',
-      list: [
-        {
-          isShow: true,
-          isCollapsed: false,
-          title: '',
-          subtitle1: 'City, UK',
-          subtitle2: 'example@email.co.uk',
-          paragraph: '+4470 1234 5678',
-        },
-      ],
-    },
-  },
-  {
-    id: 3,
-    about: {
-      name: 'Your Name',
+      name: 'Name',
       jobTitle: 'Software Developer',
     },
     summary: {
@@ -190,10 +146,12 @@ Other: Machine Learning and Data Structures`,
     },
   },
   {
-    id: 4,
+    template: 3,
+    isEditing: true,
     about: {
-      name: 'Your Name',
-      jobTitle: 'Product Manager',
+      isShow: true,
+      name: 'Name',
+      jobTitle: 'Project Manager',
     },
     summary: {
       isShow: true,
@@ -239,15 +197,17 @@ Management`,
     },
   },
   {
-    id: 5,
+    template: 4,
+    isEditing: true,
     about: {
-      name: 'Your Name',
-      jobTitle: 'Job Title',
+      isShow: true,
+      name: 'Name',
+      jobTitle: '',
     },
     summary: {
       isShow: true,
       hashtags: [],
-      paragraph: 'Describe more detials about yourself...',
+      paragraph: '',
     },
     experience: {
       isShow: true,
@@ -256,26 +216,10 @@ Management`,
         {
           isShow: true,
           isCollapsed: false,
-          title: 'Job Title',
-          subtitle1: 'Company Name',
-          subtitle2: 'Timeline',
-          paragraph:
-          'Describe more detials for this experience...'
-        },
-      ],
-    },
-    project: {
-      isShow: true,
-      name: 'PROJECT',
-      list: [
-        {
-          isShow: true,
-          isCollapsed: false,
-          title: 'Project Name',
-          subtitle1: 'Team Name',
-          subtitle2: 'Timeline',
-          paragraph:
-          'Describe more detials for this project...'
+          title: '',
+          subtitle1: '',
+          subtitle2: '',
+          paragraph: '',
         },
       ],
     },
@@ -289,25 +233,94 @@ Management`,
           title: '',
           subtitle1: '',
           subtitle2: '',
-          paragraph:
-`Skill 1, Skill 2, ...`,
+          paragraph: '',
         },
       ],
     },
-    certificate: {
-      isShow: true,
-      name: 'CERTIFICATE',
-      list: [
-        {
-          isShow: true,
-          isCollapsed: false,
-          title: '',
-          subtitle1: '',
-          subtitle2: '',
-          paragraph:
-`Describe about what this certificate is for...`,
-        },
-      ],
-    },
+  },
+]
+
+export const COLORS = [
+  {
+    id: 'default',
+    primary: '#F18B6B',
+    secondary: '#FEF4F1',
+    shadow: '#FCE8E1',
+  },
+  {
+    id: 'yellow',
+    primary: '#FAAA1E',
+    secondary: '#FFF7E8',
+    shadow: '#FAAA1E33',
+  },
+  {
+    id: 'green',
+    primary: '#507F39',
+    secondary: '#EDF2EB',
+    shadow: '#507F3933',
+  },
+  {
+    id: 'blue',
+    primary: '#4BA1B4',
+    secondary: '#EDF6F7',
+    shadow: '#4BA1B433',
+  },
+  {
+    id: 'indigo',
+    primary: '#005B84',
+    secondary: '#E5EFF3',
+    shadow: '#005B8433',
+  },
+  {
+    id: 'purple',
+    primary: '#766E8E',
+    secondary: '#F1F0F4',
+    shadow: '#766E8E33',
+  },
+  {
+    id: 'black',
+    primary: '#222222',
+    secondary: '#E9E9E9',
+    shadow: '#22222233',
+  },
+]
+
+export const FONT_SIZES = [
+  {
+    id: 'default',
+    icon: 'i-custom:font-size w-6 h-6',
+    scale: 1,
+  },
+  {
+    id: 'large',
+    icon: 'i-custom:font-size w-8 h-8',
+    scale: 2,
+  },
+]
+
+export const FONT_FAMILIES = [
+  {
+    id: 'font-arial',
+    label: 'Arial',
+  },
+  {
+    id: 'font-georgia',
+    label: 'Georgia',
+  },
+  {
+    id: 'font-gill-sans',
+    label: 'Gill Sans',
+  },
+  {
+    id: 'font-helvetica',
+    label: 'Helvetica',
+  },
+  {
+    id: 'font-times-new-roman',
+    label: 'Times New Roman',
+  },
+  {
+    id: 'font-lato',
+    label: 'Lato',
   },
 ]

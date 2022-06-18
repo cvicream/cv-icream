@@ -83,6 +83,7 @@ function deleteItem(index: number) {
         maxlength="15"
         class="max-w-[132px] h-6 leading text-blacks-100 text-ellipsis whitespace-nowrap overflow-hidden bg-transparent outline-none ml-2"
         :title="project.name"
+        :disabled="!isEditName"
       >
       <button class="ml-1" @click="onEditNameClick">
         <span
@@ -97,7 +98,7 @@ function deleteItem(index: number) {
     />
   </div>
   <div class="flex flex-col gap-6 pr-2 -mr-3 overflow-y-scroll custom-scrollbar">
-    <p v-if="!project.isShow">
+    <p v-if="!project.isShow" class="paragraph text-blacks-70">
       {{ HIDDEN_INFORMATION }}
     </p>
     <div
@@ -106,9 +107,11 @@ function deleteItem(index: number) {
       class="group"
     >
       <div class="flex justify-between items-center">
-        <h3 v-if="project.name" class="subleading text-blacks-100">
-          {{ project.name[0]?.toUpperCase() + project.name.slice(1).toLowerCase() + ' ' + (index + 1) }}
-        </h3>
+        <div>
+          <h3 v-if="project.name" class="subleading text-blacks-100">
+            {{ project.name[0]?.toUpperCase() + project.name.slice(1).toLowerCase() + ' ' + (index + 1) }}
+          </h3>
+        </div>
         <div
           class="invisible flex items-center gap-3"
           :class="{ 'group-hover:visible': project.isShow }"
@@ -188,7 +191,7 @@ function deleteItem(index: number) {
       </form>
     </div>
     <button
-      class="w-full rounded-xl font-normal text-lg leading-[1.375rem] text-blacks-40 inline-flex justify-center items-center py-3 border-transparent border-1 group"
+      class="w-full rounded-xl text-blacks-40 inline-flex justify-center items-center py-3 border-transparent border-1 group"
       :class="project.isShow ? 'bg-primary-10 hover:border-primary-100 ' : 'bg-blacks-10'"
       :disabled="!project.isShow"
       @click="addItem"
@@ -197,7 +200,7 @@ function deleteItem(index: number) {
         class="i-custom:add w-6 h-6 text-blacks-40"
         :class="project.isShow && 'group-hover:text-blacks-70'"
       />
-      <span :class="project.isShow && 'group-hover:text-blacks-100'">
+      <span class="subleading" :class="project.isShow && 'group-hover:text-blacks-100'">
         Add {{ project.name.toLowerCase() }}
       </span>
     </button>
