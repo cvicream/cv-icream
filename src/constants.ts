@@ -5,19 +5,19 @@ export const LAYOUTS = [
   {
     id: 'layout-right',
     name: 'Layout Right',
-    icon: 'i-custom:template-right',
+    icon: 'i-custom:layout-right',
     image: 'layout-right.png',
   },
   {
     id: 'layout-left',
     name: 'Layout Left',
-    icon: 'i-custom:template-left',
+    icon: 'i-custom:layout-left',
     image: 'layout-left.png',
   },
   {
     id: 'layout-full',
     name: 'Layout Full',
-    icon: 'i-custom:template-full',
+    icon: 'i-custom:layout-full',
     image: 'layout-full.png',
   },
 ]
