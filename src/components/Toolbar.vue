@@ -2,11 +2,11 @@
 import { onUnmounted } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useToolbarStore } from '~/stores/toolbar'
-import { COLORS, FONT_SIZES, LAYOUTS } from '~/constants'
+import { COLORS, FONT_FAMILIES, FONT_SIZES, LAYOUTS } from '~/constants'
 import { getColor } from '~/utils'
 
 const toolbar = useToolbarStore()
-const { isCVPreviewVisible, dropdownMenu, currentState, fontFamily } = storeToRefs(toolbar)
+const { isCVPreviewVisible, dropdownMenu, currentState } = storeToRefs(toolbar)
 
 const onClick = () => {
   if (Object.values(dropdownMenu.value).some(item => item))
@@ -21,8 +21,8 @@ const onFontSizeChange = (id: string) => {
   toolbar.changeFontSize(id)
 }
 
-const onFontFamilyChange = (index: number) => {
-  toolbar.changeFontFamily(index)
+const onFontFamilyChange = (id: string) => {
+  toolbar.changeFontFamily(id)
 }
 
 const onLayoutChange = (id: string) => {
@@ -37,7 +37,6 @@ window.addEventListener('click', onClick, false)
 </script>
 
 <template>
-  <div class="font-arial font-gill-sans font-helvetica font-times-new-roman font-georgia font-lato" />
   <div class="w-full h-20 text-center bg-white flex justify-between gap-4 px-4 py-4 border-t-1 border-blacks-20 sm:w-auto sm:border-0 sm:rounded-xl sm:shadow-custom">
     <div class="btn-group-toolbar w-22 h-12">
       <div class="btn-toolbar">
@@ -106,14 +105,14 @@ window.addEventListener('click', onClick, false)
       <DropdownMenu id="fontFamily" label="Font Family" icon="i-custom:font-family text-blacks-70">
         <div class="w-full h-22 overflow-auto custom-scrollbar">
           <div
-            v-for="(item, index) in fontFamily"
-            :key="index"
-            :class="item.isActive ? 'bg-primary-10' : ''"
+            v-for="item in FONT_FAMILIES"
+            :key="item.id"
+            :class="{ 'bg-primary-10': currentState.fontFamily === item.id }"
           >
             <button
-              :class="item.name"
+              :class="item.id"
               class="w-full h-[46px] text-left text-base px-4 py-3 hover:bg-primary-10"
-              @click="onFontFamilyChange(index)"
+              @click="onFontFamilyChange(item.id)"
             >
               {{ item.label }}
             </button>

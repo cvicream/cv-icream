@@ -297,3 +297,30 @@ export const FONT_SIZES = [
     scale: 2,
   },
 ]
+
+export const FONT_FAMILIES = [
+  {
+    id: 'font-arial',
+    label: 'Arial',
+  },
+  {
+    id: 'font-georgia',
+    label: 'Georgia',
+  },
+  {
+    id: 'font-gill-sans',
+    label: 'Gill Sans',
+  },
+  {
+    id: 'font-helvetica',
+    label: 'Helvetica',
+  },
+  {
+    id: 'font-times-new-roman',
+    label: 'Times New Roman',
+  },
+  {
+    id: 'font-lato',
+    label: 'Lato',
+  },
+]
