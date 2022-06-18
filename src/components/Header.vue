@@ -2,6 +2,7 @@
 import { storeToRefs } from 'pinia'
 import { useUserStore } from '~/stores/user'
 import { useToolbarStore } from '~/stores/toolbar'
+import { getJsonUpload } from '~/utils'
 
 const props = defineProps<{
   isEdit: boolean
@@ -68,23 +69,6 @@ async function importJsonFile() {
     toolbar.$patch((state) => {
       state.currentState[key] = obj[key]
     })
-  })
-}
-
-function getJsonUpload() {
-  return new Promise((resolve) => {
-    const inputFileElement = document.createElement('input')
-    inputFileElement.setAttribute('type', 'file')
-    inputFileElement.setAttribute('multiple', 'false')
-    inputFileElement.setAttribute('accept', '.cvicream')
-
-    inputFileElement.addEventListener('change', (event) => {
-      const { files } = event.target
-      if (!files) return
-
-      resolve(files[0].text())
-    }, false)
-    inputFileElement.click()
   })
 }
 

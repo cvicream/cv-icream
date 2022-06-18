@@ -21,6 +21,23 @@ function isEditing() {
   return false
 }
 
+function getJsonUpload() {
+  return new Promise((resolve) => {
+    const inputFileElement = document.createElement('input')
+    inputFileElement.setAttribute('type', 'file')
+    inputFileElement.setAttribute('multiple', 'false')
+    inputFileElement.setAttribute('accept', '.cvicream')
+
+    inputFileElement.addEventListener('change', (event) => {
+      const { files } = event.target
+      if (!files) return
+
+      resolve(files[0].text())
+    }, false)
+    inputFileElement.click()
+  })
+}
+
 /**
  * Convert RGB to HEX
  *
@@ -57,6 +74,7 @@ export {
   getStorage,
   setStorage,
   isEditing,
+  getJsonUpload,
   rgbToHex,
   hexToRgb,
 }

@@ -2,7 +2,7 @@
 import { ref } from 'vue'
 import { useUserStore } from '~/stores/user'
 import { useToolbarStore } from '~/stores/toolbar'
-import { isEditing } from '~/utils'
+import { getJsonUpload, isEditing } from '~/utils'
 
 const user = useUserStore()
 const toolbar = useToolbarStore()
@@ -13,14 +13,32 @@ const selectedLayout = ref(toolbar.currentState.layout || 1)
 
 const modalVisible = ref(isEditing())
 
-function loadStorage() {
-  router.push('/edit/about')
-}
-
 function createNew() {
   user.$reset()
   toolbar.$reset()
   modalVisible.value = false
+}
+
+async function upload() {
+  await importJsonFile()
+  redirectToEdit()
+}
+
+async function importJsonFile() {
+  const jsonFile = await getJsonUpload()
+  const obj = JSON.parse(jsonFile)
+  Object.keys(obj).forEach((key) => {
+    user.$patch((state) => {
+      state[key] = obj[key]
+    })
+    toolbar.$patch((state) => {
+      state.currentState[key] = obj[key]
+    })
+  })
+}
+
+function redirectToEdit() {
+  router.push('/edit/about')
 }
 
 function onNext() {
@@ -78,7 +96,7 @@ function onNext() {
       </div>
     </div>
     <div class="flex flex-col gap-8 sm:flex-row fix-padding-bottom">
-      <button class="w-[294px] btn-secondary">
+      <button class="w-[294px] btn-secondary" @click="upload">
         <span class="i-custom:add w-6 h-6 text-blacks-70" />
         <span class="subleading vertical-middle ml-2">
           {{ t('layout.button.upload_cv') }}
@@ -116,7 +134,7 @@ function onNext() {
         </button>
         <button
           class="btn-primary px-8 flex-shrink-0"
-          @click="loadStorage"
+          @click="redirectToEdit"
         >
           <span class="subleading">
             Yes, please.
