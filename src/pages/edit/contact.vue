@@ -83,6 +83,7 @@ function deleteItem(index: number) {
         maxlength="15"
         class="max-w-[132px] h-6 leading text-blacks-100 text-ellipsis whitespace-nowrap overflow-hidden bg-transparent outline-none ml-2"
         :title="contact.name"
+        :disabled="!isEditName"
       >
       <button class="ml-1" @click="onEditNameClick">
         <span
@@ -97,7 +98,7 @@ function deleteItem(index: number) {
     />
   </div>
   <div class="flex flex-col gap-6 pr-2 -mr-3 overflow-y-scroll custom-scrollbar">
-    <p v-if="!contact.isShow">
+    <p v-if="!contact.isShow" class="paragraph text-blacks-70">
       {{ HIDDEN_INFORMATION }}
     </p>
     <div
@@ -106,9 +107,11 @@ function deleteItem(index: number) {
       class="group"
     >
       <div class="flex justify-between items-center">
-        <h3 v-if="contact.name" class="subleading text-blacks-100">
-          {{ contact.name[0]?.toUpperCase() + contact.name.slice(1).toLowerCase() + ' ' + (index + 1) }}
-        </h3>
+        <div>
+          <h3 v-if="contact.name" class="subleading text-blacks-100">
+            {{ contact.name[0]?.toUpperCase() + contact.name.slice(1).toLowerCase() + ' ' + (index + 1) }}
+          </h3>
+        </div>
         <div
           class="invisible flex items-center gap-3"
           :class="{ 'group-hover:visible': contact.isShow }"
