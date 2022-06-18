@@ -1,15 +1,46 @@
 <script setup lang="ts">
+import { onBeforeMount, onMounted, onUnmounted } from 'vue'
 import { storeToRefs } from 'pinia'
+import { useUserStore } from '~/stores/user'
 import { useToolbarStore } from '~/stores/toolbar'
+import { setCssVariable } from '~/utils'
 
+const user = useUserStore()
 const toolbar = useToolbarStore()
-const { isCVPreviewVisible } = storeToRefs(toolbar)
+const { isCVPreviewVisible, currentState } = storeToRefs(toolbar)
 
 function toggleCVPreview() {
   toolbar.$patch((state) => {
     state.isCVPreviewVisible = !state.isCVPreviewVisible
   })
 }
+
+onBeforeMount(() => {
+  window.addEventListener('beforeunload', onBeforeUnload)
+})
+
+onMounted(() => {
+  user.$patch((state) => {
+    state.isEditing = true
+  })
+
+  setCssVariable('--primary-color', currentState.value.primaryColour)
+  setCssVariable('--secondary-color', currentState.value.secondaryColour)
+  setCssVariable('--shadow-color', currentState.value.shadowColour)
+})
+
+onUnmounted(() => {
+  window.removeEventListener('beforeunload', onBeforeUnload)
+})
+
+function onBeforeUnload(event) {
+  // cancel the event as stated by the standard
+  event.preventDefault()
+  // chrome requires returnValue to be set
+  event.returnValue = ''
+  return false
+}
+
 </script>
 
 <template>

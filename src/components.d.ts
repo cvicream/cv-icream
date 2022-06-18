@@ -9,6 +9,7 @@ declare module 'vue' {
     DropdownMenu: typeof import('./components/DropdownMenu.vue')['default']
     Footer: typeof import('./components/Footer.vue')['default']
     Header: typeof import('./components/Header.vue')['default']
+    Modal: typeof import('./components/Modal.vue')['default']
     README: typeof import('./components/README.md')['default']
     Sidebar: typeof import('./components/Sidebar.vue')['default']
     ToggleSwitch: typeof import('./components/ToggleSwitch.vue')['default']
