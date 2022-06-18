@@ -3,7 +3,7 @@ import { onBeforeMount, onMounted, onUnmounted } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useUserStore } from '~/stores/user'
 import { useToolbarStore } from '~/stores/toolbar'
-import { setCssVariable } from '~/utils'
+import { getColor, setCssVariable } from '~/utils'
 
 const user = useUserStore()
 const toolbar = useToolbarStore()
@@ -24,9 +24,10 @@ onMounted(() => {
     state.isEditing = true
   })
 
-  setCssVariable('--primary-color', currentState.value.primaryColour)
-  setCssVariable('--secondary-color', currentState.value.secondaryColour)
-  setCssVariable('--shadow-color', currentState.value.shadowColour)
+  const color = getColor(currentState.value.color)
+  setCssVariable('--primary-color', color.primary)
+  setCssVariable('--secondary-color', color.secondary)
+  setCssVariable('--shadow-color', color.shadow)
 })
 
 onUnmounted(() => {

@@ -4,82 +4,17 @@ export const useToolbarStore = defineStore('toolbar', {
   state: () => ({
     dropdownMenu: {
       layout: false,
-      colour: false,
+      color: false,
       fontSize: false,
       fontFamily: false,
     },
     isCVPreviewVisible: false,
     currentState: {
-      primaryColour: '#F18B6B',
-      secondaryColour: '#FEF4F1',
-      shadowColour: '#FCE8E1',
       fontFamily: 'font-gill-sans',
       layout: 'layout-right',
+      color: 'default',
       fontSize: 'large',
     },
-    colours: [
-      {
-        name: 'default',
-        primary: '#F18B6B',
-        secondary: '#FEF4F1',
-        shadow: '#FCE8E1',
-        isActive: true,
-      },
-      {
-        name: 'yellow',
-        primary: '#FAAA1E',
-        secondary: '#FFF7E8',
-        shadow: '#FAAA1E33',
-        isActive: false,
-      },
-      {
-        name: 'green',
-        primary: '#507F39',
-        secondary: '#EDF2EB',
-        shadow: '#507F3933',
-        isActive: false,
-      },
-      {
-        name: 'blue',
-        primary: '#4BA1B4',
-        secondary: '#EDF6F7',
-        shadow: '#4BA1B433',
-        isActive: false,
-      },
-      {
-        name: 'indigo',
-        primary: '#005B84',
-        secondary: '#E5EFF3',
-        shadow: '#005B8433',
-        isActive: false,
-      },
-      {
-        name: 'purple',
-        primary: '#766E8E',
-        secondary: '#F1F0F4',
-        shadow: '#766E8E33',
-        isActive: false,
-      },
-      {
-        name: 'black',
-        primary: '#222222',
-        secondary: '#E9E9E9',
-        shadow: '#22222233',
-        isActive: false,
-      },
-    ],
-    fontSize: [
-      {
-        name: 'default',
-        isActive: true,
-        scale: 1,
-      },
-      {
-        name: 'large',
-        isActive: false,
-        scale: 2,
-      },
-    ],
     fontFamily: [
       {
         name: 'font-arial',
@@ -122,15 +57,8 @@ export const useToolbarStore = defineStore('toolbar', {
           this.dropdownMenu[key as keyof typeof this.dropdownMenu] = false
       })
     },
-    changeColour(index: number) {
-      this.colours.forEach((colour, i) => {
-        colour.isActive = i === index
-        if (colour.isActive) {
-          this.currentState.primaryColour = colour.primary
-          this.currentState.secondaryColour = colour.secondary
-          this.currentState.shadowColour = colour.shadow
-        }
-      })
+    changeColor(id: string) {
+      this.currentState.color = id
     },
     changeFontSize(id: string) {
       this.currentState.fontSize = id

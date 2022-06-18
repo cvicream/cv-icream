@@ -1,4 +1,4 @@
-import { LOCAL_STORAGE_KEY } from '~/constants'
+import { COLORS, LOCAL_STORAGE_KEY } from '~/constants'
 
 function hasStorage() {
   return !!getStorage()
@@ -80,6 +80,41 @@ function setCssVariable(key: string, value: string) {
   document.documentElement.style.setProperty(key, value)
 }
 
+/**
+ * Get font size class name
+ *
+ * @param  {string} id
+ *
+ */
+function getFontSizeClassName(id: string) {
+  return {
+    title: `title-${id}`,
+    subtitle: `subtitle-${id}`,
+    paragraph: `paragraph-${id}`,
+  }
+}
+
+/**
+ * Get color styles
+ *
+ * @param  {string} id
+ *
+ */
+function getColor(id: string) {
+  const color = COLORS.find(item => item.id === id)
+  return color
+    ? {
+      primary: color.primary,
+      secondary: color.secondary,
+      shadow: color.shadow,
+    }
+    : {
+      primary: '#F18B6B',
+      secondary: '#FEF4F1',
+      shadow: '#FCE8E1',
+    }
+}
+
 export {
   hasStorage,
   getStorage,
@@ -89,4 +124,6 @@ export {
   rgbToHex,
   hexToRgb,
   setCssVariable,
+  getFontSizeClassName,
+  getColor,
 }

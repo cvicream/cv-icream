@@ -2,18 +2,19 @@
 import { onUnmounted } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useToolbarStore } from '~/stores/toolbar'
-import { FONT_SIZES, LAYOUTS } from '~/constants'
+import { COLORS, FONT_SIZES, LAYOUTS } from '~/constants'
+import { getColor } from '~/utils'
 
 const toolbar = useToolbarStore()
-const { isCVPreviewVisible, dropdownMenu, currentState, colours, fontFamily } = storeToRefs(toolbar)
+const { isCVPreviewVisible, dropdownMenu, currentState, fontFamily } = storeToRefs(toolbar)
 
 const onClick = () => {
   if (Object.values(dropdownMenu.value).some(item => item))
     toolbar.toggle('')
 }
 
-const onColourChange = (index: number) => {
-  toolbar.changeColour(index)
+const onColorChange = (id: string) => {
+  toolbar.changeColor(id)
 }
 
 const onFontSizeChange = (id: string) => {
@@ -66,26 +67,26 @@ window.addEventListener('click', onClick, false)
         </div>
       </DropdownMenu>
       <DropdownMenu
-        id="colour"
+        id="color"
         :style="{
-          '--colour-primary': currentState.primaryColour,
-          '--colour-secondary': currentState.secondaryColour
+          '--color-primary': getColor(currentState.color).primary,
+          '--color-secondary': getColor(currentState.color).secondary
         }"
-        label="Colour" icon="icon-colour-item"
+        label="Colour" icon="icon-color-item"
       >
         <div
-          v-for="(item, index) in colours"
-          :key="index"
+          v-for="item in COLORS"
+          :key="item.id"
           class="btn-toolbar w-12 h-12"
-          :class="item.isActive ? 'bg-primary-10 rounded-full' : ''"
+          :class="{ 'bg-primary-10 rounded-full': currentState.color === item.id }"
         >
           <button
             :style="{
-              '--colour-primary': item.primary,
-              '--colour-secondary': item.secondary
+              '--color-primary': item.primary,
+              '--color-secondary': item.secondary
             }"
-            class="icon-colour-item "
-            @click="onColourChange(index)"
+            class="icon-color-item "
+            @click="onColorChange(item.id)"
           />
         </div>
       </DropdownMenu>

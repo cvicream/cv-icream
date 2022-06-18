@@ -30,10 +30,8 @@ function exportJsonFile() {
     toolbar: {
       layout: currentState.value.layout,
       fontSize: currentState.value.fontSize,
+      color: currentState.value.color,
       fontFamily: currentState.value.fontFamily,
-      primaryColour: currentState.value.primaryColour,
-      secondaryColour: currentState.value.secondaryColour,
-      shadowColour: currentState.value.shadowColour,
     },
     user: {
       template: template.value,

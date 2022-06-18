@@ -1,9 +1,6 @@
 <script lang="ts">
-import { mapActions, mapState, mapStores, storeToRefs } from 'pinia'
+import { mapActions, mapState, mapStores } from 'pinia'
 import { useToolbarStore } from '~/stores/toolbar'
-
-const toolbar = useToolbarStore()
-const { currentState } = storeToRefs(toolbar)
 
 export default {
   props: {
