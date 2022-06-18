@@ -9,10 +9,17 @@ const { about, summary, experience, project, skill, education, certificate, cont
 const toolbar = useToolbarStore()
 const { currentState } = storeToRefs(toolbar)
 
+function getFontSizeClassName(id: string) {
+  return {
+    title: `title-${id}`,
+    subtitle: `subtitle-${id}`,
+    paragraph: `paragraph-${id}`,
+  }
+}
 </script>
 
 <template>
-  <div class="title-default subtitle-default paragraph-default title-large subtitle-large paragraph-default" />
+  <div class="title-default subtitle-default paragraph-default title-large subtitle-large paragraph-large" />
   <div
     id="cv-preview"
     class="w-full h-full flex-shrink-0 p-6 shadow-custom"
@@ -20,25 +27,25 @@ const { currentState } = storeToRefs(toolbar)
   >
     <div
       class="p-2 flex items-baseline gap-4"
-      :class="{ 'ml-[25%]': currentState.layout === 2 }"
+      :class="{ 'ml-[25%]': currentState.layout === 'layout-left' }"
     >
       <span
         v-if="about.name"
-        class="font-normal text-primary-100 text-4xl leading-[41px]"
+        class="font-normal text-primary-100 text-size-[36px] leading-[41px]"
       >
         {{ about.name }}
       </span>
       <span
         v-if="about.jobTitle"
-        class="font-normal text-blacks-100 text-sm leading-4"
+        class="font-normal text-blacks-100 text-size-[14px] leading-[16px]"
       >
         {{ about.jobTitle }}
       </span>
     </div>
-    <div :class="{ 'flex': currentState.layout !== 3 }">
+    <div :class="{ 'flex': currentState.layout !== 'layout-full' }">
       <div
         class="flex flex-col gap-4"
-        :class="{ 'w-[75%]': currentState.layout !== 3, 'order-2': currentState.layout === 2 }"
+        :class="{ 'w-[75%]': currentState.layout !== 'layout-full', 'order-2': currentState.layout === 'layout-left' }"
       >
         <section v-show="summary.isShow" class="p-2 flex flex-col gap-2">
           <div
@@ -54,7 +61,7 @@ const { currentState } = storeToRefs(toolbar)
             </span>
           </div>
           <p
-            :class="currentState.paragraphScale"
+            :class="getFontSizeClassName(currentState.fontSize).paragraph"
             class="text-blacks-70"
           >
             {{ summary.paragraph }}
@@ -62,7 +69,7 @@ const { currentState } = storeToRefs(toolbar)
         </section>
         <section v-if="experience.isShow">
           <div
-            :class="currentState.subtitleScale"
+            :class="getFontSizeClassName(currentState.fontSize).subtitle"
             class="px-2 py-1 text-primary-100"
           >
             {{ experience.name }}
@@ -73,27 +80,27 @@ const { currentState } = storeToRefs(toolbar)
               class="p-2 flex flex-col gap-1"
             >
               <span
-                :class="currentState.titleScale"
+                :class="getFontSizeClassName(currentState.fontSize).title"
                 class="text-blacks-100"
               >
                 {{ item.title }}
               </span>
               <div class="flex justify-between">
                 <span
-                  :class="currentState.subtitleScale"
+                  :class="getFontSizeClassName(currentState.fontSize).subtitle"
                   class="text-blacks-40"
                 >
                   {{ item.subtitle1 }}
                 </span>
                 <span
-                  :class="currentState.subtitleScale"
+                  :class="getFontSizeClassName(currentState.fontSize).subtitle"
                   class="text-blacks-40"
                 >
                   {{ item.subtitle2 }}
                 </span>
               </div>
               <p
-                :class="currentState.paragraphScale"
+                :class="getFontSizeClassName(currentState.fontSize).paragraph"
                 class="text-blacks-70"
               >
                 {{ item.paragraph }}
@@ -103,7 +110,7 @@ const { currentState } = storeToRefs(toolbar)
         </section>
         <section v-if="project.isShow">
           <div
-            :class="currentState.subtitleScale"
+            :class="getFontSizeClassName(currentState.fontSize).subtitle"
             class="px-2 py-1 text-primary-100"
           >
             {{ project.name }}
@@ -114,27 +121,27 @@ const { currentState } = storeToRefs(toolbar)
               class="p-2 flex flex-col gap-1"
             >
               <span
-                :class="currentState.titleScale"
+                :class="getFontSizeClassName(currentState.fontSize).title"
                 class="text-blacks-100"
               >
                 {{ item.title }}
               </span>
               <div class="flex justify-between">
                 <span
-                  :class="currentState.subtitleScale"
+                  :class="getFontSizeClassName(currentState.fontSize).subtitle"
                   class="text-blacks-40"
                 >
                   {{ item.subtitle1 }}
                 </span>
                 <span
-                  :class="currentState.subtitleScale"
+                  :class="getFontSizeClassName(currentState.fontSize).subtitle"
                   class="text-blacks-40"
                 >
                   {{ item.subtitle2 }}
                 </span>
               </div>
               <p
-                :class="currentState.paragraphScale"
+                :class="getFontSizeClassName(currentState.fontSize).paragraph"
                 class="text-blacks-70"
               >
                 {{ item.paragraph }}
@@ -145,14 +152,14 @@ const { currentState } = storeToRefs(toolbar)
       </div>
       <div
         class="px-2"
-        :class="{ 'w-[25%]': currentState.layout !== 3, 'order-1': currentState.layout === 2}"
+        :class="{ 'w-[25%]': currentState.layout !== 'layout-full', 'order-1': currentState.layout === 'layout-left' }"
       >
         <section
           v-if="skill.isShow"
           class="pb-2"
         >
           <div
-            :class="currentState.subtitleScale"
+            :class="getFontSizeClassName(currentState.fontSize).subtitle"
             class="py-1 text-primary-100"
           >
             {{ skill.name }}
@@ -160,14 +167,14 @@ const { currentState } = storeToRefs(toolbar)
           <div v-for="(item, index) in skill.list" :key="index">
             <div
               v-if="item.isShow"
-              :class="currentState.subtitleScale"
+              :class="getFontSizeClassName(currentState.fontSize).subtitle"
               class="pt-2 pb-1 text-blacks-40"
             >
               {{ item.subtitle1 }}
             </div>
             <div
               v-if="item.isShow"
-              :class="currentState.paragraphScale"
+              :class="getFontSizeClassName(currentState.fontSize).paragraph"
               class="text-blacks-70"
             >
               <span style="white-space: pre-wrap;">
@@ -180,7 +187,7 @@ const { currentState } = storeToRefs(toolbar)
           <div class="py-1">
             <div
               v-if="certificate.isShow"
-              :class="currentState.subtitleScale"
+              :class="getFontSizeClassName(currentState.fontSize).subtitle"
               class="text-primary-100"
             >
               {{ certificate.name }}
@@ -192,20 +199,20 @@ const { currentState } = storeToRefs(toolbar)
               class="py-2 pb-1"
             >
               <div
-                :class="currentState.titleScale"
+                :class="getFontSizeClassName(currentState.fontSize).title"
                 class="text-blacks-100"
               >
                 {{ item.title }}
               </div>
               <span
-                :class="currentState.subtitleScale"
+                :class="getFontSizeClassName(currentState.fontSize).subtitle"
                 class="text-blacks-40"
               >
                 {{ item.subtitle1 }}
               </span>
 
               <div
-                :class="currentState.paragraphScale"
+                :class="getFontSizeClassName(currentState.fontSize).paragraph"
                 class="text-blacks-70"
               >
                 <span style="white-space: pre-wrap;">
@@ -219,7 +226,7 @@ const { currentState } = storeToRefs(toolbar)
           <div class="py-1">
             <div
               v-if="education.isShow"
-              :class="currentState.subtitleScale"
+              :class="getFontSizeClassName(currentState.fontSize).subtitle"
               class="text-primary-100"
             >
               {{ education.name }}
@@ -231,19 +238,19 @@ const { currentState } = storeToRefs(toolbar)
               class="py-2 pb-1"
             >
               <div
-                :class="currentState.titleScale"
+                :class="getFontSizeClassName(currentState.fontSize).title"
                 class="text-blacks-100"
               >
                 {{ item.title }}
               </div>
               <span
-                :class="currentState.subtitleScale"
+                :class="getFontSizeClassName(currentState.fontSize).subtitle"
                 class="text-blacks-40"
               >
                 {{ item.subtitle1 }}
               </span>
               <div
-                :class="currentState.paragraphScale"
+                :class="getFontSizeClassName(currentState.fontSize).paragraph"
                 class="text-blacks-70"
               >
                 <span style="white-space: pre-wrap;">
@@ -256,7 +263,7 @@ const { currentState } = storeToRefs(toolbar)
         <section>
           <div
             v-if="contact.isShow"
-            :class="currentState.subtitleScale"
+            :class="getFontSizeClassName(currentState.fontSize).subtitle"
             class="pt-5 py-1 text-primary-100"
           >
             {{ contact.name }}
@@ -267,13 +274,13 @@ const { currentState } = storeToRefs(toolbar)
               class=""
             >
               <div
-                :class="currentState.subtitleScale"
+                :class="getFontSizeClassName(currentState.fontSize).subtitle"
                 class="pt-2 pb-1 text-blacks-40"
               >
                 {{ item.subtitle1 }}
               </div>
               <div
-                :class="currentState.paragraphScale"
+                :class="getFontSizeClassName(currentState.fontSize).paragraph"
                 class="mt-px text-blacks-70 break-words"
               >
                 <p>  {{ item.paragraph }}</p>
@@ -281,13 +288,13 @@ const { currentState } = storeToRefs(toolbar)
             </div>
             <div class="pt-2" />
             <div
-              :class="currentState.paragraphScale"
+              :class="getFontSizeClassName(currentState.fontSize).paragraph"
               class="pt-2 pb-1 text-blacks-40"
             >
               Social
             </div>
             <div
-              :class="currentState.paragraphScale"
+              :class="getFontSizeClassName(currentState.fontSize).paragraph"
               class="flex flex-col text-blacks-70"
             >
               <a href="https://www.linkedin.com/feed/">

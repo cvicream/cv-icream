@@ -2,7 +2,7 @@
 import { useUserStore } from '~/stores/user'
 import { useToolbarStore } from '~/stores/toolbar'
 import { TEMPLATES } from '~/constants'
-import { setCssVariable } from '~/utils'
+import { getColor, setCssVariable } from '~/utils'
 
 // https://github.com/vueuse/head
 // you can use this to manipulate the document head in any components,
@@ -24,9 +24,10 @@ user.$subscribe((mutation, state) => {
 })
 
 toolbar.$subscribe((mutation, state) => {
-  setCssVariable('--primary-color', state.currentState.primaryColour)
-  setCssVariable('--secondary-color', state.currentState.secondaryColour)
-  setCssVariable('--shadow-color', state.currentState.shadowColour)
+  const color = getColor(state.currentState.color)
+  setCssVariable('--primary-color', color.primary)
+  setCssVariable('--secondary-color', color.secondary)
+  setCssVariable('--shadow-color', color.shadow)
 })
 </script>
 

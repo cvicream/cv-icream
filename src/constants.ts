@@ -1,5 +1,27 @@
 export const LOCAL_STORAGE_KEY = 'cvicream'
 export const HIDDEN_INFORMATION = 'The session is currently hidden on CV. Click the toggle if you would like to show it on CV.'
+
+export const LAYOUTS = [
+  {
+    id: 'layout-right',
+    name: 'Layout Right',
+    icon: 'i-custom:layout-right',
+    image: 'layout-right.png',
+  },
+  {
+    id: 'layout-left',
+    name: 'Layout Left',
+    icon: 'i-custom:layout-left',
+    image: 'layout-left.png',
+  },
+  {
+    id: 'layout-full',
+    name: 'Layout Full',
+    icon: 'i-custom:layout-full',
+    image: 'layout-full.png',
+  },
+]
+
 export const TEMPLATES = [
   {
     template: 1,
@@ -215,5 +237,90 @@ Management`,
         },
       ],
     },
+  },
+]
+
+export const COLORS = [
+  {
+    id: 'default',
+    primary: '#F18B6B',
+    secondary: '#FEF4F1',
+    shadow: '#FCE8E1',
+  },
+  {
+    id: 'yellow',
+    primary: '#FAAA1E',
+    secondary: '#FFF7E8',
+    shadow: '#FAAA1E33',
+  },
+  {
+    id: 'green',
+    primary: '#507F39',
+    secondary: '#EDF2EB',
+    shadow: '#507F3933',
+  },
+  {
+    id: 'blue',
+    primary: '#4BA1B4',
+    secondary: '#EDF6F7',
+    shadow: '#4BA1B433',
+  },
+  {
+    id: 'indigo',
+    primary: '#005B84',
+    secondary: '#E5EFF3',
+    shadow: '#005B8433',
+  },
+  {
+    id: 'purple',
+    primary: '#766E8E',
+    secondary: '#F1F0F4',
+    shadow: '#766E8E33',
+  },
+  {
+    id: 'black',
+    primary: '#222222',
+    secondary: '#E9E9E9',
+    shadow: '#22222233',
+  },
+]
+
+export const FONT_SIZES = [
+  {
+    id: 'default',
+    icon: 'i-custom:font-size w-6 h-6',
+    scale: 1,
+  },
+  {
+    id: 'large',
+    icon: 'i-custom:font-size w-8 h-8',
+    scale: 2,
+  },
+]
+
+export const FONT_FAMILIES = [
+  {
+    id: 'font-arial',
+    label: 'Arial',
+  },
+  {
+    id: 'font-georgia',
+    label: 'Georgia',
+  },
+  {
+    id: 'font-gill-sans',
+    label: 'Gill Sans',
+  },
+  {
+    id: 'font-helvetica',
+    label: 'Helvetica',
+  },
+  {
+    id: 'font-times-new-roman',
+    label: 'Times New Roman',
+  },
+  {
+    id: 'font-lato',
+    label: 'Lato',
   },
 ]

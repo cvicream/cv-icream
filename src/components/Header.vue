@@ -29,14 +29,9 @@ function exportJsonFile() {
   const jsonData = {
     toolbar: {
       layout: currentState.value.layout,
+      fontSize: currentState.value.fontSize,
+      color: currentState.value.color,
       fontFamily: currentState.value.fontFamily,
-      fontScale: currentState.value.fontScale,
-      primaryColour: currentState.value.primaryColour,
-      secondaryColour: currentState.value.secondaryColour,
-      shadowColour: currentState.value.shadowColour,
-      titleScale: currentState.value.titleScale,
-      subtitleScale: currentState.value.subtitleScale,
-      paragraphScale: currentState.value.paragraphScale,
     },
     user: {
       template: template.value,
