@@ -286,7 +286,7 @@ function getFontSizeClassName(id: string) {
                 <p>  {{ item.paragraph }}</p>
               </div>
             </div>
-            <div class="pt-2" />
+            <!-- <div class="pt-2" />
             <div
               :class="getFontSizeClassName(currentState.fontSize).paragraph"
               class="pt-2 pb-1 text-blacks-40"
@@ -304,6 +304,7 @@ function getFontSizeClassName(id: string) {
                 Behance
               </a>
             </div>
+          </div> -->
           </div>
         </section>
       </div>
