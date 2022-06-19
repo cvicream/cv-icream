@@ -286,24 +286,6 @@ function getFontSizeClassName(id: string) {
                 <p>  {{ item.paragraph }}</p>
               </div>
             </div>
-            <div class="pt-2" />
-            <div
-              :class="getFontSizeClassName(currentState.fontSize).paragraph"
-              class="pt-2 pb-1 text-blacks-40"
-            >
-              Social
-            </div>
-            <div
-              :class="getFontSizeClassName(currentState.fontSize).paragraph"
-              class="flex flex-col text-blacks-70"
-            >
-              <a href="https://www.linkedin.com/feed/">
-                LinkedIn
-              </a>
-              <a href="https://www.behance.net/">
-                Behance
-              </a>
-            </div>
           </div>
         </section>
       </div>
