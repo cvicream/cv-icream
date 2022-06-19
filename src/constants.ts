@@ -28,8 +28,8 @@ export const TEMPLATES = [
     isEditing: true,
     about: {
       isShow: true,
-      name: 'Name',
-      jobTitle: 'UI/UX Designer',
+      name: 'Your Name',
+      jobTitle: 'UI Designer',
     },
     summary: {
       isShow: true,
@@ -98,7 +98,81 @@ HTML and CSS`,
     isEditing: true,
     about: {
       isShow: true,
-      name: 'Name',
+      name: 'Your Name',
+      jobTitle: 'UX Designer',
+    },
+    summary: {
+      isShow: true,
+      hashtags: [],
+      paragraph: 'Meticulous Project Manager with 10+ years of experience delivering on-time and on-budget in the IT and property industries. Proven track record of improving profitability of projects by at least 10% in both niches, by cost-reduction and process optimisation. Documented ability to oversee 20+ projects at a time, up to £3m monthly revenue total. Track record of managing a monthly spending budget of £1.2m. Seeking to apply proven skills and strong principles in a more challenging role.',
+    },
+    experience: {
+      isShow: true,
+      name: 'EXPERIENCE',
+      list: [
+        {
+          isShow: true,
+          isCollapsed: false,
+          title: 'IT Project Manager',
+          subtitle1: 'Company Name',
+          subtitle2: 'June 2014 - Present',
+          paragraph: `Independently managing 20+ projects at a time, bringing in up to £2.2m revenue monthly. 
+          Successfully completed projects of a total value of £65m. -Experienced in managing teams up to 25 employees, including front and back-end developers, analysts, designers, and testers. 
+          Implemented a new online shopping solution for a fashion retailer that saw them increase their revenue by 7% instantly.`
+        },
+      ],
+    },
+    skill: {
+      isShow: true,
+      name: 'SKILL',
+      list: [
+        {
+          isShow: true,
+          isCollapsed: false,
+          title: '',
+          subtitle1: 'Profession',
+          subtitle2: '',
+          paragraph:
+`Agile Coaching 
+Scrum 
+Project Budgeting
+Strategic Planning
+Subcontractor
+Management`,
+        },
+        {
+          isShow: true,
+          isCollapsed: false,
+          title: '',
+          subtitle1: 'Language',
+          subtitle2: '',
+          paragraph:
+`English (fluent)
+Mandarin (native)`,
+        },
+      ],
+    },
+    contact: {
+      isShow: true,
+      name: 'CONTACT',
+      list: [
+        {
+          isShow: true,
+          isCollapsed: false,
+          title: '',
+          subtitle1: 'City, UK',
+          subtitle2: 'example@email.co.uk',
+          paragraph: '+4470 1234 5678',
+        },
+      ],
+    },
+  },
+  {
+    template: 3,
+    isEditing: true,
+    about: {
+      isShow: true,
+      name: 'Your Name',
       jobTitle: 'Software Developer',
     },
     summary: {
@@ -146,12 +220,12 @@ Other: Machine Learning and Data Structures`,
     },
   },
   {
-    template: 3,
+    template: 4,
     isEditing: true,
     about: {
       isShow: true,
-      name: 'Name',
-      jobTitle: 'Project Manager',
+      name: 'Your Name',
+      jobTitle: 'Product Manager',
     },
     summary: {
       isShow: true,
@@ -197,11 +271,11 @@ Management`,
     },
   },
   {
-    template: 4,
+    template: 5,
     isEditing: true,
     about: {
       isShow: true,
-      name: 'Name',
+      name: 'Your Name',
       jobTitle: '',
     },
     summary: {
