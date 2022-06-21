@@ -23,7 +23,7 @@ export default defineConfig({
     ['btn-secondary', 'h-12 px-10 rounded-xl text-blacks-100 bg-white border-1 border-primary-100 transition duration-300 ease-out hover:bg-primary-10'],
     ['btn-icon-48', 'w-12 h-12 p-2 rounded-full text-blacks-70 bg-white shadow-custom hover:bg-primary-10'],
     ['btn-icon-48-fill', 'w-12 h-12 p-[calc(0.5rem-1px)] rounded-full text-white bg-primary-100 shadow-custom border-1 border-transparent hover:border-primary-20'],
-    ['btn-icon-32', 'w-8 h-8 p-1 text-blacks-70 rounded-full'],
+    ['btn-icon-32', 'w-8 h-8 p-1 text-blacks-70 rounded-full hover:bg-primary-10'],
     ['btn-icon-24', 'w-6 h-6 text-blacks-40 hover:text-blacks-70'],
     ['icon-32', 'w-8 h-8 block text-blacks-70'],
     ['icon-32-fill', 'w-8 h-8 block text-block'],
@@ -62,8 +62,8 @@ export default defineConfig({
           svg => svg.replace('fill="none"', '').replace(/^<svg /, '<svg fill="currentColor" '),
         ),
         origin: FileSystemIconLoader( // class="i-origin:<svg_filename>" which is for logo
-        './src/assets/icons',
-        svg => svg,
+          './src/assets/icons',
+          svg => svg,
         ),
       },
       extraProperties: {

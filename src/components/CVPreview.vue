@@ -29,18 +29,16 @@ function getFontSizeClassName(id: string) {
       class="p-2 flex items-baseline gap-4"
       :class="{ 'ml-[25%]': currentState.layout === 'layout-left' }"
     >
-      <span
+      <div
         v-if="about.name"
         class="font-normal text-primary-100 text-size-[36px] leading-[41px]"
-      >
-        {{ about.name }}
-      </span>
-      <span
+        v-html="about.name"
+      />
+      <div
         v-if="about.jobTitle"
         class="font-normal text-blacks-100 text-size-[14px] leading-[16px]"
-      >
-        {{ about.jobTitle }}
-      </span>
+        v-html="about.jobTitle"
+      />
     </div>
     <div :class="{ 'flex': currentState.layout !== 'layout-full' }">
       <div
@@ -52,20 +50,18 @@ function getFontSizeClassName(id: string) {
             v-if="summary.hashtags && summary.hashtags.length"
             class="flex gap-4"
           >
-            <span
+            <div
               v-for="item in summary.hashtags.filter(tag => !!tag)"
               :key="item"
               class="hashtag text-primary-100 bg-primary-10"
-            >
-              {{ item }}
-            </span>
+              v-html="item"
+            />
           </div>
-          <p
+          <div
             :class="getFontSizeClassName(currentState.fontSize).paragraph"
             class="text-blacks-70"
-          >
-            {{ summary.paragraph }}
-          </p>
+            v-html="summary.paragraph"
+          />
         </section>
         <section v-if="experience.isShow">
           <div

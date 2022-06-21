@@ -2,6 +2,7 @@
 import { storeToRefs } from 'pinia'
 import { useUserStore } from '~/stores/user'
 import { HIDDEN_INFORMATION } from '~/constants'
+import Editor from '~/components/Editor.vue'
 
 const user = useUserStore()
 const { summary } = storeToRefs(user)
@@ -32,53 +33,53 @@ const toggleShow = () => {
       <h3 class="subleading text-blacks-100">
         Summary
       </h3>
-      <form
+      <div
         class="rounded-xl mt-3 px-4 py-6 flex flex-col gap-6"
         :class="[(summary.isShow ? 'bg-primary-10': 'bg-blacks-10')]"
       >
         <div>
           <label class="note text-blacks-70">Hashtag 1</label>
-          <input
+          <Editor
             v-model="summary.hashtags[0]"
-            type="search"
-            name="hashtag1"
+            class-name="h-[46px]"
+            :enable="summary.isShow"
             placeholder="#TeamPlayer"
-            class="form-input"
-            :disabled="!summary.isShow"
-          >
+            :is-single-line="true"
+          />
         </div>
         <div>
           <label class="note text-blacks-70">Hashtag 2</label>
-          <input
+
+          <Editor
             v-model="summary.hashtags[1]"
-            type="search"
-            name="hashtag2"
+            class-name="h-[46px]"
+            :enable="summary.isShow"
             placeholder="#SelfMotivated"
-            class="form-input"
-            :disabled="!summary.isShow"
-          >
+            :is-single-line="true"
+          />
         </div>
         <div>
           <label class="note text-blacks-70">Hashtag 3</label>
-          <input
+
+          <Editor
             v-model="summary.hashtags[2]"
-            type="search"
-            name="hashtag3"
+            class-name="h-[46px]"
+            :enable="summary.isShow"
             placeholder="#CanDoAttitude"
-            class="form-input"
-            :disabled="!summary.isShow"
-          >
+            :is-single-line="true"
+          />
         </div>
         <div>
           <label class="note text-blacks-70">Summary</label>
-          <textarea
+
+          <Editor
             v-model="summary.paragraph"
-            name="summary"
-            class="form-textarea custom-scrollbar"
-            :disabled="!summary.isShow"
+            class-name="h-[130px]"
+            :enable="summary.isShow"
+            placeholder="summary"
           />
         </div>
-      </form>
+      </div>
     </div>
   </div>
 </template>
