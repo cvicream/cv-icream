@@ -118,7 +118,7 @@ HTML and CSS`,
           subtitle2: 'June 2014 - Present',
           paragraph: `Independently managing 20+ projects at a time, bringing in up to £2.2m revenue monthly. 
           Successfully completed projects of a total value of £65m. -Experienced in managing teams up to 25 employees, including front and back-end developers, analysts, designers, and testers. 
-          Implemented a new online shopping solution for a fashion retailer that saw them increase their revenue by 7% instantly.`
+          Implemented a new online shopping solution for a fashion retailer that saw them increase their revenue by 7% instantly.`,
         },
       ],
     },
@@ -206,15 +206,49 @@ Mandarin (native)`,
           isShow: true,
           isCollapsed: false,
           title: '',
-          subtitle1: '',
+          subtitle1: 'Language',
           subtitle2: '',
-          paragraph:
-`Language: C, C++, Java, SQL, Python, JavaScript, Vue, React
-Tool: Eclipse, Intellij, WebStorm, Node.js
-Cloud Platforms: AWS, Azure and GCP
-Environments: Linus, Windows, Cygwin, MinGW
-Methodologies: Agile, Waterfall, Feature-Driven
-Other: Machine Learning and Data Structures`,
+          paragraph: 'C, C++, Java, SQL, Python, JavaScript, Vue, React',
+        },
+        {
+          isShow: true,
+          isCollapsed: false,
+          title: '',
+          subtitle1: 'Tool',
+          subtitle2: '',
+          paragraph: 'Eclipse, Intellij, WebStorm, Node.js',
+        },
+        {
+          isShow: true,
+          isCollapsed: false,
+          title: '',
+          subtitle1: 'Cloud Platforms',
+          subtitle2: '',
+          paragraph: 'AWS, Azure and GCP',
+        },
+        {
+          isShow: true,
+          isCollapsed: false,
+          title: '',
+          subtitle1: 'Environments',
+          subtitle2: '',
+          paragraph: 'Linus, Windows, Cygwin, MinGW',
+        },
+        {
+          isShow: true,
+          isCollapsed: false,
+          title: '',
+          subtitle1: 'Methodologies',
+          subtitle2: '',
+          paragraph: 'Agile, Waterfall, Feature-Driven',
+        },
+        {
+          isShow: true,
+          isCollapsed: false,
+          title: '',
+          subtitle1: 'Other',
+          subtitle2: '',
+          paragraph: 'Machine Learning and Data Structures',
         },
       ],
     },
@@ -257,7 +291,7 @@ Other: Machine Learning and Data Structures`,
           isShow: true,
           isCollapsed: false,
           title: '',
-          subtitle1: '',
+          subtitle1: 'Profession',
           subtitle2: '',
           paragraph:
 `Agile Coaching 
@@ -266,6 +300,16 @@ Project Budgeting
 Strategic Planning
 Subcontractor
 Management`,
+        },
+        {
+          isShow: true,
+          isCollapsed: false,
+          title: '',
+          subtitle1: 'Language',
+          subtitle2: '',
+          paragraph:
+`English (fluent)
+Mandarin (native)`,
         },
       ],
     },

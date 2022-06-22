@@ -8,7 +8,7 @@ button:
 home:
   button:
     start_cv: Start Building My CV
-  title: Hello! Welcome to CV Icecream.
+  title: Hello! Welcome to CV Icream.
 intro:
   aka: Also known as
   desc: Opinionated Vite Starter Template
