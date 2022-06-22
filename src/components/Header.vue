@@ -113,27 +113,21 @@ function closeAction() {
 </script>
 
 <template>
-  <header class="h-[80px] leading-80px text-center bg-white border-b border-b-blacks-20 flex justify-between px-8 py-4">
+  <header class="h-[80px] leading-80px text-center bg-white border-b border-b-blacks-20 flex justify-between items-center px-8 py-4">
     <div class="flex gap-8">
-      <span class="logo-icon-32">
-        <span class="i-origin:logo icon-32" />
-      </span>
+      <a class="btn-icon-32" href="/">
+        <span class="i-origin:logo w-8 h-8" />
+      </a>
       <button class="btn-icon-32">
-        <div class='w-8 h-8 rounded-full hover:bg-primary-10'>
-          <span class="i-custom:idea icon-32" />
-        </div>
+        <span class="i-custom:idea w-8 h-8" />
       </button>
       <button class="btn-icon-32">
-        <div class='w-8 h-8 rounded-full hover:bg-primary-10'>
-          <span class="i-custom:feedback icon-32" />
-        </div>
+        <span class="i-custom:feedback w-8 h-8" />
       </button>
     </div>
     <div v-if="isEdit" class="flex gap-8" @focusout="onFocusOut">
-      <button class="btn-icon-32 text-blacks-70" @click="toggle">
-        <div class='w-8 h-8 rounded-full hover:bg-primary-10'>
-          <span class="i-custom:download icon-32" />
-        </div>
+      <button class="btn-icon-32" @click="toggle">
+        <span class="i-custom:download w-8 h-8" />
       </button>
 
       <div v-if="isActionActive" class="w-[230px] bg-white outline outline-1 outline-blacks-100 rounded z-1 absolute right-2 top-[88px]">
