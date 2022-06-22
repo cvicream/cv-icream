@@ -43,6 +43,7 @@ export const TEMPLATES = [
         {
           isShow: true,
           isCollapsed: false,
+          isEditing: false,
           title: 'Product Designer',
           subtitle1: 'Company Name',
           subtitle2: 'February 2015 - Present',
@@ -51,6 +52,7 @@ export const TEMPLATES = [
         {
           isShow: true,
           isCollapsed: false,
+          isEditing: false,
           title: 'Visual Designer',
           subtitle1: 'Company Name',
           subtitle2: 'June 2011 - Present',

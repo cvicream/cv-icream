@@ -74,7 +74,13 @@ function getFontSizeClassName(id: string) {
           >
             {{ experience.name }}
           </div>
-          <div v-for="(item, index) in experience.list" :key="index">
+          <div
+            v-for="(item, index) in experience.list"
+            :key="index"
+            class="border rounded-xl"
+            :class="item.isEditing ? 'bg-primary-10 border-primary-40' : 'border-transparent'"
+            style="transition: background 0.2s ease-in, border 0.2s ease-in;"
+          >
             <div
               v-if="item.isShow"
               class="p-2 flex flex-col gap-1"

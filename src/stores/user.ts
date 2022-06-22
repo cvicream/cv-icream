@@ -21,6 +21,7 @@ const initialState = {
       {
         isShow: true,
         isCollapsed: false,
+        isEditing: false,
         title: '',
         subtitle: '',
         subtitle1: '',
