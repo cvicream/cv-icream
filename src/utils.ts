@@ -107,11 +107,13 @@ function getColor(id: string) {
       primary: color.primary,
       secondary: color.secondary,
       shadow: color.shadow,
+      border: color.border,
     }
     : {
       primary: '#F18B6B',
       secondary: '#FEF4F1',
       shadow: '#FCE8E1',
+      border: '#FAD1C4',
     }
 }
 

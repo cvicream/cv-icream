@@ -27,6 +27,7 @@
   --primary-color: #F18B6B;
   --secondary-color: #FEF4F1;
   --shadow-color: #FCE8E1;
+  --secondary-color: #FAD1C4;
 }
 
 html,
@@ -107,6 +108,10 @@ html.dark {
   box-shadow:
     0 0 0 0.4px #FFFFFFFF,
     0 0 0 2.4px var(--color-secondary);
+}
+
+.block-active{
+  transition: background 0.2s ease-in, border 0.2s ease-in;
 }
 
 input[type="search"]::-webkit-search-cancel-button {

@@ -26,8 +26,9 @@ function getFontSizeClassName(id: string) {
     :class="currentState.fontFamily"
   >
     <div
-      class="p-2 flex items-baseline gap-4"
-      :class="{ 'ml-[25%]': currentState.layout === 'layout-left' }"
+      class="p-2 flex items-baseline gap-4 border rounded-xl block-active"
+      :class="[ ((currentState.layout === 'layout-left')?'ml-[25%]':''),
+                (about.isEditing ? 'bg-primary-10 border-primary-40' : 'border-transparent') ]"
     >
       <span
         v-if="about.name"
@@ -47,7 +48,11 @@ function getFontSizeClassName(id: string) {
         class="flex flex-col gap-4"
         :class="{ 'w-[75%]': currentState.layout !== 'layout-full', 'order-2': currentState.layout === 'layout-left' }"
       >
-        <section v-show="summary.isShow" class="p-2 flex flex-col gap-2">
+        <section
+          v-show="summary.isShow"
+          class="p-2 flex flex-col gap-2 border rounded-xl block-active"
+          :class="summary.isEditing ? 'bg-primary-10 border-primary-40' : 'border-transparent'"
+        >
           <div
             v-if="summary.hashtags && summary.hashtags.length"
             class="flex gap-4"
@@ -77,9 +82,8 @@ function getFontSizeClassName(id: string) {
           <div
             v-for="(item, index) in experience.list"
             :key="index"
-            class="border rounded-xl"
+            class="border rounded-xl block-active"
             :class="item.isEditing ? 'bg-primary-10 border-primary-40' : 'border-transparent'"
-            style="transition: background 0.2s ease-in, border 0.2s ease-in;"
           >
             <div
               v-if="item.isShow"
@@ -121,7 +125,12 @@ function getFontSizeClassName(id: string) {
           >
             {{ project.name }}
           </div>
-          <div v-for="(item, index) in project.list" :key="index">
+          <div
+            v-for="(item, index) in project.list"
+            :key="index"
+            class="border rounded-xl block-active"
+            :class="item.isEditing ? 'bg-primary-10 border-primary-40' : 'border-transparent'"
+          >
             <div
               v-if="item.isShow"
               class="p-2 flex flex-col gap-1"
@@ -170,7 +179,12 @@ function getFontSizeClassName(id: string) {
           >
             {{ skill.name }}
           </div>
-          <div v-for="(item, index) in skill.list" :key="index">
+          <div
+            v-for="(item, index) in skill.list"
+            :key="index"
+            class="border rounded-xl block-active"
+            :class="item.isEditing ? 'bg-primary-10 border-primary-40' : 'border-transparent'"
+          >
             <div
               v-if="item.isShow"
               class="py-2"
@@ -202,7 +216,12 @@ function getFontSizeClassName(id: string) {
           >
             {{ certificate.name }}
           </div>
-          <div v-for="(item, index) in certificate.list" :key="index">
+          <div
+            v-for="(item, index) in certificate.list"
+            :key="index"
+            class="border rounded-xl block-active"
+            :class="item.isEditing ? 'bg-primary-10 border-primary-40' : 'border-transparent'"
+          >
             <div
               v-if="item.isShow"
               class="py-2"
@@ -241,7 +260,12 @@ function getFontSizeClassName(id: string) {
           >
             {{ education.name }}
           </div>
-          <div v-for="(item, index) in education.list" :key="index">
+          <div
+            v-for="(item, index) in education.list"
+            :key="index"
+            class="border rounded-xl block-active"
+            :class="item.isEditing ? 'bg-primary-10 border-primary-40' : 'border-transparent'"
+          >
             <div
               v-if="item.isShow"
               class="py-2"
@@ -279,7 +303,12 @@ function getFontSizeClassName(id: string) {
           >
             {{ contact.name }}
           </div>
-          <div v-for="(item, index) in contact.list" :key="index">
+          <div
+            v-for="(item, index) in contact.list"
+            :key="index"
+            class="border rounded-xl block-active"
+            :class="item.isEditing ? 'bg-primary-10 border-primary-40' : 'border-transparent'"
+          >
             <div
               v-if="item.isShow"
               class="py-2"

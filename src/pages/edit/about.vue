@@ -4,6 +4,19 @@ import { useUserStore } from '~/stores/user'
 
 const user = useUserStore()
 const { about } = storeToRefs(user)
+
+function focusIn(index) {
+  user.$patch((state) => {
+    state.about.isEditing = true
+  })
+}
+
+function focusOut(index) {
+  user.$patch((state) => {
+    state.about.isEditing = false
+  })
+}
+
 </script>
 
 <template>
@@ -13,7 +26,10 @@ const { about } = storeToRefs(user)
       <span class="leading text-blacks-100">ABOUT</span>
     </h2>
   </div>
-  <div>
+  <div
+    @focusin="() => focusIn(index)"
+    @focusout="() => focusOut(index)"
+  >
     <h3 class="subleading text-blacks-100">
       Summary
     </h3>

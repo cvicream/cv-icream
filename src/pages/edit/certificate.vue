@@ -24,6 +24,18 @@ function onEditNameClick() {
   }
 }
 
+function focusIn(index) {
+  user.$patch((state) => {
+    state.certificate.list[index].isEditing = true
+  })
+}
+
+function focusOut(index) {
+  user.$patch((state) => {
+    state.certificate.list[index].isEditing = false
+  })
+}
+
 function toggleShowAll() {
   user.$patch((state) => {
     state.certificate.isShow = !state.certificate.isShow
@@ -36,6 +48,7 @@ function addItem() {
     state.certificate.list.push({
       isShow: true,
       isCollapsed: false,
+      isEditing: false,
       title: '',
       subtitle1: '',
       subtitle2: '',
@@ -105,6 +118,8 @@ function deleteItem(index: number) {
       v-for="(item, index) in certificate.list"
       :key="index"
       class="group"
+      @focusin="() => focusIn(index)"
+      @focusout="() => focusOut(index)"
     >
       <div class="flex justify-between items-center">
         <div>
