@@ -36,8 +36,10 @@ export default defineComponent({
     const root = ref(null)
     const editor = ref(null)
     const toolbarId = ref(`toolbar-${uuidv4().replaceAll('-', '')}`)
-    const toolbarTop = ref('0px')
+    const toolbarTop = ref(0)
     const toolbarVisible = ref(false)
+    const link = ref('')
+    const linkVisible = ref(false)
 
     const content = computed({
       get: () => props.modelValue === undefined ? '' : props.modelValue,
@@ -52,19 +54,27 @@ export default defineComponent({
         // customize link handler
         toolbar.addHandler('link', (value) => {
           if (value) {
-            const href = prompt('Enter the URL')
-            quill.format('link', href)
+            toolbarVisible.value = false
+            linkVisible.value = true
           }
           else {
             quill.format('link', false)
           }
+        })
+
+        // customize background handler
+        toolbar.addHandler('background', (value) => {
+          if (value)
+            quill.format('background', 'var(--secondary-color)')
+          else
+            quill.format('background', false)
         })
       }
     })
 
     function onFocus(elementRef) {
       const obj = elementRef.value.getBoundingClientRect()
-      toolbarTop.value = `${obj.height + 8}px`
+      toolbarTop.value = obj.height + 8
 
       if (root.value) {
         const elEditor = (root.value as HTMLElement).querySelector('.single-line [contenteditable="true"]')
@@ -91,23 +101,48 @@ export default defineComponent({
         editor.value.setHTML('')
     }
 
+    function onLinkBlur() {
+      if (editor.value && link.value) {
+        const quill = editor.value.getQuill()
+        quill.format('link', link.value)
+      }
+
+      onLinkClose()
+    }
+
+    function onLinkClose() {
+      linkVisible.value = false
+      link.value = ''
+    }
+
     return {
       root,
       editor,
       toolbarId,
       toolbarTop,
       toolbarVisible,
+      link,
+      linkVisible,
       content,
       onFocus,
       selectionChange,
       onClear,
+      onLinkBlur,
+      onLinkClose,
     }
   },
 })
 </script>
 
 <template>
-  <div ref="root" class="relative" :class="className">
+  <div
+    ref="root"
+    class="relative"
+    :class="className"
+    :style="{
+      '--toolbar-top': toolbarTop + 'px'
+    }"
+  >
     <QuillEditor
       ref="editor"
       v-model:content="content"
@@ -133,8 +168,7 @@ export default defineComponent({
       :id="toolbarId"
       :style="{
         'visibility': enable && toolbarVisible ? 'visible' : 'hidden',
-        'opacity': enable && toolbarVisible ? 1 : 0,
-        '--toolbar-top': toolbarTop
+        'opacity': enable && toolbarVisible ? 1 : 0
       }"
     >
       <button class="ql-list btn-icon-32" value="bullet">
@@ -155,13 +189,40 @@ export default defineComponent({
       <button class="ql-italic btn-icon-32">
         <span class="i-custom:italic w-6 h-6" />
       </button>
-      <button class="ql-strike btn-icon-32">
+      <button class="ql-background btn-icon-32">
         <span class="i-origin:highlight w-6 h-6" />
       </button>
       <button class="ql-link btn-icon-32">
         <span class="i-custom:link w-6 h-6" />
       </button>
     </div>
+
+    <div
+      v-if="linkVisible"
+      class="w-[232px] h-[126px] absolute top-[var(--toolbar-top)] right-0 bg-primary-10 p-4 rounded-[1.25rem] shadow-custom"
+    >
+      <div class="flex justify-between">
+        <div class="flex gap-2 items-center">
+          <div class="w-8 h-8 flex justify-center items-center">
+            <span class="i-custom:link w-6 h-6 text-blacks-70" />
+          </div>
+          <span class="leading text-blacks-100">Link</span>
+        </div>
+        <button @click="onLinkClose">
+          <span class="i-custom:cancel w-5 h-5 text-blacks-40 hover:text-blacks-70" />
+        </button>
+      </div>
+      <input
+        v-model="link"
+        type="search"
+        placeholder="http://"
+        class="form-input mt-4"
+        @keyup.enter="onLinkBlur"
+        @blur="onLinkBlur"
+      >
+      <div class="fix-margin-bottom" />
+    </div>
+
     <div class="fix-margin-bottom" />
   </div>
 </template>
