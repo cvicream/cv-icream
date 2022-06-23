@@ -197,24 +197,18 @@ function getFontSizeClassName(id: string) {
               <div
                 :class="getFontSizeClassName(currentState.fontSize).title"
                 class="text-blacks-100"
-              >
-                {{ item.title }}
-              </div>
+                v-html="item.title"
+              />
               <span
                 :class="getFontSizeClassName(currentState.fontSize).subtitle"
                 class="text-blacks-40"
-              >
-                {{ item.subtitle1 }}
-              </span>
-
+                v-html="item.subtitle1"
+              />
               <div
                 :class="getFontSizeClassName(currentState.fontSize).paragraph"
                 class="text-blacks-70"
-              >
-                <span style="white-space: pre-wrap;">
-                  {{ item.paragraph }}
-                </span>
-              </div>
+                v-html="item.paragraph"
+              />
             </div>
           </div>
         </section>

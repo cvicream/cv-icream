@@ -49,7 +49,6 @@ const toggleShow = () => {
         </div>
         <div>
           <label class="note text-blacks-70">Hashtag 2</label>
-
           <Editor
             v-model="summary.hashtags[1]"
             class-name="h-[46px]"
@@ -60,7 +59,6 @@ const toggleShow = () => {
         </div>
         <div>
           <label class="note text-blacks-70">Hashtag 3</label>
-
           <Editor
             v-model="summary.hashtags[2]"
             class-name="h-[46px]"
@@ -71,7 +69,6 @@ const toggleShow = () => {
         </div>
         <div>
           <label class="note text-blacks-70">Summary</label>
-
           <Editor
             v-model="summary.paragraph"
             class-name="h-[130px]"

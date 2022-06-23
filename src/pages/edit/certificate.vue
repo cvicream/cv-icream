@@ -145,35 +145,32 @@ function deleteItem(index: number) {
         </button>
         <div>
           <label class="note text-blacks-70">Title</label>
-          <input
+          <Editor
             v-model="item.title"
-            type="search"
-            name="title"
-            placeholder=""
-            class="form-input"
-            :disabled="!item.isShow"
-          >
+            class-name="h-[46px]"
+            :enable="item.isShow"
+            placeholder="Title"
+            :is-single-line="true"
+          />
         </div>
         <div :class="item.isCollapsed ? 'hidden' : 'flex flex-col gap-6'">
           <div>
             <label class="note text-blacks-70">Subtitle</label>
-            <input
+            <Editor
               v-model="item.subtitle1"
-              type="search"
-              name="subtitle"
-              placeholder=""
-              class="form-input"
-              :disabled="!item.isShow"
-            >
+              class-name="h-[46px]"
+              :enable="item.isShow"
+              placeholder="Subtitle"
+              :is-single-line="true"
+            />
           </div>
           <div>
             <label class="note text-blacks-70">Paragraph</label>
-            <textarea
+            <Editor
               v-model="item.paragraph"
-              name="paragraph"
-              placeholder=""
-              class="form-textarea custom-scrollbar"
-              :disabled="!item.isShow"
+              class-name="h-[130px]"
+              :enable="item.isShow"
+              placeholder="Paragraph"
             />
           </div>
         </div>
