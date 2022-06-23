@@ -62,8 +62,8 @@ export default defineConfig({
           svg => svg.replace('fill="none"', '').replace(/^<svg /, '<svg fill="currentColor" '),
         ),
         origin: FileSystemIconLoader( // class="i-origin:<svg_filename>" which is for logo
-        './src/assets/icons',
-        svg => svg,
+          './src/assets/icons',
+          svg => svg,
         ),
       },
       extraProperties: {
@@ -107,7 +107,7 @@ export default defineConfig({
       primary: { // class="text-primary-100"
         10: 'var(--secondary-color)',
         20: '#fce8e1',
-        40: '#fad1c4',
+        40: 'var(--border-color)',
         70: '#f6af98',
         100: 'var(--primary-color)',
       },
