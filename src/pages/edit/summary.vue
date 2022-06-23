@@ -12,6 +12,19 @@ const toggleShow = () => {
     state.summary.isShow = !state.summary.isShow
   })
 }
+
+function focusIn(index) {
+  user.$patch((state) => {
+    state.summary.isEditing = true
+  })
+}
+
+function focusOut(index) {
+  user.$patch((state) => {
+    state.summary.isEditing = false
+  })
+}
+
 </script>
 
 <template>
@@ -29,7 +42,10 @@ const toggleShow = () => {
     <p v-if="!summary.isShow" class="paragraph text-blacks-70">
       {{ HIDDEN_INFORMATION }}
     </p>
-    <div>
+    <div
+      @focusin="() => focusIn(index)"
+      @focusout="() => focusOut(index)"
+    >
       <h3 class="subleading text-blacks-100">
         Summary
       </h3>

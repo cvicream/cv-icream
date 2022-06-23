@@ -24,6 +24,18 @@ function onEditNameClick() {
   }
 }
 
+function focusIn(index) {
+  user.$patch((state) => {
+    state.project.list[index].isEditing = true
+  })
+}
+
+function focusOut(index) {
+  user.$patch((state) => {
+    state.project.list[index].isEditing = false
+  })
+}
+
 function toggleShowAll() {
   user.$patch((state) => {
     state.project.isShow = !state.project.isShow
@@ -36,6 +48,7 @@ function addItem() {
     state.project.list.push({
       isShow: true,
       isCollapsed: false,
+      isEditing: false,
       title: '',
       subtitle1: '',
       subtitle2: '',
@@ -105,6 +118,8 @@ function deleteItem(index: number) {
       v-for="(item, index) in project.list"
       :key="index"
       class="group"
+      @focusin="() => focusIn(index)"
+      @focusout="() => focusOut(index)"
     >
       <div class="flex justify-between items-center">
         <div>

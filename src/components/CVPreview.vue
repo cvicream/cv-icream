@@ -16,6 +16,12 @@ function getFontSizeClassName(id: string) {
     paragraph: `paragraph-${id}`,
   }
 }
+
+function getEditingStyle(isEditing) {
+  let style = 'border rounded-xl transition ease-in delay-200 '
+  style += isEditing ? 'bg-primary-10 border-primary-40' : 'border-transparent'
+  return style
+}
 </script>
 
 <template>
@@ -27,7 +33,7 @@ function getFontSizeClassName(id: string) {
   >
     <div
       class="p-2 flex items-baseline gap-4"
-      :class="{ 'ml-[25%]': currentState.layout === 'layout-left' }"
+      :class="currentState.layout === 'layout-left' ? `ml-[25%] ${getEditingStyle(about.isEditing)}` : getEditingStyle(about.isEditing)"
     >
       <div
         v-if="about.name"
@@ -45,7 +51,11 @@ function getFontSizeClassName(id: string) {
         class="flex flex-col gap-4"
         :class="{ 'w-[75%]': currentState.layout !== 'layout-full', 'order-2': currentState.layout === 'layout-left' }"
       >
-        <section v-show="summary.isShow" class="p-2 flex flex-col gap-2">
+        <section
+          v-show="summary.isShow"
+          class="p-2 flex flex-col gap-2"
+          :class="getEditingStyle(summary.isEditing)"
+        >
           <div
             v-if="summary.hashtags && summary.hashtags.length"
             class="flex gap-4"
@@ -70,7 +80,11 @@ function getFontSizeClassName(id: string) {
           >
             {{ experience.name }}
           </div>
-          <div v-for="(item, index) in experience.list" :key="index">
+          <div
+            v-for="(item, index) in experience.list"
+            :key="index"
+            :class="getEditingStyle(item.isEditing)"
+          >
             <div
               v-if="item.isShow"
               class="p-2 flex flex-col gap-1"
@@ -111,7 +125,11 @@ function getFontSizeClassName(id: string) {
           >
             {{ project.name }}
           </div>
-          <div v-for="(item, index) in project.list" :key="index">
+          <div
+            v-for="(item, index) in project.list"
+            :key="index"
+            :class="getEditingStyle(item.isEditing)"
+          >
             <div
               v-if="item.isShow"
               class="p-2 flex flex-col gap-1"
@@ -160,39 +178,50 @@ function getFontSizeClassName(id: string) {
           >
             {{ skill.name }}
           </div>
-          <div v-for="(item, index) in skill.list" :key="index">
+          <div
+            v-for="(item, index) in skill.list"
+            :key="index"
+            :class="getEditingStyle(item.isEditing)"
+          >
             <div
               v-if="item.isShow"
-              :class="getFontSizeClassName(currentState.fontSize).subtitle"
-              class="pt-2 pb-1 text-blacks-40"
+              class="py-2"
             >
-              {{ item.subtitle1 }}
-            </div>
-            <div
-              v-if="item.isShow"
-              :class="getFontSizeClassName(currentState.fontSize).paragraph"
-              class="text-blacks-70"
-            >
-              <span style="white-space: pre-wrap;">
-                {{ item.paragraph }}
-              </span>
+              <div
+                :class="getFontSizeClassName(currentState.fontSize).subtitle"
+                class="text-blacks-40 pb-1"
+              >
+                {{ item.subtitle1 }}
+              </div>
+              <div
+                :class="getFontSizeClassName(currentState.fontSize).paragraph"
+                class="text-blacks-70"
+              >
+                <span style="white-space: pre-wrap;">
+                  {{ item.paragraph }}
+                </span>
+              </div>
             </div>
           </div>
         </section>
-        <section>
-          <div class="py-1">
-            <div
-              v-if="certificate.isShow"
-              :class="getFontSizeClassName(currentState.fontSize).subtitle"
-              class="text-primary-100"
-            >
-              {{ certificate.name }}
-            </div>
+        <section
+          v-if="certificate.isShow"
+          class="py-2"
+        >
+          <div
+            :class="getFontSizeClassName(currentState.fontSize).subtitle"
+            class="text-primary-100 py-1"
+          >
+            {{ certificate.name }}
           </div>
-          <div v-for="(item, index) in certificate.list" :key="index">
+          <div
+            v-for="(item, index) in certificate.list"
+            :key="index"
+            :class="getEditingStyle(item.isEditing)"
+          >
             <div
               v-if="item.isShow"
-              class="py-2 pb-1"
+              class="py-2"
             >
               <div
                 :class="getFontSizeClassName(currentState.fontSize).title"
@@ -212,30 +241,34 @@ function getFontSizeClassName(id: string) {
             </div>
           </div>
         </section>
-        <section>
-          <div class="py-1">
-            <div
-              v-if="education.isShow"
-              :class="getFontSizeClassName(currentState.fontSize).subtitle"
-              class="text-primary-100"
-            >
-              {{ education.name }}
-            </div>
+        <section
+          v-if="education.isShow"
+          class="py-2"
+        >
+          <div
+            :class="getFontSizeClassName(currentState.fontSize).subtitle"
+            class="text-primary-100 py-1"
+          >
+            {{ education.name }}
           </div>
-          <div v-for="(item, index) in education.list" :key="index">
+          <div
+            v-for="(item, index) in education.list"
+            :key="index"
+            :class="getEditingStyle(item.isEditing)"
+          >
             <div
               v-if="item.isShow"
-              class="py-2 pb-1"
+              class="py-2"
             >
               <div
                 :class="getFontSizeClassName(currentState.fontSize).title"
-                class="text-blacks-100"
+                class="text-blacks-100 pb-1"
               >
                 {{ item.title }}
               </div>
               <span
                 :class="getFontSizeClassName(currentState.fontSize).subtitle"
-                class="text-blacks-40"
+                class="text-blacks-40 pb-1"
               >
                 {{ item.subtitle1 }}
               </span>
@@ -250,22 +283,28 @@ function getFontSizeClassName(id: string) {
             </div>
           </div>
         </section>
-        <section>
+        <section
+          v-if="contact.isShow"
+          class="py-2"
+        >
           <div
-            v-if="contact.isShow"
             :class="getFontSizeClassName(currentState.fontSize).subtitle"
-            class="pt-5 py-1 text-primary-100"
+            class="text-primary-100 py-1"
           >
             {{ contact.name }}
           </div>
-          <div v-for="(item, index) in contact.list" :key="index">
+          <div
+            v-for="(item, index) in contact.list"
+            :key="index"
+            :class="getEditingStyle(item.isEditing)"
+          >
             <div
               v-if="item.isShow"
-              class=""
+              class="py-2"
             >
               <div
                 :class="getFontSizeClassName(currentState.fontSize).subtitle"
-                class="pt-2 pb-1 text-blacks-40"
+                class="pb-1 text-blacks-40"
               >
                 {{ item.subtitle1 }}
               </div>

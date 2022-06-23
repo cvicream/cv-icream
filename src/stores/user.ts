@@ -6,11 +6,13 @@ const initialState = {
   template: 1,
   about: {
     isShow: true,
+    isEditing: false,
     name: 'Name',
     jobTitle: '',
   },
   summary: {
     isShow: true,
+    isEditing: false,
     hashtags: [],
     paragraph: '',
   },
@@ -21,6 +23,7 @@ const initialState = {
       {
         isShow: true,
         isCollapsed: false,
+        isEditing: false,
         title: '',
         subtitle: '',
         subtitle1: '',
@@ -36,6 +39,7 @@ const initialState = {
       {
         isShow: true,
         isCollapsed: false,
+        isEditing: false,
         title: '',
         subtitle: '',
         subtitle1: '',
@@ -51,6 +55,7 @@ const initialState = {
       {
         isShow: true,
         isCollapsed: false,
+        isEditing: false,
         title: '',
         subtitle: '',
         subtitle1: '',
@@ -66,6 +71,7 @@ const initialState = {
       {
         isShow: true,
         isCollapsed: false,
+        isEditing: false,
         title: '',
         subtitle: '',
         subtitle1: '',
@@ -81,6 +87,7 @@ const initialState = {
       {
         isShow: true,
         isCollapsed: false,
+        isEditing: false,
         title: '',
         subtitle: '',
         subtitle1: '',
@@ -96,6 +103,7 @@ const initialState = {
       {
         isShow: true,
         isCollapsed: false,
+        isEditing: false,
         title: '',
         subtitle: '',
         subtitle1: '',
