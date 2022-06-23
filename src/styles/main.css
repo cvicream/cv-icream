@@ -111,14 +111,13 @@ html.dark {
 
 input[type="search"]::-webkit-search-cancel-button {
   -webkit-appearance: none;
-  @apply w-6 h-6 text-blacks-40;
-  background: url('../assets/icons/cancel.svg') no-repeat 50% 50%;
-  background-size: contain;
+  @apply w-6 h-6 text-blacks-40 i-custom:cancel;
   opacity: 0;
   pointer-events: none;
 }
 input[type="search"]::-webkit-search-cancel-button:hover {
-  cursor: pointer; 
+  @apply text-blacks-70;
+  cursor: pointer;
 }
 input[type="search"]:hover::-webkit-search-cancel-button {
   opacity: 1;
