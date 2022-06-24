@@ -130,7 +130,7 @@ function closeAction() {
         <span class="i-custom:download w-6 h-6" />
       </button>
 
-      <div v-if="isActionActive" class="w-[230px] bg-white outline outline-1 outline-blacks-100 rounded z-2 absolute right-2 top-[88px]">
+      <div v-if="isActionActive" class="w-[230px] bg-white outline outline-1 outline-blacks-100 rounded z-3 absolute right-2 top-[88px]">
         <button
           class="w-full h-[46px] flex justify-start items-center px-4 py-3 rounded-t hover:bg-primary-10"
           @click="redirectToDownload"
