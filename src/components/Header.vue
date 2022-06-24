@@ -113,24 +113,24 @@ function closeAction() {
 </script>
 
 <template>
-  <header class="h-[80px] leading-80px text-center bg-white border-b border-b-blacks-20 flex justify-between px-8 py-4">
+  <header class="h-[80px] leading-80px text-center bg-white border-b border-b-blacks-20 flex justify-between items-center px-8 py-4">
     <div class="flex gap-8">
-      <span class="btn-icon-32">
-        <span class="i-origin:logo icon-32" />
-      </span>
+      <a class="btn-icon-32" href="/">
+        <span class="i-origin:logo w-6 h-6" />
+      </a>
       <button class="btn-icon-32">
-        <span class="i-custom:idea icon-32" />
+        <span class="i-custom:idea w-6 h-6" />
       </button>
       <button class="btn-icon-32">
-        <span class="i-custom:feedback icon-32" />
+        <span class="i-custom:feedback w-6 h-6" />
       </button>
     </div>
     <div v-if="isEdit" class="flex gap-8" @focusout="onFocusOut">
-      <button class="btn-icon-32 text-blacks-70" @click="toggle">
-        <span class="i-custom:download icon-32" />
+      <button class="btn-icon-32" @click="toggle">
+        <span class="i-custom:download w-6 h-6" />
       </button>
 
-      <div v-if="isActionActive" class="w-[230px] bg-white outline outline-1 outline-blacks-100 rounded z-1 absolute right-2 top-[88px]">
+      <div v-if="isActionActive" class="w-[230px] bg-white outline outline-1 outline-blacks-100 rounded z-2 absolute right-2 top-[88px]">
         <button
           class="w-full h-[46px] flex justify-start items-center px-4 py-3 rounded-t hover:bg-primary-10"
           @click="redirectToDownload"
