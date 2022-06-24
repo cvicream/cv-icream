@@ -32,21 +32,19 @@ function getEditingStyle(isEditing) {
     :class="currentState.fontFamily"
   >
     <div
-      class="p-2 flex items-baseline gap-4 border rounded-xl"
+      class="p-2 flex items-baseline gap-4"
       :class="currentState.layout === 'layout-left' ? `ml-[25%] ${getEditingStyle(about.isEditing)}` : getEditingStyle(about.isEditing)"
     >
-      <span
+      <div
         v-if="about.name"
         class="font-normal text-primary-100 text-size-[36px] leading-[41px]"
-      >
-        {{ about.name }}
-      </span>
-      <span
+        v-html="about.name"
+      />
+      <div
         v-if="about.jobTitle"
         class="font-normal text-blacks-100 text-size-[14px] leading-[16px]"
-      >
-        {{ about.jobTitle }}
-      </span>
+        v-html="about.jobTitle"
+      />
     </div>
     <div :class="{ 'flex': currentState.layout !== 'layout-full' }">
       <div
@@ -62,20 +60,18 @@ function getEditingStyle(isEditing) {
             v-if="summary.hashtags && summary.hashtags.length"
             class="flex gap-4"
           >
-            <span
+            <div
               v-for="item in summary.hashtags.filter(tag => !!tag)"
               :key="item"
               class="hashtag text-primary-100 bg-primary-10"
-            >
-              {{ item }}
-            </span>
+              v-html="item"
+            />
           </div>
-          <p
+          <div
             :class="getFontSizeClassName(currentState.fontSize).paragraph"
             class="text-blacks-70"
-          >
-            {{ summary.paragraph }}
-          </p>
+            v-html="summary.paragraph"
+          />
         </section>
         <section v-if="experience.isShow">
           <div
@@ -93,32 +89,28 @@ function getEditingStyle(isEditing) {
               v-if="item.isShow"
               class="p-2 flex flex-col gap-1"
             >
-              <span
+              <div
                 :class="getFontSizeClassName(currentState.fontSize).title"
                 class="text-blacks-100"
-              >
-                {{ item.title }}
-              </span>
+                v-html="item.title"
+              />
               <div class="flex justify-between">
-                <span
+                <div
                   :class="getFontSizeClassName(currentState.fontSize).subtitle"
                   class="text-blacks-40"
-                >
-                  {{ item.subtitle1 }}
-                </span>
-                <span
+                  v-html="item.subtitle1"
+                />
+                <div
                   :class="getFontSizeClassName(currentState.fontSize).subtitle"
                   class="text-blacks-40"
-                >
-                  {{ item.subtitle2 }}
-                </span>
+                  v-html="item.subtitle2"
+                />
               </div>
-              <p
+              <div
                 :class="getFontSizeClassName(currentState.fontSize).paragraph"
                 class="text-blacks-70"
-              >
-                {{ item.paragraph }}
-              </p>
+                v-html="item.paragraph"
+              />
             </div>
           </div>
         </section>
@@ -126,9 +118,8 @@ function getEditingStyle(isEditing) {
           <div
             :class="getFontSizeClassName(currentState.fontSize).subtitle"
             class="px-2 py-1 text-primary-100"
-          >
-            {{ project.name }}
-          </div>
+            v-html="project.name"
+          />
           <div
             v-for="(item, index) in project.list"
             :key="index"
@@ -138,32 +129,28 @@ function getEditingStyle(isEditing) {
               v-if="item.isShow"
               class="p-2 flex flex-col gap-1"
             >
-              <span
+              <div
                 :class="getFontSizeClassName(currentState.fontSize).title"
                 class="text-blacks-100"
-              >
-                {{ item.title }}
-              </span>
+                v-html="item.title"
+              />
               <div class="flex justify-between">
-                <span
+                <div
                   :class="getFontSizeClassName(currentState.fontSize).subtitle"
                   class="text-blacks-40"
-                >
-                  {{ item.subtitle1 }}
-                </span>
-                <span
+                  v-html="item.subtitle1"
+                />
+                <div
                   :class="getFontSizeClassName(currentState.fontSize).subtitle"
                   class="text-blacks-40"
-                >
-                  {{ item.subtitle2 }}
-                </span>
+                  v-html="item.subtitle2"
+                />
               </div>
-              <p
+              <div
                 :class="getFontSizeClassName(currentState.fontSize).paragraph"
                 class="text-blacks-70"
-              >
-                {{ item.paragraph }}
-              </p>
+                v-html="item.paragraph"
+              />
             </div>
           </div>
         </section>
@@ -192,19 +179,20 @@ function getEditingStyle(isEditing) {
               class="py-2"
             >
               <div
+                :class="getFontSizeClassName(currentState.fontSize).title"
+                class="text-blacks-100"
+                v-html="item.title"
+              />
+              <div
                 :class="getFontSizeClassName(currentState.fontSize).subtitle"
                 class="text-blacks-40 pb-1"
-              >
-                {{ item.subtitle1 }}
-              </div>
+                v-html="item.subtitle"
+              />
               <div
                 :class="getFontSizeClassName(currentState.fontSize).paragraph"
                 class="text-blacks-70"
-              >
-                <span style="white-space: pre-wrap;">
-                  {{ item.paragraph }}
-                </span>
-              </div>
+                v-html="item.paragraph"
+              />
             </div>
           </div>
         </section>
@@ -229,25 +217,19 @@ function getEditingStyle(isEditing) {
             >
               <div
                 :class="getFontSizeClassName(currentState.fontSize).title"
-                class="text-blacks-100 pb-1"
-              >
-                {{ item.title }}
-              </div>
+                class="text-blacks-100"
+                v-html="item.title"
+              />
               <span
                 :class="getFontSizeClassName(currentState.fontSize).subtitle"
-                class="text-blacks-40 pb-1"
-              >
-                {{ item.subtitle1 }}
-              </span>
-
+                class="text-blacks-40"
+                v-html="item.subtitle"
+              />
               <div
                 :class="getFontSizeClassName(currentState.fontSize).paragraph"
                 class="text-blacks-70"
-              >
-                <span style="white-space: pre-wrap;">
-                  {{ item.paragraph }}
-                </span>
-              </div>
+                v-html="item.paragraph"
+              />
             </div>
           </div>
         </section>
@@ -273,23 +255,18 @@ function getEditingStyle(isEditing) {
               <div
                 :class="getFontSizeClassName(currentState.fontSize).title"
                 class="text-blacks-100 pb-1"
-              >
-                {{ item.title }}
-              </div>
-              <span
+                v-html="item.title"
+              />
+              <div
                 :class="getFontSizeClassName(currentState.fontSize).subtitle"
                 class="text-blacks-40 pb-1"
-              >
-                {{ item.subtitle1 }}
-              </span>
+                v-html="item.subtitle"
+              />
               <div
                 :class="getFontSizeClassName(currentState.fontSize).paragraph"
                 class="text-blacks-70"
-              >
-                <span style="white-space: pre-wrap;">
-                  {{ item.paragraph }}
-                </span>
-              </div>
+                v-html="item.paragraph"
+              />
             </div>
           </div>
         </section>
@@ -313,17 +290,20 @@ function getEditingStyle(isEditing) {
               class="py-2"
             >
               <div
+                :class="getFontSizeClassName(currentState.fontSize).title"
+                class="text-blacks-100 pb-1"
+                v-html="item.title"
+              />
+              <div
                 :class="getFontSizeClassName(currentState.fontSize).subtitle"
                 class="pb-1 text-blacks-40"
-              >
-                {{ item.subtitle1 }}
-              </div>
+                v-html="item.subtitle"
+              />
               <div
                 :class="getFontSizeClassName(currentState.fontSize).paragraph"
-                class="mt-px text-blacks-70 break-words"
-              >
-                <p>  {{ item.paragraph }}</p>
-              </div>
+                class="mt-px text-blacks-70"
+                v-html="item.paragraph"
+              />
             </div>
           </div>
         </section>

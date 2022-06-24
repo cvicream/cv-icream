@@ -55,7 +55,7 @@ const downloadPDF = () => {
   </div>
   <div class="flex flex-col gap-6 pr-2 -mr-3 overflow-y-scroll custom-scrollbar">
     <div>
-      <form
+      <div
         class="rounded-xl px-4 py-6 flex flex-col gap-6"
         :class="[(summary.isShow ? 'bg-primary-10': 'bg-blacks-10')]"
       >
@@ -75,7 +75,7 @@ const downloadPDF = () => {
             class="w-full h-[370px] bg-white border border-blacks-70 rounded-xl"
           >
         </div>
-      </form>
+      </div>
       <button
         class="w-full rounded-xl text-white inline-flex justify-center items-center gap-2 py-3 mt-6 bg-primary-100 border-1 border-transparent transition duration-300 ease-out hover:border-primary-20"
         @click="downloadPDF"

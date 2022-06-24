@@ -1,3 +1,5 @@
-<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M14 9V12H16.21L12.79 20H10V23H18V20H15.79L19.21 12H22V9H14Z" fill="#656565"/>
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Icons">
+<path id="icon/editor/format_italicon/editor/24px" d="M10 5V8H12.21L8.79 16H6V19H14V16H11.79L15.21 8H18V5H10Z" fill="#656565"/>
+</g>
 </svg>
