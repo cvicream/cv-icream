@@ -2,7 +2,7 @@
 import { ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useUserStore } from '~/stores/user'
-import { HIDDEN_INFORMATION } from '~/constants'
+import { HIDDEN_INFORMATION, TEMPLATE_LIST_ITEM } from '~/constants'
 
 const user = useUserStore()
 const { certificate } = storeToRefs(user)
@@ -45,15 +45,7 @@ function toggleShowAll() {
 
 function addItem() {
   user.$patch((state) => {
-    state.certificate.list.push({
-      isShow: true,
-      isCollapsed: false,
-      isEditing: false,
-      title: '',
-      subtitle1: '',
-      subtitle2: '',
-      paragraph: '',
-    })
+    state.certificate.list.push(TEMPLATE_LIST_ITEM)
   })
 }
 
@@ -145,7 +137,7 @@ function deleteItem(index: number) {
           </button>
         </div>
       </div>
-      <form
+      <div
         class="rounded-xl mt-3 px-4 py-6 flex flex-col gap-6 relative"
         :class="[(item.isShow ? 'bg-primary-10': 'bg-blacks-10')]"
       >
@@ -172,7 +164,7 @@ function deleteItem(index: number) {
           <div>
             <label class="note text-blacks-70">Subtitle</label>
             <Editor
-              v-model="item.subtitle1"
+              v-model="item.subtitle"
               class-name="h-[46px]"
               :enable="item.isShow"
               placeholder="Subtitle"
@@ -189,7 +181,7 @@ function deleteItem(index: number) {
             />
           </div>
         </div>
-      </form>
+      </div>
     </div>
     <button
       class="w-full rounded-xl text-blacks-40 inline-flex justify-center items-center py-3 border-transparent border-1 group"
