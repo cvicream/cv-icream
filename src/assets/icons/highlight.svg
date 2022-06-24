@@ -1,4 +1,6 @@
-<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M4 11H28V21H4V11Z" fill="#D3D3D3"/>
-<path fill-rule="evenodd" clip-rule="evenodd" d="M9.5 23L15 9H17L22.49 23H20.24L19.12 20H12.87L11.75 23H9.5ZM16 11.67L13.62 18H18.38L16 11.67Z" fill="#656565"/>
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Icons">
+<path id="Shape" d="M0 7H24V17H0V7Z" fill="#D3D3D3"/>
+<path id="Subtract" fill-rule="evenodd" clip-rule="evenodd" d="M5.5 19L11 5H13L18.49 19H16.24L15.12 16H8.87L7.75 19H5.5ZM12 7.67001L9.62 14H14.38L12 7.67001Z" fill="#656565"/>
+</g>
 </svg>

@@ -2,7 +2,7 @@
 import { ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useUserStore } from '~/stores/user'
-import { HIDDEN_INFORMATION } from '~/constants'
+import { HIDDEN_INFORMATION, TEMPLATE_LIST_ITEM } from '~/constants'
 
 const user = useUserStore()
 const { experience } = storeToRefs(user)
@@ -24,6 +24,18 @@ function onEditNameClick() {
   }
 }
 
+function focusIn(index) {
+  user.$patch((state) => {
+    state.experience.list[index].isEditing = true
+  })
+}
+
+function focusOut(index) {
+  user.$patch((state) => {
+    state.experience.list[index].isEditing = false
+  })
+}
+
 function toggleShowAll() {
   user.$patch((state) => {
     state.experience.isShow = !state.experience.isShow
@@ -33,14 +45,7 @@ function toggleShowAll() {
 
 function addItem() {
   user.$patch((state) => {
-    state.experience.list.push({
-      isShow: true,
-      isCollapsed: false,
-      title: '',
-      subtitle1: '',
-      subtitle2: '',
-      paragraph: '',
-    })
+    state.experience.list.push(TEMPLATE_LIST_ITEM)
   })
 }
 
@@ -105,6 +110,8 @@ function deleteItem(index: number) {
       v-for="(item, index) in experience.list"
       :key="index"
       class="group"
+      @focusin="() => focusIn(index)"
+      @focusout="() => focusOut(index)"
     >
       <div class="flex justify-between items-center">
         <div>
@@ -130,7 +137,7 @@ function deleteItem(index: number) {
           </button>
         </div>
       </div>
-      <form
+      <div
         class="rounded-xl mt-3 px-4 py-6 flex flex-col gap-6 relative"
         :class="[(item.isShow ? 'bg-primary-10': 'bg-blacks-10')]"
       >
@@ -145,50 +152,46 @@ function deleteItem(index: number) {
         </button>
         <div>
           <label class="note text-blacks-70">Title</label>
-          <input
+          <Editor
             v-model="item.title"
-            type="search"
-            name="title"
+            class-name="h-[46px]"
+            :enable="item.isShow"
             placeholder="Title"
-            class="form-input"
-            :disabled="!item.isShow"
-          >
+            :is-single-line="true"
+          />
         </div>
         <div :class="item.isCollapsed ? 'hidden' : 'flex flex-col gap-6'">
           <div>
             <label class="note text-blacks-70">Subtitle (to the left)</label>
-            <input
+            <Editor
               v-model="item.subtitle1"
-              type="search"
-              name="subtitle"
+              class-name="h-[46px]"
+              :enable="item.isShow"
               placeholder="Subtitle"
-              class="form-input"
-              :disabled="!item.isShow"
-            >
+              :is-single-line="true"
+            />
           </div>
           <div>
             <label class="note text-blacks-70">Subtitle (to the right)</label>
-            <input
+            <Editor
               v-model="item.subtitle2"
-              type="search"
-              name="subtitle"
+              class-name="h-[46px]"
+              :enable="item.isShow"
               placeholder="Subtitle"
-              class="form-input"
-              :disabled="!item.isShow"
-            >
+              :is-single-line="true"
+            />
           </div>
           <div>
             <label class="note text-blacks-70">Paragraph</label>
-            <textarea
+            <Editor
               v-model="item.paragraph"
-              name="paragraph"
+              class-name="h-[130px]"
+              :enable="item.isShow"
               placeholder="Paragraph"
-              class="form-textarea custom-scrollbar"
-              :disabled="!item.isShow"
             />
           </div>
         </div>
-      </form>
+      </div>
     </div>
     <button
       class="w-full rounded-xl text-blacks-40 inline-flex justify-center items-center py-3 border-transparent border-1 group"

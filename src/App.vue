@@ -28,6 +28,7 @@ toolbar.$subscribe((mutation, state) => {
   setCssVariable('--primary-color', color.primary)
   setCssVariable('--secondary-color', color.secondary)
   setCssVariable('--shadow-color', color.shadow)
+  setCssVariable('--border-color', color.border)
 })
 </script>
 

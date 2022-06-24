@@ -28,6 +28,7 @@ onMounted(() => {
   setCssVariable('--primary-color', color.primary)
   setCssVariable('--secondary-color', color.secondary)
   setCssVariable('--shadow-color', color.shadow)
+  setCssVariable('--border-color', color.border)
 })
 
 onUnmounted(() => {
@@ -60,7 +61,7 @@ function onBeforeUnload(event) {
           <Toolbar />
         </div>
         <button
-          class="btn-icon-48 fixed bottom-28 right-8 z-1 sm:hidden"
+          class="btn-icon-48 fixed bottom-28 right-8 z-2 sm:hidden"
           @click="toggleCVPreview"
         >
           <span

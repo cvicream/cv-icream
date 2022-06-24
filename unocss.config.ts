@@ -108,7 +108,7 @@ export default defineConfig({
       primary: { // class="text-primary-100"
         10: 'var(--secondary-color)',
         20: '#fce8e1',
-        40: '#fad1c4',
+        40: 'var(--border-color)',
         70: '#f6af98',
         100: 'var(--primary-color)',
       },
