@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { getColor, getFontSizeClassName, hexToRgb, rgbToHex } from '~/utils'
+import { getColor, getFontSizeClassName, hexToRgb, isEditorEmpty, rgbToHex } from '~/utils'
 
 describe('Utils', () => {
   it('hexToRgb', () => {
@@ -23,6 +23,12 @@ describe('Utils', () => {
       primary: '#F18B6B',
       secondary: '#FEF4F1',
       shadow: '#FCE8E1',
+      border: '#FAD1C4',
     })
+  })
+
+  it('isEditorEmpty', () => {
+    expect(isEditorEmpty('<p></p>')).toEqual(false)
+    expect(isEditorEmpty('<p><br></p>')).toEqual(true)
   })
 })

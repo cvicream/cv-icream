@@ -2,7 +2,7 @@
 import { ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useUserStore } from '~/stores/user'
-import { HIDDEN_INFORMATION, TEMPLATE_LIST_ITEM } from '~/constants'
+import { DEFAULT_TEMPLATE, HIDDEN_INFORMATION, TEMPLATE_LIST_ITEM } from '~/constants'
 
 const user = useUserStore()
 const { experience } = storeToRefs(user)
@@ -156,7 +156,7 @@ function deleteItem(index: number) {
             v-model="item.title"
             class-name="h-[46px]"
             :enable="item.isShow"
-            placeholder="Title"
+            :placeholder="DEFAULT_TEMPLATE.experience.list[index].title"
             :is-single-line="true"
           />
         </div>
@@ -167,7 +167,7 @@ function deleteItem(index: number) {
               v-model="item.subtitle1"
               class-name="h-[46px]"
               :enable="item.isShow"
-              placeholder="Subtitle"
+              :placeholder="DEFAULT_TEMPLATE.experience.list[index].subtitle1"
               :is-single-line="true"
             />
           </div>
@@ -177,7 +177,7 @@ function deleteItem(index: number) {
               v-model="item.subtitle2"
               class-name="h-[46px]"
               :enable="item.isShow"
-              placeholder="Subtitle"
+              :placeholder="DEFAULT_TEMPLATE.experience.list[index].subtitle2"
               :is-single-line="true"
             />
           </div>
@@ -187,7 +187,7 @@ function deleteItem(index: number) {
               v-model="item.paragraph"
               class-name="h-[130px]"
               :enable="item.isShow"
-              placeholder="Paragraph"
+              :placeholder="DEFAULT_TEMPLATE.experience.list[index].paragraph"
             />
           </div>
         </div>

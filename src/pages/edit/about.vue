@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
 import { useUserStore } from '~/stores/user'
+import { DEFAULT_TEMPLATE } from '~/constants'
 
 const user = useUserStore()
 const { about } = storeToRefs(user)
@@ -39,7 +40,7 @@ function focusOut(index) {
         <Editor
           v-model="about.name"
           class-name="h-[46px]"
-          placeholder="Your Name"
+          :placeholder="DEFAULT_TEMPLATE.about.name"
           :is-single-line="true"
         />
       </div>
@@ -48,7 +49,7 @@ function focusOut(index) {
         <Editor
           v-model="about.jobTitle"
           class-name="h-[46px]"
-          placeholder="Job Title"
+          :placeholder="DEFAULT_TEMPLATE.about.jobTitle"
           :is-single-line="true"
         />
       </div>

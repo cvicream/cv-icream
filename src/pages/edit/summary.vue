@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
 import { useUserStore } from '~/stores/user'
-import { HIDDEN_INFORMATION } from '~/constants'
+import { DEFAULT_TEMPLATE, HIDDEN_INFORMATION } from '~/constants'
 import Editor from '~/components/Editor.vue'
 
 const user = useUserStore()
@@ -59,7 +59,7 @@ function focusOut(index) {
             v-model="summary.hashtags[0]"
             class-name="h-[46px]"
             :enable="summary.isShow"
-            placeholder="#TeamPlayer"
+            :placeholder="DEFAULT_TEMPLATE.summary.hashtags[0]"
             :is-single-line="true"
           />
         </div>
@@ -69,7 +69,7 @@ function focusOut(index) {
             v-model="summary.hashtags[1]"
             class-name="h-[46px]"
             :enable="summary.isShow"
-            placeholder="#SelfMotivated"
+            :placeholder="DEFAULT_TEMPLATE.summary.hashtags[1]"
             :is-single-line="true"
           />
         </div>
@@ -79,7 +79,7 @@ function focusOut(index) {
             v-model="summary.hashtags[2]"
             class-name="h-[46px]"
             :enable="summary.isShow"
-            placeholder="#CanDoAttitude"
+            :placeholder="DEFAULT_TEMPLATE.summary.hashtags[2]"
             :is-single-line="true"
           />
         </div>
@@ -89,7 +89,7 @@ function focusOut(index) {
             v-model="summary.paragraph"
             class-name="h-[130px]"
             :enable="summary.isShow"
-            placeholder="summary"
+            :placeholder="DEFAULT_TEMPLATE.summary.paragraph"
           />
         </div>
       </div>
