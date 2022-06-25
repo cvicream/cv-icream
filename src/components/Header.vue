@@ -113,8 +113,8 @@ function closeAction() {
 </script>
 
 <template>
-  <header class="h-[80px] leading-80px text-center bg-white border-b border-b-blacks-20 flex justify-between items-center px-8 py-4">
-    <div class="flex gap-8">
+  <header class="h-[56px] leading-56px text-center bg-white flex justify-between items-center px-6 py-3">
+    <div class="flex gap-3">
       <a class="btn-icon-32" href="/">
         <span class="i-origin:logo w-6 h-6" />
       </a>
@@ -125,12 +125,12 @@ function closeAction() {
         <span class="i-custom:feedback w-6 h-6" />
       </button>
     </div>
-    <div v-if="isEdit" class="flex gap-8" @focusout="onFocusOut">
+    <div v-if="isEdit" @focusout="onFocusOut">
       <button class="btn-icon-32" @click="toggle">
         <span class="i-custom:download w-6 h-6" />
       </button>
 
-      <div v-if="isActionActive" class="w-[230px] bg-white outline outline-1 outline-blacks-100 rounded z-3 absolute right-2 top-[88px]">
+      <div v-if="isActionActive" class="w-[230px] bg-white outline outline-1 outline-blacks-100 rounded z-3 absolute right-2 top-[64px]">
         <button
           class="w-full h-[46px] flex justify-start items-center px-4 py-3 rounded-t hover:bg-primary-10"
           @click="redirectToDownload"
@@ -152,4 +152,5 @@ function closeAction() {
       </div>
     </div>
   </header>
+  <div class="border-b border-b-blacks-20" />
 </template>

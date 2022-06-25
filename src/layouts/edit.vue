@@ -48,7 +48,7 @@ function onBeforeUnload(event) {
 <template>
   <main class="h-screen">
     <Header :is-edit="true" />
-    <div class="relative sm:flex sm:flex-row h-[calc(100%-160px)] overflow-hidden sm:h-[calc(100%-80px)]">
+    <div class="relative sm:flex sm:flex-row h-[calc(100%-160px)] overflow-hidden sm:h-[calc(100%-57px)]">
       <Sidebar />
       <div
         class="absolute top-0 bottom-0 left-0 right-0 bg-white px-4 py-8 overflow-auto custom-scrollbar sm:static sm:px-8 sm:py-16 sm:z-0 sm:w-[calc(100%-390px)] sm:flex"
