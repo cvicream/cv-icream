@@ -113,8 +113,8 @@ function closeAction() {
 </script>
 
 <template>
-  <header class="h-[80px] leading-80px text-center bg-white border-b border-b-blacks-20 flex justify-between px-8 py-4">
-    <div class="flex gap-8">
+  <header class="h-[80px] leading-80px text-center bg-white border-b border-b-blacks-20 flex justify-between px-6 py-3">
+    <div class="flex gap-3">
       <span class="btn-icon-32">
         <span class="i-origin:logo icon-32" />
       </span>
