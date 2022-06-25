@@ -2,7 +2,7 @@
 import { ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useUserStore } from '~/stores/user'
-import { HIDDEN_INFORMATION, TEMPLATE_LIST_ITEM } from '~/constants'
+import { DEFAULT_TEMPLATE, HIDDEN_INFORMATION, TEMPLATE_LIST_ITEM } from '~/constants'
 
 const user = useUserStore()
 const { project } = storeToRefs(user)
@@ -156,7 +156,7 @@ function deleteItem(index: number) {
             v-model="item.title"
             class-name="h-[46px]"
             :enable="item.isShow"
-            placeholder="Project name"
+            :placeholder="DEFAULT_TEMPLATE.project.list[index].title"
             :is-single-line="true"
           />
         </div>
@@ -167,7 +167,7 @@ function deleteItem(index: number) {
               v-model="item.subtitle1"
               class-name="h-[46px]"
               :enable="item.isShow"
-              placeholder="Team name"
+              :placeholder="DEFAULT_TEMPLATE.project.list[index].subtitle1"
               :is-single-line="true"
             />
           </div>
@@ -177,7 +177,7 @@ function deleteItem(index: number) {
               v-model="item.subtitle2"
               class-name="h-[46px]"
               :enable="item.isShow"
-              placeholder="Timeline"
+              :placeholder="DEFAULT_TEMPLATE.project.list[index].subtitle2"
               :is-single-line="true"
             />
           </div>
@@ -187,7 +187,7 @@ function deleteItem(index: number) {
               v-model="item.paragraph"
               class-name="h-[130px]"
               :enable="item.isShow"
-              placeholder="Describe what you have done for this project..."
+              :placeholder="DEFAULT_TEMPLATE.project.list[index].paragraph"
             />
           </div>
         </div>

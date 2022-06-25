@@ -117,6 +117,16 @@ function getColor(id: string) {
     }
 }
 
+/**
+ * Check if editor value is empty
+ *
+ * @param  {string} value
+ *
+ */
+function isEditorEmpty(value: string) {
+  return value === '<p><br></p>'
+}
+
 export {
   hasStorage,
   getStorage,
@@ -128,4 +138,5 @@ export {
   setCssVariable,
   getFontSizeClassName,
   getColor,
+  isEditorEmpty,
 }

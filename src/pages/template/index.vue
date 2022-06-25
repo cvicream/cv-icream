@@ -81,19 +81,19 @@ const onNext = () => {
         >
       </div>
       <div class="text-center">
-        <label for="template-5" class="flex flex-col gap-5 cursor-pointer">
+        <label for="template-0" class="flex flex-col gap-5 cursor-pointer">
           <img src="../../assets/images/template-BuildfromScratch.png">
           <span class="leading text-blacks-100">
             {{ t('template.job.others') }}
           </span>
         </label>
         <input
-          id="template-5"
+          id="template-0"
           v-model="user.template"
           class="btn-radio mt-8"
           type="radio"
           name="template"
-          :value="5"
+          :value="0"
         >
       </div>
     </div>
