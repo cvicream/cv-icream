@@ -33,7 +33,126 @@ export const TEMPLATE_LIST_ITEM = {
   paragraph: '',
 }
 
+export const DEFAULT_TEMPLATE = {
+  template: 0,
+  isEditing: true,
+  about: {
+    isShow: true,
+    isEditing: false,
+    name: 'Your Name',
+    jobTitle: 'Job Title',
+  },
+  summary: {
+    isShow: true,
+    isEditing: false,
+    hashtags: ['#YourFeature1', '#YourFeature2', '#YourFeature3'],
+    paragraph: 'Describe more details about yourself...',
+  },
+  experience: {
+    isShow: true,
+    name: 'EXPERIENCE',
+    list: [
+      {
+        isShow: true,
+        isCollapsed: false,
+        isEditing: false,
+        title: 'Job Title',
+        subtitle: '',
+        subtitle1: 'Company Name',
+        subtitle2: 'Timeline',
+        paragraph: 'Describe more details for this experience...',
+      },
+    ],
+  },
+  project: {
+    isShow: true,
+    name: 'PROJECT',
+    list: [
+      {
+        isShow: true,
+        isCollapsed: false,
+        isEditing: false,
+        title: 'Project Name',
+        subtitle: '',
+        subtitle1: 'Team Name',
+        subtitle2: 'Timeline',
+        paragraph: 'Describe more details for this project...',
+      },
+    ],
+  },
+  skill: {
+    isShow: true,
+    name: 'SKILL',
+    list: [
+      {
+        isShow: true,
+        isCollapsed: false,
+        isEditing: false,
+        title: 'Skill Title',
+        subtitle: 'Skill Type',
+        subtitle1: '',
+        subtitle2: '',
+        paragraph: 'Skill 1, Skill 2, ...',
+      },
+    ],
+  },
+  education: {
+    isShow: true,
+    name: 'EDUCATION',
+    list: [
+      {
+        isShow: true,
+        isCollapsed: false,
+        isEditing: false,
+        title: 'Degree Title',
+        subtitle: 'Institution',
+        subtitle1: '',
+        subtitle2: '',
+        paragraph:
+`Graduated/ Time
+City, Country`,
+      },
+    ],
+  },
+  certificate: {
+    isShow: true,
+    name: 'CERTIFICATE',
+    list: [
+      {
+        isShow: true,
+        isCollapsed: false,
+        isEditing: false,
+        title: 'Certificate Title',
+        subtitle: 'Institution',
+        subtitle1: '',
+        subtitle2: '',
+        paragraph: 'Describe about what this certificate is for...',
+      },
+    ],
+  },
+  contact: {
+    isShow: true,
+    name: 'CONTACT',
+    list: [
+      {
+        isShow: true,
+        isCollapsed: false,
+        isEditing: false,
+        title: 'Contact Title',
+        subtitle: 'Contact Type',
+        subtitle1: '',
+        subtitle2: '',
+        paragraph:
+`Phone number
+Email
+Location`,
+      },
+    ],
+  },
+}
+
 export const TEMPLATES = [
+  JSON.parse(JSON.stringify(DEFAULT_TEMPLATE)), // deep copy
   {
     template: 1,
     isEditing: true,
@@ -367,32 +486,6 @@ Management`,
 Mandarin (native)`,
         },
       ],
-    },
-  },
-  {
-    template: 5,
-    isEditing: true,
-    about: {
-      isShow: true,
-      isEditing: false,
-      name: 'Your Name',
-      jobTitle: '',
-    },
-    summary: {
-      isShow: true,
-      isEditing: false,
-      hashtags: [],
-      paragraph: '',
-    },
-    experience: {
-      isShow: true,
-      name: 'EXPERIENCE',
-      list: [TEMPLATE_LIST_ITEM],
-    },
-    skill: {
-      isShow: true,
-      name: 'SKILL',
-      list: [TEMPLATE_LIST_ITEM],
     },
   },
 ]

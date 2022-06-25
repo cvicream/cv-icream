@@ -23,9 +23,9 @@ export default defineConfig({
     ['btn-secondary', 'h-12 px-10 rounded-xl text-blacks-100 bg-white border-1 border-primary-100 transition duration-300 ease-out hover:bg-primary-10'],
     ['btn-icon-48', 'w-12 h-12 p-2 rounded-full text-blacks-70 bg-white shadow-custom hover:bg-primary-10'],
     ['btn-icon-48-fill', 'w-12 h-12 p-[calc(0.5rem-1px)] rounded-full text-white bg-primary-100 shadow-custom border-1 border-transparent hover:border-primary-20'],
-    ['btn-icon-32', 'w-8 h-8 p-1 text-blacks-70 rounded-full hover:bg-primary-10'],
+    ['btn-icon-32', 'w-8 h-8 flex justify-center items-center text-blacks-70 rounded-full hover:bg-primary-10'],
     ['btn-icon-24', 'w-6 h-6 text-blacks-40 hover:text-blacks-70'],
-    ['icon-32', 'w-8 h-8 block text-blacks-70'],
+    ['icon-32', 'w-8 h-8 p-1 block text-blacks-70'],
     ['icon-32-fill', 'w-8 h-8 block text-block'],
     ['btn', 'px-4 py-1 rounded inline-block bg-teal-600 text-white cursor-pointer hover:bg-teal-700 disabled:cursor-default disabled:bg-gray-600 disabled:opacity-50'],
     ['icon-btn', 'text-[0.9em] inline-block cursor-pointer select-none opacity-75 transition duration-200 ease-in-out hover:opacity-100 hover:text-teal-600 cursor-pointer'],
@@ -94,6 +94,7 @@ export default defineConfig({
   safelist: [
     'prose', 'prose-sm', 'm-auto', 'text-left',
     'i-custom:layout-right', 'i-custom:layout-left', 'i-custom:layout-full',
+    'i-custom:idea',
     'font-arial', 'font-georgia', 'font-gill-sans', 'font-helvetica', 'font-times-new-roman', 'font-lato',
   ],
   theme: {

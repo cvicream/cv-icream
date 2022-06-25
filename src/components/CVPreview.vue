@@ -2,6 +2,8 @@
 import { storeToRefs } from 'pinia'
 import { useUserStore } from '~/stores/user'
 import { useToolbarStore } from '~/stores/toolbar'
+import { isEditorEmpty } from '~/utils'
+import { DEFAULT_TEMPLATE } from '~/constants'
 
 const user = useUserStore()
 const { about, summary, experience, project, skill, education, certificate, contact } = storeToRefs(user)
@@ -38,12 +40,12 @@ function getEditingStyle(isEditing) {
       <div
         v-if="about.name"
         class="font-normal text-primary-100 text-size-[36px] leading-[41px]"
-        v-html="about.name"
+        v-html="isEditorEmpty(about.name) ? DEFAULT_TEMPLATE.about.name : about.name"
       />
       <div
         v-if="about.jobTitle"
         class="font-normal text-blacks-100 text-size-[14px] leading-[16px]"
-        v-html="about.jobTitle"
+        v-html="isEditorEmpty(about.jobTitle) ? DEFAULT_TEMPLATE.about.jobTitle : about.jobTitle"
       />
     </div>
     <div :class="{ 'flex': currentState.layout !== 'layout-full' }">
@@ -61,16 +63,16 @@ function getEditingStyle(isEditing) {
             class="flex gap-4"
           >
             <div
-              v-for="item in summary.hashtags.filter(tag => !!tag)"
+              v-for="(item, index) in summary.hashtags"
               :key="item"
               class="hashtag text-primary-100 bg-primary-10"
-              v-html="item"
+              v-html="isEditorEmpty(item) ? DEFAULT_TEMPLATE.summary.hashtags[index] : item"
             />
           </div>
           <div
             :class="getFontSizeClassName(currentState.fontSize).paragraph"
             class="text-blacks-70"
-            v-html="summary.paragraph"
+            v-html="isEditorEmpty(summary.paragraph) ? DEFAULT_TEMPLATE.summary.paragraph : summary.paragraph"
           />
         </section>
         <section v-if="experience.isShow">
@@ -78,7 +80,7 @@ function getEditingStyle(isEditing) {
             :class="getFontSizeClassName(currentState.fontSize).subtitle"
             class="px-2 py-1 text-primary-100"
           >
-            {{ experience.name }}
+            {{ experience.name ? experience.name : DEFAULT_TEMPLATE.experience.name }}
           </div>
           <div
             v-for="(item, index) in experience.list"
@@ -92,24 +94,24 @@ function getEditingStyle(isEditing) {
               <div
                 :class="getFontSizeClassName(currentState.fontSize).title"
                 class="text-blacks-100"
-                v-html="item.title"
+                v-html="isEditorEmpty(item.title) ? DEFAULT_TEMPLATE.experience.list[index].title : item.title"
               />
               <div class="flex justify-between">
                 <div
                   :class="getFontSizeClassName(currentState.fontSize).subtitle"
                   class="text-blacks-40"
-                  v-html="item.subtitle1"
+                  v-html="isEditorEmpty(item.subtitle1) ? DEFAULT_TEMPLATE.experience.list[index].subtitle1 : item.subtitle1"
                 />
                 <div
                   :class="getFontSizeClassName(currentState.fontSize).subtitle"
                   class="text-blacks-40"
-                  v-html="item.subtitle2"
+                  v-html="isEditorEmpty(item.subtitle2) ? DEFAULT_TEMPLATE.experience.list[index].subtitle2 : item.subtitle2"
                 />
               </div>
               <div
                 :class="getFontSizeClassName(currentState.fontSize).paragraph"
                 class="text-blacks-70"
-                v-html="item.paragraph"
+                v-html="isEditorEmpty(item.paragraph) ? DEFAULT_TEMPLATE.experience.list[index].paragraph : item.paragraph"
               />
             </div>
           </div>
@@ -118,8 +120,9 @@ function getEditingStyle(isEditing) {
           <div
             :class="getFontSizeClassName(currentState.fontSize).subtitle"
             class="px-2 py-1 text-primary-100"
-            v-html="project.name"
-          />
+          >
+            {{ project.name ? project.name : DEFAULT_TEMPLATE.project.name }}
+          </div>
           <div
             v-for="(item, index) in project.list"
             :key="index"
@@ -132,24 +135,24 @@ function getEditingStyle(isEditing) {
               <div
                 :class="getFontSizeClassName(currentState.fontSize).title"
                 class="text-blacks-100"
-                v-html="item.title"
+                v-html="isEditorEmpty(item.title) ? DEFAULT_TEMPLATE.project.list[index].title : item.title"
               />
               <div class="flex justify-between">
                 <div
                   :class="getFontSizeClassName(currentState.fontSize).subtitle"
                   class="text-blacks-40"
-                  v-html="item.subtitle1"
+                  v-html="isEditorEmpty(item.subtitle1) ? DEFAULT_TEMPLATE.project.list[index].subtitle1 : item.subtitle1"
                 />
                 <div
                   :class="getFontSizeClassName(currentState.fontSize).subtitle"
                   class="text-blacks-40"
-                  v-html="item.subtitle2"
+                  v-html="isEditorEmpty(item.subtitle2) ? DEFAULT_TEMPLATE.project.list[index].subtitle2 : item.subtitle2"
                 />
               </div>
               <div
                 :class="getFontSizeClassName(currentState.fontSize).paragraph"
                 class="text-blacks-70"
-                v-html="item.paragraph"
+                v-html="isEditorEmpty(item.paragraph) ? DEFAULT_TEMPLATE.project.list[index].paragraph : item.paragraph"
               />
             </div>
           </div>
@@ -167,7 +170,7 @@ function getEditingStyle(isEditing) {
             :class="getFontSizeClassName(currentState.fontSize).subtitle"
             class="py-1 text-primary-100"
           >
-            {{ skill.name }}
+            {{ skill.name ? skill.name : DEFAULT_TEMPLATE.skill.name }}
           </div>
           <div
             v-for="(item, index) in skill.list"
@@ -181,17 +184,17 @@ function getEditingStyle(isEditing) {
               <div
                 :class="getFontSizeClassName(currentState.fontSize).title"
                 class="text-blacks-100"
-                v-html="item.title"
+                v-html="isEditorEmpty(item.title) ? DEFAULT_TEMPLATE.skill.list[index].title : item.title"
               />
               <div
                 :class="getFontSizeClassName(currentState.fontSize).subtitle"
                 class="text-blacks-40 pb-1"
-                v-html="item.subtitle"
+                v-html="isEditorEmpty(item.subtitle) ? DEFAULT_TEMPLATE.skill.list[index].subtitle : item.subtitle"
               />
               <div
                 :class="getFontSizeClassName(currentState.fontSize).paragraph"
                 class="text-blacks-70"
-                v-html="item.paragraph"
+                v-html="isEditorEmpty(item.paragraph) ? DEFAULT_TEMPLATE.skill.list[index].paragraph : item.paragraph"
               />
             </div>
           </div>
@@ -204,7 +207,7 @@ function getEditingStyle(isEditing) {
             :class="getFontSizeClassName(currentState.fontSize).subtitle"
             class="text-primary-100 py-1"
           >
-            {{ certificate.name }}
+            {{ certificate.name ? certificate.name : DEFAULT_TEMPLATE.certificate.name }}
           </div>
           <div
             v-for="(item, index) in certificate.list"
@@ -218,17 +221,17 @@ function getEditingStyle(isEditing) {
               <div
                 :class="getFontSizeClassName(currentState.fontSize).title"
                 class="text-blacks-100"
-                v-html="item.title"
+                v-html="isEditorEmpty(item.title) ? DEFAULT_TEMPLATE.certificate.list[index].title : item.title"
               />
               <span
                 :class="getFontSizeClassName(currentState.fontSize).subtitle"
                 class="text-blacks-40"
-                v-html="item.subtitle"
+                v-html="isEditorEmpty(item.subtitle) ? DEFAULT_TEMPLATE.certificate.list[index].subtitle : item.subtitle"
               />
               <div
                 :class="getFontSizeClassName(currentState.fontSize).paragraph"
                 class="text-blacks-70"
-                v-html="item.paragraph"
+                v-html="isEditorEmpty(item.paragraph) ? DEFAULT_TEMPLATE.certificate.list[index].paragraph : item.paragraph"
               />
             </div>
           </div>
@@ -241,7 +244,7 @@ function getEditingStyle(isEditing) {
             :class="getFontSizeClassName(currentState.fontSize).subtitle"
             class="text-primary-100 py-1"
           >
-            {{ education.name }}
+            {{ education.name ? education.name : DEFAULT_TEMPLATE.education.name }}
           </div>
           <div
             v-for="(item, index) in education.list"
@@ -255,17 +258,17 @@ function getEditingStyle(isEditing) {
               <div
                 :class="getFontSizeClassName(currentState.fontSize).title"
                 class="text-blacks-100 pb-1"
-                v-html="item.title"
+                v-html="isEditorEmpty(item.title) ? DEFAULT_TEMPLATE.education.list[index].title : item.title"
               />
               <div
                 :class="getFontSizeClassName(currentState.fontSize).subtitle"
                 class="text-blacks-40 pb-1"
-                v-html="item.subtitle"
+                v-html="isEditorEmpty(item.subtitle) ? DEFAULT_TEMPLATE.education.list[index].subtitle : item.subtitle"
               />
               <div
                 :class="getFontSizeClassName(currentState.fontSize).paragraph"
                 class="text-blacks-70"
-                v-html="item.paragraph"
+                v-html="isEditorEmpty(item.paragraph) ? DEFAULT_TEMPLATE.education.list[index].paragraph : item.paragraph"
               />
             </div>
           </div>
@@ -278,7 +281,7 @@ function getEditingStyle(isEditing) {
             :class="getFontSizeClassName(currentState.fontSize).subtitle"
             class="text-primary-100 py-1"
           >
-            {{ contact.name }}
+            {{ contact.name ? contact.name : DEFAULT_TEMPLATE.contact.name }}
           </div>
           <div
             v-for="(item, index) in contact.list"
@@ -292,17 +295,17 @@ function getEditingStyle(isEditing) {
               <div
                 :class="getFontSizeClassName(currentState.fontSize).title"
                 class="text-blacks-100 pb-1"
-                v-html="item.title"
+                v-html="isEditorEmpty(item.title) ? DEFAULT_TEMPLATE.contact.list[index].title : item.title"
               />
               <div
                 :class="getFontSizeClassName(currentState.fontSize).subtitle"
                 class="pb-1 text-blacks-40"
-                v-html="item.subtitle"
+                v-html="isEditorEmpty(item.subtitle) ? DEFAULT_TEMPLATE.contact.list[index].subtitle : item.subtitle"
               />
               <div
                 :class="getFontSizeClassName(currentState.fontSize).paragraph"
                 class="mt-px text-blacks-70"
-                v-html="item.paragraph"
+                v-html="isEditorEmpty(item.paragraph) ? DEFAULT_TEMPLATE.contact.list[index].paragraph : item.paragraph"
               />
             </div>
           </div>
