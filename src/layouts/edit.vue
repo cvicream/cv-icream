@@ -55,7 +55,7 @@ function onBeforeUnload(event) {
         :class="{ 'visible z-2': isCVPreviewVisible }"
       >
         <div class="w-[595px] min-w-[595px] h-[842px] min-h-[842px] mx-auto">
-          <CVPreview />
+          <CVPreview id="cv-preview" />
         </div>
         <div class="flex justify-center fixed bottom-0 left-0 right-0 z-2 sm:bottom-8 sm:right-[390px] sm:z-0">
           <Toolbar />
