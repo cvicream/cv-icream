@@ -3,6 +3,7 @@ import { onMounted } from 'vue'
 import { jsPDF as JsPDF } from 'jspdf'
 import { storeToRefs } from 'pinia'
 import { useUserStore } from '~/stores/user'
+import { stripHtml } from '~/utils'
 
 const router = useRouter()
 const user = useUserStore()
@@ -47,7 +48,7 @@ function downloadPDF() {
   if (element) {
     doc.html(element, {
       callback(doc) {
-        doc.save(`${about.value.jobTitle} - ${about.value.name}.pdf`)
+        doc.save(`${stripHtml(about.value.jobTitle)} - ${stripHtml(about.value.name)}.pdf`)
       },
     })
   }

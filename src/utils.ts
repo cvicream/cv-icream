@@ -127,6 +127,17 @@ function isEditorEmpty(value: string) {
   return value === '<p><br></p>'
 }
 
+/**
+ * Get text from a HTML string
+ *
+ * @param {string} html
+ */
+function stripHtml(html: string) {
+  const tempDivElement = document.createElement('div')
+  tempDivElement.innerHTML = html
+  return tempDivElement.textContent || tempDivElement.innerText || ''
+}
+
 export {
   hasStorage,
   getStorage,
@@ -139,4 +150,5 @@ export {
   getFontSizeClassName,
   getColor,
   isEditorEmpty,
+  stripHtml,
 }
