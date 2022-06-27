@@ -18,7 +18,7 @@ const onNext = () => {
     <div class="flex flex-col gap-16 sm:flex-row">
       <div class="text-center">
         <label for="template-1" class="flex flex-col gap-5 cursor-pointer">
-          <img src="../../assets/images/template-UIDesigner.png">
+          <img src="../../assets/images/template-UIDesigner.svg">
           <span class="leading text-blacks-100">
             {{ t('template.job.uidesigner') }}
           </span>
@@ -34,7 +34,7 @@ const onNext = () => {
       </div>
       <div class="text-center">
         <label for="template-2" class="flex flex-col gap-5 cursor-pointer">
-          <img src="../../assets/images/template-UXDesigner.png">
+          <img src="../../assets/images/template-UXDesigner.svg">
           <span class="leading text-blacks-100">
             {{ t('template.job.uxdesigner') }}
           </span>
@@ -50,7 +50,7 @@ const onNext = () => {
       </div>
       <div class="text-center">
         <label for="template-3" class="flex flex-col gap-5 cursor-pointer">
-          <img src="../../assets/images/template-Developer.png">
+          <img src="../../assets/images/template-Developer.svg">
           <span class="leading text-blacks-100">
             {{ t('template.job.developer') }}
           </span>
@@ -66,7 +66,7 @@ const onNext = () => {
       </div>
       <div class="text-center">
         <label for="template-4" class="flex flex-col gap-5 cursor-pointer">
-          <img src="../../assets/images/template-ProductManager.png">
+          <img src="../../assets/images/template-ProductManager.svg">
           <span class="leading text-blacks-100">
             {{ t('template.job.manager') }}
           </span>
@@ -82,7 +82,7 @@ const onNext = () => {
       </div>
       <div class="text-center">
         <label for="template-0" class="flex flex-col gap-5 cursor-pointer">
-          <img src="../../assets/images/template-BuildfromScratch.png">
+          <img src="../../assets/images/template-BuildfromScratch.svg">
           <span class="leading text-blacks-100">
             {{ t('template.job.others') }}
           </span>
