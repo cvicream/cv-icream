@@ -1,7 +1,5 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
-import * as htmlToImage from 'html-to-image'
-import { toPng } from 'html-to-image'
+import { onMounted } from 'vue'
 import { jsPDF as JsPDF } from 'jspdf'
 import { storeToRefs } from 'pinia'
 import { useUserStore } from '~/stores/user'
@@ -10,36 +8,49 @@ const router = useRouter()
 const user = useUserStore()
 const { about, summary } = storeToRefs(user)
 
-const toggleShow = () => {
-  user.$patch((state) => {
-    state.summary.isShow = !state.summary.isShow
-  })
-}
-
-const imgSrc = ref(null)
-
 onMounted(() => {
-  htmlToImage.toPng(document.getElementById('cv-preview'))
-    .then((dataUrl) => {
-      imgSrc.value = dataUrl
+  const downloadPreviewContainer = document.getElementById('download-preview-container')
+  if (downloadPreviewContainer) {
+    const resizeObserver = new ResizeObserver(() => {
+      resize()
     })
-    .catch((error) => {
-      console.error('Oops, something went wrong!', error)
-    })
+
+    resizeObserver.observe(downloadPreviewContainer)
+  }
 })
 
-const downloadPDF = () => {
+function resize() {
+  const cvPreview = document.getElementById('cv-preview')
+  const downloadPreviewContainer = document.getElementById('download-preview-container')
+  const downloadPreview = document.getElementById('download-preview')
+
+  if (cvPreview && downloadPreviewContainer && downloadPreview) {
+    const maxWidth = cvPreview.clientWidth
+    const maxHeight = cvPreview.clientHeight
+    const width = downloadPreviewContainer.clientWidth
+    const scale = width / maxWidth
+
+    downloadPreviewContainer.style.height = `${maxHeight * scale}px`
+    downloadPreview.style.transform = `scale(${scale})`
+    downloadPreview.style['transform-origin'] = 'top left'
+  }
+}
+
+function downloadPDF() {
   const doc = new JsPDF({
     orientation: 'p',
     unit: 'pt',
     format: 'a4',
     putOnlyUsedFonts: true,
   })
-  doc.html(document.getElementById('cv-preview'), {
-    callback(doc) {
-      doc.save(`${about.value.jobTitle} - ${about.value.name}.pdf`)
-    },
-  })
+  const element = document.getElementById('cv-preview')
+  if (element) {
+    doc.html(element, {
+      callback(doc) {
+        doc.save(`${about.value.jobTitle} - ${about.value.name}.pdf`)
+      },
+    })
+  }
 }
 </script>
 
@@ -69,11 +80,11 @@ const downloadPDF = () => {
         </div>
         <div>
           <label class="note text-blacks-70">Preview</label>
-          <img
-            v-if="imgSrc"
-            :src="imgSrc"
-            class="w-full h-[370px] bg-white border border-blacks-70 rounded-xl"
-          >
+          <div id="download-preview-container">
+            <div id="download-preview" class="w-[595px] min-w-[595px] h-[842px] min-h-[842px] overflow-hidden border-1 border-blacks-70 rounded-xl">
+              <CVPreview id="cv-download-preview" />
+            </div>
+          </div>
         </div>
       </div>
       <button

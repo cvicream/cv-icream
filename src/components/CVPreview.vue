@@ -1,9 +1,16 @@
 <script setup lang="ts">
+import { ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useUserStore } from '~/stores/user'
 import { useToolbarStore } from '~/stores/toolbar'
 import { isEditorEmpty } from '~/utils'
 import { DEFAULT_TEMPLATE } from '~/constants'
+
+const props = defineProps<{
+  id: string
+}>()
+
+const id = ref(props.id || 'cv-preview')
 
 const user = useUserStore()
 const { about, summary, experience, project, skill, education, certificate, contact } = storeToRefs(user)
@@ -29,8 +36,8 @@ function getEditingStyle(isEditing) {
 <template>
   <div class="title-default subtitle-default paragraph-default title-large subtitle-large paragraph-large" />
   <div
-    id="cv-preview"
-    class="w-full h-full flex-shrink-0 p-6 shadow-custom"
+    :id="id"
+    class="w-full h-full bg-white flex-shrink-0 p-6 shadow-custom"
     :class="currentState.fontFamily"
   >
     <div
