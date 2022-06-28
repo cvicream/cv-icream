@@ -8,7 +8,7 @@ function closeModal() {
 
 <template>
   <div
-    class="fixed top-0 right-0 bottom-0 left-0 flex justify-center items-center"
+    class="fixed top-0 right-0 bottom-0 left-0 z-99 flex justify-center items-center"
     style="background-color: rgba(241, 139, 107, 0.1);"
   >
     <div class="w-[400px] p-4 bg-white rounded-lg">
