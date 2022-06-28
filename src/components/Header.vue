@@ -3,7 +3,7 @@ import { ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useUserStore } from '~/stores/user'
 import { useToolbarStore } from '~/stores/toolbar'
-import { getJsonUpload } from '~/utils'
+import { getJsonUpload, stripHtml } from '~/utils'
 
 const props = defineProps<{
   isEdit: boolean
@@ -61,8 +61,8 @@ function exportJsonFile() {
   const dataUri = `data:application/json;charset=utf-8,${encodeURIComponent(dataStr)}`
 
   const fileNames = ['CV']
-  if (about.value.name) fileNames.push(about.value.name)
-  if (about.value.jobTitle) fileNames.push(about.value.jobTitle)
+  if (about.value.name) fileNames.push(stripHtml(about.value.name))
+  if (about.value.jobTitle) fileNames.push(stripHtml(about.value.jobTitle))
   const exportFileDefaultName = `${fileNames.join('_')}.cvicream`
 
   const linkElement = document.createElement('a')
