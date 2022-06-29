@@ -156,7 +156,7 @@ function deleteItem(index: number) {
             v-model="item.title"
             class-name="h-[46px]"
             :enable="item.isShow"
-            :placeholder="DEFAULT_TEMPLATE.certificate.list[index].title"
+            :placeholder="DEFAULT_TEMPLATE.certificate.list[0].title"
             :is-single-line="true"
           />
         </div>
@@ -167,7 +167,7 @@ function deleteItem(index: number) {
               v-model="item.subtitle"
               class-name="h-[46px]"
               :enable="item.isShow"
-              :placeholder="DEFAULT_TEMPLATE.certificate.list[index].subtitle"
+              :placeholder="DEFAULT_TEMPLATE.certificate.list[0].subtitle"
               :is-single-line="true"
             />
           </div>
@@ -177,7 +177,7 @@ function deleteItem(index: number) {
               v-model="item.paragraph"
               class-name="h-[130px]"
               :enable="item.isShow"
-              :placeholder="DEFAULT_TEMPLATE.certificate.list[index].paragraph"
+              :placeholder="DEFAULT_TEMPLATE.certificate.list[0].paragraph"
             />
           </div>
         </div>
