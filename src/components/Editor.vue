@@ -1,5 +1,5 @@
 <script lang="ts">
-import { computed, defineComponent, onMounted, ref } from 'vue'
+import { computed, defineComponent, nextTick, onMounted, ref } from 'vue'
 import { QuillEditor } from '@vueup/vue-quill'
 import '@vueup/vue-quill/dist/vue-quill.snow.css'
 import '@vueup/vue-quill/dist/vue-quill.bubble.css'
@@ -42,8 +42,22 @@ export default defineComponent({
     const linkVisible = ref(false)
 
     const content = computed({
-      get: () => props.modelValue === undefined ? '' : props.modelValue,
-      set: value => emit('update:modelValue', value),
+      get: () => {
+        const value = props.modelValue === undefined ? '' : props.modelValue
+        if (editor.value) {
+          editor.value.setHTML(value)
+          nextTick(() => {
+            const quill = editor.value.getQuill()
+            quill.setSelection(value.length, 0, 'user')
+            quill.focus()
+          })
+        }
+
+        return value
+      },
+      set: (value) => {
+        emit('update:modelValue', value)
+      },
     })
 
     onMounted(() => {

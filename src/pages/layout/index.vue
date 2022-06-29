@@ -1,9 +1,8 @@
 <script setup lang="ts">
-import { ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useUserStore } from '~/stores/user'
 import { useToolbarStore } from '~/stores/toolbar'
-import { getJsonUpload, isEditing } from '~/utils'
+import { getJsonUpload, setStatus } from '~/utils'
 import { LAYOUTS } from '~/constants'
 
 const user = useUserStore()
@@ -11,14 +10,6 @@ const toolbar = useToolbarStore()
 const { currentState } = storeToRefs(toolbar)
 const { t } = useI18n()
 const router = useRouter()
-
-const modalVisible = ref(isEditing())
-
-function createNew() {
-  user.$reset()
-  toolbar.$reset()
-  modalVisible.value = false
-}
 
 async function upload() {
   await importJsonFile()
@@ -49,6 +40,7 @@ async function importJsonFile() {
 }
 
 function redirectToEdit() {
+  setStatus({ isSaved: true })
   router.push('/edit/about')
 }
 
@@ -98,36 +90,6 @@ function onNext() {
         </span>
       </button>
     </div>
-
-    <Modal
-      v-show="modalVisible"
-      @close="modalVisible = false"
-    >
-      <div class="leading text-primary-100 mt-1 px-2">
-        Recover your information?
-      </div>
-      <div class="paragraph text-blacks-100 mt-6 px-2">
-        Would you like to recover your information?
-      </div>
-      <div class="flex flex-col gap-6 px-2 pt-6 pb-2 sm:flex-row">
-        <button
-          class="btn-secondary px-8 flex-shrink-0"
-          @click="createNew"
-        >
-          <span class="subleading">
-            No, thanks.
-          </span>
-        </button>
-        <button
-          class="btn-primary px-8 flex-shrink-0"
-          @click="redirectToEdit"
-        >
-          <span class="subleading">
-            Yes, please.
-          </span>
-        </button>
-      </div>
-    </Modal>
   </div>
 </template>
 

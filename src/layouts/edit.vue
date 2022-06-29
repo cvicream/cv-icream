@@ -1,13 +1,15 @@
 <script setup lang="ts">
-import { onBeforeMount, onMounted, onUnmounted } from 'vue'
+import { onBeforeMount, onMounted, onUnmounted, ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useUserStore } from '~/stores/user'
 import { useToolbarStore } from '~/stores/toolbar'
-import { getColor, setCssVariable } from '~/utils'
+import { getColor, getStorage, hasStorage, isSaved, setCssVariable, setStatus } from '~/utils'
 
 const user = useUserStore()
 const toolbar = useToolbarStore()
 const { isCVPreviewVisible, currentState } = storeToRefs(toolbar)
+const saveModalVisible = ref(false)
+const recoverModalVisible = ref(false)
 
 function toggleCVPreview() {
   toolbar.$patch((state) => {
@@ -20,9 +22,10 @@ onBeforeMount(() => {
 })
 
 onMounted(() => {
-  user.$patch((state) => {
-    state.isEditing = true
-  })
+  if (isSaved() && !isUpload())
+    recoverModalVisible.value = isSaved()
+  else
+    setStatus({ isEditing: true })
 
   const color = getColor(currentState.value.color)
   setCssVariable('--primary-color', color.primary)
@@ -32,10 +35,14 @@ onMounted(() => {
 })
 
 onUnmounted(() => {
-  window.removeEventListener('beforeunload', onBeforeUnload)
+  setStatus({ isEditing: false })
+  // window.removeEventListener('beforeunload', onBeforeUnload)
 })
 
 function onBeforeUnload(event) {
+  if (!isSaved())
+    saveModalVisible.value = true
+
   // cancel the event as stated by the standard
   event.preventDefault()
   // chrome requires returnValue to be set
@@ -43,6 +50,49 @@ function onBeforeUnload(event) {
   return false
 }
 
+function isUpload() {
+  const backUrl = window.history.state.back
+  return backUrl?.indexOf('/layout') >= 0
+}
+
+function save() {
+  setStatus({ isSaved: true })
+
+  // TODO: better way to start to save data in localstorage
+  user.$patch((state) => {
+    state.isSaved = true
+  })
+
+  saveModalVisible.value = false
+}
+
+function recover() {
+  if (hasStorage()) {
+    const storage = getStorage()
+    if (storage) {
+      Object.keys(storage).forEach((key) => {
+        if (key === 'user') {
+          user.$patch((state) => {
+            Object.assign(state, storage[key])
+          })
+        }
+        else if (key === 'toolbar') {
+          toolbar.$patch((state) => {
+            Object.assign(state, storage[key])
+          })
+        }
+      })
+    }
+  }
+
+  recoverModalVisible.value = false
+  setStatus({ isEditing: true })
+}
+
+function cancelRecover() {
+  recoverModalVisible.value = false
+  setStatus({ isEditing: true })
+}
 </script>
 
 <template>
@@ -71,5 +121,65 @@ function onBeforeUnload(event) {
         </button>
       </div>
     </div>
+
+    <Modal
+      v-show="recoverModalVisible"
+      @close="recoverModalVisible = false"
+    >
+      <div class="leading text-primary-100 mt-1 px-2">
+        Recover your information?
+      </div>
+      <div class="paragraph text-blacks-100 mt-6 px-2">
+        Would you like to recover your information?
+      </div>
+      <div class="flex flex-col gap-6 px-2 pt-6 pb-2 sm:flex-row">
+        <button
+          class="btn-secondary px-8 flex-shrink-0"
+          @click="cancelRecover"
+        >
+          <span class="subleading">
+            No, thanks.
+          </span>
+        </button>
+        <button
+          class="btn-primary px-8 flex-shrink-0"
+          @click="recover"
+        >
+          <span class="subleading">
+            Yes, please.
+          </span>
+        </button>
+      </div>
+    </Modal>
+
+    <Modal
+      v-show="saveModalVisible"
+      @close="saveModalVisible = false"
+    >
+      <div class="leading text-primary-100 mt-1 px-2">
+        Save your information?
+      </div>
+      <div class="paragraph text-blacks-100 mt-6 px-2">
+        Would you like to save your information and continue editing when you come back next time?
+      </div>
+      <div class="flex flex-col gap-6 px-2 pt-6 pb-2 sm:flex-row">
+        <button
+          class="btn-secondary px-8 flex-shrink-0"
+          @click="saveModalVisible = false"
+        >
+          <span class="subleading">
+            No, thanks.
+          </span>
+        </button>
+        <button
+          class="btn-primary px-8 flex-shrink-0"
+          @click="save"
+        >
+          <span class="subleading">
+            Yes, please.
+          </span>
+        </button>
+      </div>
+    </Modal>
   </main>
 </template>
