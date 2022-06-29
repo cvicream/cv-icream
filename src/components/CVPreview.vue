@@ -37,11 +37,11 @@ function getEditingStyle(isEditing) {
   <div class="title-default subtitle-default paragraph-default title-large subtitle-large paragraph-large" />
   <div
     :id="id"
-    class="w-full h-full bg-white flex-shrink-0 p-6 shadow-custom"
+    class="w-full h-full bg-white flex-shrink-0 p-6 shadow-custom overflow-hidden"
     :class="currentState.fontFamily"
   >
     <div
-      class="p-2 flex items-baseline gap-4"
+      class="p-2 flex items-baseline gap-4 not-break-out"
       :class="currentState.layout === 'layout-left' ? `ml-[25%] ${getEditingStyle(about.isEditing)}` : getEditingStyle(about.isEditing)"
     >
       <div
@@ -57,12 +57,12 @@ function getEditingStyle(isEditing) {
     </div>
     <div :class="{ 'flex': currentState.layout !== 'layout-full' }">
       <div
-        class="flex flex-col gap-4"
+        class="flex flex-col gap-4 not-break-out"
         :class="{ 'w-[75%]': currentState.layout !== 'layout-full', 'order-2': currentState.layout === 'layout-left' }"
       >
         <section
           v-show="summary.isShow"
-          class="p-2 flex flex-col gap-2"
+          class="p-2 flex flex-col gap-2 not-break-out"
           :class="getEditingStyle(summary.isEditing)"
         >
           <div
@@ -82,7 +82,7 @@ function getEditingStyle(isEditing) {
             v-html="isEditorEmpty(summary.paragraph) ? DEFAULT_TEMPLATE.summary.paragraph : summary.paragraph"
           />
         </section>
-        <section v-if="experience.isShow">
+        <section v-if="experience.isShow" class="not-break-out">
           <div
             :class="getFontSizeClassName(currentState.fontSize).subtitle"
             class="px-2 py-1 text-primary-100"
@@ -123,7 +123,7 @@ function getEditingStyle(isEditing) {
             </div>
           </div>
         </section>
-        <section v-if="project.isShow">
+        <section v-if="project.isShow" class="not-break-out">
           <div
             :class="getFontSizeClassName(currentState.fontSize).subtitle"
             class="px-2 py-1 text-primary-100"
@@ -171,7 +171,7 @@ function getEditingStyle(isEditing) {
       >
         <section
           v-if="skill.isShow"
-          class="pb-2"
+          class="pb-2 not-break-out"
         >
           <div
             :class="getFontSizeClassName(currentState.fontSize).subtitle"
@@ -208,7 +208,7 @@ function getEditingStyle(isEditing) {
         </section>
         <section
           v-if="certificate.isShow"
-          class="py-2"
+          class="py-2 not-break-out"
         >
           <div
             :class="getFontSizeClassName(currentState.fontSize).subtitle"
@@ -245,7 +245,7 @@ function getEditingStyle(isEditing) {
         </section>
         <section
           v-if="education.isShow"
-          class="py-2"
+          class="py-2 not-break-out"
         >
           <div
             :class="getFontSizeClassName(currentState.fontSize).subtitle"
@@ -282,7 +282,7 @@ function getEditingStyle(isEditing) {
         </section>
         <section
           v-if="contact.isShow"
-          class="py-2"
+          class="py-2 not-break-out"
         >
           <div
             :class="getFontSizeClassName(currentState.fontSize).subtitle"
