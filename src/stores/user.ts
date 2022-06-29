@@ -10,7 +10,6 @@ export const useUserStore = defineStore('user', {
   state: () => {
     const template = TEMPLATES.find(item => item.template === initialState.template)
     const state = { ...initialState, ...template }
-    state.isEditing = false
     return state
   },
 })

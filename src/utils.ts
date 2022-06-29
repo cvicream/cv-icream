@@ -13,10 +13,40 @@ function setStorage(value) {
   localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(value))
 }
 
+function getStatus() {
+  const status = localStorage.getItem(`${LOCAL_STORAGE_KEY}-status`)
+  return status
+}
+
+function setStatus(value) {
+  const statusStr = localStorage.getItem(`${LOCAL_STORAGE_KEY}-status`)
+  if (statusStr) {
+    const status = JSON.parse(statusStr)
+    const newStatus = {
+      ...status,
+      ...value,
+    }
+    localStorage.setItem(`${LOCAL_STORAGE_KEY}-status`, JSON.stringify(newStatus))
+  }
+  else {
+    localStorage.setItem(`${LOCAL_STORAGE_KEY}-status`, JSON.stringify(value))
+  }
+}
+
 function isEditing() {
-  if (hasStorage()) {
-    const storage = getStorage()
-    return storage.user ? storage.user.isEditing : false
+  const statusStr = getStatus()
+  if (statusStr) {
+    const status = JSON.parse(statusStr)
+    return status.isEditing
+  }
+  return false
+}
+
+function isSaved() {
+  const statusStr = getStatus()
+  if (statusStr) {
+    const status = JSON.parse(statusStr)
+    return status.isSaved
   }
   return false
 }
@@ -142,7 +172,10 @@ export {
   hasStorage,
   getStorage,
   setStorage,
+  getStatus,
+  setStatus,
   isEditing,
+  isSaved,
   getJsonUpload,
   rgbToHex,
   hexToRgb,

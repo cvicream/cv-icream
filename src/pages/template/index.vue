@@ -1,9 +1,22 @@
 <script setup lang="ts">
+import { storeToRefs } from 'pinia'
 import { useUserStore } from '~/stores/user'
+import { TEMPLATES } from '~/constants'
 
 const user = useUserStore()
+const { template } = storeToRefs(user)
+
 const { t } = useI18n()
 const router = useRouter()
+
+watch(template, () => {
+  const defaultTemplate = TEMPLATES.find(t => t.template === template.value)
+  if (defaultTemplate) {
+    user.$patch((state) => {
+      Object.assign(state, defaultTemplate)
+    })
+  }
+})
 
 const onNext = () => {
   router.push('/edit/about')

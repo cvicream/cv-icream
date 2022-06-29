@@ -1,8 +1,6 @@
 <script setup lang="ts">
-import { useUserStore } from '~/stores/user'
 import { useToolbarStore } from '~/stores/toolbar'
-import { TEMPLATES } from '~/constants'
-import { getColor, setCssVariable } from '~/utils'
+import { getColor, setCssVariable, setStatus } from '~/utils'
 
 // https://github.com/vueuse/head
 // you can use this to manipulate the document head in any components,
@@ -14,14 +12,7 @@ useHead({
   ],
 })
 
-const user = useUserStore()
 const toolbar = useToolbarStore()
-
-user.$subscribe((mutation, state) => {
-  const defaultTemplate = TEMPLATES.find(t => t.template === state.template)
-  if (defaultTemplate)
-    Object.assign(state, defaultTemplate)
-})
 
 toolbar.$subscribe((mutation, state) => {
   const color = getColor(state.currentState.color)
@@ -30,6 +21,8 @@ toolbar.$subscribe((mutation, state) => {
   setCssVariable('--shadow-color', color.shadow)
   setCssVariable('--border-color', color.border)
 })
+
+setStatus({ isEditing: false })
 </script>
 
 <template>

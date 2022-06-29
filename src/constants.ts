@@ -35,7 +35,7 @@ export const TEMPLATE_LIST_ITEM = {
 
 export const DEFAULT_TEMPLATE = {
   template: 0,
-  isEditing: true,
+  isSaved: false,
   about: {
     isShow: true,
     isEditing: false,
@@ -155,7 +155,6 @@ export const TEMPLATES = [
   JSON.parse(JSON.stringify(DEFAULT_TEMPLATE)), // deep copy
   {
     template: 1,
-    isEditing: true,
     about: {
       isShow: true,
       isEditing: false,
@@ -235,7 +234,6 @@ HTML and CSS`,
   },
   {
     template: 2,
-    isEditing: true,
     about: {
       isShow: true,
       isEditing: false,
@@ -319,7 +317,6 @@ Mandarin (native)`,
   },
   {
     template: 3,
-    isEditing: true,
     about: {
       isShow: true,
       isEditing: false,
@@ -421,7 +418,6 @@ Mandarin (native)`,
   },
   {
     template: 4,
-    isEditing: true,
     about: {
       isShow: true,
       isEditing: false,
