@@ -196,6 +196,19 @@ export const TEMPLATES = [
     },
     project: {
       isShow: false,
+      name: '',
+      list: [
+        {
+          isShow: true,
+          isCollapsed: false,
+          isEditing: false,
+          title: '',
+          subtitle: '',
+          subtitle1: '',
+          subtitle2: '',
+          paragraph: '',
+        },
+      ],
     },
     skill: {
       isShow: true,
@@ -234,6 +247,19 @@ Mandarin (native)`,
     },
     certificate: {
       isShow: false,
+      name: '',
+      list: [
+        {
+          isShow: true,
+          isCollapsed: false,
+          isEditing: false,
+          title: '',
+          subtitle: '',
+          subtitle1: '',
+          subtitle2: '',
+          paragraph: '',
+        },
+      ],
     },
     education: {
       isShow: true,
