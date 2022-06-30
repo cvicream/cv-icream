@@ -321,3 +321,55 @@ function getEditingStyle(isEditing) {
     </div>
   </div>
 </template>
+
+<style>
+#cv-preview ol {
+  @apply pl-3 ml-3;
+  list-style: decimal outside;
+}
+#cv-preview ul {
+  @apply pl-3 ml-3;
+  list-style: disc outside;
+}
+#cv-preview ol li {
+  @apply pl-2;
+}
+#cv-preview ul li {
+  @apply pl-1;
+}
+#cv-preview a {
+  @apply text-primary-100;
+  text-decoration: underline;
+}
+
+#cv-preview .ql-indent-1 {
+  @apply pl-3;
+}
+#cv-preview .ql-indent-2 {
+  @apply pl-6;
+}
+#cv-preview .ql-indent-3 {
+  @apply pl-9;
+}
+#cv-preview .ql-indent-4 {
+  @apply pl-12;
+}
+#cv-preview .ql-indent-5 {
+  @apply pl-15;
+}
+#cv-preview .ql-indent-6 {
+  @apply pl-18;
+}
+#cv-preview .ql-indent-7 {
+  @apply pl-21;
+}
+#cv-preview .ql-indent-8 {
+  @apply pl-24;
+}
+#cv-preview .ql-indent-9 {
+  @apply pl-27;
+}
+#cv-preview .ql-indent-10 {
+  @apply pl-30;
+}
+</style>

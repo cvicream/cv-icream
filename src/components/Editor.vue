@@ -44,14 +44,14 @@ export default defineComponent({
     const content = computed({
       get: () => {
         const value = props.modelValue === undefined ? '' : props.modelValue
-        if (editor.value) {
-          editor.value.setHTML(value)
-          nextTick(() => {
-            const quill = editor.value.getQuill()
-            quill.setSelection(value.length, 0, 'user')
-            quill.focus()
-          })
-        }
+        // if (editor.value) {
+        //   editor.value.setHTML(value)
+        //   nextTick(() => {
+        //     const quill = editor.value.getQuill()
+        //     quill.setSelection(value.length, 0, 'user')
+        //     quill.focus()
+        //   })
+        // }
 
         return value
       },
@@ -185,35 +185,35 @@ export default defineComponent({
         'opacity': enable && toolbarVisible ? 1 : 0
       }"
     >
-      <button class="ql-list btn-icon-32" value="bullet">
+      <button class="ql-list btn-icon-32 p-1" value="bullet">
         <span class="i-custom:list-bullet w-6 h-6" />
       </button>
-      <button class="ql-list btn-icon-32" value="ordered">
+      <button class="ql-list btn-icon-32 p-1" value="ordered">
         <span class="i-custom:list-number w-6 h-6" />
       </button>
-      <button class="ql-indent btn-icon-32" value="+1">
+      <button class="ql-indent btn-icon-32 p-1" value="+1">
         <span class="i-custom:indent w-6 h-6" />
       </button>
-      <button class="ql-indent btn-icon-32" value="-1">
+      <button class="ql-indent btn-icon-32 p-1" value="-1">
         <span class="i-custom:unindent w-6 h-6" />
       </button>
-      <button class="ql-bold btn-icon-32">
+      <button class="ql-bold btn-icon-32 p-1">
         <span class="i-custom:bold w-6 h-6" />
       </button>
-      <button class="ql-italic btn-icon-32">
+      <button class="ql-italic btn-icon-32 p-1">
         <span class="i-custom:italic w-6 h-6" />
       </button>
-      <button class="ql-background btn-icon-32">
+      <button class="ql-background btn-icon-32 p-1">
         <span class="i-origin:highlight w-6 h-6" />
       </button>
-      <button class="ql-link btn-icon-32">
+      <button class="ql-link btn-icon-32 p-1">
         <span class="i-custom:link w-6 h-6" />
       </button>
     </div>
 
     <div
       v-if="linkVisible"
-      class="w-[232px] h-[126px] absolute top-[var(--toolbar-top)] right-0 bg-primary-10 p-4 rounded-[1.25rem] shadow-custom"
+      class="w-[232px] h-[126px] absolute top-[var(--toolbar-top)] right-0 z-10 bg-primary-10 p-4 rounded-[1.25rem] shadow-custom"
     >
       <div class="flex justify-between">
         <div class="flex gap-2 items-center">
@@ -234,7 +234,7 @@ export default defineComponent({
         @keyup.enter="onLinkBlur"
         @blur="onLinkBlur"
       >
-      <div class="fix-margin-bottom" />
+      <div class="fix-margin-bottom" style="top: 126px; bottom: 0; left: 0;" />
     </div>
 
     <div class="fix-margin-bottom" />
@@ -299,6 +299,63 @@ export default defineComponent({
 .ql-editor.ql-blank::before {
   @apply paragraph text-blacks-40;
   font-style: normal;
+}
+
+.ql-editor ol {
+  @apply pl-0;
+}
+.ql-editor ul {
+  @apply pl-0;
+}
+.ql-editor ol li {
+  @apply pl-2;
+}
+.ql-editor ul li {
+  @apply pl-1;
+}
+.ql-editor a {
+  @apply text-primary-100;
+  text-decoration: underline;
+}
+.ql-editor .ql-indent-1:not(.ql-direction-rtl),
+.ql-editor li.ql-indent-1:not(.ql-direction-rtl) {
+  @apply pl-3;
+}
+.ql-editor .ql-indent-2:not(.ql-direction-rtl),
+.ql-editor li.ql-indent-2:not(.ql-direction-rtl) {
+  @apply pl-6;
+}
+.ql-editor .ql-indent-3:not(.ql-direction-rtl),
+.ql-editor li.ql-indent-3:not(.ql-direction-rtl) {
+  @apply pl-9;
+}
+.ql-editor .ql-indent-4:not(.ql-direction-rtl),
+.ql-editor li.ql-indent-4:not(.ql-direction-rtl) {
+  @apply pl-12;
+}
+.ql-editor .ql-indent-5:not(.ql-direction-rtl),
+.ql-editor li.ql-indent-5:not(.ql-direction-rtl) {
+  @apply pl-15;
+}
+.ql-editor .ql-indent-6:not(.ql-direction-rtl),
+.ql-editor li.ql-indent-6:not(.ql-direction-rtl) {
+  @apply pl-18;
+}
+.ql-editor .ql-indent-7:not(.ql-direction-rtl),
+.ql-editor li.ql-indent-7:not(.ql-direction-rtl) {
+  @apply pl-21;
+}
+.ql-editor .ql-indent-8:not(.ql-direction-rtl),
+.ql-editor li.ql-indent-8:not(.ql-direction-rtl) {
+  @apply pl-24;
+}
+.ql-editor .ql-indent-9:not(.ql-direction-rtl),
+.ql-editor li.ql-indent-9:not(.ql-direction-rtl) {
+  @apply pl-27;
+}
+.ql-editor .ql-indent-10:not(.ql-direction-rtl),
+.ql-editor li.ql-indent-10:not(.ql-direction-rtl) {
+  @apply pl-30;
 }
 
 .ql-toolbar {
