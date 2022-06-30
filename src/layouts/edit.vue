@@ -101,7 +101,7 @@ function cancelRecover() {
     <div class="relative sm:flex sm:flex-row h-[calc(100%-138px)] overflow-hidden sm:h-[calc(100%-57px)]">
       <Sidebar />
       <div
-        class="absolute top-0 bottom-0 left-0 right-0 bg-white px-4 py-8 overflow-auto custom-scrollbar sm:static sm:px-8 sm:py-16 sm:z-0 sm:w-[calc(100%-390px)] sm:flex"
+        class="absolute top-1 bottom-1 left-1 right-1 bg-white px-4 py-8 overflow-auto custom-scrollbar sm:static sm:px-8 sm:py-16 sm:z-0 sm:w-[calc(100%-398px)] sm:m-1 sm:flex"
         :class="{ 'visible z-2': isCVPreviewVisible }"
       >
         <div class="w-[595px] min-w-[595px] h-[842px] min-h-[842px] mx-auto">
