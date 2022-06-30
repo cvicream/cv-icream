@@ -214,7 +214,8 @@ export const TEMPLATES = [
 Figma <br>
 Sketch <br>
 InVision <br>
-Adobe Illustrator Photoshop <br>
+Adobe Illustrator <br>
+Photoshop <br>
 HTML and CSS`,
         },
         {
