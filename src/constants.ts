@@ -35,7 +35,7 @@ export const TEMPLATE_LIST_ITEM = {
 
 export const DEFAULT_TEMPLATE = {
   template: 0,
-  isSaved: false,
+  isEditing: true,
   about: {
     isShow: true,
     isEditing: false,
@@ -109,7 +109,7 @@ export const DEFAULT_TEMPLATE = {
         subtitle1: '',
         subtitle2: '',
         paragraph:
-`Graduated/ Time
+`Graduated/ Time <br>
 City, Country`,
       },
     ],
@@ -143,8 +143,8 @@ City, Country`,
         subtitle1: '',
         subtitle2: '',
         paragraph:
-`Phone number
-Email
+`Phone number <br>
+Email <br>
 Location`,
       },
     ],
@@ -155,6 +155,7 @@ export const TEMPLATES = [
   JSON.parse(JSON.stringify(DEFAULT_TEMPLATE)), // deep copy
   {
     template: 1,
+    isEditing: true,
     about: {
       isShow: true,
       isEditing: false,
@@ -164,7 +165,7 @@ export const TEMPLATES = [
     summary: {
       isShow: true,
       isEditing: false,
-      hashtags: [],
+      hashtags: ['#TeamPlayer','#SelfMotivated','#CanDoAttitude'],
       paragraph: 'I care about the details and consider the UI/UX design of affordances to be crucial in creating effective, intuitive interfaces. I consider prototyping to be my weapon of choice in thinking through interaction models and new possibilities. I thrive on learning new things — I enjoy exploring new paths to familiar places. I really love snowboarding (I like both park and powder days). I also really enjoy exploring the amazing trails and landscapes around the bay area on my mountain bike. I’ve traveled a lot and enjoy seeing things from a fresh perspective :)',
     },
     experience: {
@@ -188,10 +189,13 @@ export const TEMPLATES = [
           title: 'Visual Designer',
           subtitle: '',
           subtitle1: 'Company Name',
-          subtitle2: 'June 2011 - Present',
+          subtitle2: 'June 2011 - November 2014',
           paragraph: 'Redesigned websites, illustrated technical drawings for a fashion design firm. Produced logos, advertising materials both for print and digital marketing, promotional items, mockups and reports for local businesses.',
         },
       ],
+    },
+    project: {
+      isShow: false,
     },
     skill: {
       isShow: true,
@@ -206,12 +210,45 @@ export const TEMPLATES = [
           subtitle1: '',
           subtitle2: '',
           paragraph:
-`Webflow 
-Figma 
-Sketch 
-InVision 
-Adobe Illustrator Photoshop 
+`Webflow <br>
+Figma <br>
+Sketch <br>
+InVision <br>
+Adobe Illustrator Photoshop <br>
 HTML and CSS`,
+        },
+        {
+          isShow: true,
+          isCollapsed: false,
+          isEditing: false,
+          title: '',
+          subtitle: 'Language',
+          subtitle1: '',
+          subtitle2: '',
+          paragraph:
+`English (fluent)
+Mandarin (native)`,
+        },
+      ],
+    },
+    certificate: {
+      isShow: false,
+    },
+    education: {
+      isShow: true,
+      name: 'EDUCATION',
+      list: [
+        {
+          isShow: true,
+          isCollapsed: false,
+          isEditing: false,
+          title: 'Degree Title',
+          subtitle: 'Institution',
+          subtitle1: '',
+          subtitle2: '',
+          paragraph:
+  `Graduated/ Time <br>
+  City, Country`,
         },
       ],
     },
@@ -224,27 +261,43 @@ HTML and CSS`,
           isCollapsed: false,
           isEditing: false,
           title: '',
-          subtitle: '',
-          subtitle1: 'City, UK',
-          subtitle2: 'example@email.co.uk',
-          paragraph: '+4470 1234 5678',
+          subtitle: 'Personal',
+          subtitle1: '',
+          subtitle2: '',
+          paragraph:
+`City, UK <br>
+example@email.co.uk <br>
++4470 1234 5678 <br>`,
+        },
+        {
+          isShow: true,
+          isCollapsed: false,
+          isEditing: false,
+          title: '',
+          subtitle: 'Social',
+          subtitle1: '',
+          subtitle2: '',
+          paragraph: 
+`LinkedIn <br>
+Behance <br>`,
         },
       ],
     },
   },
   {
     template: 2,
+    isEditing: true,
     about: {
       isShow: true,
       isEditing: false,
       name: 'Your Name',
-      jobTitle: 'UX Designer',
+      jobTitle: 'User Experience Designer',
     },
     summary: {
       isShow: true,
       isEditing: false,
-      hashtags: [],
-      paragraph: 'Meticulous Project Manager with 10+ years of experience delivering on-time and on-budget in the IT and property industries. Proven track record of improving profitability of projects by at least 10% in both niches, by cost-reduction and process optimisation. Documented ability to oversee 20+ projects at a time, up to £3m monthly revenue total. Track record of managing a monthly spending budget of £1.2m. Seeking to apply proven skills and strong principles in a more challenging role.',
+      hashtags: ['#TeamPlayer','#SelfMotivated','#CanDoAttitude'],
+      paragraph: 'A UX Designer and Researcher with 2+ years of experience in studying human behaviour in fundamental and applied research settings. Communication, problem solving, user research and writing are core competencies. Currently working towards a UX Design Certificate due to commitment of lifelong learning.',
     },
     experience: {
       isShow: true,
@@ -254,13 +307,11 @@ HTML and CSS`,
           isShow: true,
           isCollapsed: false,
           isEditing: false,
-          title: 'IT Project Manager',
+          title: 'Project Coordinator',
           subtitle: '',
           subtitle1: 'Company Name',
-          subtitle2: 'June 2014 - Present',
-          paragraph: `Independently managing 20+ projects at a time, bringing in up to £2.2m revenue monthly. 
-          Successfully completed projects of a total value of £65m. -Experienced in managing teams up to 25 employees, including front and back-end developers, analysts, designers, and testers. 
-          Implemented a new online shopping solution for a fashion retailer that saw them increase their revenue by 7% instantly.`,
+          subtitle2: 'August 2015 - April 2017',
+          paragraph: `Worked with 26 Professors to research and write a grant proposal for an interdisciplinary collaborative research centre, as well as coordinated a Ph.D program in the Psychology Department. Organised workshops and professional development classes, provided ongoing support to Ph.D. students, controlled all project finances, as well as provided ongoing website maintenance support with SO improvements and content updates.`,
         },
       ],
     },
@@ -277,12 +328,23 @@ HTML and CSS`,
           subtitle1: '',
           subtitle2: '',
           paragraph:
-`Agile Coaching 
-Scrum 
-Project Budgeting
-Strategic Planning
-Subcontractor
-Management`,
+`Research <br>
+User Surveys <br>
+User Interviews <br>
+Statistics & Data Analysis <br>
+Competitive Analysis <br>
+User Personas <br>
+Information Architecture <br>
+Paper Prototyping <br>
+Wireframing <br>
+Usability Testing <br>
+Visual Design <br>
+A/B Testing & Analytics <br>
+Sketch <br>
+InVision <br>
+Microsoft Office <br>
+R & SPSS Statistics Software <br>
+Basic HTML`,
         },
         {
           isShow: true,
@@ -306,17 +368,33 @@ Mandarin (native)`,
           isShow: true,
           isCollapsed: false,
           isEditing: false,
-          title: 'City, UK',
-          subtitle: 'example@email.co.uk',
+          title: '',
+          subtitle: 'Personal',
           subtitle1: '',
           subtitle2: '',
-          paragraph: '+4470 1234 5678',
+          paragraph: 
+`+4470 1234 5678
+example@email.co.uk
+City, UK`,
+        },
+        {
+          isShow: true,
+          isCollapsed: false,
+          isEditing: false,
+          title: '',
+          subtitle: 'Social',
+          subtitle1: '',
+          subtitle2: '',
+          paragraph: 
+`LinkedIn <br>
+Behance <br>`,
         },
       ],
     },
   },
   {
     template: 3,
+    isEditing: true,
     about: {
       isShow: true,
       isEditing: false,
@@ -326,7 +404,7 @@ Mandarin (native)`,
     summary: {
       isShow: true,
       isEditing: false,
-      hashtags: [],
+      hashtags: ['#TeamPlayer','#SelfMotivated','#CanDoAttitude'],
       paragraph: 'Well-rounded and creative software developer with 4+ years’ experience of participating in all phases of the project lifecycle in various Agile environments. Recently developed a Windows application in C# for tracking and reporting customer support calls, allowing in-house analysts to immediately identify major bottlenecks—then developed a new IVR menu system with DTMF/voice control in C# that reduced the menu bottleneck to 0%. Seeking opportunity to leverage programming, problem-solving and design skills to help bring iLoaster to the cutting edge.',
     },
     experience: {
@@ -342,10 +420,10 @@ Mandarin (native)`,
           subtitle1: 'Company Name',
           subtitle2: 'November 2016 - June 2018',
           paragraph:
-`-Assisted in the collection and documentation of client requirements across 3 major accounts, achieved 93% acceptance rate of technical specifications. 
--Created 14 demos and promotional experiences, 11 of which were instrumental in landing client projects worth a combined total of almost £100,000. 
--Analysed and resolved technical problems associated with automated asset processing, leading to an immediate 23% drop in average processing times. 
--Part of a test team that achieved 98% code coverage using the Google test framework.`,
+`● Assisted in the collection and documentation of client requirements across 3 major accounts, achieved 93% acceptance rate of technical specifications. <br>
+● Created 14 demos and promotional experiences, 11 of which were instrumental in landing client projects worth a combined total of almost £100,000. <br>
+● Analysed and resolved technical problems associated with automated asset processing, leading to an immediate 23% drop in average processing times. <br>
+● Part of a test team that achieved 98% code coverage using the Google test framework.`,
         },
       ],
     },
@@ -418,6 +496,7 @@ Mandarin (native)`,
   },
   {
     template: 4,
+    isEditing: true,
     about: {
       isShow: true,
       isEditing: false,
@@ -427,7 +506,7 @@ Mandarin (native)`,
     summary: {
       isShow: true,
       isEditing: false,
-      hashtags: [],
+      hashtags: ['#TeamPlayer','#SelfMotivated','#CanDoAttitude'],
       paragraph: 'Meticulous Project Manager with 10+ years of experience delivering on-time and on-budget in the IT and property industries. Proven track record of improving profitability of projects by at least 10% in both niches, by cost-reduction and process optimization. Documented ability to oversee 20+ projects at a time, up to £3m monthly revenue total. Track record of managing a monthly spending budget of £1.2m. Seeking to apply proven skills and strong principles in a more challenging role.',
     },
     experience: {
@@ -441,11 +520,11 @@ Mandarin (native)`,
           title: 'IT Project Manager',
           subtitle: '',
           subtitle1: 'Company Name',
-          subtitle2: 'London June 2014 - Present',
+          subtitle2: 'June 2014 - Present',
           paragraph:
-`-Independently managing 20+ projects at a time, bringing in up to £2.2m revenue monthly. 
--Successfully completed projects of a total value of £65m. -Experienced in managing teams up to 25 employees, including front and back-end developers, analysts, designers, and testers. 
--Implemented a new online shopping solution for a fashion retailer that saw them increase their revenue by 7% instantly.`,
+`● Independently managing 20+ projects at a time, bringing in up to £2.2m revenue monthly. <br>
+● Successfully completed projects of a total value of £65m. -Experienced in managing teams up to 25 employees, including front and back-end developers, analysts, designers, and testers. <br>
+● Implemented a new online shopping solution for a fashion retailer that saw them increase their revenue by 7% instantly.`,
         },
       ],
     },
@@ -462,11 +541,11 @@ Mandarin (native)`,
           subtitle1: '',
           subtitle2: '',
           paragraph:
-`Agile Coaching 
-Scrum 
-Project Budgeting
-Strategic Planning
-Subcontractor
+`Agile Coaching <br>
+Scrum <br>
+Project Budgeting <br>
+Strategic Planning <br>
+Subcontractor <br>
 Management`,
         },
         {
