@@ -35,7 +35,6 @@ export const TEMPLATE_LIST_ITEM = {
 
 export const DEFAULT_TEMPLATE = {
   template: 0,
-  isEditing: true,
   about: {
     isShow: true,
     isEditing: false,
@@ -155,7 +154,6 @@ export const TEMPLATES = [
   JSON.parse(JSON.stringify(DEFAULT_TEMPLATE)), // deep copy
   {
     template: 1,
-    isEditing: true,
     about: {
       isShow: true,
       isEditing: false,
@@ -165,7 +163,7 @@ export const TEMPLATES = [
     summary: {
       isShow: true,
       isEditing: false,
-      hashtags: ['#TeamPlayer','#SelfMotivated','#CanDoAttitude'],
+      hashtags: ['#TeamPlayer', '#SelfMotivated', '#CanDoAttitude'],
       paragraph: 'I care about the details and consider the UI/UX design of affordances to be crucial in creating effective, intuitive interfaces. I consider prototyping to be my weapon of choice in thinking through interaction models and new possibilities. I thrive on learning new things — I enjoy exploring new paths to familiar places. I really love snowboarding (I like both park and powder days). I also really enjoy exploring the amazing trails and landscapes around the bay area on my mountain bike. I’ve traveled a lot and enjoy seeing things from a fresh perspective :)',
     },
     experience: {
@@ -304,7 +302,7 @@ example@email.co.uk <br>
           subtitle: 'Social',
           subtitle1: '',
           subtitle2: '',
-          paragraph: 
+          paragraph:
 `LinkedIn <br>
 Behance <br>`,
         },
@@ -313,7 +311,6 @@ Behance <br>`,
   },
   {
     template: 2,
-    isEditing: true,
     about: {
       isShow: true,
       isEditing: false,
@@ -323,7 +320,7 @@ Behance <br>`,
     summary: {
       isShow: true,
       isEditing: false,
-      hashtags: ['#TeamPlayer','#SelfMotivated','#CanDoAttitude'],
+      hashtags: ['#TeamPlayer', '#SelfMotivated', '#CanDoAttitude'],
       paragraph: 'A UX Designer and Researcher with 2+ years of experience in studying human behaviour in fundamental and applied research settings. Communication, problem solving, user research and writing are core competencies. Currently working towards a UX Design Certificate due to commitment of lifelong learning.',
     },
     experience: {
@@ -338,7 +335,7 @@ Behance <br>`,
           subtitle: '',
           subtitle1: 'Company Name',
           subtitle2: 'August 2015 - April 2017',
-          paragraph: `Worked with 26 Professors to research and write a grant proposal for an interdisciplinary collaborative research centre, as well as coordinated a Ph.D program in the Psychology Department. Organised workshops and professional development classes, provided ongoing support to Ph.D. students, controlled all project finances, as well as provided ongoing website maintenance support with SO improvements and content updates.`,
+          paragraph: 'Worked with 26 Professors to research and write a grant proposal for an interdisciplinary collaborative research centre, as well as coordinated a Ph.D program in the Psychology Department. Organised workshops and professional development classes, provided ongoing support to Ph.D. students, controlled all project finances, as well as provided ongoing website maintenance support with SO improvements and content updates.',
         },
       ],
     },
@@ -399,7 +396,7 @@ Mandarin (native)`,
           subtitle: 'Personal',
           subtitle1: '',
           subtitle2: '',
-          paragraph: 
+          paragraph:
 `+4470 1234 5678
 example@email.co.uk
 City, UK`,
@@ -412,7 +409,7 @@ City, UK`,
           subtitle: 'Social',
           subtitle1: '',
           subtitle2: '',
-          paragraph: 
+          paragraph:
 `LinkedIn <br>
 Behance <br>`,
         },
@@ -421,7 +418,6 @@ Behance <br>`,
   },
   {
     template: 3,
-    isEditing: true,
     about: {
       isShow: true,
       isEditing: false,
@@ -431,7 +427,7 @@ Behance <br>`,
     summary: {
       isShow: true,
       isEditing: false,
-      hashtags: ['#TeamPlayer','#SelfMotivated','#CanDoAttitude'],
+      hashtags: ['#TeamPlayer', '#SelfMotivated', '#CanDoAttitude'],
       paragraph: 'Well-rounded and creative software developer with 4+ years’ experience of participating in all phases of the project lifecycle in various Agile environments. Recently developed a Windows application in C# for tracking and reporting customer support calls, allowing in-house analysts to immediately identify major bottlenecks—then developed a new IVR menu system with DTMF/voice control in C# that reduced the menu bottleneck to 0%. Seeking opportunity to leverage programming, problem-solving and design skills to help bring iLoaster to the cutting edge.',
     },
     experience: {
@@ -523,7 +519,6 @@ Behance <br>`,
   },
   {
     template: 4,
-    isEditing: true,
     about: {
       isShow: true,
       isEditing: false,
@@ -533,7 +528,7 @@ Behance <br>`,
     summary: {
       isShow: true,
       isEditing: false,
-      hashtags: ['#TeamPlayer','#SelfMotivated','#CanDoAttitude'],
+      hashtags: ['#TeamPlayer', '#SelfMotivated', '#CanDoAttitude'],
       paragraph: 'Meticulous Project Manager with 10+ years of experience delivering on-time and on-budget in the IT and property industries. Proven track record of improving profitability of projects by at least 10% in both niches, by cost-reduction and process optimization. Documented ability to oversee 20+ projects at a time, up to £3m monthly revenue total. Track record of managing a monthly spending budget of £1.2m. Seeking to apply proven skills and strong principles in a more challenging role.',
     },
     experience: {
