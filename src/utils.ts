@@ -41,7 +41,10 @@ function isEditing() {
   }
   return false
 }
-
+/**
+ * Whether to store current state in localstorage
+ *
+ */
 function isSaved() {
   const statusStr = getStatus()
   if (statusStr) {
