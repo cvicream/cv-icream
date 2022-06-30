@@ -3,11 +3,18 @@ import { onMounted } from 'vue'
 import { jsPDF as JsPDF } from 'jspdf'
 import { storeToRefs } from 'pinia'
 import { useUserStore } from '~/stores/user'
+import { useToolbarStore } from '~/stores/toolbar'
 import { stripHtml } from '~/utils'
+import arial from '~/assets/fonts/arial/arial-normal'
+import georgia from '~/assets/fonts/georgia/georgia-normal'
+import gillsans from '~/assets/fonts/gillsans/gillsans-normal'
+import lato from '~/assets/fonts/lato/lato-normal'
 
 const router = useRouter()
 const user = useUserStore()
 const { about, summary } = storeToRefs(user)
+const toolbar = useToolbarStore()
+const { currentState } = storeToRefs(toolbar)
 
 onMounted(() => {
   const downloadPreviewContainer = document.getElementById('download-preview-container')
@@ -37,6 +44,36 @@ function resize() {
   }
 }
 
+function addFonts(doc) {
+  // TODO: better way to add new font
+  if (currentState.value.fontFamily === 'font-arial') {
+    doc.addFileToVFS('../../assets/fonts/arial/arial-normal.ttf', arial)
+    doc.addFont('../../assets/fonts/arial/arial-normal.ttf', 'Arial', 'normal')
+    doc.setFont('Arial')
+  }
+  else if (currentState.value.fontFamily === 'font-georgia') {
+    doc.addFileToVFS('../../assets/fonts/georgia/georgia-normal.ttf', georgia)
+    doc.addFont('../../assets/fonts/georgia/georgia-normal.ttf', 'Georgia', 'normal')
+    doc.setFont('Georgia')
+  }
+  else if (currentState.value.fontFamily === 'font-gill-sans') {
+    doc.addFileToVFS('../../assets/fonts/gillsans/gillsans-normal.ttf', gillsans)
+    doc.addFont('../../assets/fonts/gillsans/gillsans-normal.ttf', 'Gillsans', 'normal')
+    doc.setFont('Gillsans')
+  }
+  else if (currentState.value.fontFamily === 'font-helvetica') {
+    doc.setFont('Helvetica')
+  }
+  else if (currentState.value.fontFamily === 'font-times-new-roman') {
+    doc.setFont('Times-Roman')
+  }
+  else if (currentState.value.fontFamily === 'font-lato') {
+    doc.addFileToVFS('../../assets/fonts/lato/lato-normal.ttf', lato)
+    doc.addFont('../../assets/fonts/lato/lato-normal.ttf', 'Lato', 'normal')
+    doc.setFont('Lato')
+  }
+}
+
 function downloadPDF() {
   const doc = new JsPDF({
     orientation: 'p',
@@ -44,6 +81,7 @@ function downloadPDF() {
     format: 'a4',
     putOnlyUsedFonts: true,
   })
+  addFonts(doc)
   const element = document.getElementById('cv-preview')
   if (element) {
     doc.html(element, {
