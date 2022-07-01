@@ -107,9 +107,7 @@ export const DEFAULT_TEMPLATE = {
         subtitle: 'Institution',
         subtitle1: '',
         subtitle2: '',
-        paragraph:
-`Graduated/ Time <br>
-City, Country`,
+        paragraph: '<p>Graduated / Time</p><p>City, Country</p>',
       },
     ],
   },
@@ -141,10 +139,7 @@ City, Country`,
         subtitle: 'Contact Type',
         subtitle1: '',
         subtitle2: '',
-        paragraph:
-`Phone number <br>
-Email <br>
-Location`,
+        paragraph: '<p>Phone number</p><p>Email</p><p>Location</p>',
       },
     ],
   },
@@ -221,13 +216,7 @@ export const TEMPLATES = [
           subtitle1: '',
           subtitle2: '',
           paragraph:
-`Webflow <br>
-Figma <br>
-Sketch <br>
-InVision <br>
-Adobe Illustrator <br>
-Photoshop <br>
-HTML and CSS`,
+'<p>Webflow</p><p>Figma</p><p>Sketch</p><p>InVision</p><p>Adobe Illustrator</p><p>Photoshop</p><p>HTML and CSS</p>',
         },
         {
           isShow: true,
@@ -271,9 +260,7 @@ Mandarin (native)`,
           subtitle: 'Institution',
           subtitle1: '',
           subtitle2: '',
-          paragraph:
-  `Graduated/ Time <br>
-  City, Country`,
+          paragraph: '<p>Graduated / Time</p><p>City, Country</p>',
         },
       ],
     },
@@ -289,10 +276,7 @@ Mandarin (native)`,
           subtitle: 'Personal',
           subtitle1: '',
           subtitle2: '',
-          paragraph:
-`City, UK <br>
-example@email.co.uk <br>
-+4470 1234 5678 <br>`,
+          paragraph: '<p>City, UK</p><p>example@email.co.uk</p><p>+4470 1234 5678</p>',
         },
         {
           isShow: true,
@@ -302,9 +286,7 @@ example@email.co.uk <br>
           subtitle: 'Social',
           subtitle1: '',
           subtitle2: '',
-          paragraph:
-`LinkedIn <br>
-Behance <br>`,
+          paragraph: '<p>LinkedIn</p><p>Behance</p>',
         },
       ],
     },
@@ -351,24 +333,7 @@ Behance <br>`,
           subtitle: 'Profession',
           subtitle1: '',
           subtitle2: '',
-          paragraph:
-`Research <br>
-User Surveys <br>
-User Interviews <br>
-Statistics & Data Analysis <br>
-Competitive Analysis <br>
-User Personas <br>
-Information Architecture <br>
-Paper Prototyping <br>
-Wireframing <br>
-Usability Testing <br>
-Visual Design <br>
-A/B Testing & Analytics <br>
-Sketch <br>
-InVision <br>
-Microsoft Office <br>
-R & SPSS Statistics Software <br>
-Basic HTML`,
+          paragraph: '<p>Research</p><p>User Surveys</p><p>User Interviews</p><p>Statistics & Data Analysis</p><p>Competitive Analysis</p><p>User Personas</p><p>Information Architecture</p><p>Paper Prototyping</p><p>Wireframing</p><p>Usability Testing</p><p>Visual Design</p><p>A/B Testing & Analytics</p><p>Sketch</p><p>InVision</p><p>Microsoft Office</p><p>R & SPSS Statistics Software</p><p>Basic HTML</p>',
         },
         {
           isShow: true,
@@ -378,9 +343,7 @@ Basic HTML`,
           subtitle: 'Language',
           subtitle1: '',
           subtitle2: '',
-          paragraph:
-`English (fluent)
-Mandarin (native)`,
+          paragraph: '<p>English (fluent)</p><p>Mandarin (native)</p>',
         },
       ],
     },
@@ -396,10 +359,7 @@ Mandarin (native)`,
           subtitle: 'Personal',
           subtitle1: '',
           subtitle2: '',
-          paragraph:
-`+4470 1234 5678
-example@email.co.uk
-City, UK`,
+          paragraph: '<p>+4470 1234 5678</p><p>example@email.co.uk</p><p>City, UK</p>',
         },
         {
           isShow: true,
@@ -409,9 +369,7 @@ City, UK`,
           subtitle: 'Social',
           subtitle1: '',
           subtitle2: '',
-          paragraph:
-`LinkedIn <br>
-Behance <br>`,
+          paragraph: '<p>LinkedIn</p><p>Behance</p>',
         },
       ],
     },
@@ -442,11 +400,7 @@ Behance <br>`,
           subtitle: '',
           subtitle1: 'Company Name',
           subtitle2: 'November 2016 - June 2018',
-          paragraph:
-`● Assisted in the collection and documentation of client requirements across 3 major accounts, achieved 93% acceptance rate of technical specifications. <br>
-● Created 14 demos and promotional experiences, 11 of which were instrumental in landing client projects worth a combined total of almost £100,000. <br>
-● Analysed and resolved technical problems associated with automated asset processing, leading to an immediate 23% drop in average processing times. <br>
-● Part of a test team that achieved 98% code coverage using the Google test framework.`,
+          paragraph: '<ul><li>Assisted in the collection and documentation of client requirements across 3 major accounts, achieved 93% acceptance rate of technical specifications.</li><li>Created 14 demos and promotional experiences, 11 of which were instrumental in landing client projects worth a combined total of almost £100,000.</li><li>Analysed and resolved technical problems associated with automated asset processing, leading to an immediate 23% drop in average processing times.</li><li>Part of a test team that achieved 98% code coverage using the Google test framework.</li></ul>',
         },
       ],
     },
@@ -543,10 +497,7 @@ Behance <br>`,
           subtitle: '',
           subtitle1: 'Company Name',
           subtitle2: 'June 2014 - Present',
-          paragraph:
-`● Independently managing 20+ projects at a time, bringing in up to £2.2m revenue monthly. <br>
-● Successfully completed projects of a total value of £65m. -Experienced in managing teams up to 25 employees, including front and back-end developers, analysts, designers, and testers. <br>
-● Implemented a new online shopping solution for a fashion retailer that saw them increase their revenue by 7% instantly.`,
+          paragraph: '<ul><li>Independently managing 20+ projects at a time, bringing in up to £2.2m revenue monthly.</li><li>Successfully completed projects of a total value of £65m. -Experienced in managing teams up to 25 employees, including front and back-end developers, analysts, designers, and testers.</li><li>Implemented a new online shopping solution for a fashion retailer that saw them increase their revenue by 7% instantly</li>.</ul>',
         },
       ],
     },
@@ -562,13 +513,7 @@ Behance <br>`,
           subtitle: 'Profession',
           subtitle1: '',
           subtitle2: '',
-          paragraph:
-`Agile Coaching <br>
-Scrum <br>
-Project Budgeting <br>
-Strategic Planning <br>
-Subcontractor <br>
-Management`,
+          paragraph: '<p>Agile Coaching</p><p>Scrum</p><p>Project Budgeting</p><p>Strategic Planning</p><p>Subcontractor</p><p>Management</p>',
         },
         {
           isShow: true,
@@ -578,9 +523,7 @@ Management`,
           subtitle: 'Language',
           subtitle1: '',
           subtitle2: '',
-          paragraph:
-`English (fluent)
-Mandarin (native)`,
+          paragraph: '<p>English (fluent)</p><p>Mandarin (native)</p>',
         },
       ],
     },
