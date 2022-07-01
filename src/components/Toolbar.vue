@@ -34,16 +34,30 @@ onUnmounted(() => {
 })
 
 window.addEventListener('click', onClick, false)
+
+// TODO: better way to implement since execCommand is deprecated
+function undo() {
+  document.execCommand('undo', false)
+}
+function redo() {
+  document.execCommand('redo', false)
+}
 </script>
 
 <template>
   <div class="w-full h-[81px] text-center bg-white flex justify-center gap-4 px-4 py-4 border-t-1 border-blacks-20 sm:w-auto sm-h-20 sm:border-0 sm:rounded-xl sm:shadow-custom">
     <div class="btn-group-toolbar w-22 h-12">
       <div class="btn-toolbar">
-        <button class="i-custom:undo w-8 h-8" />
+        <button
+          class="i-custom:undo w-8 h-8"
+          @click="undo"
+        />
       </div>
       <div class="btn-toolbar">
-        <button class="i-custom:redo w-8 h-8" />
+        <button
+          class="i-custom:redo w-8 h-8"
+          @click="redo"
+        />
       </div>
     </div>
     <div class="icon" />
