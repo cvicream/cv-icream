@@ -188,16 +188,18 @@ function getEditingStyle(isEditing) {
               v-if="item.isShow"
               class="py-2"
             >
-              <div
-                :class="getFontSizeClassName(currentState.fontSize).title"
-                class="text-blacks-100"
-                v-html="isEditorEmpty(item.title) ? DEFAULT_TEMPLATE.skill.list[0].title : item.title"
-              />
-              <div
-                :class="getFontSizeClassName(currentState.fontSize).subtitle"
-                class="text-blacks-40 pb-1"
-                v-html="isEditorEmpty(item.subtitle) ? DEFAULT_TEMPLATE.skill.list[0].subtitle : item.subtitle"
-              />
+              <div :class="{ 'flex justify-between': currentState.layout === 'layout-full' }">
+                <div
+                  :class="getFontSizeClassName(currentState.fontSize).title"
+                  class="text-blacks-100"
+                  v-html="isEditorEmpty(item.title) ? DEFAULT_TEMPLATE.skill.list[0].title : item.title"
+                />
+                <div
+                  :class="getFontSizeClassName(currentState.fontSize).subtitle"
+                  class="text-blacks-40 pb-1"
+                  v-html="isEditorEmpty(item.subtitle) ? DEFAULT_TEMPLATE.skill.list[0].subtitle : item.subtitle"
+                />
+              </div>
               <div
                 :class="getFontSizeClassName(currentState.fontSize).paragraph"
                 class="text-blacks-70"
@@ -225,16 +227,18 @@ function getEditingStyle(isEditing) {
               v-if="item.isShow"
               class="py-2"
             >
-              <div
-                :class="getFontSizeClassName(currentState.fontSize).title"
-                class="text-blacks-100"
-                v-html="isEditorEmpty(item.title) ? DEFAULT_TEMPLATE.certificate.list[0].title : item.title"
-              />
-              <span
-                :class="getFontSizeClassName(currentState.fontSize).subtitle"
-                class="text-blacks-40"
-                v-html="isEditorEmpty(item.subtitle) ? DEFAULT_TEMPLATE.certificate.list[0].subtitle : item.subtitle"
-              />
+              <div :class="{ 'flex justify-between': currentState.layout === 'layout-full' }">
+                <div
+                  :class="getFontSizeClassName(currentState.fontSize).title"
+                  class="text-blacks-100"
+                  v-html="isEditorEmpty(item.title) ? DEFAULT_TEMPLATE.certificate.list[0].title : item.title"
+                />
+                <div
+                  :class="getFontSizeClassName(currentState.fontSize).subtitle"
+                  class="text-blacks-40"
+                  v-html="isEditorEmpty(item.subtitle) ? DEFAULT_TEMPLATE.certificate.list[0].subtitle : item.subtitle"
+                />
+              </div>
               <div
                 :class="getFontSizeClassName(currentState.fontSize).paragraph"
                 class="text-blacks-70"
@@ -262,16 +266,18 @@ function getEditingStyle(isEditing) {
               v-if="item.isShow"
               class="py-2"
             >
-              <div
-                :class="getFontSizeClassName(currentState.fontSize).title"
-                class="text-blacks-100 pb-1"
-                v-html="isEditorEmpty(item.title) ? DEFAULT_TEMPLATE.education.list[0].title : item.title"
-              />
-              <div
-                :class="getFontSizeClassName(currentState.fontSize).subtitle"
-                class="text-blacks-40 pb-1"
-                v-html="isEditorEmpty(item.subtitle) ? DEFAULT_TEMPLATE.education.list[0].subtitle : item.subtitle"
-              />
+              <div :class="{ 'flex justify-between': currentState.layout === 'layout-full' }">
+                <div
+                  :class="getFontSizeClassName(currentState.fontSize).title"
+                  class="text-blacks-100 pb-1"
+                  v-html="isEditorEmpty(item.title) ? DEFAULT_TEMPLATE.education.list[0].title : item.title"
+                />
+                <div
+                  :class="getFontSizeClassName(currentState.fontSize).subtitle"
+                  class="text-blacks-40 pb-1"
+                  v-html="isEditorEmpty(item.subtitle) ? DEFAULT_TEMPLATE.education.list[0].subtitle : item.subtitle"
+                />
+              </div>
               <div
                 :class="getFontSizeClassName(currentState.fontSize).paragraph"
                 class="text-blacks-70"
@@ -299,16 +305,18 @@ function getEditingStyle(isEditing) {
               v-if="item.isShow"
               class="py-2"
             >
-              <div
-                :class="getFontSizeClassName(currentState.fontSize).title"
-                class="text-blacks-100 pb-1"
-                v-html="isEditorEmpty(item.title) ? DEFAULT_TEMPLATE.contact.list[0].title : item.title"
-              />
-              <div
-                :class="getFontSizeClassName(currentState.fontSize).subtitle"
-                class="pb-1 text-blacks-40"
-                v-html="isEditorEmpty(item.subtitle) ? DEFAULT_TEMPLATE.contact.list[0].subtitle : item.subtitle"
-              />
+              <div :class="{ 'flex justify-between': currentState.layout === 'layout-full' }">
+                <div
+                  :class="getFontSizeClassName(currentState.fontSize).title"
+                  class="text-blacks-100 pb-1"
+                  v-html="isEditorEmpty(item.title) ? DEFAULT_TEMPLATE.contact.list[0].title : item.title"
+                />
+                <div
+                  :class="getFontSizeClassName(currentState.fontSize).subtitle"
+                  class="pb-1 text-blacks-40"
+                  v-html="isEditorEmpty(item.subtitle) ? DEFAULT_TEMPLATE.contact.list[0].subtitle : item.subtitle"
+                />
+              </div>
               <div
                 :class="getFontSizeClassName(currentState.fontSize).paragraph"
                 class="mt-px text-blacks-70"
