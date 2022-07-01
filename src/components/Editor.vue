@@ -301,22 +301,44 @@ export default defineComponent({
   font-style: normal;
 }
 
-.ql-editor ol {
-  @apply pl-0;
-}
-.ql-editor ul {
-  @apply pl-0;
-}
-.ql-editor ol li {
-  @apply pl-2;
-}
-.ql-editor ul li {
-  @apply pl-1;
-}
 .ql-editor a {
   @apply text-primary-100;
   text-decoration: underline;
 }
+
+.ql-editor ol {
+  @apply pl-3;
+  list-style: none;
+  counter-reset: li;
+}
+.ql-editor ol li:not(.ql-direction-rtl) {
+  @apply pl-0;
+  counter-increment: li;
+}
+.ql-editor ol li:not(.ql-direction-rtl)::before {
+  content: counter(li) '. ';
+  display: inline-block;
+  width: 0.75rem;
+  margin-left: -0.75rem;
+}
+.ql-editor li:not(.ql-direction-rtl)::before {
+  @apply mr-0 text-left;
+}
+
+.ql-editor ul {
+  @apply pl-3;
+  list-style: none;
+}
+.ql-editor ul li:not(.ql-direction-rtl) {
+  @apply pl-0;
+}
+.ql-editor ul li:not(.ql-direction-rtl)::before {
+  content: '•';
+  display: inline-block;
+  width: 0.75rem;
+  margin-left: -0.75rem;
+}
+
 .ql-editor .ql-indent-1:not(.ql-direction-rtl),
 .ql-editor li.ql-indent-1:not(.ql-direction-rtl) {
   @apply pl-3;
