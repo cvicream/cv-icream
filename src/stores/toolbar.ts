@@ -13,7 +13,7 @@ export const useToolbarStore = defineStore('toolbar', {
       fontFamily: 'font-gill-sans',
       layout: 'layout-right',
       color: 'default',
-      fontSize: 'large',
+      fontSize: 'default',
     },
   }),
   actions: {
