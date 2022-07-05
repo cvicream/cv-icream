@@ -31,6 +31,11 @@ function getEditingStyle(isEditing) {
   style += isEditing ? 'bg-primary-10 border-primary-40' : 'border-transparent'
   return style
 }
+
+function getHintText(isEditing, hintTemplate: string) {
+  return ((isEditing) ? hintTemplate : '')
+}
+
 </script>
 
 <template>
@@ -47,12 +52,12 @@ function getEditingStyle(isEditing) {
       <div
         v-if="about.name"
         class="font-normal text-primary-100 text-size-[36px] leading-[41px]"
-        v-html="isEditorEmpty(about.name) ? DEFAULT_TEMPLATE.about.name : about.name"
+        v-html="isEditorEmpty(about.name) ? getHintText(about.isEditing, DEFAULT_TEMPLATE.about.name) : about.name"
       />
       <div
         v-if="about.jobTitle"
         class="font-normal text-blacks-100 text-size-[14px] leading-[16px]"
-        v-html="isEditorEmpty(about.jobTitle) ? DEFAULT_TEMPLATE.about.jobTitle : about.jobTitle"
+        v-html="isEditorEmpty(about.jobTitle) ? getHintText(about.isEditing, DEFAULT_TEMPLATE.about.jobTitle) : about.jobTitle"
       />
     </div>
     <div :class="{ 'flex': currentState.layout !== 'layout-full' }">
@@ -70,16 +75,19 @@ function getEditingStyle(isEditing) {
             class="flex gap-4"
           >
             <div
-              v-for="(item, index) in summary.hashtags"
+              v-for="(item, index) in summary.hashtags.filter((tag, index) => {
+                return !!(isEditorEmpty(tag) ? getHintText(summary.isEditing, DEFAULT_TEMPLATE.summary.hashtags[index]) : tag)
+              })"
               :key="item"
               class="hashtag text-primary-100 bg-primary-10"
-              v-html="isEditorEmpty(item) ? DEFAULT_TEMPLATE.summary.hashtags[index] : item"
+              v-html="isEditorEmpty(item) ? getHintText(summary.isEditing, DEFAULT_TEMPLATE.summary.hashtags[index]) : item"
             />
           </div>
           <div
             :class="getFontSizeClassName(currentState.fontSize).paragraph"
             class="text-blacks-70"
-            v-html="isEditorEmpty(summary.paragraph) ? DEFAULT_TEMPLATE.summary.paragraph : summary.paragraph"
+            v-html="isEditorEmpty(summary.paragraph) ?
+              getHintText(summary.isEditing, DEFAULT_TEMPLATE.summary.paragraph): summary.paragraph"
           />
         </section>
         <section v-if="experience.isShow" class="not-break-out">
@@ -101,24 +109,28 @@ function getEditingStyle(isEditing) {
               <div
                 :class="getFontSizeClassName(currentState.fontSize).title"
                 class="text-blacks-100"
-                v-html="isEditorEmpty(item.title) ? DEFAULT_TEMPLATE.experience.list[0].title : item.title"
+                v-html="isEditorEmpty(item.title) ?
+                  getHintText(item.isEditing, DEFAULT_TEMPLATE.experience.list[0].title) : item.title"
               />
               <div class="flex justify-between">
                 <div
                   :class="getFontSizeClassName(currentState.fontSize).subtitle"
                   class="text-blacks-40"
-                  v-html="isEditorEmpty(item.subtitle1) ? DEFAULT_TEMPLATE.experience.list[0].subtitle1 : item.subtitle1"
+                  v-html="isEditorEmpty(item.subtitle1) ?
+                    getHintText(item.isEditing, DEFAULT_TEMPLATE.experience.list[0].subtitle1) : item.subtitle1"
                 />
                 <div
                   :class="getFontSizeClassName(currentState.fontSize).subtitle"
                   class="text-blacks-40"
-                  v-html="isEditorEmpty(item.subtitle2) ? DEFAULT_TEMPLATE.experience.list[0].subtitle2 : item.subtitle2"
+                  v-html="isEditorEmpty(item.subtitle2) ?
+                    getHintText(item.isEditing, DEFAULT_TEMPLATE.experience.list[0].subtitle2) : item.subtitle2"
                 />
               </div>
               <div
                 :class="getFontSizeClassName(currentState.fontSize).paragraph"
                 class="text-blacks-70"
-                v-html="isEditorEmpty(item.paragraph) ? DEFAULT_TEMPLATE.experience.list[0].paragraph : item.paragraph"
+                v-html="isEditorEmpty(item.paragraph) ?
+                  getHintText(item.isEditing, DEFAULT_TEMPLATE.experience.list[0].paragraph) : item.paragraph"
               />
             </div>
           </div>
@@ -142,24 +154,28 @@ function getEditingStyle(isEditing) {
               <div
                 :class="getFontSizeClassName(currentState.fontSize).title"
                 class="text-blacks-100"
-                v-html="isEditorEmpty(item.title) ? DEFAULT_TEMPLATE.project.list[0].title : item.title"
+                v-html="isEditorEmpty(item.title) ?
+                  getHintText(item.isEditing, DEFAULT_TEMPLATE.project.list[0].title) : item.title"
               />
               <div class="flex justify-between">
                 <div
                   :class="getFontSizeClassName(currentState.fontSize).subtitle"
                   class="text-blacks-40"
-                  v-html="isEditorEmpty(item.subtitle1) ? DEFAULT_TEMPLATE.project.list[0].subtitle1 : item.subtitle1"
+                  v-html="isEditorEmpty(item.subtitle1) ?
+                    getHintText(item.isEditing, DEFAULT_TEMPLATE.project.list[0].subtitle1) : item.subtitle1"
                 />
                 <div
                   :class="getFontSizeClassName(currentState.fontSize).subtitle"
                   class="text-blacks-40"
-                  v-html="isEditorEmpty(item.subtitle2) ? DEFAULT_TEMPLATE.project.list[0].subtitle2 : item.subtitle2"
+                  v-html="isEditorEmpty(item.subtitle2) ?
+                    getHintText(item.isEditing, DEFAULT_TEMPLATE.project.list[0].subtitle2) : item.subtitle2"
                 />
               </div>
               <div
                 :class="getFontSizeClassName(currentState.fontSize).paragraph"
                 class="text-blacks-70"
-                v-html="isEditorEmpty(item.paragraph) ? DEFAULT_TEMPLATE.project.list[0].paragraph : item.paragraph"
+                v-html="isEditorEmpty(item.paragraph) ?
+                  getHintText(item.isEditing, DEFAULT_TEMPLATE.project.list[0].paragraph) : item.paragraph"
               />
             </div>
           </div>
@@ -188,22 +204,23 @@ function getEditingStyle(isEditing) {
               v-if="item.isShow"
               class="py-2"
             >
-              <div :class="{ 'flex justify-between': currentState.layout === 'layout-full' }">
-                <div
-                  :class="getFontSizeClassName(currentState.fontSize).title"
-                  class="text-blacks-100"
-                  v-html="isEditorEmpty(item.title) ? DEFAULT_TEMPLATE.skill.list[0].title : item.title"
-                />
-                <div
-                  :class="getFontSizeClassName(currentState.fontSize).subtitle"
-                  class="text-blacks-40 pb-1"
-                  v-html="isEditorEmpty(item.subtitle) ? DEFAULT_TEMPLATE.skill.list[0].subtitle : item.subtitle"
-                />
-              </div>
+              <div
+                :class="getFontSizeClassName(currentState.fontSize).title"
+                class="text-blacks-100"
+                v-html="isEditorEmpty(item.title) ?
+                  getHintText(item.isEditing, DEFAULT_TEMPLATE.skill.list[0].title) : item.title"
+              />
+              <div
+                :class="getFontSizeClassName(currentState.fontSize).subtitle"
+                class="text-blacks-40 pb-1"
+                v-html="isEditorEmpty(item.subtitle) ?
+                  getHintText(item.isEditing, DEFAULT_TEMPLATE.skill.list[0].subtitle) : item.subtitle"
+              />
               <div
                 :class="getFontSizeClassName(currentState.fontSize).paragraph"
                 class="text-blacks-70"
-                v-html="isEditorEmpty(item.paragraph) ? DEFAULT_TEMPLATE.skill.list[0].paragraph : item.paragraph"
+                v-html="isEditorEmpty(item.paragraph) ?
+                  getHintText(item.isEditing, DEFAULT_TEMPLATE.skill.list[0].paragraph) : item.paragraph"
               />
             </div>
           </div>
@@ -227,22 +244,23 @@ function getEditingStyle(isEditing) {
               v-if="item.isShow"
               class="py-2"
             >
-              <div :class="{ 'flex justify-between': currentState.layout === 'layout-full' }">
-                <div
-                  :class="getFontSizeClassName(currentState.fontSize).title"
-                  class="text-blacks-100"
-                  v-html="isEditorEmpty(item.title) ? DEFAULT_TEMPLATE.certificate.list[0].title : item.title"
-                />
-                <div
-                  :class="getFontSizeClassName(currentState.fontSize).subtitle"
-                  class="text-blacks-40"
-                  v-html="isEditorEmpty(item.subtitle) ? DEFAULT_TEMPLATE.certificate.list[0].subtitle : item.subtitle"
-                />
-              </div>
+              <div
+                :class="getFontSizeClassName(currentState.fontSize).title"
+                class="text-blacks-100"
+                v-html="isEditorEmpty(item.title) ?
+                  getHintText(item.isEditing, DEFAULT_TEMPLATE.certificate.list[0].title) : item.title"
+              />
+              <div
+                :class="getFontSizeClassName(currentState.fontSize).subtitle"
+                class="text-blacks-40"
+                v-html="isEditorEmpty(item.subtitle) ?
+                  getHintText(item.isEditing, DEFAULT_TEMPLATE.certificate.list[0].subtitle) : item.subtitle"
+              />
               <div
                 :class="getFontSizeClassName(currentState.fontSize).paragraph"
                 class="text-blacks-70"
-                v-html="isEditorEmpty(item.paragraph) ? DEFAULT_TEMPLATE.certificate.list[0].paragraph : item.paragraph"
+                v-html="isEditorEmpty(item.paragraph) ?
+                  getHintText(item.isEditing, DEFAULT_TEMPLATE.certificate.list[0].paragraph) : item.paragraph"
               />
             </div>
           </div>
@@ -266,22 +284,23 @@ function getEditingStyle(isEditing) {
               v-if="item.isShow"
               class="py-2"
             >
-              <div :class="{ 'flex justify-between': currentState.layout === 'layout-full' }">
-                <div
-                  :class="getFontSizeClassName(currentState.fontSize).title"
-                  class="text-blacks-100 pb-1"
-                  v-html="isEditorEmpty(item.title) ? DEFAULT_TEMPLATE.education.list[0].title : item.title"
-                />
-                <div
-                  :class="getFontSizeClassName(currentState.fontSize).subtitle"
-                  class="text-blacks-40 pb-1"
-                  v-html="isEditorEmpty(item.subtitle) ? DEFAULT_TEMPLATE.education.list[0].subtitle : item.subtitle"
-                />
-              </div>
+              <div
+                :class="getFontSizeClassName(currentState.fontSize).title"
+                class="text-blacks-100 pb-1"
+                v-html="isEditorEmpty(item.title) ?
+                  getHintText(item.isEditing, DEFAULT_TEMPLATE.education.list[0].title) : item.title"
+              />
+              <div
+                :class="getFontSizeClassName(currentState.fontSize).subtitle"
+                class="text-blacks-40 pb-1"
+                v-html="isEditorEmpty(item.subtitle) ?
+                  getHintText(item.isEditing, DEFAULT_TEMPLATE.education.list[0].subtitle) : item.subtitle"
+              />
               <div
                 :class="getFontSizeClassName(currentState.fontSize).paragraph"
                 class="text-blacks-70"
-                v-html="isEditorEmpty(item.paragraph) ? DEFAULT_TEMPLATE.education.list[0].paragraph : item.paragraph"
+                v-html="isEditorEmpty(item.paragraph) ?
+                  getHintText(item.isEditing, DEFAULT_TEMPLATE.education.list[0].paragraph) : item.paragraph"
               />
             </div>
           </div>
@@ -305,22 +324,23 @@ function getEditingStyle(isEditing) {
               v-if="item.isShow"
               class="py-2"
             >
-              <div :class="{ 'flex justify-between': currentState.layout === 'layout-full' }">
-                <div
-                  :class="getFontSizeClassName(currentState.fontSize).title"
-                  class="text-blacks-100 pb-1"
-                  v-html="isEditorEmpty(item.title) ? DEFAULT_TEMPLATE.contact.list[0].title : item.title"
-                />
-                <div
-                  :class="getFontSizeClassName(currentState.fontSize).subtitle"
-                  class="pb-1 text-blacks-40"
-                  v-html="isEditorEmpty(item.subtitle) ? DEFAULT_TEMPLATE.contact.list[0].subtitle : item.subtitle"
-                />
-              </div>
+              <div
+                :class="getFontSizeClassName(currentState.fontSize).title"
+                class="text-blacks-100 pb-1"
+                v-html="isEditorEmpty(item.title) ?
+                  getHintText(item.isEditing, DEFAULT_TEMPLATE.contact.list[0].title) : item.title"
+              />
+              <div
+                :class="getFontSizeClassName(currentState.fontSize).subtitle"
+                class="pb-1 text-blacks-40"
+                v-html="isEditorEmpty(item.subtitle) ?
+                  getHintText(item.isEditing, DEFAULT_TEMPLATE.contact.list[0].subtitle) : item.subtitle"
+              />
               <div
                 :class="getFontSizeClassName(currentState.fontSize).paragraph"
                 class="mt-px text-blacks-70"
-                v-html="isEditorEmpty(item.paragraph) ? DEFAULT_TEMPLATE.contact.list[0].paragraph : item.paragraph"
+                v-html="isEditorEmpty(item.paragraph) ?
+                  getHintText(item.isEditing, DEFAULT_TEMPLATE.contact.list[0].paragraph) : item.paragraph"
               />
             </div>
           </div>
