@@ -63,6 +63,7 @@ function toggleShowItem(index: number) {
 
 function duplicateItem(index: number) {
   user.$patch((state) => {
+    state.project.list[index].isEditing = false
     const currentItem = JSON.parse(JSON.stringify(state.project.list[index]))
     state.project.list.splice(index, 0, currentItem)
   })
