@@ -46,7 +46,8 @@ function redo() {
 
 <template>
   <div class="w-full h-[81px] text-center bg-white flex justify-center gap-4 px-4 py-4 border-t-1 border-blacks-20 sm:w-auto sm-h-20 sm:border-0 sm:rounded-xl sm:shadow-custom">
-    <div class="btn-group-toolbar w-22 h-12">
+    <!-- TODO: unhide it after user test  -->
+    <!-- <div class="btn-group-toolbar w-22 h-12">
       <div class="btn-toolbar">
         <button
           class="i-custom:undo w-8 h-8"
@@ -60,7 +61,7 @@ function redo() {
         />
       </div>
     </div>
-    <div class="icon" />
+    <div class="icon" /> -->
     <div
       class="btn-group-toolbar w-42 h-12 relative sm:flex"
       :class="{ 'hidden': !isCVPreviewVisible }"
