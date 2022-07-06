@@ -192,7 +192,7 @@ export const TEMPLATES = [
       name: 'PROJECT',
       list: [
         {
-          isShow: true,
+          isShow: false,
           isCollapsed: false,
           isEditing: false,
           title: '',
@@ -237,7 +237,7 @@ Mandarin (native)`,
       name: 'CERTIFICATE',
       list: [
         {
-          isShow: true,
+          isShow: false,
           isCollapsed: false,
           isEditing: false,
           title: '',
@@ -326,7 +326,7 @@ Mandarin (native)`,
       name: 'PROJECT',
       list: [
         {
-          isShow: true,
+          isShow: false,
           isCollapsed: false,
           isEditing: false,
           title: '',
@@ -368,7 +368,7 @@ Mandarin (native)`,
       name: 'CERTIFICATE',
       list: [
         {
-          isShow: true,
+          isShow: false,
           isCollapsed: false,
           isEditing: false,
           title: '',
@@ -457,7 +457,7 @@ Mandarin (native)`,
       name: 'PROJECT',
       list: [
         {
-          isShow: true,
+          isShow: false,
           isCollapsed: false,
           isEditing: false,
           title: '',
@@ -539,7 +539,7 @@ Mandarin (native)`,
       name: 'CERTIFICATE',
       list: [
         {
-          isShow: true,
+          isShow: false,
           isCollapsed: false,
           isEditing: false,
           title: '',
@@ -628,7 +628,7 @@ Mandarin (native)`,
       name: 'PROJECT',
       list: [
         {
-          isShow: true,
+          isShow: false,
           isCollapsed: false,
           isEditing: false,
           title: '',
@@ -670,7 +670,7 @@ Mandarin (native)`,
       name: 'CERTIFICATE',
       list: [
         {
-          isShow: true,
+          isShow: false,
           isCollapsed: false,
           isEditing: false,
           title: '',
