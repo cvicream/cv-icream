@@ -45,7 +45,8 @@ function toggleShowAll() {
 
 function addItem() {
   user.$patch((state) => {
-    state.certificate.list.push(TEMPLATE_LIST_ITEM)
+    const newItem = JSON.parse(JSON.stringify(TEMPLATE_LIST_ITEM))
+    state.certificate.list.push(newItem)
   })
 }
 
