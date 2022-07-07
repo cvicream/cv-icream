@@ -186,7 +186,6 @@ function showSection(isEditing, hintTemplate: string, content: string) {
         </section>
       </div>
       <div
-        class="px-2"
         :class="{ 'w-[25%]': currentState.layout !== 'layout-full', 'order-1': currentState.layout === 'layout-left' }"
       >
         <section
@@ -195,7 +194,7 @@ function showSection(isEditing, hintTemplate: string, content: string) {
         >
           <div
             :class="getFontSizeClassName(currentState.fontSize).subtitle"
-            class="py-1 text-primary-100"
+            class="py-1 px-2 text-primary-100"
           >
             {{ skill.name ? skill.name : DEFAULT_TEMPLATE.skill.name }}
           </div>
@@ -206,7 +205,7 @@ function showSection(isEditing, hintTemplate: string, content: string) {
           >
             <div
               v-if="item.isShow"
-              class="py-2"
+              class="p-2 gap-2"
             >
               <div
                 v-if="showSection(item.isEditing, DEFAULT_TEMPLATE.skill.list[0].title,item.title)"
@@ -235,7 +234,7 @@ function showSection(isEditing, hintTemplate: string, content: string) {
         >
           <div
             :class="getFontSizeClassName(currentState.fontSize).subtitle"
-            class="text-primary-100 py-1"
+            class="text-primary-100 py-1 px-2"
           >
             {{ certificate.name ? certificate.name : DEFAULT_TEMPLATE.certificate.name }}
           </div>
@@ -246,7 +245,7 @@ function showSection(isEditing, hintTemplate: string, content: string) {
           >
             <div
               v-if="item.isShow"
-              class="py-2"
+              class="p-2 gap-2"
             >
               <div
                 v-if="showSection(item.isEditing, DEFAULT_TEMPLATE.certificate.list[0].title, item.title)"
@@ -275,7 +274,7 @@ function showSection(isEditing, hintTemplate: string, content: string) {
         >
           <div
             :class="getFontSizeClassName(currentState.fontSize).subtitle"
-            class="text-primary-100 py-1"
+            class="text-primary-100 py-1 px-2"
           >
             {{ education.name ? education.name : DEFAULT_TEMPLATE.education.name }}
           </div>
@@ -286,7 +285,7 @@ function showSection(isEditing, hintTemplate: string, content: string) {
           >
             <div
               v-if="item.isShow"
-              class="py-2"
+              class="p-2 gap-2"
             >
               <div
                 v-if="showSection(item.isEditing, DEFAULT_TEMPLATE.education.list[0].title, item.title)"
@@ -315,7 +314,7 @@ function showSection(isEditing, hintTemplate: string, content: string) {
         >
           <div
             :class="getFontSizeClassName(currentState.fontSize).subtitle"
-            class="text-primary-100 py-1"
+            class="text-primary-100 py-1 px-2"
           >
             {{ contact.name ? contact.name : DEFAULT_TEMPLATE.contact.name }}
           </div>
@@ -326,7 +325,7 @@ function showSection(isEditing, hintTemplate: string, content: string) {
           >
             <div
               v-if="item.isShow"
-              class="py-2"
+              class="p-2 gap-2"
             >
               <div
                 v-if="showSection(item.isEditing, DEFAULT_TEMPLATE.contact.list[0].title, item.title)"
