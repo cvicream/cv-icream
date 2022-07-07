@@ -83,6 +83,22 @@ export default defineComponent({
           else
             quill.format('background', false)
         })
+
+        // clear text formatting on paste (https://github.com/quilljs/quill/issues/1184)
+        quill.clipboard.addMatcher(Node.ELEMENT_NODE, (node, delta) => {
+          const ops: any[] = []
+          delta.ops.forEach((op) => {
+            if (op.insert && typeof op.insert === 'string') {
+              // remove line break if editor is single line
+              if (props.isSingleLine)
+                ops.push({ insert: op.insert.replaceAll('\n', '') })
+              else
+                ops.push({ insert: op.insert })
+            }
+          })
+          delta.ops = ops
+          return delta
+        })
       }
     })
 
