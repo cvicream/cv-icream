@@ -96,10 +96,7 @@ async function importJsonFile() {
 }
 
 function onFocusOut() {
-  // TODO: better solution
-  setTimeout(() => {
-    closeAction()
-  }, 150)
+  closeAction()
 }
 
 function toggle() {
@@ -133,19 +130,19 @@ function closeAction() {
       <div v-if="isActionActive" class="w-[230px] bg-white outline outline-1 outline-blacks-100 rounded z-3 absolute right-2 top-[64px]">
         <button
           class="w-full h-[46px] flex justify-start items-center px-4 py-3 rounded-t hover:bg-primary-10"
-          @click="redirectToDownload"
+          @mousedown="redirectToDownload"
         >
           <span class="paragraph text-blacks-100">Download</span>
         </button>
         <button
           class="w-full h-[46px] flex justify-start items-center px-4 py-3 hover:bg-primary-10"
-          @click="exportJsonFile"
+          @mousedown="exportJsonFile"
         >
           <span class="paragraph text-blacks-100">Save</span>
         </button>
         <button
           class="w-full h-[46px] flex justify-start items-center px-4 py-3 rounded-b hover:bg-primary-10"
-          @click="importJsonFile"
+          @mousedown="importJsonFile"
         >
           <span class="paragraph text-blacks-100">Import</span>
         </button>
