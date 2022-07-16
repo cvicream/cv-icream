@@ -296,6 +296,11 @@ export default defineComponent({
   @apply opacity-100;
 }
 
+.ql-editor {
+  /* For Firefox */
+  scrollbar-color: rgba(34, 34, 34, 0.1) transparent;
+  scrollbar-width: thin;
+}
 .ql-editor::-webkit-scrollbar {
   width: 4px;
   height: 4px;
