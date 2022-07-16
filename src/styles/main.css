@@ -58,6 +58,11 @@ html.dark {
   height: 2px;
 }
 
+.custom-scrollbar {
+  /* For Firefox */
+  scrollbar-color: rgba(34, 34, 34, 0.1) transparent;
+  scrollbar-width: thin;
+}
 .custom-scrollbar::-webkit-scrollbar {
   width: 4px;
   height: 4px;
