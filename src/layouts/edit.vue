@@ -96,6 +96,7 @@ function cancelRecover() {
 </script>
 
 <template>
+  <CVPreview id="cv-preview-print" />
   <main class="h-screen">
     <Header :is-edit="true" />
     <div class="relative sm:flex sm:flex-row h-[calc(100%-138px)] overflow-hidden sm:h-[calc(100%-57px)]">
@@ -104,7 +105,7 @@ function cancelRecover() {
         class="absolute top-1 bottom-1 left-1 right-1 bg-white px-4 py-8 overflow-auto custom-scrollbar sm:static sm:px-8 sm:py-16 sm:z-0 sm:w-[calc(100%-398px)] sm:m-1 sm:flex"
         :class="{ 'visible z-2': isCVPreviewVisible }"
       >
-        <div class="w-[595px] min-w-[595px] h-[842px] min-h-[842px] mx-auto">
+        <div class="w-[210mm] min-w-[210mm] min-h-[297mm] mx-auto">
           <CVPreview id="cv-preview" />
         </div>
         <div class="flex justify-center fixed bottom-0 left-0 right-0 z-2 sm:bottom-8 sm:right-[390px] sm:z-0">

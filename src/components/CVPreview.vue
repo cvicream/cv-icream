@@ -49,7 +49,7 @@ function showSection(isEditing, hintTemplate: string, content: string) {
     class="w-full h-full bg-white flex-shrink-0 p-6 shadow-custom cv-preview"
   >
     <div
-      class="w-full h-full overflow-hidden"
+      class="w-full h-full"
       :class="currentState.fontFamily"
     >
       <div
@@ -93,8 +93,7 @@ function showSection(isEditing, hintTemplate: string, content: string) {
             <div
               :class="getFontSizeClassName(currentState.fontSize).paragraph"
               class="text-blacks-70"
-              v-html="isEditorEmpty(summary.paragraph) ?
-                getHintText(summary.isEditing, DEFAULT_TEMPLATE.summary.paragraph): summary.paragraph"
+              v-html="isEditorEmpty(summary.paragraph) ? getHintText(summary.isEditing, DEFAULT_TEMPLATE.summary.paragraph) : summary.paragraph"
             />
           </section>
           <section v-if="experience.isShow" class="not-break-out">
