@@ -12,7 +12,7 @@ import lato from '~/assets/fonts/lato/lato-normal'
 
 const router = useRouter()
 const user = useUserStore()
-const { about, summary } = storeToRefs(user)
+const { about } = storeToRefs(user)
 const toolbar = useToolbarStore()
 const { currentState } = storeToRefs(toolbar)
 
@@ -91,6 +91,11 @@ function downloadPDF() {
     })
   }
 }
+
+function print() {
+  // document.title = `${stripHtml(about.value.jobTitle)} - ${stripHtml(about.value.name)}.pdf`
+  window.print()
+}
 </script>
 
 <template>
@@ -105,10 +110,7 @@ function downloadPDF() {
   </div>
   <div class="flex flex-col gap-6 pr-2 -mr-3 overflow-y-scroll custom-scrollbar">
     <div>
-      <div
-        class="rounded-xl px-4 py-6 flex flex-col gap-6"
-        :class="[(summary.isShow ? 'bg-primary-10': 'bg-blacks-10')]"
-      >
+      <div class="rounded-xl px-4 py-6 flex flex-col gap-6 bg-primary-10">
         <div>
           <label class="note text-blacks-70">File Type</label>
           <div value="pdf" class="block form-input">
@@ -120,7 +122,7 @@ function downloadPDF() {
         <div>
           <label class="note text-blacks-70">Preview</label>
           <div id="download-preview-container">
-            <div id="download-preview" class="w-[595px] min-w-[595px] h-[842px] min-h-[842px] overflow-hidden border-1 border-blacks-70 rounded-xl">
+            <div id="download-preview" class="w-[210mm] min-w-[210mm] h-[297mm] min-h-[297mm] overflow-hidden border-1 border-blacks-70 rounded-xl">
               <CVPreview id="cv-download-preview" />
             </div>
           </div>
@@ -128,7 +130,7 @@ function downloadPDF() {
       </div>
       <button
         class="w-full rounded-xl text-white inline-flex justify-center items-center gap-2 py-3 mt-6 bg-primary-100 border-1 border-transparent transition duration-300 ease-out hover:border-primary-20"
-        @click="downloadPDF"
+        @click="print"
       >
         <span class="i-custom:download w-6 h-6" />
         <span class="subleading">Download</span>
