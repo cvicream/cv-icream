@@ -5,6 +5,11 @@ import { useToolbarStore } from '~/stores/toolbar'
 import { COLORS, FONT_FAMILIES, FONT_SIZES, LAYOUTS } from '~/constants'
 import { getColor } from '~/utils'
 
+const props = defineProps<{
+  open: Boolean
+  collapse: Function
+}>()
+
 const toolbar = useToolbarStore()
 const { isCVPreviewVisible, dropdownMenu, currentState } = storeToRefs(toolbar)
 
@@ -42,12 +47,29 @@ function undo() {
 function redo() {
   document.execCommand('redo', false)
 }
+
+function onCollapse() {
+  props.collapse()
+}
 </script>
 
 <template>
-  <div class="w-full h-[81px] text-center bg-white flex justify-center gap-4 px-4 py-4 border-t-1 border-blacks-20 sm:w-auto sm-h-20 sm:border-0 sm:rounded-xl sm:shadow-custom">
+  <div class="w-full h-[80px] text-center bg-white flex justify-center gap-4 px-4 py-4 sm:w-auto sm-h-20 sm:rounded-xl sm:shadow-custom transition">
+    <div v-if="!open" class="btn-group-toolbar h-12 relative sm:flex">
+      <div class="btn-toolbar w-8 h-8">
+        <button
+          :style="{
+            '--color-primary': getColor(currentState.color).primary,
+            '--color-secondary': getColor(currentState.color).secondary
+          }"
+          class="w-8 h-8 icon-color-item"
+          @click="onCollapse"
+        />
+      </div>
+    </div>
+
     <!-- TODO: unhide it after user test  -->
-    <!-- <div class="btn-group-toolbar w-22 h-12">
+    <!-- <div v-if="open" class="btn-group-toolbar w-22 h-12">
       <div class="btn-toolbar">
         <button
           class="i-custom:undo w-8 h-8"
@@ -63,6 +85,7 @@ function redo() {
     </div>
     <div class="icon" /> -->
     <div
+      v-if="open"
       class="btn-group-toolbar w-42 h-12 relative sm:flex"
       :class="{ 'hidden': !isCVPreviewVisible }"
     >
@@ -135,7 +158,7 @@ function redo() {
         </div>
       </DropdownMenu>
     </div>
-    <!-- <div class="btn-group-toolbar w-12 h-12">
+    <!-- <div v-if="open" class="btn-group-toolbar w-12 h-12">
       <div class="btn-toolbar">
         <button class="i-custom:note w-8 h-8" />
       </div>
