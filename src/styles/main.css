@@ -185,3 +185,25 @@ input[type="search"]:hover::-webkit-search-cancel-button {
     page-break-after: always;
   }
 }
+
+/* Continue ordered list numbering across 2 seperated ordered list */
+.ql-editor ol {
+  list-style-type: none !important; /* Remove default numbering */
+}
+.ql-editor ol > li:before {
+  counter-increment: count !important;
+  content: counter(count) ". " !important;
+}
+.ql-editor ol:first-of-type {
+  counter-reset: count !important;
+}
+.cv-preview ol {
+  list-style-type: none !important; /* Remove default numbering */
+}
+.cv-preview ol > li:before {
+  counter-increment: count !important;
+  content: counter(count) ". " !important;
+}
+.cv-preview ol:first-of-type {
+  counter-reset: count !important;
+}
