@@ -4,7 +4,7 @@ import { jsPDF as JsPDF } from 'jspdf'
 import { storeToRefs } from 'pinia'
 import { useUserStore } from '~/stores/user'
 import { useToolbarStore } from '~/stores/toolbar'
-import { stripHtml } from '~/utils'
+import { setStatus, stripHtml } from '~/utils'
 import arial from '~/assets/fonts/arial/arial-normal'
 import georgia from '~/assets/fonts/georgia/georgia-normal'
 import gillsans from '~/assets/fonts/gillsans/gillsans-normal'
@@ -94,6 +94,7 @@ function downloadPDF() {
       callback(doc) {
         doc.save(`${stripHtml(about.value.jobTitle)} - ${stripHtml(about.value.name)}.pdf`)
         toggleFeedbackModal()
+        setStatus({ isSaved: false })
       },
     })
   }
@@ -103,6 +104,7 @@ function print() {
   // document.title = `${stripHtml(about.value.jobTitle)} - ${stripHtml(about.value.name)}.pdf`
   window.print()
   toggleFeedbackModal()
+  setStatus({ isSaved: false })
 }
 </script>
 
