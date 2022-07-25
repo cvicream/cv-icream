@@ -137,19 +137,19 @@ function closeAction() {
           class="w-full h-[46px] flex justify-start items-center px-4 py-3 rounded-t hover:bg-primary-10"
           @mousedown="redirectToDownload"
         >
-          <span class="paragraph text-blacks-100">Download</span>
+          <span class="paragraph text-blacks-100">Download as PDF</span>
         </button>
         <button
           class="w-full h-[46px] flex justify-start items-center px-4 py-3 hover:bg-primary-10"
           @mousedown="exportJsonFile"
         >
-          <span class="paragraph text-blacks-100">Save</span>
+          <span class="paragraph text-blacks-100">Save as Draft</span>
         </button>
         <button
           class="w-full h-[46px] flex justify-start items-center px-4 py-3 rounded-b hover:bg-primary-10"
           @mousedown="importJsonFile"
         >
-          <span class="paragraph text-blacks-100">Import</span>
+          <span class="paragraph text-blacks-100">Upload CV Draft</span>
         </button>
       </div>
     </div>
