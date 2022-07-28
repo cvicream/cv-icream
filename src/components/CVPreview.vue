@@ -415,7 +415,6 @@ function showSection(isEditing, hintTemplate: string, content: string) {
 }
 
 .cv-preview a {
-  @apply text-primary-100;
   text-decoration: underline;
 }
 </style>

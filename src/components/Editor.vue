@@ -323,7 +323,6 @@ export default defineComponent({
 }
 
 .ql-editor a {
-  @apply text-primary-100;
   text-decoration: underline;
 }
 
