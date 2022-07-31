@@ -45,6 +45,7 @@ function redirectToEdit() {
 const onNext = () => {
   router.push('/landing/template')
 }
+
 </script>
 
 <template>
@@ -52,7 +53,7 @@ const onNext = () => {
     <h1 class="heading1-mobile sm:heading1 text-center">
       {{ t('initial.title') }}
     </h1>
-    <div class="border-black-70 flex flex-col gap-16 sm:flex-row">
+    <div class="border-black-70 flex flex-col gap-16 lg:flex-row">
       <button
         class="px-11 flex justify-center items-center w-101 h-66 rounded-xl flex-col gap-5 border-primary-100 shadow-custom hover:border-1 hover:bg-primary-10"
         @click="onNext"
