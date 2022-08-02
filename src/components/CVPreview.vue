@@ -59,7 +59,7 @@ function showSection(isEditing, hintTemplate: string, content: string) {
         <div
           v-if="about.name"
           class="font-normal text-primary-100 text-size-[36px] leading-[41px]"
-          v-html="isEditorEmpty(about.name) ? getHintText(about.isEditing, DEFAULT_TEMPLATE.about.name) : about.name"
+          v-html="isEditorEmpty(about.name) ? DEFAULT_TEMPLATE.about.name : about.name"
         />
         <div
           v-if="about.jobTitle"
