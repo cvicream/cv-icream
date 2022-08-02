@@ -171,6 +171,11 @@ function stripHtml(html: string) {
   return tempDivElement.textContent || tempDivElement.innerText || ''
 }
 
+function validateEmail(email) {
+  const pattern = /^([a-zA-Z0-9!#$%&'*+\/=?^_`{|}~-]+(?:\.[a-zA-Z0-9!#$%&'*+\/=?^_`{|}~-]+)*@(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?\.)+[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?)$/
+  return pattern.test(email)
+}
+
 export {
   hasStorage,
   getStorage,
@@ -187,4 +192,5 @@ export {
   getColor,
   isEditorEmpty,
   stripHtml,
+  validateEmail,
 }

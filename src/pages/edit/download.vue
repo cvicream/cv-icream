@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { onMounted } from 'vue'
+import { onMounted, ref } from 'vue'
 import { jsPDF as JsPDF } from 'jspdf'
 import { storeToRefs } from 'pinia'
 import { useUserStore } from '~/stores/user'
 import { useToolbarStore } from '~/stores/toolbar'
-import { stripHtml } from '~/utils'
+import { setStatus, stripHtml } from '~/utils'
 import arial from '~/assets/fonts/arial/arial-normal'
 import georgia from '~/assets/fonts/georgia/georgia-normal'
 import gillsans from '~/assets/fonts/gillsans/gillsans-normal'
@@ -15,6 +15,12 @@ const user = useUserStore()
 const { about } = storeToRefs(user)
 const toolbar = useToolbarStore()
 const { currentState } = storeToRefs(toolbar)
+
+const feedbackVisible = ref(false)
+
+function toggleFeedbackModal() {
+  feedbackVisible.value = !feedbackVisible.value
+}
 
 onMounted(() => {
   const downloadPreviewContainer = document.getElementById('download-preview-container')
@@ -87,6 +93,8 @@ function downloadPDF() {
     doc.html(element, {
       callback(doc) {
         doc.save(`${stripHtml(about.value.jobTitle)} - ${stripHtml(about.value.name)}.pdf`)
+        toggleFeedbackModal()
+        setStatus({ isSaved: false })
       },
     })
   }
@@ -95,6 +103,8 @@ function downloadPDF() {
 function print() {
   // document.title = `${stripHtml(about.value.jobTitle)} - ${stripHtml(about.value.name)}.pdf`
   window.print()
+  toggleFeedbackModal()
+  setStatus({ isSaved: false })
 }
 </script>
 
@@ -136,6 +146,13 @@ function print() {
         <span class="subleading">Download</span>
       </button>
     </div>
+
+    <FeedbackModal
+      title="Are you happy with our service?"
+      subtitle="Leave us a message to let us know whether you are happy with our service or anything we can improve : )"
+      :visible="feedbackVisible"
+      :toggle="toggleFeedbackModal"
+    />
   </div>
 </template>
 

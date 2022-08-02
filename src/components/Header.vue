@@ -10,6 +10,7 @@ const props = defineProps<{
 }>()
 
 const isActionActive = ref(false)
+const feedbackVisible = ref(false)
 
 const router = useRouter()
 
@@ -27,6 +28,10 @@ const {
   contact,
 } = storeToRefs(user)
 const { currentState } = storeToRefs(toolbar)
+
+function toggleFeedbackModal() {
+  feedbackVisible.value = !feedbackVisible.value
+}
 
 function redirectToDownload() {
   toolbar.$patch((state) => {
@@ -118,7 +123,7 @@ function closeAction() {
       <button class="btn-icon-32">
         <span class="i-custom:idea w-6 h-6" />
       </button>
-      <button class="btn-icon-32">
+      <button class="btn-icon-32" @click="toggleFeedbackModal">
         <span class="i-custom:feedback w-6 h-6" />
       </button>
     </div>
@@ -132,22 +137,29 @@ function closeAction() {
           class="w-full h-[46px] flex justify-start items-center px-4 py-3 rounded-t hover:bg-primary-10"
           @mousedown="redirectToDownload"
         >
-          <span class="paragraph text-blacks-100">Download</span>
+          <span class="paragraph text-blacks-100">Download as PDF</span>
         </button>
         <button
           class="w-full h-[46px] flex justify-start items-center px-4 py-3 hover:bg-primary-10"
           @mousedown="exportJsonFile"
         >
-          <span class="paragraph text-blacks-100">Save</span>
+          <span class="paragraph text-blacks-100">Save as Draft</span>
         </button>
         <button
           class="w-full h-[46px] flex justify-start items-center px-4 py-3 rounded-b hover:bg-primary-10"
           @mousedown="importJsonFile"
         >
-          <span class="paragraph text-blacks-100">Import</span>
+          <span class="paragraph text-blacks-100">Upload CV Draft</span>
         </button>
       </div>
     </div>
   </header>
   <div class="border-b border-b-blacks-20" />
+
+  <FeedbackModal
+    title="Face a Problem or Need Help?"
+    subtitle="Leave us a message. We will get back to you as soon as possible : )"
+    :visible="feedbackVisible"
+    :toggle="toggleFeedbackModal"
+  />
 </template>
