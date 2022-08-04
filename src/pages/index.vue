@@ -3,7 +3,7 @@ const { t } = useI18n()
 const router = useRouter()
 
 function start() {
-  router.push('/layout')
+  router.push('/landing')
 }
 </script>
 
