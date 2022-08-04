@@ -1,5 +1,7 @@
 <script setup lang="ts">
+import { computed, onMounted, ref } from 'vue'
 import { useUserStore } from '~/stores/user'
+import { MIN_SIDEBAR_WIDTH } from '~/constants'
 
 const user = useUserStore()
 
@@ -46,21 +48,56 @@ const sidebarMenus = ref([
     icon: 'i-custom:contact',
   },
 ])
+const sidebar = ref<any>(null)
 const isOpen = ref(false)
+const isSmallSidebar = ref(true)
 
-const toggleSidebar = () => {
+const menuOpenWidth = computed(() => {
+  return isOpen.value && !isSmallSidebar.value ? 218 : 64
+})
+
+onMounted(() => {
+  if (sidebar.value) {
+    const resizeObserver = new ResizeObserver(() => {
+      resize()
+    })
+    resizeObserver.observe(sidebar.value)
+  }
+})
+
+function resize() {
+  if (sidebar.value.offsetWidth < (MIN_SIDEBAR_WIDTH + 218)) {
+    if (!isSmallSidebar.value)
+      isOpen.value = false
+
+    isSmallSidebar.value = true
+  }
+  else {
+    if (isOpen.value)
+      isOpen.value = false
+
+    isSmallSidebar.value = false
+  }
+}
+
+function toggleSidebar() {
   isOpen.value = !isOpen.value
 }
-const isActivePath = (targetPath: string) => {
+
+function isActivePath(targetPath: string) {
   return router.currentRoute.value.path.indexOf(targetPath) === 0
+}
+
+function onMenuClick() {
+  if (isSmallSidebar.value)
+    isOpen.value = false
 }
 </script>
 
 <template>
-  <div class="w-full h-full absolute z-1 bg-white flex sm:w-[390px] sm:top-0 sm:right-0 sm:bottom-0">
-    <div class="sm:border-l border-blacks-20" />
+  <div ref="sidebar" class="w-full h-full bg-white relative flex">
     <div
-      class="py-5 bg-white sm:h-full sm:overflow-y-auto sm:absolute sm:top-0 sm:right-[326px] z-1 transition-all duration-100 sm:border-l border-blacks-20 flex flex-col gap-4"
+      class="h-full py-5 bg-white absolute top-0 left-0 z-1 sm:overflow-y-auto transition-all duration-100 flex flex-col gap-4"
       :class="isOpen ? 'sm:w-[218px] px-5' : 'sm:w-[64px] px-1'"
     >
       <button
@@ -68,8 +105,8 @@ const isActivePath = (targetPath: string) => {
         :title="isOpen ? 'Hide Sidebar' : 'Open Sidebar'"
         @click="toggleSidebar"
       >
-        <span v-if="isOpen" class="i-custom:expand sm:i-custom:collapse w-6 h-6 text-blacks-40" />
-        <span v-else class="i-custom:collapse sm:i-custom:expand w-6 h-6 text-blacks-40" />
+        <span v-if="isOpen" class="i-custom:expand w-6 h-6 text-blacks-40" />
+        <span v-else class="i-custom:collapse w-6 h-6 text-blacks-40" />
       </button>
 
       <div class="flex flex-col gap-4 overflow-y-auto disable-scrollbar">
@@ -78,6 +115,7 @@ const isActivePath = (targetPath: string) => {
           :key="menu.path"
           :to="menu.path"
           :class="isActivePath(menu.path) && 'bg-primary-10 rounded'"
+          @click="onMenuClick"
         >
           <span
             class="w-8 h-8"
@@ -99,8 +137,9 @@ const isActivePath = (targetPath: string) => {
       </div>
     </div>
     <div
-      class="w-[calc(100%-64px)] h-full bg-white sm:w-[326px] absolute top-0 right-0 flex flex-col gap-6 px-4"
+      class="w-[calc(100%-64px)] h-full ml-[64px] bg-white flex flex-col gap-6 px-4"
       :class="!isActivePath('/edit/download') ? 'py-8' : 'py-4'"
+      :style="`margin-left: ${menuOpenWidth}px`"
     >
       <router-view />
     </div>

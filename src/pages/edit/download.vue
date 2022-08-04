@@ -34,13 +34,12 @@ onMounted(() => {
 })
 
 function resize() {
-  const cvPreview = document.getElementById('cv-preview')
   const downloadPreviewContainer = document.getElementById('download-preview-container')
   const downloadPreview = document.getElementById('download-preview')
 
-  if (cvPreview && downloadPreviewContainer && downloadPreview) {
-    const maxWidth = cvPreview.clientWidth
-    const maxHeight = cvPreview.clientHeight
+  if (downloadPreviewContainer && downloadPreview) {
+    const maxWidth = 794 // A4 width
+    const maxHeight = 1123 // A4 height
     const width = downloadPreviewContainer.clientWidth
     const scale = width / maxWidth
 

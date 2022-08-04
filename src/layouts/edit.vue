@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import { onBeforeMount, onMounted, onUnmounted, ref } from 'vue'
+import { computed, onBeforeMount, onMounted, onUnmounted, ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useUserStore } from '~/stores/user'
 import { useToolbarStore } from '~/stores/toolbar'
 import { getColor, getStorage, hasStorage, isSaved, setCssVariable, setStatus } from '~/utils'
+import { MAX_SIDEBAR_WIDTH, MIN_SIDEBAR_WIDTH, MOBILE_BREAKPOINT } from '~/constants'
 
 const user = useUserStore()
 const toolbar = useToolbarStore()
@@ -12,6 +13,22 @@ const { isCVPreviewVisible, currentState } = storeToRefs(toolbar)
 const isDesignBarOpen = ref(true)
 const saveModalVisible = ref(false)
 const recoverModalVisible = ref(false)
+const isMobile = ref(false)
+
+const resizer = ref<any>(null)
+const leftSide = ref<any>(null)
+const rightSide = ref<any>(null)
+// current position of mouse
+const x = ref(0)
+const y = ref(0)
+const leftWidth = ref(0)
+const rightWidth = ref(MIN_SIDEBAR_WIDTH)
+
+const rightWidthStyle = computed(() => {
+  return {
+    right: `${rightWidth.value}px`,
+  }
+})
 
 function toggleCVPreview() {
   toolbar.$patch((state) => {
@@ -21,6 +38,7 @@ function toggleCVPreview() {
 
 onBeforeMount(() => {
   window.addEventListener('beforeunload', onBeforeUnload)
+  resize()
 })
 
 onMounted(() => {
@@ -36,6 +54,9 @@ onMounted(() => {
   setCssVariable('--border-color', color.border)
 
   window.addEventListener('resize', resize)
+
+  if (leftSide.value && resizer.value && rightSide.value)
+    resizer.value.addEventListener('mousedown', mouseDownHandler)
 })
 
 onUnmounted(() => {
@@ -105,8 +126,75 @@ function cancelRecover() {
 }
 
 function resize() {
-  if (window.innerWidth < 640)
+  if (window.innerWidth <= MOBILE_BREAKPOINT) {
+    isMobile.value = true
     isDesignBarOpen.value = true
+    rightWidth.value = 0
+    rightSide.value.style.removeProperty('width')
+    rightSide.value.style.removeProperty('min-width')
+    leftSide.value.style.removeProperty('width')
+  }
+  else {
+    isMobile.value = false
+    if (rightSide?.value?.offsetWidth)
+      rightWidth.value = rightSide.value.offsetWidth
+  }
+}
+
+function mouseDownHandler(e) {
+  // get the current mouse position
+  x.value = e.clientX
+  y.value = e.clientY
+  leftWidth.value = leftSide.value.offsetWidth
+  rightWidth.value = rightSide.value.offsetWidth
+
+  // attach the listeners to `document`
+  document.addEventListener('mousemove', mouseMoveHandler)
+  document.addEventListener('mouseup', mouseUpHandler)
+}
+
+function mouseMoveHandler(e) {
+  // how far the mouse has been moved
+  const dx = resizer.value.parentNode.offsetWidth - e.clientX
+
+  if (dx >= MIN_SIDEBAR_WIDTH && dx <= MAX_SIDEBAR_WIDTH) {
+    const leftMargin = getElementMarginX(leftSide.value)
+    leftSide.value.style.width = `${e.clientX - resizer.value.offsetWidth - leftMargin}px`
+    rightSide.value.style.width = `${dx}px`
+    rightSide.value.style['min-width'] = `${dx}px`
+    rightWidth.value = dx
+  }
+
+  resizer.value.style.cursor = 'col-resize'
+  document.body.style.cursor = 'col-resize'
+
+  leftSide.value.style.userSelect = 'none'
+  leftSide.value.style.pointerEvents = 'none'
+
+  rightSide.value.style.userSelect = 'none'
+  rightSide.value.style.pointerEvents = 'none'
+}
+
+function mouseUpHandler() {
+  resizer.value.style.removeProperty('cursor')
+  document.body.style.removeProperty('cursor')
+
+  leftSide.value.style.removeProperty('user-select')
+  leftSide.value.style.removeProperty('pointer-events')
+
+  rightSide.value.style.removeProperty('user-select')
+  rightSide.value.style.removeProperty('pointer-events')
+
+  // remove the handlers of `mousemove` and `mouseup`
+  document.removeEventListener('mousemove', mouseMoveHandler)
+  document.removeEventListener('mouseup', mouseUpHandler)
+}
+
+function getElementMarginX(element) {
+  const cs = window.getComputedStyle(element)
+  const marginLeft = parseFloat(cs['margin-left'])
+  const marginRight = parseFloat(cs['margin-right'])
+  return marginLeft + marginRight
 }
 </script>
 
@@ -115,18 +203,21 @@ function resize() {
   <main class="h-screen">
     <Header :is-edit="true" />
     <div
-      class="relative sm:flex sm:flex-row h-[calc(100%-137px)] overflow-hidden sm:h-[calc(100%-57px)]"
+      class="w-full h-[calc(100%-137px)] sm:flex sm:flex-row sm:h-[calc(100%-57px)] overflow-hidden"
       :class="{ 'border-b-1 border-blacks-20 sm:border-0 ': isCVPreviewVisible }"
     >
-      <Sidebar />
       <div
-        class="absolute top-1 bottom-1 left-1 right-1 bg-white px-4 py-8 overflow-auto custom-scrollbar sm:static sm:px-8 sm:py-16 sm:z-0 sm:w-[calc(100%-398px)] sm:m-1 sm:flex"
-        :class="{ 'visible z-2': isCVPreviewVisible }"
+        ref="leftSide"
+        class="h-[calc(100%-8px)] bg-white px-4 py-8 overflow-auto custom-scrollbar flex-grow flex-shrink sm:px-8 sm:py-16 m-1"
+        :class="{ 'absolute hidden': isMobile && !isCVPreviewVisible }"
       >
-        <div class="w-[210mm] min-w-[210mm] min-h-[297mm] mx-auto">
+        <div class="w-[210mm] h-[297mm] mx-auto">
           <CVPreview id="cv-preview" />
         </div>
-        <div class="fixed bottom-0 left-0 right-0 z-2 sm:bottom-8 sm:right-[390px] sm:z-0">
+        <div
+          class="fixed bottom-0 left-0 right-0 z-2 sm:bottom-8 sm:z-0"
+          :style="rightWidthStyle"
+        >
           <div
             class="flex sm:inline-flex absolute bottom-0 transition group"
             :class="isDesignBarOpen ? 'center' : 'right'"
@@ -140,15 +231,29 @@ function resize() {
             <Toolbar :open="isDesignBarOpen" :collapse="onCollapse" />
           </div>
         </div>
-        <button
-          class="btn-icon-48 fixed bottom-28 right-8 z-2 sm:hidden"
-          @click="toggleCVPreview"
-        >
-          <span
-            class="icon-32"
-            :class="isCVPreviewVisible ? 'i-custom:edit' : 'i-custom:preview'"
-          />
-        </button>
+      </div>
+
+      <button
+        class="btn-icon-48 fixed bottom-28 right-8 z-2 sm:hidden"
+        @click="toggleCVPreview"
+      >
+        <span
+          class="icon-32"
+          :class="isCVPreviewVisible ? 'i-custom:edit' : 'i-custom:preview'"
+        />
+      </button>
+
+      <div
+        ref="resizer"
+        class="h-full sm:border-l border-blacks-20 cursor-[ew-resize]"
+        :class="{ 'hidden': isMobile }"
+      />
+
+      <div
+        ref="rightSide"
+        class="w-full h-full sm:w-[390px] sm:min-w-[390px]"
+      >
+        <Sidebar />
       </div>
     </div>
 
