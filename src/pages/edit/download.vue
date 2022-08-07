@@ -102,8 +102,8 @@ function downloadPDF() {
 function print() {
   // document.title = `${stripHtml(about.value.jobTitle)} - ${stripHtml(about.value.name)}.pdf`
   window.print()
-  toggleFeedbackModal()
   setStatus({ isSaved: false })
+  toggleFeedbackModal()
 }
 </script>
 
