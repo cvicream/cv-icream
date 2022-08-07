@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue'
+import { storeToRefs } from 'pinia'
 import { useUserStore } from '~/stores/user'
 import { MIN_SIDEBAR_WIDTH } from '~/constants'
 
 const user = useUserStore()
+const { timestamp } = storeToRefs(user)
 
 const router = useRouter()
 const sidebarMenus = ref([
@@ -141,7 +143,7 @@ function onMenuClick() {
       :class="!isActivePath('/edit/download') ? 'py-8' : 'py-4'"
       :style="`margin-left: ${menuOpenWidth}px`"
     >
-      <router-view />
+      <router-view :key="timestamp" />
     </div>
   </div>
 </template>

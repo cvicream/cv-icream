@@ -42,10 +42,10 @@ onBeforeMount(() => {
 })
 
 onMounted(() => {
+  setStatus({ isEditing: true })
+
   if (isSaved() && !isUpload())
     recoverModalVisible.value = isSaved()
-  else
-    setStatus({ isEditing: true })
 
   const color = getColor(currentState.value.color)
   setCssVariable('--primary-color', color.primary)
@@ -79,7 +79,7 @@ function onBeforeUnload(event) {
 
 function isUpload() {
   const backUrl = window.history.state.back
-  return backUrl?.indexOf('/layout') >= 0
+  return backUrl?.indexOf('/landing') >= 0
 }
 
 function save() {

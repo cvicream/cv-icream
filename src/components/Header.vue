@@ -88,6 +88,7 @@ async function importJsonFile() {
           state[subKey] = subObj[subKey]
         })
       })
+      user.updateTimestamp()
     }
     else if (key === 'toolbar') {
       const subObj = obj[key]
