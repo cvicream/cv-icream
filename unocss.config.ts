@@ -40,7 +40,7 @@ export default defineConfig({
     ['heading-default', 'font-normal text-size-[36px] leading-[41px]'],
     ['title-default', 'font-normal text-size-[14px] leading-[18px]'],
     ['subtitle-default', 'font-normal text-size-[11px] leading-[13px]'],
-    ['paragraph-default', 'font-normal text-size-[10px] leading-[13px]'],
+    ['paragraph-default', 'font-normal text-size-[10px] leading-[13px] whitespace-pre-wrap'],
     ['heading-large', 'font-normal text-size-[36px] leading-[41px]'],
     ['title-large', 'font-normal text-size-[16px] leading-[19px]'],
     ['subtitle-large', 'font-normal text-size-[14px] leading-[18px]'],
