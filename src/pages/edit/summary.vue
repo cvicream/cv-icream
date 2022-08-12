@@ -39,11 +39,14 @@ function focusOut(index) {
     />
   </div>
   <div class="flex flex-col gap-6 pr-2 -mr-3 overflow-y-scroll custom-scrollbar">
-    <p v-if="!summary.isShow" class="paragraph text-blacks-70">
+    <p v-if="!summary.isShow" class="paragraph text-blacks-40">
       {{ HIDDEN_INFORMATION }}
     </p>
+    <p v-else class="paragraph text-blacks-70">
+      Let people get to know you quickly by giving them a brief about yourself and what your characteristics are.
+    </p>
     <div
-      @focusin="() => focusIn(index)"
+      @focusin="() =>focusIn(index)"
       @focusout="() => focusOut(index)"
     >
       <h3 class="subleading text-blacks-100">

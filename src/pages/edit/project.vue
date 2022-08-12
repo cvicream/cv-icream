@@ -105,8 +105,11 @@ function deleteItem(index: number) {
     />
   </div>
   <div class="flex flex-col gap-6 pr-2 -mr-3 overflow-y-scroll custom-scrollbar">
-    <p v-if="!project.isShow" class="paragraph text-blacks-70">
+    <p v-if="!project.isShow" class="paragraph text-blacks-40">
       {{ HIDDEN_INFORMATION }}
+    </p>
+    <p v-else class="paragraph text-blacks-70">
+      Tell people what kinds of projects you have worked on. It can be the projects from your previous job, school education, or your own side project.
     </p>
     <div
       v-for="(item, index) in project.list"
@@ -184,7 +187,7 @@ function deleteItem(index: number) {
             />
           </div>
           <div>
-            <label class="note text-blacks-70">Paragraph</label>
+            <label class="note text-blacks-70">Description</label>
             <Editor
               v-model="item.paragraph"
               class-name="h-[130px]"

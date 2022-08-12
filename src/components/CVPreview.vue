@@ -13,7 +13,7 @@ const props = defineProps<{
 const id = ref(props.id || 'cv-preview')
 
 const user = useUserStore()
-const { about, summary, experience, project, skill, education, certificate, contact } = storeToRefs(user)
+const { about, summary, experience, project, skill, education, certificate, contact, social } = storeToRefs(user)
 
 const toolbar = useToolbarStore()
 const { currentState } = storeToRefs(toolbar)
@@ -190,9 +190,34 @@ function showSection(isEditing, hintTemplate: string, content: string) {
         <div
           :class="{ 'w-[25%]': currentState.layout !== 'layout-full', 'order-1': currentState.layout === 'layout-left' }"
         >
+          <section class="pb-2 not-break-out">
+            <div
+              :class="getFontSizeClassName(currentState.fontSize).subtitle"
+              class="text-primary-100 py-1 px-2"
+            >
+              {{ contact.name ? contact.name : DEFAULT_TEMPLATE.contact.name }}
+            </div>
+            <div
+              v-for="(item, index) in contact.list"
+              :key="index"
+              :class="getEditingStyle(item.isEditing)"
+            >
+              <div
+                v-if="item.isShow"
+                class="p-2 gap-2"
+              >
+                <div
+                  v-if="showSection(item.isEditing, DEFAULT_TEMPLATE.contact.list[0].paragraph, item.paragraph)"
+                  :class="getFontSizeClassName(currentState.fontSize).paragraph"
+                  class="mt-px text-blacks-70"
+                  v-html="showSection(item.isEditing, DEFAULT_TEMPLATE.contact.list[0].paragraph, item.paragraph)"
+                />
+              </div>
+            </div>
+          </section>
           <section
             v-if="skill.isShow"
-            class="pb-2 not-break-out"
+            class="py-2 not-break-out"
           >
             <div
               :class="getFontSizeClassName(currentState.fontSize).subtitle"
@@ -310,42 +335,32 @@ function showSection(isEditing, hintTemplate: string, content: string) {
               </div>
             </div>
           </section>
+
           <section
-            v-if="contact.isShow"
+            v-if="social.isShow"
             class="py-2 not-break-out"
           >
             <div
               :class="getFontSizeClassName(currentState.fontSize).subtitle"
-              class="text-primary-100 py-1 px-2"
+              class="text-primary-100 py-1 px-2 pb-2"
             >
-              {{ contact.name ? contact.name : DEFAULT_TEMPLATE.contact.name }}
+              {{ social.name ? social.name : DEFAULT_TEMPLATE.social.name }}
             </div>
             <div
-              v-for="(item, index) in contact.list"
+              v-for="(item, index) in social.list"
               :key="index"
               :class="getEditingStyle(item.isEditing)"
             >
               <div
                 v-if="item.isShow"
-                class="p-2 gap-2"
+                class="px-2"
               >
-                <div
-                  v-if="showSection(item.isEditing, DEFAULT_TEMPLATE.contact.list[0].title, item.title)"
-                  :class="getFontSizeClassName(currentState.fontSize).title"
-                  class="text-blacks-100 pb-1"
-                  v-html="showSection(item.isEditing, DEFAULT_TEMPLATE.contact.list[0].title, item.title)"
-                />
-                <div
-                  v-if="showSection(item.isEditing, DEFAULT_TEMPLATE.contact.list[0].subtitle, item.subtitle)"
-                  :class="getFontSizeClassName(currentState.fontSize).subtitle"
-                  class="pb-1 text-blacks-40"
-                  v-html="showSection(item.isEditing, DEFAULT_TEMPLATE.contact.list[0].subtitle, item.subtitle)"
-                />
-                <div
-                  v-if="showSection(item.isEditing, DEFAULT_TEMPLATE.contact.list[0].paragraph, item.paragraph)"
+                <a
+                  v-if="showSection(item.isEditing, DEFAULT_TEMPLATE.social.list[0].type, item.type)"
+                  href="item.link"
                   :class="getFontSizeClassName(currentState.fontSize).paragraph"
-                  class="mt-px text-blacks-70"
-                  v-html="showSection(item.isEditing, DEFAULT_TEMPLATE.contact.list[0].paragraph, item.paragraph)"
+                  class="text-blacks-70"
+                  v-html="showSection(item.isEditing, DEFAULT_TEMPLATE.social.list[0].type, item.type)"
                 />
               </div>
             </div>

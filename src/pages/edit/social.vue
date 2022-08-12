@@ -5,7 +5,7 @@ import { useUserStore } from '~/stores/user'
 import { DEFAULT_TEMPLATE, HIDDEN_INFORMATION, TEMPLATE_LIST_ITEM } from '~/constants'
 
 const user = useUserStore()
-const { certificate } = storeToRefs(user)
+const { social } = storeToRefs(user)
 
 const isEditName = ref(false)
 const nameInput = ref<HTMLInputElement | null>(null)
@@ -26,55 +26,55 @@ function onEditNameClick() {
 
 function focusIn(index) {
   user.$patch((state) => {
-    state.certificate.list[index].isEditing = true
+    state.social.list[index].isEditing = true
   })
 }
 
 function focusOut(index) {
   user.$patch((state) => {
-    state.certificate.list[index].isEditing = false
+    state.social.list[index].isEditing = false
   })
 }
 
 function toggleShowAll() {
   user.$patch((state) => {
-    state.certificate.isShow = !state.certificate.isShow
-    state.certificate.list.forEach(item => item.isShow = state.certificate.isShow)
+    state.social.isShow = !state.social.isShow
+    state.social.list.forEach(item => item.isShow = state.social.isShow)
   })
 }
 
 function addItem() {
   user.$patch((state) => {
     const newItem = JSON.parse(JSON.stringify(TEMPLATE_LIST_ITEM))
-    state.certificate.list.push(newItem)
+    state.social.list.push(newItem)
   })
 }
 
 function toggleCollapseItem(index: number) {
   user.$patch((state) => {
-    state.certificate.list[index].isCollapsed = !state.certificate.list[index].isCollapsed
+    state.social.list[index].isCollapsed = !state.social.list[index].isCollapsed
   })
 }
 
 function toggleShowItem(index: number) {
   user.$patch((state) => {
-    state.certificate.list[index].isShow = !state.certificate.list[index].isShow
+    state.social.list[index].isShow = !state.social.list[index].isShow
   })
 }
 
 function duplicateItem(index: number) {
   user.$patch((state) => {
-    state.certificate.list[index].isEditing = false
-    const currentItem = JSON.parse(JSON.stringify(state.certificate.list[index]))
-    state.certificate.list.splice(index, 0, currentItem)
+    state.social.list[index].isEditing = false
+    const currentItem = JSON.parse(JSON.stringify(state.social.list[index]))
+    state.social.list.splice(index, 0, currentItem)
   })
 }
 
 function deleteItem(index: number) {
-  if (user.certificate.list.length <= 1) return
+  if (user.social.list.length <= 1) return
 
   user.$patch((state) => {
-    state.certificate.list.splice(index, 1)
+    state.social.list.splice(index, 1)
   })
 }
 </script>
@@ -82,14 +82,14 @@ function deleteItem(index: number) {
 <template>
   <div class="flex justify-between items-center">
     <h2 class="flex items-center">
-      <span class="i-custom:certificate icon-32" />
+      <span class="i-custom:social icon-32" />
       <input
         ref="nameInput"
-        v-model="certificate.name"
+        v-model="social.name"
         type="text"
         maxlength="15"
         class="max-w-[132px] h-6 leading text-blacks-100 text-ellipsis whitespace-nowrap overflow-hidden bg-transparent outline-none ml-2"
-        :title="certificate.name"
+        :title="social.name"
         :disabled="!isEditName"
       >
       <button class="ml-1" @click="onEditNameClick">
@@ -100,19 +100,19 @@ function deleteItem(index: number) {
       </button>
     </h2>
     <ToggleSwitch
-      :checked="certificate.isShow"
+      :checked="social.isShow"
       @click="toggleShowAll"
     />
   </div>
   <div class="flex flex-col gap-6 pr-2 -mr-3 overflow-y-scroll custom-scrollbar">
-    <p v-if="!certificate.isShow" class="paragraph text-blacks-40">
+    <p v-if="!social.isShow" class="paragraph text-blacks-40">
       {{ HIDDEN_INFORMATION }}
     </p>
     <p v-else class="paragraph text-blacks-70">
-      Tell people what kind of certificates you have to help you apply this position.
+      Share your social media platforms, such as LinkedIn profile, the portfolio of your works, or your own website.
     </p>
     <div
-      v-for="(item, index) in certificate.list"
+      v-for="(item, index) in social.list"
       :key="index"
       class="group"
       @focusin="() => focusIn(index)"
@@ -120,13 +120,13 @@ function deleteItem(index: number) {
     >
       <div class="flex justify-between items-center">
         <div>
-          <h3 v-if="certificate.name" class="subleading text-blacks-100">
-            {{ certificate.name[0]?.toUpperCase() + certificate.name.slice(1).toLowerCase() + ' ' + (index + 1) }}
+          <h3 v-if="social.name" class="subleading text-blacks-100">
+            {{ social.name[0]?.toUpperCase() + social.name.slice(1).toLowerCase() + ' ' + (index + 1) }}
           </h3>
         </div>
         <div
           class="invisible flex items-center gap-3"
-          :class="{ 'group-hover:visible': certificate.isShow }"
+          :class="{ 'group-hover:visible': social.isShow }"
         >
           <button @click="toggleShowItem(index)">
             <span
@@ -155,34 +155,25 @@ function deleteItem(index: number) {
             :class="item.isCollapsed ? 'i-custom:min' : 'i-custom:max'"
           />
         </button>
-        <div>
-          <label class="note text-blacks-70">Title</label>
-          <Editor
-            v-model="item.title"
-            class-name="h-[46px]"
-            :enable="item.isShow"
-            :placeholder="DEFAULT_TEMPLATE.certificate.list[0].title"
-            :is-single-line="true"
-          />
-        </div>
         <div :class="item.isCollapsed ? 'hidden' : 'flex flex-col gap-6'">
           <div>
-            <label class="note text-blacks-70">Subtitle</label>
+            <label class="note text-blacks-70">Type</label>
             <Editor
-              v-model="item.subtitle"
+              v-model="item.type"
               class-name="h-[46px]"
               :enable="item.isShow"
-              :placeholder="DEFAULT_TEMPLATE.certificate.list[0].subtitle"
+              :placeholder="DEFAULT_TEMPLATE.social.list[0].type"
               :is-single-line="true"
             />
           </div>
           <div>
-            <label class="note text-blacks-70">Description</label>
+            <label class="note text-blacks-70">Link</label>
             <Editor
-              v-model="item.paragraph"
-              class-name="h-[130px]"
+              v-model="item.link"
+              class-name="h-[46px]"
               :enable="item.isShow"
-              :placeholder="DEFAULT_TEMPLATE.certificate.list[0].paragraph"
+              :placeholder="DEFAULT_TEMPLATE.social.list[0].link"
+              :is-single-line="true"
             />
           </div>
         </div>
@@ -190,16 +181,16 @@ function deleteItem(index: number) {
     </div>
     <button
       class="w-full rounded-xl text-blacks-40 inline-flex justify-center items-center py-3 border-transparent border-1 group"
-      :class="certificate.isShow ? 'bg-primary-10 hover:border-primary-100 ' : 'bg-blacks-10'"
-      :disabled="!certificate.isShow"
+      :class="social.isShow ? 'bg-primary-10 hover:border-primary-100 ' : 'bg-blacks-10'"
+      :disabled="!social.isShow"
       @click="addItem"
     >
       <span
         class="i-custom:add w-6 h-6 text-blacks-40"
-        :class="certificate.isShow && 'group-hover:text-blacks-70'"
+        :class="social.isShow && 'group-hover:text-blacks-70'"
       />
-      <span class="subleading" :class="certificate.isShow && 'group-hover:text-blacks-100'">
-        Add {{ certificate.name.toLowerCase() }}
+      <span class="subleading" :class="social.isShow && 'group-hover:text-blacks-100'">
+        Add {{ social.name.toLowerCase() }}
       </span>
     </button>
   </div>

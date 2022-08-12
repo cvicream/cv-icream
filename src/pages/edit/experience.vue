@@ -105,8 +105,11 @@ function deleteItem(index: number) {
     />
   </div>
   <div class="flex flex-col gap-6 pr-2 -mr-3 overflow-y-scroll custom-scrollbar">
-    <p v-if="!experience.isShow" class="paragraph text-blacks-70">
+    <p v-if="!experience.isShow" class="paragraph text-blacks-40">
       {{ HIDDEN_INFORMATION }}
+    </p>
+    <p v-else class="paragraph text-blacks-70">
+      Tell people more about your working experiences. Share more insights to impress you future employers!
     </p>
     <div
       v-for="(item, index) in experience.list"
@@ -184,7 +187,7 @@ function deleteItem(index: number) {
             />
           </div>
           <div>
-            <label class="note text-blacks-70">Paragraph</label>
+            <label class="note text-blacks-70">Description</label>
             <Editor
               v-model="item.paragraph"
               class-name="h-[130px]"
