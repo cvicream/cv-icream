@@ -201,30 +201,32 @@ export default defineComponent({
         'opacity': enable && toolbarVisible ? 1 : 0
       }"
     >
-      <button class="ql-list btn-icon-32 p-1" value="bullet">
-        <span class="i-custom:list-bullet w-6 h-6" />
-      </button>
-      <button class="ql-list btn-icon-32 p-1" value="ordered">
-        <span class="i-custom:list-number w-6 h-6" />
-      </button>
-      <button class="ql-indent btn-icon-32 p-1" value="+1">
-        <span class="i-custom:indent w-6 h-6" />
-      </button>
-      <button class="ql-indent btn-icon-32 p-1" value="-1">
-        <span class="i-custom:unindent w-6 h-6" />
-      </button>
-      <button class="ql-bold btn-icon-32 p-1">
-        <span class="i-custom:bold w-6 h-6" />
-      </button>
-      <button class="ql-italic btn-icon-32 p-1">
-        <span class="i-custom:italic w-6 h-6" />
-      </button>
-      <button class="ql-background btn-icon-32 p-1">
-        <span class="i-origin:highlight w-6 h-6" />
-      </button>
-      <button class="ql-link btn-icon-32 p-1">
-        <span class="i-custom:link w-6 h-6" />
-      </button>
+      <div>
+        <button class="ql-list btn-icon-32 p-1" value="bullet">
+          <span class="i-custom:list-bullet w-6 h-6" />
+        </button>
+        <button class="ql-list btn-icon-32 p-1" value="ordered">
+          <span class="i-custom:list-number w-6 h-6" />
+        </button>
+        <button class="ql-indent btn-icon-32 p-1" value="+1">
+          <span class="i-custom:indent w-6 h-6" />
+        </button>
+        <button class="ql-indent btn-icon-32 p-1" value="-1">
+          <span class="i-custom:unindent w-6 h-6" />
+        </button>
+        <button class="ql-bold btn-icon-32 p-1">
+          <span class="i-custom:bold w-6 h-6" />
+        </button>
+        <button class="ql-italic btn-icon-32 p-1">
+          <span class="i-custom:italic w-6 h-6" />
+        </button>
+        <button class="ql-background btn-icon-32 p-1">
+          <span class="i-origin:highlight w-6 h-6" />
+        </button>
+        <button class="ql-link btn-icon-32 p-1">
+          <span class="i-custom:link w-6 h-6" />
+        </button>
+      </div>
     </div>
 
     <div
@@ -401,17 +403,24 @@ export default defineComponent({
 }
 
 .ql-toolbar {
-  @apply absolute left-0 right-0 z-1 h-12 p-2 flex gap-2 bg-white rounded-12 shadow-custom;
+  @apply absolute left-0 right-0 z-1 h-[54px] p-2 bg-white rounded-lg shadow-custom;
   top: var(--toolbar-top);
   transition: visibility 0.15s linear, opacity 0.15s linear;
-  overflow-x: scroll;
-  scrollbar-width: none;    /* Firefox */
-  -ms-overflow-style: none; /* IE 10+ */
 }
-.ql-toolbar::-webkit-scrollbar {
-  width: 0;
-  height: 0;
-  background: transparent; /* Chrome/Safari */
+.ql-toolbar > div {
+  @apply h-[38px] flex gap-2;
+  overflow-x: scroll;
+  /* For Firefox */
+  scrollbar-color: rgba(34, 34, 34, 0.1) transparent;
+  scrollbar-width: thin;
+}
+.ql-toolbar > div::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+.ql-toolbar > div::-webkit-scrollbar-thumb {
+  border-radius: 2px;
+  background-color: rgba(34, 34, 34, 0.1);
 }
 
 .ql-active {
