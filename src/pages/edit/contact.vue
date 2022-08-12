@@ -82,7 +82,8 @@ function deleteItem(index: number) {
 <template>
   <div class="flex justify-between items-center">
     <h2 class="flex items-center">
-      <span class="i-custom:contact icon-32" />
+      <!-- TODO: icon should use i-custom-->
+      <span class="i-origin:contact icon-32" />
       <input
         ref="nameInput"
         v-model="contact.name"
@@ -99,14 +100,13 @@ function deleteItem(index: number) {
         />
       </button>
     </h2>
-    <ToggleSwitch
-      :checked="contact.isShow"
-      @click="toggleShowAll"
-    />
   </div>
   <div class="flex flex-col gap-6 pr-2 -mr-3 overflow-y-scroll custom-scrollbar">
-    <p v-if="!contact.isShow" class="paragraph text-blacks-70">
+    <p v-if="!contact.isShow" class="paragraph text-blacks-40">
       {{ HIDDEN_INFORMATION }}
+    </p>
+    <p v-else class="paragraph text-blacks-70">
+      Tell people your contact info, so they can reach out to you immediately if they like your experience ; )
     </p>
     <div
       v-for="(item, index) in contact.list"
@@ -152,29 +152,9 @@ function deleteItem(index: number) {
             :class="item.isCollapsed ? 'i-custom:min' : 'i-custom:max'"
           />
         </button>
-        <div>
-          <label class="note text-blacks-70">Title</label>
-          <Editor
-            v-model="item.title"
-            class-name="h-[46px]"
-            :enable="item.isShow"
-            :placeholder="DEFAULT_TEMPLATE.contact.list[0].title"
-            :is-single-line="true"
-          />
-        </div>
         <div :class="item.isCollapsed ? 'hidden' : 'flex flex-col gap-6'">
           <div>
-            <label class="note text-blacks-70">Subtitle</label>
-            <Editor
-              v-model="item.subtitle"
-              class-name="h-[46px]"
-              :enable="item.isShow"
-              :placeholder="DEFAULT_TEMPLATE.contact.list[0].subtitle"
-              :is-single-line="true"
-            />
-          </div>
-          <div>
-            <label class="note text-blacks-70">Paragraph</label>
+            <label class="note text-blacks-70">Contact Info</label>
             <Editor
               v-model="item.paragraph"
               class-name="h-[130px]"

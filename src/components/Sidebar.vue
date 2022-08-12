@@ -15,6 +15,12 @@ const sidebarMenus = ref([
     icon: 'i-custom:about',
   },
   {
+    name: 'Contact',
+    path: '/edit/contact',
+    // TODO: icon should use i-custom
+    icon: 'i-origin:contact',
+  },
+  {
     name: 'Summary',
     path: '/edit/summary',
     icon: 'i-custom:summary',
@@ -45,9 +51,9 @@ const sidebarMenus = ref([
     icon: 'i-custom:certificate',
   },
   {
-    name: 'Contact',
-    path: '/edit/contact',
-    icon: 'i-custom:contact',
+    name: 'Social',
+    path: '/edit/social',
+    icon: 'i-custom:social',
   },
 ])
 const sidebar = ref<any>(null)

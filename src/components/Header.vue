@@ -26,6 +26,7 @@ const {
   education,
   certificate,
   contact,
+  social,
 } = storeToRefs(user)
 const { currentState } = storeToRefs(toolbar)
 
@@ -60,6 +61,7 @@ function exportJsonFile() {
       education: education.value,
       certificate: certificate.value,
       contact: contact.value,
+      social: social.value,
     },
   }
   const dataStr = JSON.stringify(jsonData)
