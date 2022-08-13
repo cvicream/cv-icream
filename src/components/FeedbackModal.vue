@@ -12,6 +12,7 @@ const props = defineProps<{
 const content = ref('')
 const name = ref('')
 const email = ref('')
+const loading = ref(false)
 
 const enable = computed(() => {
   return content.value && name.value && email.value && validateEmail(email.value)
@@ -24,14 +25,23 @@ function reset() {
 }
 
 async function sendFeedback() {
-  const url = 'https://script.google.com/macros/s/AKfycbxq_a3TUrbsvWHxASqFqouHQ-12J2QQbYjvyumY4-DCc2d_Kb07pBAe_-NCuQ9t878Z/exec'
-  await fetch(`${url}?${new URLSearchParams({
-    name: name.value,
-    email: email.value,
-    content: content.value,
-  })}`)
-  props.toggle()
-  reset()
+  if (loading.value) return
+
+  loading.value = true
+  try {
+    const url = 'https://script.google.com/macros/s/AKfycbxq_a3TUrbsvWHxASqFqouHQ-12J2QQbYjvyumY4-DCc2d_Kb07pBAe_-NCuQ9t878Z/exec'
+    await fetch(`${url}?${new URLSearchParams({
+      name: name.value,
+      email: email.value,
+      content: content.value,
+    })}`)
+    props.toggle()
+    reset()
+  }
+  catch (error) {
+    console.error(error)
+  }
+  loading.value = false
 }
 
 </script>
