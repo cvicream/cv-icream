@@ -312,7 +312,9 @@ export default defineComponent({
   background-color: rgba(34, 34, 34, 0.1);
 }
 
-.ql-editor p {
+.ql-editor p,
+.ql-editor ul li,
+.ql-editor ol li {
   @apply paragraph text-blacks-100 disabled:text-blacks-40
 }
 .ql-disabled .ql-editor p {
