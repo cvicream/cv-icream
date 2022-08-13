@@ -221,10 +221,11 @@ function getElementMarginX(element) {
           <div
             class="flex sm:inline-flex absolute bottom-0 transition group"
             :class="isDesignBarOpen ? 'center' : 'right'"
+            @click="onCollapse"
           >
-            <button class="w-5 h-7 pb-2 m-0 hidden sm:inline-block absolute bottom-full right-0 invisible group-hover:visible" @click="onCollapse">
+            <button class="w-5 h-7 pb-2 m-0 hidden sm:inline-block absolute bottom-full right-0 invisible group-hover:visible">
               <span
-                class="w-5 h-5"
+                class="w-5 h-5 rotate-90"
                 :class="isDesignBarOpen ? 'i-origin:close' : 'i-origin:open'"
               />
             </button>
