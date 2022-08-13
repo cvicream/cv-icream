@@ -15,7 +15,7 @@ export default defineConfig({
     ['heading1', 'font-mark font-normal text-6xl leading-[4.875rem]'],
     ['heading1-mobile', 'font-mark font-normal text-40 leading-[3.25rem]'],
     ['heading2', 'font-mark font-normal text-32 leading-[2.75rem]'],
-    ['leading', 'font-mark font-normal text-xl leading-[1.5rem]'],
+    ['leading', 'font-mark font-normal text-xl leading-[2rem]'],
     ['leading2', 'font-mark font-normal text-size-[32px] leading-[2.75rem]'],
     ['subleading', 'font-mark font-normal text-lg leading-[1.375rem]'],
     ['paragraph', 'font-mark font-normal text-base leading-[1.375rem]'],
