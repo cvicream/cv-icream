@@ -49,12 +49,17 @@ function redo() {
 }
 
 function onCollapse() {
-  props.collapse()
+  if (!props.open)
+    props.collapse()
 }
 </script>
 
 <template>
-  <div class="w-full h-[80px] text-center bg-white flex justify-center gap-4 px-4 py-4 sm:w-auto sm-h-20 sm:rounded-xl sm:shadow-custom transition">
+  <div
+    class="w-full h-[80px] text-center bg-white flex justify-center gap-4 px-4 py-4 sm:w-auto sm-h-20 sm:rounded-xl sm:shadow-custom transition"
+    :class="{ 'hover:cursor-pointer': !open }"
+    @click="onCollapse"
+  >
     <div v-if="!open" class="btn-group-toolbar h-12 relative sm:flex">
       <div class="btn-toolbar w-8 h-8">
         <button
@@ -63,7 +68,6 @@ function onCollapse() {
             '--color-secondary': getColor(currentState.color).secondary
           }"
           class="w-8 h-8 icon-color-item"
-          @click="onCollapse"
         />
       </div>
     </div>

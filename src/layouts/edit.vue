@@ -93,9 +93,7 @@ function save() {
   saveModalVisible.value = false
 }
 
-function onCollapse(e) {
-  if (e.target.tagName === 'DIV' && isDesignBarOpen.value) return
-
+function onCollapse() {
   isDesignBarOpen.value = !isDesignBarOpen.value
 }
 
@@ -222,10 +220,12 @@ function getElementMarginX(element) {
         >
           <div
             class="flex sm:inline-flex absolute bottom-0 transition group"
-            :class="isDesignBarOpen ? 'center' : 'right hover:cursor-pointer'"
-            @click="onCollapse"
+            :class="isDesignBarOpen ? 'center' : 'right'"
           >
-            <button class="w-5 h-7 pb-2 m-0 hidden sm:inline-block absolute bottom-full right-0 invisible group-hover:visible">
+            <button
+              class="w-5 h-7 pb-2 m-0 hidden sm:inline-block absolute bottom-full right-0 invisible group-hover:visible"
+              @click="onCollapse"
+            >
               <span
                 class="w-5 h-5 rotate-90"
                 :class="isDesignBarOpen ? 'i-origin:close' : 'i-origin:open'"
