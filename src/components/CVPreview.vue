@@ -52,20 +52,44 @@ function showSection(isEditing, hintTemplate: string, content: string) {
       class="w-full h-full"
       :class="currentState.fontFamily"
     >
-      <div
-        class="p-2 flex items-baseline gap-4 not-break-out"
-        :class="currentState.layout === 'layout-left' ? `ml-[25%] ${getEditingStyle(about.isEditing)}` : getEditingStyle(about.isEditing)"
-      >
+      <div class="flex justify-between">
         <div
-          v-if="about.name"
-          class="font-normal text-primary-100 text-size-[36px] leading-[41px]"
-          v-html="isEditorEmpty(about.name) ? DEFAULT_TEMPLATE.about.name : about.name"
-        />
-        <div
-          v-if="about.jobTitle"
-          class="font-normal text-blacks-100 text-size-[14px] leading-[16px]"
-          v-html="isEditorEmpty(about.jobTitle) ? getHintText(about.isEditing, DEFAULT_TEMPLATE.about.jobTitle) : about.jobTitle"
-        />
+          class="p-2 flex items-baseline gap-4 not-break-out"
+          :class="currentState.layout === 'layout-left' ? `ml-[25%] ${getEditingStyle(about.isEditing)}` : getEditingStyle(about.isEditing)"
+        >
+          <div
+            v-if="about.name"
+            class="font-normal text-primary-100 text-size-[36px] leading-[41px]"
+            v-html="isEditorEmpty(about.name) ? DEFAULT_TEMPLATE.about.name : about.name"
+          />
+          <div
+            v-if="about.jobTitle"
+            class="font-normal text-blacks-100 text-size-[14px] leading-[16px]"
+            v-html="isEditorEmpty(about.jobTitle) ? getHintText(about.isEditing, DEFAULT_TEMPLATE.about.jobTitle) : about.jobTitle"
+          />
+        </div>
+        <!-- Contact section for layout-full -->
+        <Section
+          v-if="currentState.layout === 'layout-full'"
+        >
+          <div
+            v-for="(item, index) in contact.list"
+            :key="index"
+            :class="getEditingStyle(item.isEditing)"
+          >
+            <div
+              v-if="item.isShow"
+              class="p-2 gap-2"
+            >
+              <div
+                v-if="showSection(item.isEditing, DEFAULT_TEMPLATE.contact.list[0].paragraph, item.paragraph)"
+                :class="getFontSizeClassName(currentState.fontSize).paragraph"
+                class="mt-px text-blacks-70"
+                v-html="showSection(item.isEditing, DEFAULT_TEMPLATE.contact.list[0].paragraph, item.paragraph)"
+              />
+            </div>
+          </div>
+        </Section>
       </div>
       <div :class="{ 'flex': currentState.layout !== 'layout-full' }">
         <div
@@ -190,7 +214,11 @@ function showSection(isEditing, hintTemplate: string, content: string) {
         <div
           :class="{ 'w-[25%]': currentState.layout !== 'layout-full', 'order-1': currentState.layout === 'layout-left' }"
         >
-          <section class="pb-2 not-break-out">
+          <!-- Contact section for layout-left and layout right -->
+          <section
+            v-if="currentState.layout !== 'layout-full'"
+            class="pb-2 not-break-out"
+          >
             <div
               :class="getFontSizeClassName(currentState.fontSize).subtitle"
               class="text-primary-100 py-1 px-2"
