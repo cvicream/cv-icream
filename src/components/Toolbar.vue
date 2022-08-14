@@ -72,8 +72,7 @@ function onCollapse() {
       </div>
     </div>
 
-    <!-- TODO: unhide it after user test  -->
-    <!-- <div v-if="open" class="btn-group-toolbar w-22 h-12">
+    <div v-if="open" class="btn-group-toolbar w-22 h-12">
       <div class="btn-toolbar">
         <button
           class="i-custom:undo w-8 h-8"
@@ -87,7 +86,7 @@ function onCollapse() {
         />
       </div>
     </div>
-    <div class="icon" /> -->
+
     <div
       v-if="open"
       class="btn-group-toolbar w-42 h-12 relative sm:flex"
