@@ -20,7 +20,7 @@ export default defineConfig({
     ['subleading', 'font-mark font-normal text-lg leading-[1.375rem]'],
     ['paragraph', 'font-mark font-normal text-base leading-[1.375rem]'],
     ['note', 'font-mark font-normal text-sm leading-[1.125rem]'],
-    ['btn-primary', 'h-12 px-10 rounded-xl text-white bg-primary-100 border-1 border-transparent transition duration-300 ease-out hover:border-primary-20'],
+    ['btn-primary', 'h-12 px-9 rounded-xl text-white bg-primary-100 border-1 border-transparent transition duration-300 ease-out hover:border-primary-20'],
     ['btn-secondary', 'h-12 px-10 rounded-xl text-blacks-100 bg-white border-1 border-primary-100 transition duration-300 ease-out hover:bg-primary-10'],
     ['btn-icon-48', 'w-12 h-12 p-2 rounded-full text-blacks-70 bg-white shadow-custom hover:bg-primary-10'],
     ['btn-icon-48-fill', 'w-12 h-12 p-[calc(0.5rem-1px)] rounded-full text-white bg-primary-100 shadow-custom border-1 border-transparent hover:border-primary-20'],
