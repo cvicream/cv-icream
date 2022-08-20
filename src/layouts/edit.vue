@@ -4,7 +4,7 @@ import { storeToRefs } from 'pinia'
 import { useUserStore } from '~/stores/user'
 import { useToolbarStore } from '~/stores/toolbar'
 import { getColor, getStorage, hasStorage, isSaved, setCssVariable, setStatus } from '~/utils'
-import { MAX_SIDEBAR_WIDTH, MIN_SIDEBAR_WIDTH, MOBILE_BREAKPOINT } from '~/constants'
+import { MAX_SCALE, MAX_SIDEBAR_WIDTH, MIN_SCALE, MIN_SIDEBAR_WIDTH, MOBILE_BREAKPOINT } from '~/constants'
 
 const user = useUserStore()
 const toolbar = useToolbarStore()
@@ -14,6 +14,16 @@ const isDesignBarOpen = ref(true)
 const saveModalVisible = ref(false)
 const recoverModalVisible = ref(false)
 const isMobile = ref(false)
+const scale = ref(100)
+
+const cvPreviewWidth = computed(() => {
+  const width = 210 * scale.value / 100
+  return `${width}mm`
+})
+const cvPreviewHeight = computed(() => {
+  const height = 297 * scale.value / 100
+  return `${height}mm`
+})
 
 const resizer = ref<any>(null)
 const leftSide = ref<any>(null)
@@ -196,6 +206,16 @@ function getElementMarginX(element) {
   const marginRight = parseFloat(cs['margin-right'])
   return marginLeft + marginRight
 }
+
+function zoomIn() {
+  if (scale.value < MAX_SCALE)
+    scale.value = scale.value * 2
+}
+
+function zoomOut() {
+  if (scale.value > MIN_SCALE)
+    scale.value = scale.value / 2
+}
 </script>
 
 <template>
@@ -211,11 +231,26 @@ function getElementMarginX(element) {
         class="h-[calc(100%-8px)] bg-white px-4 py-8 overflow-auto custom-scrollbar flex-grow flex-shrink sm:px-8 sm:py-16 m-1"
         :class="{ 'absolute hidden': isMobile && !isCVPreviewVisible }"
       >
-        <div class="w-[210mm] h-[297mm] mx-auto">
-          <CVPreview id="cv-preview" />
+        <div
+          class="mx-auto"
+          :style="{
+            width: cvPreviewWidth,
+            height: cvPreviewHeight,
+          }"
+        >
+          <div
+            class="w-[210mm] h-[297mm]"
+            :style="{
+              transform: `scale(${scale}%)`,
+              'transform-origin': '0 0',
+            }"
+          >
+            <CVPreview id="cv-preview" />
+          </div>
         </div>
         <div
-          class="fixed bottom-0 left-0 right-0 z-2 sm:bottom-8 sm:z-0"
+          class="fixed bottom-0 left-0 right-0 z-2 sm:z-0"
+          :class="isDesignBarOpen ? 'sm:bottom-8' : 'sm:bottom-48'"
           :style="rightWidthStyle"
         >
           <div
@@ -232,6 +267,23 @@ function getElementMarginX(element) {
               />
             </button>
             <Toolbar :open="isDesignBarOpen" :collapse="onCollapse" />
+          </div>
+        </div>
+
+        <div
+          class="fixed bottom-0 left-0 right-0 z-2 bottom-48 sm:bottom-8 sm:z-0"
+          :style="rightWidthStyle"
+        >
+          <div class="w-12 h-32 p-2 rounded-[69px] bg-white shadow-custom flex flex-col justify-between absolute bottom-0 right transition group">
+            <button class="btn-icon-32" @click="zoomIn">
+              <span class="i-custom:zoom-in w-6 h-6" />
+            </button>
+            <span class="note text-blacks-70 text-center -mx-2 whitespace-nowrap">
+              {{ `${scale}%` }}
+            </span>
+            <button class="btn-icon-32" @click="zoomOut">
+              <span class="i-custom:zoom-out w-6 h-6" />
+            </button>
           </div>
         </div>
       </div>
