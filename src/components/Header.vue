@@ -131,8 +131,13 @@ function closeAction() {
       </button>
     </div>
     <div v-if="isEdit" @focusout="onFocusOut">
-      <button class="btn-icon-32" @click="toggle">
-        <span class="i-custom:download w-6 h-6" />
+      <button class="w-14 h-8 rounded flex justify-center items-center gap-1 hover:bg-primary-10" @click="toggle">
+        <span class="i-custom:download w-6 h-6 text-blacks-70" />
+        <span class="w-[1px] h-4 bg-blacks-20" />
+        <span
+          class="i-custom:arrow-down w-4 h-4 text-blacks-70 transition"
+          :class="isActionActive ? 'rotate-180' : 'rotate-0'"
+        />
       </button>
 
       <div v-if="isActionActive" class="w-[230px] bg-white outline outline-1 outline-blacks-100 rounded z-3 absolute right-2 top-[64px]">
