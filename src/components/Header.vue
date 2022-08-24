@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useUserStore } from '~/stores/user'
 import { useToolbarStore } from '~/stores/toolbar'
@@ -30,12 +30,7 @@ const {
 } = storeToRefs(user)
 const { currentState } = storeToRefs(toolbar)
 
-const menuStyle = computed(() => {
-  if ('safari' in window)
-    return 'w-[262px] border-1 border-blacks-100 '
-  else
-    return 'w-[260px] outline outline-1 outline-blacks-100'
-})
+const isSafari = () => ('safari' in window)
 
 function toggleFeedbackModal() {
   feedbackVisible.value = !feedbackVisible.value
@@ -150,7 +145,7 @@ function closeAction() {
       <div
         v-if="isActionActive"
         class="bg-white rounded-xl absolute right-2 top-[64px] z-3"
-        :class="menuStyle"
+        :class="isSafari() ? 'w-[262px] border-1 border-blacks-100' : 'w-[260px] outline outline-1 outline-blacks-100'"
       >
         <button
           class="w-full h-[45px] flex justify-start items-center px-4 py-3 rounded-t-xl hover:bg-primary-10"
