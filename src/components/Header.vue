@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useUserStore } from '~/stores/user'
 import { useToolbarStore } from '~/stores/toolbar'
@@ -29,6 +29,13 @@ const {
   social,
 } = storeToRefs(user)
 const { currentState } = storeToRefs(toolbar)
+
+const menuStyle = computed(() => {
+  if ('safari' in window)
+    return 'w-[262px] border-1 border-blacks-100 '
+  else
+    return 'w-[260px] outline outline-1 outline-blacks-100'
+})
 
 function toggleFeedbackModal() {
   feedbackVisible.value = !feedbackVisible.value
@@ -140,9 +147,13 @@ function closeAction() {
         />
       </button>
 
-      <div v-if="isActionActive" class="w-[230px] bg-white outline outline-1 outline-blacks-100 rounded z-3 absolute right-2 top-[64px]">
+      <div
+        v-if="isActionActive"
+        class="bg-white rounded-xl absolute right-2 top-[64px] z-3"
+        :class="menuStyle"
+      >
         <button
-          class="w-full h-[46px] flex justify-start items-center px-4 py-3 rounded-t hover:bg-primary-10"
+          class="w-full h-[45px] flex justify-start items-center px-4 py-3 rounded-t-xl hover:bg-primary-10"
           @mousedown="redirectToDownload"
         >
           <span class="paragraph text-blacks-100">Download as PDF</span>
@@ -154,7 +165,7 @@ function closeAction() {
           <span class="paragraph text-blacks-100">Save as Draft</span>
         </button>
         <button
-          class="w-full h-[46px] flex justify-start items-center px-4 py-3 rounded-b hover:bg-primary-10"
+          class="w-full h-[45px] flex justify-start items-center px-4 py-3 rounded-b-xl hover:bg-primary-10"
           @mousedown="importJsonFile"
         >
           <span class="paragraph text-blacks-100">Upload CV Draft</span>
