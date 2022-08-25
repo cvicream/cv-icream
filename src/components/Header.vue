@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { onMounted, onUnmounted, ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useUserStore } from '~/stores/user'
 import { useToolbarStore } from '~/stores/toolbar'
@@ -31,6 +31,21 @@ const {
 const { currentState } = storeToRefs(toolbar)
 
 const isSafari = () => ('safari' in window)
+
+onMounted(() => {
+  if (isSafari())
+    window.addEventListener('click', onWindowClick, false)
+})
+
+onUnmounted(() => {
+  if (isSafari())
+    window.removeEventListener('click', onWindowClick)
+})
+
+function onWindowClick() {
+  if (isActionActive.value)
+    closeAction()
+}
 
 function toggleFeedbackModal() {
   feedbackVisible.value = !feedbackVisible.value
@@ -133,7 +148,10 @@ function closeAction() {
       </button>
     </div>
     <div v-if="isEdit" @focusout="onFocusOut">
-      <button class="w-14 h-8 rounded flex justify-center items-center gap-1 hover:bg-primary-10" @click="toggle">
+      <button
+        class="w-14 h-8 rounded flex justify-center items-center gap-1 hover:bg-primary-10"
+        @click.stop="toggle"
+      >
         <span class="i-custom:download w-6 h-6 text-blacks-70" />
         <span class="w-[1px] h-4 bg-blacks-20" />
         <span
