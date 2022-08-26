@@ -13,17 +13,17 @@ const templates = [
 ]
 const members = [
   {
-    name: 'Shan Yu',
+    name: 'Pei-Shan Yu',
     title: 'UI Designer',
-    linkedIn: '',
-    email: '',
+    linkedIn: 'https://www.linkedin.com/in/pei-shan-yu-281812153/',
+    email: 'sunshanillustration@gmail.com',
     color: '#FEF4F1',
   },
   {
     name: 'Amber Hsieh',
     title: 'UX Designer',
-    linkedIn: '',
-    email: '',
+    linkedIn: 'https://www.linkedin.com/in/amber-hsieh-159a1b115/',
+    email: 'yuyouhsieh@gmail.com',
     color: '#FFF7E8',
   },
   {
@@ -34,16 +34,16 @@ const members = [
     color: '#EDF6F7',
   },
   {
-    name: 'Yin Wu',
+    name: 'Yin-Hsuan Wu',
     title: 'Front-End Developer',
-    linkedIn: '',
-    email: '',
+    linkedIn: 'https://www.linkedin.com/in/yin-hsuan-wu-6090b1b7/',
+    email: 'yinwu0025@gmail.com',
     color: '#EDF2EB',
   },
   {
     name: 'Yu-Ting Lai',
     title: 'Front-End Developer',
-    linkedIn: 'https://www.linkedin.com/in/yu-ting-lai-73a768185',
+    linkedIn: 'https://www.linkedin.com/in/yu-ting-lai-73a768185/',
     email: 'yutingboom@gmail.com',
     color: '#F1F0F4',
   },
