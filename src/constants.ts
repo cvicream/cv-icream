@@ -3,6 +3,8 @@ export const HIDDEN_INFORMATION = 'The session is currently hidden on CV. Click 
 export const MAX_SIDEBAR_WIDTH = 834
 export const MIN_SIDEBAR_WIDTH = 390
 export const MOBILE_BREAKPOINT = 640
+export const MAX_SCALE = 200
+export const MIN_SCALE = 50
 
 export const LAYOUTS = [
   {
