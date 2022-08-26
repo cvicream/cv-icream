@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { onMounted, onUnmounted, ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useUserStore } from '~/stores/user'
 import { useToolbarStore } from '~/stores/toolbar'
@@ -29,6 +29,23 @@ const {
   social,
 } = storeToRefs(user)
 const { currentState } = storeToRefs(toolbar)
+
+const isSafari = () => ('safari' in window)
+
+onMounted(() => {
+  if (isSafari())
+    window.addEventListener('click', onWindowClick, false)
+})
+
+onUnmounted(() => {
+  if (isSafari())
+    window.removeEventListener('click', onWindowClick)
+})
+
+function onWindowClick() {
+  if (isActionActive.value)
+    closeAction()
+}
 
 function toggleFeedbackModal() {
   feedbackVisible.value = !feedbackVisible.value
@@ -131,13 +148,25 @@ function closeAction() {
       </button>
     </div>
     <div v-if="isEdit" @focusout="onFocusOut">
-      <button class="btn-icon-32" @click="toggle">
-        <span class="i-custom:download w-6 h-6" />
+      <button
+        class="w-14 h-8 rounded flex justify-center items-center gap-1 hover:bg-primary-10"
+        @click.stop="toggle"
+      >
+        <span class="i-custom:download w-6 h-6 text-blacks-70" />
+        <span class="w-[1px] h-4 bg-blacks-20" />
+        <span
+          class="i-custom:arrow-down w-4 h-4 text-blacks-70 transition"
+          :class="isActionActive ? 'rotate-180' : 'rotate-0'"
+        />
       </button>
 
-      <div v-if="isActionActive" class="w-[230px] bg-white outline outline-1 outline-blacks-100 rounded z-3 absolute right-2 top-[64px]">
+      <div
+        v-if="isActionActive"
+        class="bg-white rounded-xl absolute right-2 top-[64px] z-3"
+        :class="isSafari() ? 'w-[262px] border-1 border-blacks-100' : 'w-[260px] outline outline-1 outline-blacks-100'"
+      >
         <button
-          class="w-full h-[46px] flex justify-start items-center px-4 py-3 rounded-t hover:bg-primary-10"
+          class="w-full h-[45px] flex justify-start items-center px-4 py-3 rounded-t-xl hover:bg-primary-10"
           @mousedown="redirectToDownload"
         >
           <span class="paragraph text-blacks-100">Download as PDF</span>
@@ -149,7 +178,7 @@ function closeAction() {
           <span class="paragraph text-blacks-100">Save as Draft</span>
         </button>
         <button
-          class="w-full h-[46px] flex justify-start items-center px-4 py-3 rounded-b hover:bg-primary-10"
+          class="w-full h-[45px] flex justify-start items-center px-4 py-3 rounded-b-xl hover:bg-primary-10"
           @mousedown="importJsonFile"
         >
           <span class="paragraph text-blacks-100">Upload CV Draft</span>
