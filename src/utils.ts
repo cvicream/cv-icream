@@ -157,7 +157,7 @@ function getColor(id: string) {
  *
  */
 function isEditorEmpty(value: string) {
-  return value === '<p><br></p>'
+  return (value === '<p><br></p>' || value === '')
 }
 
 /**
