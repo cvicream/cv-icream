@@ -167,7 +167,7 @@ function deleteItem(index: number) {
         </div>
         <div :class="item.isCollapsed ? 'hidden' : 'flex flex-col gap-6'">
           <div>
-            <label class="note text-blacks-70">Subtitle (to the left)</label>
+            <label class="note text-blacks-70">Subtitle (align left)</label>
             <Editor
               v-model="item.subtitle1"
               class-name="h-[46px]"
@@ -177,7 +177,7 @@ function deleteItem(index: number) {
             />
           </div>
           <div>
-            <label class="note text-blacks-70">Subtitle (to the right)</label>
+            <label class="note text-blacks-70">Subtitle (align right)</label>
             <Editor
               v-model="item.subtitle2"
               class-name="h-[46px]"

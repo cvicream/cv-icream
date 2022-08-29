@@ -35,48 +35,6 @@ function focusOut(index) {
     state.contact.list[index].isEditing = false
   })
 }
-
-function toggleShowAll() {
-  user.$patch((state) => {
-    state.contact.isShow = !state.contact.isShow
-    state.contact.list.forEach(item => item.isShow = state.contact.isShow)
-  })
-}
-
-function addItem() {
-  user.$patch((state) => {
-    const newItem = JSON.parse(JSON.stringify(TEMPLATE_LIST_ITEM))
-    state.contact.list.push(newItem)
-  })
-}
-
-function toggleCollapseItem(index: number) {
-  user.$patch((state) => {
-    state.contact.list[index].isCollapsed = !state.contact.list[index].isCollapsed
-  })
-}
-
-function toggleShowItem(index: number) {
-  user.$patch((state) => {
-    state.contact.list[index].isShow = !state.contact.list[index].isShow
-  })
-}
-
-function duplicateItem(index: number) {
-  user.$patch((state) => {
-    state.contact.list[index].isEditing = false
-    const currentItem = JSON.parse(JSON.stringify(state.contact.list[index]))
-    state.contact.list.splice(index, 0, currentItem)
-  })
-}
-
-function deleteItem(index: number) {
-  if (user.contact.list.length <= 1) return
-
-  user.$patch((state) => {
-    state.contact.list.splice(index, 1)
-  })
-}
 </script>
 
 <template>
@@ -118,41 +76,19 @@ function deleteItem(index: number) {
       <div class="flex justify-between items-center">
         <div>
           <h3 v-if="contact.name" class="subleading text-blacks-100">
-            {{ contact.name[0]?.toUpperCase() + contact.name.slice(1).toLowerCase() + ' ' + (index + 1) }}
+            {{ contact.name[0]?.toUpperCase() + contact.name.slice(1).toLowerCase() }}
           </h3>
         </div>
         <div
           class="invisible flex items-center gap-3"
           :class="{ 'group-hover:visible': contact.isShow }"
-        >
-          <button @click="toggleShowItem(index)">
-            <span
-              class="icon-24"
-              :class="item.isShow ? 'i-custom:show' : 'i-custom:hide'"
-            />
-          </button>
-          <button @click="duplicateItem(index)">
-            <span class="i-custom:variant icon-24" />
-          </button>
-          <button @click="deleteItem(index)">
-            <span class="i-custom:delete icon-24" />
-          </button>
-        </div>
+        />
       </div>
       <div
         class="rounded-xl mt-3 px-4 py-6 flex flex-col gap-6 relative"
         :class="[(item.isShow ? 'bg-primary-10': 'bg-blacks-10')]"
       >
-        <button
-          class="absolute top-4 right-4"
-          @click.prevent="toggleCollapseItem(index)"
-        >
-          <span
-            class="icon-24"
-            :class="item.isCollapsed ? 'i-custom:min' : 'i-custom:max'"
-          />
-        </button>
-        <div :class="item.isCollapsed ? 'hidden' : 'flex flex-col gap-6'">
+        <div class="flex flex-col gap-6">
           <div>
             <label class="note text-blacks-70">Contact Info</label>
             <Editor
@@ -165,20 +101,6 @@ function deleteItem(index: number) {
         </div>
       </div>
     </div>
-    <button
-      class="w-full rounded-xl text-blacks-40 inline-flex justify-center items-center py-3 border-transparent border-1 group"
-      :class="contact.isShow ? 'bg-primary-10 hover:border-primary-100 ' : 'bg-blacks-10'"
-      :disabled="!contact.isShow"
-      @click="addItem"
-    >
-      <span
-        class="i-custom:add w-6 h-6 text-blacks-40"
-        :class="contact.isShow && 'group-hover:text-blacks-70'"
-      />
-      <span class="subleading" :class="contact.isShow && 'group-hover:text-blacks-100'">
-        Add {{ contact.name.toLowerCase() }}
-      </span>
-    </button>
   </div>
 </template>
 
