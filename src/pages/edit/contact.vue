@@ -2,7 +2,7 @@
 import { ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useUserStore } from '~/stores/user'
-import { DEFAULT_TEMPLATE, HIDDEN_INFORMATION, TEMPLATE_LIST_ITEM } from '~/constants'
+import { DEFAULT_TEMPLATE, HIDDEN_INFORMATION } from '~/constants'
 
 const user = useUserStore()
 const { contact } = storeToRefs(user)
@@ -79,10 +79,6 @@ function focusOut(index) {
             {{ contact.name[0]?.toUpperCase() + contact.name.slice(1).toLowerCase() }}
           </h3>
         </div>
-        <div
-          class="invisible flex items-center gap-3"
-          :class="{ 'group-hover:visible': contact.isShow }"
-        />
       </div>
       <div
         class="rounded-xl mt-3 px-4 py-6 flex flex-col gap-6 relative"
