@@ -382,12 +382,13 @@ function showSection(isEditing, hintTemplate: string, content: string) {
               <div
                 v-if="item.isShow"
                 class="px-2"
+                :class="getFontSizeClassName(currentState.fontSize).paragraph"
               >
                 <a
                   v-if="showSection(item.isEditing, DEFAULT_TEMPLATE.social.list[0].type, item.type)"
-                  href="item.link"
-                  :class="getFontSizeClassName(currentState.fontSize).paragraph"
                   class="text-blacks-70"
+                  :href="item.link"
+                  target="_blank"
                   v-html="showSection(item.isEditing, DEFAULT_TEMPLATE.social.list[0].type, item.type)"
                 />
               </div>

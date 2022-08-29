@@ -168,13 +168,13 @@ function deleteItem(index: number) {
           </div>
           <div>
             <label class="note text-blacks-70">Link</label>
-            <Editor
+            <input
               v-model="item.link"
-              class-name="h-[46px]"
+              class="form-input"
               :enable="item.isShow"
               :placeholder="DEFAULT_TEMPLATE.social.list[0].link"
               :is-single-line="true"
-            />
+            >
           </div>
         </div>
       </div>
