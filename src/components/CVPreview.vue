@@ -111,6 +111,7 @@ function showSection(isEditing, hintTemplate: string, content: string) {
                 })"
                 :key="item"
                 class="hashtag text-primary-100 bg-primary-10"
+                :class="summary.isEditing ? 'bg-white' : 'bg-primary-10'"
                 v-html="isEditorEmpty(item) ? getHintText(summary.isEditing, DEFAULT_TEMPLATE.summary.hashtags[index]) : item"
               />
             </div>
