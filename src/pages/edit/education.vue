@@ -152,7 +152,7 @@ function deleteItem(index: number) {
         >
           <span
             class="icon-24"
-            :class="item.isCollapsed ? 'i-custom:min' : 'i-custom:max'"
+            :class="item.isCollapsed ? 'i-origin:open' : 'i-origin:close'"
           />
         </button>
         <div>

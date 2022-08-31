@@ -152,20 +152,20 @@ function deleteItem(index: number) {
         >
           <span
             class="icon-24"
-            :class="item.isCollapsed ? 'i-custom:min' : 'i-custom:max'"
+            :class="item.isCollapsed ? 'i-origin:open' : 'i-origin:close'"
           />
         </button>
+        <div>
+          <label class="note text-blacks-70">Type</label>
+          <Editor
+            v-model="item.type"
+            class-name="h-[46px]"
+            :enable="item.isShow"
+            :placeholder="DEFAULT_TEMPLATE.social.list[0].type"
+            :is-single-line="true"
+          />
+        </div>
         <div :class="item.isCollapsed ? 'hidden' : 'flex flex-col gap-6'">
-          <div>
-            <label class="note text-blacks-70">Type</label>
-            <Editor
-              v-model="item.type"
-              class-name="h-[46px]"
-              :enable="item.isShow"
-              :placeholder="DEFAULT_TEMPLATE.social.list[0].type"
-              :is-single-line="true"
-            />
-          </div>
           <div>
             <label class="note text-blacks-70">Link</label>
             <input
