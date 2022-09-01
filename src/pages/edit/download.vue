@@ -4,7 +4,7 @@ import { jsPDF as JsPDF } from 'jspdf'
 import { storeToRefs } from 'pinia'
 import { useUserStore } from '~/stores/user'
 import { useToolbarStore } from '~/stores/toolbar'
-import { setStatus, stripHtml } from '~/utils'
+import { getPreviousUrl, setStatus, stripHtml } from '~/utils'
 import arial from '~/assets/fonts/arial/arial-normal'
 import georgia from '~/assets/fonts/georgia/georgia-normal'
 import gillsans from '~/assets/fonts/gillsans/gillsans-normal'
@@ -105,6 +105,15 @@ function print() {
   setStatus({ isSaved: false })
   toggleFeedbackModal()
 }
+
+function back() {
+  const previousUrl = getPreviousUrl()
+  if (previousUrl) {
+    setStatus({ previousUrl: '' })
+    window.location.href = previousUrl
+  }
+  else { router.push('/edit/about') }
+}
 </script>
 
 <template>
@@ -113,7 +122,7 @@ function print() {
       <span class="i-custom:download icon-32" />
       <span class="leading text-blacks-100">Download My CV</span>
     </h2>
-    <button class="w-6 h-6 self-start" @click="router.back()">
+    <button class="w-6 h-6 self-start" @click="back()">
       <span class="i-custom:cancel icon-24" />
     </button>
   </div>

@@ -3,7 +3,7 @@ import { onMounted, onUnmounted, ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useUserStore } from '~/stores/user'
 import { useToolbarStore } from '~/stores/toolbar'
-import { getJsonUpload, stripHtml } from '~/utils'
+import { getJsonUpload, setStatus, stripHtml } from '~/utils'
 
 const props = defineProps<{
   isEdit: boolean
@@ -55,6 +55,7 @@ function redirectToDownload() {
   toolbar.$patch((state) => {
     state.isCVPreviewVisible = false
   })
+  setStatus({ previousUrl: window.location.href })
   router.push('/edit/download')
   closeAction()
 }
