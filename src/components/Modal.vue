@@ -28,7 +28,7 @@ function closeModal() {
             {{ subtitle }}
           </div>
         </div>
-        <button @click="closeModal">
+        <button class="w-6 h-6" @click="closeModal">
           <span
             class="i-custom:cancel icon-24"
           />
