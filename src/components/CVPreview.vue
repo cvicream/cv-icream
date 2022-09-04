@@ -54,7 +54,7 @@ function showSection(isEditing, hintTemplate: string, content: string) {
     >
       <div class="flex justify-between">
         <div
-          class="p-2 flex items-baseline gap-4 not-break-out"
+          class="p-2 flex items-baseline flex-wrap gap-4 not-break-out"
           :class="currentState.layout === 'layout-left' ? `ml-[25%] ${getEditingStyle(about.isEditing)}` : getEditingStyle(about.isEditing)"
         >
           <div
