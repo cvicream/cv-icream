@@ -1,15 +1,15 @@
 <script setup lang="ts">
-import { computed, onMounted, ref, watch } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import draggable from 'vuedraggable'
 import { useUserStore } from '~/stores/user'
 import { MIN_SIDEBAR_WIDTH } from '~/constants'
 
 const user = useUserStore()
-const { timestamp } = storeToRefs(user)
+const { about, summary, experience, project, skill, education, certificate, contact, social, timestamp } = storeToRefs(user)
 
 const router = useRouter()
-const sidebarMenus = ref([
+const sidebarMenus = [
   {
     name: 'About',
     path: '/edit/about',
@@ -56,7 +56,31 @@ const sidebarMenus = ref([
     path: '/edit/social',
     icon: 'i-custom:social',
   },
-])
+]
+const menus = computed({
+  get() {
+    const content = [
+      { key: 'about', ...about.value },
+      { key: 'summary', ...summary.value },
+      { key: 'experience', ...experience.value },
+      { key: 'project', ...project.value },
+      { key: 'skill', ...skill.value },
+      { key: 'education', ...education.value },
+      { key: 'certificate', ...certificate.value },
+      { key: 'contact', ...contact.value },
+      { key: 'social', ...social.value },
+    ].sort((a, b) => a.order - b.order)
+    return content.map(item => sidebarMenus.find(menu => menu.name.toLowerCase() === item.key))
+  },
+  set(newMenus) {
+    user.$patch((state) => {
+      newMenus.forEach((item, index) => {
+        if (item)
+          state[item.name.toLowerCase()].order = index + 1 // order starts from 1
+      })
+    })
+  },
+})
 const sidebar = ref<any>(null)
 const isOpen = ref(false)
 const isSmallSidebar = ref(true)
@@ -64,21 +88,6 @@ const drag = ref(true)
 
 const menuOpenWidth = computed(() => {
   return isOpen.value && !isSmallSidebar.value ? 218 : 64
-})
-
-watch(sidebarMenus, (newMenus) => {
-  user.$patch((state) => {
-    const result = {}
-    newMenus.forEach((menu) => {
-      result[menu.name.toLocaleLowerCase()] = menu
-    })
-    Object.keys(state).forEach((key) => {
-      const index = newMenus.findIndex(menu => menu.name.toLocaleLowerCase() === key.toLocaleLowerCase())
-      if (index >= 0)
-        state[key].order = index + 1
-    })
-    return result
-  })
 })
 
 onMounted(() => {
@@ -136,7 +145,7 @@ function onMenuClick() {
 
       <div class="flex flex-col gap-4 overflow-y-auto disable-scrollbar">
         <draggable
-          v-model="sidebarMenus"
+          v-model="menus"
           item-key="path"
           tag="transition-group"
           @start="drag = true"
