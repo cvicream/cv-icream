@@ -109,10 +109,10 @@ function print() {
 
 <template>
   <div class="flex justify-between items-center">
-    <h2 class="flex items-center gap-2 pt-4">
+    <div class="flex items-center gap-2 pt-4">
       <span class="i-custom:download icon-32" />
       <span class="leading text-blacks-100">Download My CV</span>
-    </h2>
+    </div>
     <button class="w-6 h-6 self-start" @click="router.back()">
       <span class="i-custom:cancel icon-24" />
     </button>

@@ -6,13 +6,13 @@ import { DEFAULT_TEMPLATE } from '~/constants'
 const user = useUserStore()
 const { about } = storeToRefs(user)
 
-function focusIn(index) {
+function focusIn() {
   user.$patch((state) => {
     state.about.isEditing = true
   })
 }
 
-function focusOut(index) {
+function focusOut() {
   user.$patch((state) => {
     state.about.isEditing = false
   })
@@ -22,14 +22,14 @@ function focusOut(index) {
 
 <template>
   <div class="flex justify-between items-center">
-    <h2 class="flex items-center gap-2">
+    <div class="flex items-center gap-2">
       <span class="i-custom:about icon-32" />
       <span class="leading text-blacks-100">ABOUT</span>
-    </h2>
+    </div>
   </div>
   <div
-    @focusin="() => focusIn(index)"
-    @focusout="() => focusOut(index)"
+    @focusin="() => focusIn()"
+    @focusout="() => focusOut()"
   >
     <h3 class="subleading text-blacks-100">
       About
