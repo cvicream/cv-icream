@@ -9,6 +9,11 @@ const { certificate } = storeToRefs(user)
 
 const isEditName = ref(false)
 const nameInput = ref<HTMLInputElement | null>(null)
+const componentKey = ref(0) // force Editor component to re-render
+
+function forceRerender() {
+  componentKey.value += 1
+}
 
 watch(nameInput, () => {
   if (nameInput.value && isEditName.value) {
@@ -65,6 +70,7 @@ function duplicateItem(index: number) {
     const currentItem = JSON.parse(JSON.stringify(state.certificate.list[index]))
     state.certificate.list.splice(index, 0, currentItem)
   })
+  forceRerender()
 }
 
 function deleteItem(index: number) {
@@ -117,7 +123,7 @@ function deleteItem(index: number) {
     </p>
     <div
       v-for="(item, index) in certificate.list"
-      :key="index"
+      :key="componentKey + '-' + index"
       class="group"
       @focusin="() => focusIn(index)"
       @focusout="() => focusOut(index)"
@@ -130,7 +136,7 @@ function deleteItem(index: number) {
           class="invisible flex items-center gap-3 ml-3"
           :class="{ 'group-hover:visible': certificate.isShow }"
         >
-          <button @click="toggleShowItem(index)">
+          <button v-if="certificate.list.length > 1" @click="toggleShowItem(index)">
             <span
               class="icon-24"
               :class="item.isShow ? 'i-custom:show' : 'i-custom:hide'"
@@ -139,7 +145,7 @@ function deleteItem(index: number) {
           <button @click="duplicateItem(index)">
             <span class="i-custom:variant icon-24" />
           </button>
-          <button @click="deleteItem(index)">
+          <button v-if="certificate.list.length > 1" @click="deleteItem(index)">
             <span class="i-custom:delete icon-24" />
           </button>
         </div>

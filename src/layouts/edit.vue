@@ -314,15 +314,11 @@ function zoomOut() {
 
     <Modal
       v-show="recoverModalVisible"
+      title="Recover your information?"
+      subtitle="Would you like to recover your information?"
       @close="recoverModalVisible = false"
     >
-      <div class="leading text-primary-100 mt-1 px-2">
-        Recover your information?
-      </div>
-      <div class="paragraph text-blacks-100 mt-6 px-2">
-        Would you like to recover your information?
-      </div>
-      <div class="flex flex-col gap-6 px-2 pt-6 pb-2 sm:flex-row">
+      <div class="flex flex-col gap-6 mt-6 sm:flex-row">
         <button
           class="btn-secondary px-8 flex-shrink-0"
           @click="cancelRecover"
@@ -344,15 +340,11 @@ function zoomOut() {
 
     <Modal
       v-show="saveModalVisible"
+      title="Save your information?"
+      subtitle="Would you like to save your information and continue editing when you come back next time?"
       @close="saveModalVisible = false"
     >
-      <div class="leading text-primary-100 mt-1 px-2">
-        Save your information?
-      </div>
-      <div class="paragraph text-blacks-100 mt-6 px-2">
-        Would you like to save your information and continue editing when you come back next time?
-      </div>
-      <div class="flex flex-col gap-6 px-2 pt-6 pb-2 sm:flex-row">
+      <div class="flex flex-col gap-6 mt-6 sm:flex-row">
         <button
           class="btn-secondary px-8 flex-shrink-0"
           @click="saveModalVisible = false"
