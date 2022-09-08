@@ -10,18 +10,15 @@ const { contact } = storeToRefs(user)
 const isEditName = ref(false)
 const nameInput = ref<HTMLInputElement | null>(null)
 
+watch(nameInput, () => {
+  if (nameInput.value && isEditName.value) {
+    nameInput.value.focus()
+    nameInput.value.select()
+  }
+})
+
 function onEditNameClick() {
   isEditName.value = !isEditName.value
-  if (nameInput.value) {
-    if (isEditName.value) {
-      nameInput.value.disabled = false
-      nameInput.value.focus()
-      nameInput.value.select()
-    }
-    else {
-      nameInput.value.disabled = true
-    }
-  }
 }
 
 function focusIn(index) {
@@ -38,26 +35,34 @@ function focusOut(index) {
 </script>
 
 <template>
-  <div class="flex justify-between items-center">
-    <h2 class="flex items-center">
-      <!-- TODO: icon should use i-custom-->
-      <span class="i-origin:contact icon-32" />
+  <div class="flex items-center gap-2">
+    <!-- TODO: icon should use i-custom-->
+    <span class="i-origin:contact icon-32" />
+    <div class="flex-1 h-6 overflow-hidden">
       <input
+        v-if="isEditName"
         ref="nameInput"
         v-model="contact.name"
         type="text"
-        maxlength="15"
-        class="max-w-[132px] h-6 leading text-blacks-100 text-ellipsis whitespace-nowrap overflow-hidden bg-transparent outline-none ml-2"
+        class="w-full h-full leading text-blacks-100 bg-transparent outline-none"
         :title="contact.name"
-        :disabled="!isEditName"
+        @keyup.enter="onEditNameClick"
       >
-      <button class="ml-1" @click="onEditNameClick">
-        <span
-          class="icon-24"
-          :class="isEditName ? 'i-custom:ok' : 'i-custom:edit'"
-        />
-      </button>
-    </h2>
+      <div
+        v-else
+        class="w-full h-full leading leading-6 text-blacks-100 text-ellipsis whitespace-nowrap overflow-hidden bg-transparent"
+        :title="contact.name"
+      >
+        {{ contact.name }}
+      </div>
+    </div>
+
+    <button class="flex-shrink-0" @click="onEditNameClick">
+      <span
+        class="icon-24"
+        :class="isEditName ? 'i-custom:ok' : 'i-custom:edit'"
+      />
+    </button>
   </div>
   <div class="flex flex-col gap-6 pr-2 -mr-3 overflow-y-scroll custom-scrollbar">
     <p v-if="!contact.isShow" class="paragraph text-blacks-40">
@@ -74,11 +79,9 @@ function focusOut(index) {
       @focusout="() => focusOut(index)"
     >
       <div class="flex justify-between items-center">
-        <div>
-          <h3 v-if="contact.name" class="subleading text-blacks-100">
-            {{ contact.name[0]?.toUpperCase() + contact.name.slice(1).toLowerCase() }}
-          </h3>
-        </div>
+        <h3 v-if="contact.name" class="subleading text-blacks-100 text-ellipsis whitespace-nowrap overflow-hidden">
+          {{ contact.name }}
+        </h3>
       </div>
       <div
         class="rounded-xl mt-3 px-4 py-6 flex flex-col gap-6 relative"

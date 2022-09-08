@@ -15,18 +15,15 @@ function forceRerender() {
   componentKey.value += 1
 }
 
+watch(nameInput, () => {
+  if (nameInput.value && isEditName.value) {
+    nameInput.value.focus()
+    nameInput.value.select()
+  }
+})
+
 function onEditNameClick() {
   isEditName.value = !isEditName.value
-  if (nameInput.value) {
-    if (isEditName.value) {
-      nameInput.value.disabled = false
-      nameInput.value.focus()
-      nameInput.value.select()
-    }
-    else {
-      nameInput.value.disabled = true
-    }
-  }
 }
 
 function focusIn(index) {
@@ -86,25 +83,32 @@ function deleteItem(index: number) {
 </script>
 
 <template>
-  <div class="flex justify-between items-center">
-    <h2 class="flex items-center">
-      <span class="i-custom:social icon-32" />
+  <div class="flex items-center gap-2">
+    <span class="i-custom:social icon-32" />
+    <div class="flex-1 h-6 overflow-hidden">
       <input
+        v-if="isEditName"
         ref="nameInput"
         v-model="social.name"
         type="text"
-        maxlength="15"
-        class="max-w-[132px] h-6 leading text-blacks-100 text-ellipsis whitespace-nowrap overflow-hidden bg-transparent outline-none ml-2"
+        class="w-full h-full leading text-blacks-100 bg-transparent outline-none"
         :title="social.name"
-        :disabled="!isEditName"
+        @keyup.enter="onEditNameClick"
       >
-      <button class="ml-1" @click="onEditNameClick">
-        <span
-          class="icon-24"
-          :class="isEditName ? 'i-custom:ok' : 'i-custom:edit'"
-        />
-      </button>
-    </h2>
+      <div
+        v-else
+        class="w-full h-full leading leading-6 text-blacks-100 text-ellipsis whitespace-nowrap overflow-hidden bg-transparent"
+        :title="social.name"
+      >
+        {{ social.name }}
+      </div>
+    </div>
+    <button @click="onEditNameClick">
+      <span
+        class="icon-24"
+        :class="isEditName ? 'i-custom:ok' : 'i-custom:edit'"
+      />
+    </button>
     <ToggleSwitch
       :checked="social.isShow"
       @click="toggleShowAll"
@@ -125,13 +129,11 @@ function deleteItem(index: number) {
       @focusout="() => focusOut(index)"
     >
       <div class="flex justify-between items-center">
-        <div>
-          <h3 v-if="social.name" class="subleading text-blacks-100">
-            {{ social.name[0]?.toUpperCase() + social.name.slice(1).toLowerCase() + ' ' + (index + 1) }}
-          </h3>
-        </div>
+        <h3 v-if="social.name" class="subleading text-blacks-100 text-ellipsis whitespace-nowrap overflow-hidden">
+          {{ social.name + ' ' + (index + 1) }}
+        </h3>
         <div
-          class="invisible flex items-center gap-3"
+          class="invisible flex items-center gap-3 ml-3"
           :class="{ 'group-hover:visible': social.isShow }"
         >
           <button v-if="social.list.length > 1" @click="toggleShowItem(index)">
@@ -186,17 +188,17 @@ function deleteItem(index: number) {
       </div>
     </div>
     <button
-      class="w-full rounded-xl text-blacks-40 inline-flex justify-center items-center py-3 border-transparent border-1 group"
+      class="w-full rounded-xl text-blacks-40 inline-flex justify-center items-center p-3 border-transparent border-1 group"
       :class="social.isShow ? 'bg-primary-10 hover:border-primary-100 ' : 'bg-blacks-10'"
       :disabled="!social.isShow"
       @click="addItem"
     >
       <span
-        class="i-custom:add w-6 h-6 text-blacks-40"
+        class="i-custom:add w-6 h-6 text-blacks-40 flex-shrink-0"
         :class="social.isShow && 'group-hover:text-blacks-70'"
       />
-      <span class="subleading" :class="social.isShow && 'group-hover:text-blacks-100'">
-        Add {{ social.name.toLowerCase() }}
+      <span class="subleading text-ellipsis whitespace-nowrap overflow-hidden" :class="social.isShow && 'group-hover:text-blacks-100'">
+        Add {{ social.name }}
       </span>
     </button>
   </div>
