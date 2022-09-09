@@ -79,6 +79,7 @@ function deleteItem(index: number) {
   user.$patch((state) => {
     state.skill.list.splice(index, 1)
   })
+  forceRerender()
 }
 </script>
 
