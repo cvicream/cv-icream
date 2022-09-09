@@ -40,6 +40,17 @@ function showSection(isEditing, hintTemplate: string, content: string) {
   return ((isEditorEmpty(content) ? getHintText(isEditing, hintTemplate) : content))
 }
 
+function isObjectEmpty(obj) {
+  let isEmpty = true
+  const keys = ['title', 'subtitle', 'subtitle1', 'subtitle2', 'paragraph', 'type']
+  for (const [key, value] of Object.entries(obj)) {
+    if (keys.includes(key) && !isEditorEmpty(value)) {
+      isEmpty = false
+      break
+    }
+  }
+  return isEmpty
+}
 </script>
 
 <template>
@@ -68,6 +79,7 @@ function showSection(isEditing, hintTemplate: string, content: string) {
             v-html="isEditorEmpty(about.jobTitle) ? getHintText(about.isEditing, DEFAULT_TEMPLATE.about.jobTitle) : about.jobTitle"
           />
         </div>
+
         <!-- Contact section for layout-full -->
         <Section
           v-if="currentState.layout === 'layout-full'"
@@ -79,18 +91,19 @@ function showSection(isEditing, hintTemplate: string, content: string) {
           >
             <div
               v-if="item.isShow"
-              class="p-2 gap-2"
+              class="p-2 flex flex-col gap-1"
             >
               <div
                 v-if="showSection(item.isEditing, DEFAULT_TEMPLATE.contact.list[0].paragraph, item.paragraph)"
                 :class="getFontSizeClassName(currentState.fontSize).paragraph"
-                class="mt-px text-blacks-70"
+                class="text-blacks-70"
                 v-html="showSection(item.isEditing, DEFAULT_TEMPLATE.contact.list[0].paragraph, item.paragraph)"
               />
             </div>
           </div>
         </Section>
       </div>
+
       <div :class="{ 'flex': currentState.layout !== 'layout-full' }">
         <div
           class="flex flex-col gap-4 not-break-out"
@@ -121,6 +134,7 @@ function showSection(isEditing, hintTemplate: string, content: string) {
               v-html="isEditorEmpty(summary.paragraph) ? getHintText(summary.isEditing, DEFAULT_TEMPLATE.summary.paragraph) : summary.paragraph"
             />
           </section>
+
           <section v-if="experience.isShow" class="not-break-out">
             <div
               :class="getFontSizeClassName(currentState.fontSize).subtitle"
@@ -131,41 +145,49 @@ function showSection(isEditing, hintTemplate: string, content: string) {
             <div
               v-for="(item, index) in experience.list"
               :key="index"
-              :class="getEditingStyle(item.isEditing)"
             >
               <div
-                v-if="item.isShow"
-                class="p-2 flex flex-col gap-1"
+                v-if="item.isEditing || !isObjectEmpty(item)"
+                :class="getEditingStyle(item.isEditing)"
               >
                 <div
-                  :class="getFontSizeClassName(currentState.fontSize).title"
-                  class="text-blacks-100"
-                  v-html="isEditorEmpty(item.title) ?
-                    getHintText(item.isEditing, DEFAULT_TEMPLATE.experience.list[0].title) : item.title"
-                />
-                <div class="flex justify-between">
+                  v-if="item.isShow"
+                  class="p-2 flex flex-col gap-1"
+                >
                   <div
-                    :class="getFontSizeClassName(currentState.fontSize).subtitle"
-                    class="text-blacks-40"
-                    v-html="isEditorEmpty(item.subtitle1) ?
-                      getHintText(item.isEditing, DEFAULT_TEMPLATE.experience.list[0].subtitle1) : item.subtitle1"
+                    v-if="showSection(item.isEditing, DEFAULT_TEMPLATE.experience.list[0].title, item.title)"
+                    :class="getFontSizeClassName(currentState.fontSize).title"
+                    class="text-blacks-100"
+                    v-html="showSection(item.isEditing, DEFAULT_TEMPLATE.experience.list[0].title, item.title)"
                   />
                   <div
-                    :class="getFontSizeClassName(currentState.fontSize).subtitle"
-                    class="text-blacks-40"
-                    v-html="isEditorEmpty(item.subtitle2) ?
-                      getHintText(item.isEditing, DEFAULT_TEMPLATE.experience.list[0].subtitle2) : item.subtitle2"
+                    v-if="item.isEditing || !isEditorEmpty(item.subtitle1) || !isEditorEmpty(item.subtitle2)"
+                    class="flex justify-between"
+                  >
+                    <div
+                      v-if="showSection(item.isEditing, DEFAULT_TEMPLATE.experience.list[0].subtitle1, item.subtitle1)"
+                      :class="getFontSizeClassName(currentState.fontSize).subtitle"
+                      class="text-blacks-40"
+                      v-html="showSection(item.isEditing, DEFAULT_TEMPLATE.experience.list[0].subtitle1, item.subtitle1)"
+                    />
+                    <div
+                      v-if="showSection(item.isEditing, DEFAULT_TEMPLATE.experience.list[0].subtitle2, item.subtitle2)"
+                      :class="getFontSizeClassName(currentState.fontSize).subtitle"
+                      class="text-blacks-40"
+                      v-html="showSection(item.isEditing, DEFAULT_TEMPLATE.experience.list[0].subtitle2, item.subtitle2)"
+                    />
+                  </div>
+                  <div
+                    v-if="showSection(item.isEditing, DEFAULT_TEMPLATE.experience.list[0].paragraph, item.paragraph)"
+                    :class="getFontSizeClassName(currentState.fontSize).paragraph"
+                    class="text-blacks-70"
+                    v-html="showSection(item.isEditing, DEFAULT_TEMPLATE.experience.list[0].paragraph, item.paragraph)"
                   />
                 </div>
-                <div
-                  :class="getFontSizeClassName(currentState.fontSize).paragraph"
-                  class="text-blacks-70"
-                  v-html="isEditorEmpty(item.paragraph) ?
-                    getHintText(item.isEditing, DEFAULT_TEMPLATE.experience.list[0].paragraph) : item.paragraph"
-                />
               </div>
             </div>
           </section>
+
           <section v-if="project.isShow" class="not-break-out">
             <div
               :class="getFontSizeClassName(currentState.fontSize).subtitle"
@@ -176,42 +198,50 @@ function showSection(isEditing, hintTemplate: string, content: string) {
             <div
               v-for="(item, index) in project.list"
               :key="index"
-              :class="getEditingStyle(item.isEditing)"
             >
               <div
-                v-if="item.isShow"
-                class="p-2 flex flex-col gap-1"
+                v-if="item.isEditing || !isObjectEmpty(item)"
+                :class="getEditingStyle(item.isEditing)"
               >
                 <div
-                  :class="getFontSizeClassName(currentState.fontSize).title"
-                  class="text-blacks-100"
-                  v-html="isEditorEmpty(item.title) ?
-                    getHintText(item.isEditing, DEFAULT_TEMPLATE.project.list[0].title) : item.title"
-                />
-                <div class="flex justify-between">
+                  v-if="item.isShow"
+                  class="p-2 flex flex-col gap-1"
+                >
                   <div
-                    :class="getFontSizeClassName(currentState.fontSize).subtitle"
-                    class="text-blacks-40"
-                    v-html="isEditorEmpty(item.subtitle1) ?
-                      getHintText(item.isEditing, DEFAULT_TEMPLATE.project.list[0].subtitle1) : item.subtitle1"
+                    v-if="showSection(item.isEditing, DEFAULT_TEMPLATE.project.list[0].title, item.title)"
+                    :class="getFontSizeClassName(currentState.fontSize).title"
+                    class="text-blacks-100"
+                    v-html="showSection(item.isEditing, DEFAULT_TEMPLATE.project.list[0].title, item.title)"
                   />
                   <div
-                    :class="getFontSizeClassName(currentState.fontSize).subtitle"
-                    class="text-blacks-40"
-                    v-html="isEditorEmpty(item.subtitle2) ?
-                      getHintText(item.isEditing, DEFAULT_TEMPLATE.project.list[0].subtitle2) : item.subtitle2"
+                    v-if="item.isEditing || !isEditorEmpty(item.subtitle1) || !isEditorEmpty(item.subtitle2)"
+                    class="flex justify-between"
+                  >
+                    <div
+                      v-if="showSection(item.isEditing, DEFAULT_TEMPLATE.project.list[0].subtitle1, item.subtitle1)"
+                      :class="getFontSizeClassName(currentState.fontSize).subtitle"
+                      class="text-blacks-40"
+                      v-html="showSection(item.isEditing, DEFAULT_TEMPLATE.project.list[0].subtitle1, item.subtitle1)"
+                    />
+                    <div
+                      v-if="showSection(item.isEditing, DEFAULT_TEMPLATE.project.list[0].subtitle2, item.subtitle2)"
+                      :class="getFontSizeClassName(currentState.fontSize).subtitle"
+                      class="text-blacks-40"
+                      v-html="showSection(item.isEditing, DEFAULT_TEMPLATE.project.list[0].subtitle2, item.subtitle2)"
+                    />
+                  </div>
+                  <div
+                    v-if="showSection(item.isEditing, DEFAULT_TEMPLATE.project.list[0].paragraph, item.paragraph)"
+                    :class="getFontSizeClassName(currentState.fontSize).paragraph"
+                    class="text-blacks-70"
+                    v-html="showSection(item.isEditing, DEFAULT_TEMPLATE.project.list[0].paragraph, item.paragraph)"
                   />
                 </div>
-                <div
-                  :class="getFontSizeClassName(currentState.fontSize).paragraph"
-                  class="text-blacks-70"
-                  v-html="isEditorEmpty(item.paragraph) ?
-                    getHintText(item.isEditing, DEFAULT_TEMPLATE.project.list[0].paragraph) : item.paragraph"
-                />
               </div>
             </div>
           </section>
         </div>
+
         <div
           :class="{ 'w-[25%]': currentState.layout !== 'layout-full', 'order-1': currentState.layout === 'layout-left' }"
         >
@@ -229,21 +259,26 @@ function showSection(isEditing, hintTemplate: string, content: string) {
             <div
               v-for="(item, index) in contact.list"
               :key="index"
-              :class="getEditingStyle(item.isEditing)"
             >
               <div
-                v-if="item.isShow"
-                class="p-2 gap-2"
+                v-if="item.isEditing || !isObjectEmpty(item)"
+                :class="getEditingStyle(item.isEditing)"
               >
                 <div
-                  v-if="showSection(item.isEditing, DEFAULT_TEMPLATE.contact.list[0].paragraph, item.paragraph)"
-                  :class="getFontSizeClassName(currentState.fontSize).paragraph"
-                  class="mt-px text-blacks-70"
-                  v-html="showSection(item.isEditing, DEFAULT_TEMPLATE.contact.list[0].paragraph, item.paragraph)"
-                />
+                  v-if="item.isShow"
+                  class="p-2 flex flex-col gap-1"
+                >
+                  <div
+                    v-if="showSection(item.isEditing, DEFAULT_TEMPLATE.contact.list[0].paragraph, item.paragraph)"
+                    :class="getFontSizeClassName(currentState.fontSize).paragraph"
+                    class="text-blacks-70"
+                    v-html="showSection(item.isEditing, DEFAULT_TEMPLATE.contact.list[0].paragraph, item.paragraph)"
+                  />
+                </div>
               </div>
             </div>
           </section>
+
           <section
             v-if="skill.isShow"
             class="py-2 not-break-out"
@@ -257,33 +292,38 @@ function showSection(isEditing, hintTemplate: string, content: string) {
             <div
               v-for="(item, index) in skill.list"
               :key="index"
-              :class="getEditingStyle(item.isEditing)"
             >
               <div
-                v-if="item.isShow"
-                class="p-2 gap-2"
+                v-if="item.isEditing || !isObjectEmpty(item)"
+                :class="getEditingStyle(item.isEditing)"
               >
                 <div
-                  v-if="showSection(item.isEditing, DEFAULT_TEMPLATE.skill.list[0].title,item.title)"
-                  :class="getFontSizeClassName(currentState.fontSize).title"
-                  class="text-blacks-100"
-                  v-html="showSection(item.isEditing, DEFAULT_TEMPLATE.skill.list[0].title,item.title)"
-                />
-                <div
-                  v-if="showSection(item.isEditing, DEFAULT_TEMPLATE.skill.list[0].subtitle,item.subtitle)"
-                  :class="getFontSizeClassName(currentState.fontSize).subtitle"
-                  class="text-blacks-40 pb-1"
-                  v-html="showSection(item.isEditing, DEFAULT_TEMPLATE.skill.list[0].subtitle,item.subtitle)"
-                />
-                <div
-                  v-if="showSection(item.isEditing, DEFAULT_TEMPLATE.skill.list[0].paragraph,item.paragraph)"
-                  :class="getFontSizeClassName(currentState.fontSize).paragraph"
-                  class="text-blacks-70"
-                  v-html="showSection(item.isEditing, DEFAULT_TEMPLATE.skill.list[0].paragraph,item.paragraph)"
-                />
+                  v-if="item.isShow"
+                  class="p-2 flex flex-col gap-1"
+                >
+                  <div
+                    v-if="showSection(item.isEditing, DEFAULT_TEMPLATE.skill.list[0].title,item.title)"
+                    :class="getFontSizeClassName(currentState.fontSize).title"
+                    class="text-blacks-100"
+                    v-html="showSection(item.isEditing, DEFAULT_TEMPLATE.skill.list[0].title,item.title)"
+                  />
+                  <div
+                    v-if="showSection(item.isEditing, DEFAULT_TEMPLATE.skill.list[0].subtitle,item.subtitle)"
+                    :class="getFontSizeClassName(currentState.fontSize).subtitle"
+                    class="text-blacks-40"
+                    v-html="showSection(item.isEditing, DEFAULT_TEMPLATE.skill.list[0].subtitle,item.subtitle)"
+                  />
+                  <div
+                    v-if="showSection(item.isEditing, DEFAULT_TEMPLATE.skill.list[0].paragraph,item.paragraph)"
+                    :class="getFontSizeClassName(currentState.fontSize).paragraph"
+                    class="text-blacks-70"
+                    v-html="showSection(item.isEditing, DEFAULT_TEMPLATE.skill.list[0].paragraph,item.paragraph)"
+                  />
+                </div>
               </div>
             </div>
           </section>
+
           <section
             v-if="certificate.isShow"
             class="py-2 not-break-out"
@@ -297,33 +337,38 @@ function showSection(isEditing, hintTemplate: string, content: string) {
             <div
               v-for="(item, index) in certificate.list"
               :key="index"
-              :class="getEditingStyle(item.isEditing)"
             >
               <div
-                v-if="item.isShow"
-                class="p-2 gap-2"
+                v-if="item.isEditing || !isObjectEmpty(item)"
+                :class="getEditingStyle(item.isEditing)"
               >
                 <div
-                  v-if="showSection(item.isEditing, DEFAULT_TEMPLATE.certificate.list[0].title, item.title)"
-                  :class="getFontSizeClassName(currentState.fontSize).title"
-                  class="text-blacks-100"
-                  v-html="showSection(item.isEditing, DEFAULT_TEMPLATE.certificate.list[0].title, item.title)"
-                />
-                <div
-                  v-if="showSection(item.isEditing, DEFAULT_TEMPLATE.certificate.list[0].subtitle, item.subtitle)"
-                  :class="getFontSizeClassName(currentState.fontSize).subtitle"
-                  class="text-blacks-40"
-                  v-html="showSection(item.isEditing, DEFAULT_TEMPLATE.certificate.list[0].subtitle, item.subtitle)"
-                />
-                <div
-                  v-if="showSection(item.isEditing, DEFAULT_TEMPLATE.certificate.list[0].paragraph, item.paragraph)"
-                  :class="getFontSizeClassName(currentState.fontSize).paragraph"
-                  class="text-blacks-70"
-                  v-html="showSection(item.isEditing, DEFAULT_TEMPLATE.certificate.list[0].paragraph, item.paragraph)"
-                />
+                  v-if="item.isShow"
+                  class="p-2 flex flex-col gap-1"
+                >
+                  <div
+                    v-if="showSection(item.isEditing, DEFAULT_TEMPLATE.certificate.list[0].title, item.title)"
+                    :class="getFontSizeClassName(currentState.fontSize).title"
+                    class="text-blacks-100"
+                    v-html="showSection(item.isEditing, DEFAULT_TEMPLATE.certificate.list[0].title, item.title)"
+                  />
+                  <div
+                    v-if="showSection(item.isEditing, DEFAULT_TEMPLATE.certificate.list[0].subtitle, item.subtitle)"
+                    :class="getFontSizeClassName(currentState.fontSize).subtitle"
+                    class="text-blacks-40"
+                    v-html="showSection(item.isEditing, DEFAULT_TEMPLATE.certificate.list[0].subtitle, item.subtitle)"
+                  />
+                  <div
+                    v-if="showSection(item.isEditing, DEFAULT_TEMPLATE.certificate.list[0].paragraph, item.paragraph)"
+                    :class="getFontSizeClassName(currentState.fontSize).paragraph"
+                    class="text-blacks-70"
+                    v-html="showSection(item.isEditing, DEFAULT_TEMPLATE.certificate.list[0].paragraph, item.paragraph)"
+                  />
+                </div>
               </div>
             </div>
           </section>
+
           <section
             v-if="education.isShow"
             class="py-2 not-break-out"
@@ -337,30 +382,34 @@ function showSection(isEditing, hintTemplate: string, content: string) {
             <div
               v-for="(item, index) in education.list"
               :key="index"
-              :class="getEditingStyle(item.isEditing)"
             >
               <div
-                v-if="item.isShow"
-                class="p-2 gap-2"
+                v-if="item.isEditing || !isObjectEmpty(item)"
+                :class="getEditingStyle(item.isEditing)"
               >
                 <div
-                  v-if="showSection(item.isEditing, DEFAULT_TEMPLATE.education.list[0].title, item.title)"
-                  :class="getFontSizeClassName(currentState.fontSize).title"
-                  class="text-blacks-100 pb-1"
-                  v-html="showSection(item.isEditing, DEFAULT_TEMPLATE.education.list[0].title, item.title)"
-                />
-                <div
-                  v-if="showSection(item.isEditing, DEFAULT_TEMPLATE.education.list[0].subtitle, item.subtitle)"
-                  :class="getFontSizeClassName(currentState.fontSize).subtitle"
-                  class="text-blacks-40 pb-1"
-                  v-html="showSection(item.isEditing, DEFAULT_TEMPLATE.education.list[0].subtitle, item.subtitle)"
-                />
-                <div
-                  v-if="showSection(item.isEditing, DEFAULT_TEMPLATE.education.list[0].paragraph, item.paragraph)"
-                  :class="getFontSizeClassName(currentState.fontSize).paragraph"
-                  class="text-blacks-70"
-                  v-html="showSection(item.isEditing, DEFAULT_TEMPLATE.education.list[0].paragraph, item.paragraph)"
-                />
+                  v-if="item.isShow"
+                  class="p-2 flex flex-col gap-1"
+                >
+                  <div
+                    v-if="showSection(item.isEditing, DEFAULT_TEMPLATE.education.list[0].title, item.title)"
+                    :class="getFontSizeClassName(currentState.fontSize).title"
+                    class="text-blacks-100"
+                    v-html="showSection(item.isEditing, DEFAULT_TEMPLATE.education.list[0].title, item.title)"
+                  />
+                  <div
+                    v-if="showSection(item.isEditing, DEFAULT_TEMPLATE.education.list[0].subtitle, item.subtitle)"
+                    :class="getFontSizeClassName(currentState.fontSize).subtitle"
+                    class="text-blacks-40"
+                    v-html="showSection(item.isEditing, DEFAULT_TEMPLATE.education.list[0].subtitle, item.subtitle)"
+                  />
+                  <div
+                    v-if="showSection(item.isEditing, DEFAULT_TEMPLATE.education.list[0].paragraph, item.paragraph)"
+                    :class="getFontSizeClassName(currentState.fontSize).paragraph"
+                    class="text-blacks-70"
+                    v-html="showSection(item.isEditing, DEFAULT_TEMPLATE.education.list[0].paragraph, item.paragraph)"
+                  />
+                </div>
               </div>
             </div>
           </section>
@@ -378,20 +427,24 @@ function showSection(isEditing, hintTemplate: string, content: string) {
             <div
               v-for="(item, index) in social.list"
               :key="index"
-              :class="getEditingStyle(item.isEditing)"
             >
               <div
-                v-if="item.isShow"
-                class="px-2"
-                :class="getFontSizeClassName(currentState.fontSize).paragraph"
+                v-if="item.isEditing || !isObjectEmpty(item)"
+                :class="getEditingStyle(item.isEditing)"
               >
-                <a
-                  v-if="showSection(item.isEditing, DEFAULT_TEMPLATE.social.list[0].type, item.type)"
-                  class="text-blacks-70"
-                  :href="item.link"
-                  target="_blank"
-                  v-html="showSection(item.isEditing, DEFAULT_TEMPLATE.social.list[0].type, item.type)"
-                />
+                <div
+                  v-if="item.isShow"
+                  class="px-2"
+                  :class="getFontSizeClassName(currentState.fontSize).paragraph"
+                >
+                  <a
+                    v-if="showSection(item.isEditing, DEFAULT_TEMPLATE.social.list[0].type, item.type)"
+                    class="text-blacks-70"
+                    :href="item.link"
+                    target="_blank"
+                    v-html="showSection(item.isEditing, DEFAULT_TEMPLATE.social.list[0].type, item.type)"
+                  />
+                </div>
               </div>
             </div>
           </section>
