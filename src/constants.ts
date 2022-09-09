@@ -118,7 +118,7 @@ export const DEFAULT_TEMPLATE = {
         subtitle: 'E.g. Institution',
         subtitle1: '',
         subtitle2: '',
-        paragraph: '<p>E.g. Graduated / Time</p><p>City, Country</p>',
+        paragraph: 'E.g. Graduated, Time, City, Country',
       },
     ],
   },
