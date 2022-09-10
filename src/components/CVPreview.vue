@@ -165,13 +165,19 @@ function isObjectEmpty(obj) {
                     class="flex justify-between"
                   >
                     <div
-                      v-if="showSection(item.isEditing, DEFAULT_TEMPLATE.experience.list[0].subtitle1, item.subtitle1)"
+                      v-if="
+                        showSection(item.isEditing, DEFAULT_TEMPLATE.experience.list[0].subtitle1, item.subtitle1) ||
+                          showSection(item.isEditing, DEFAULT_TEMPLATE.experience.list[0].subtitle2, item.subtitle2)
+                      "
                       :class="getFontSizeClassName(currentState.fontSize).subtitle"
                       class="text-blacks-40"
                       v-html="showSection(item.isEditing, DEFAULT_TEMPLATE.experience.list[0].subtitle1, item.subtitle1)"
                     />
                     <div
-                      v-if="showSection(item.isEditing, DEFAULT_TEMPLATE.experience.list[0].subtitle2, item.subtitle2)"
+                      v-if="
+                        showSection(item.isEditing, DEFAULT_TEMPLATE.experience.list[0].subtitle1, item.subtitle1) ||
+                          showSection(item.isEditing, DEFAULT_TEMPLATE.experience.list[0].subtitle2, item.subtitle2)
+                      "
                       :class="getFontSizeClassName(currentState.fontSize).subtitle"
                       class="text-blacks-40"
                       v-html="showSection(item.isEditing, DEFAULT_TEMPLATE.experience.list[0].subtitle2, item.subtitle2)"
@@ -218,13 +224,19 @@ function isObjectEmpty(obj) {
                     class="flex justify-between"
                   >
                     <div
-                      v-if="showSection(item.isEditing, DEFAULT_TEMPLATE.project.list[0].subtitle1, item.subtitle1)"
+                      v-if="
+                        showSection(item.isEditing, DEFAULT_TEMPLATE.project.list[0].subtitle1, item.subtitle1) ||
+                          showSection(item.isEditing, DEFAULT_TEMPLATE.project.list[0].subtitle2, item.subtitle2)
+                      "
                       :class="getFontSizeClassName(currentState.fontSize).subtitle"
                       class="text-blacks-40"
                       v-html="showSection(item.isEditing, DEFAULT_TEMPLATE.project.list[0].subtitle1, item.subtitle1)"
                     />
                     <div
-                      v-if="showSection(item.isEditing, DEFAULT_TEMPLATE.project.list[0].subtitle2, item.subtitle2)"
+                      v-if="
+                        showSection(item.isEditing, DEFAULT_TEMPLATE.project.list[0].subtitle1, item.subtitle1) ||
+                          showSection(item.isEditing, DEFAULT_TEMPLATE.project.list[0].subtitle2, item.subtitle2)
+                      "
                       :class="getFontSizeClassName(currentState.fontSize).subtitle"
                       class="text-blacks-40"
                       v-html="showSection(item.isEditing, DEFAULT_TEMPLATE.project.list[0].subtitle2, item.subtitle2)"
