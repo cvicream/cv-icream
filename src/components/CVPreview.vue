@@ -522,8 +522,11 @@ function isObjectEmpty(obj) {
   text-decoration: underline;
 }
 
+.cv-preview [data-draggable="true"] {
+  @apply cursor-move border border-transparent;
+}
 .cv-preview [data-draggable="true"]:hover {
-  @apply cursor-move border border-primary-100;
+  @apply border-primary-100;
 }
 .cv-preview [draggable="true"] {
   @apply cursor-grabbing border border-primary-100;
