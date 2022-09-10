@@ -300,7 +300,7 @@ function zoomOut() {
 
       <div
         ref="resizer"
-        class="h-full sm:border-l border-blacks-20 cursor-[ew-resize]"
+        class="resizer h-full sm:border-l border-blacks-20 cursor-[col-resize]"
         :class="{ 'hidden': isMobile }"
       />
 
@@ -376,5 +376,18 @@ function zoomOut() {
 }
 .transition {
   transition: all 0.5s;
+}
+
+.resizer {
+  @apply relative;
+}
+.resizer::before {
+  @apply absolute w-3 h-full z-1;
+  content: '';
+  left: 50%;
+  transform: translateX(-50%);
+}
+.resizer::before:hover {
+  @apply cursor-[col-resize];
 }
 </style>
