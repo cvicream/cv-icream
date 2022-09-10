@@ -29,10 +29,10 @@ function focusOut(index) {
 
 <template>
   <div class="flex justify-between items-center">
-    <h2 class="flex items-center gap-2">
+    <div class="flex items-center gap-2">
       <span class="i-custom:summary icon-32" />
       <span class="leading text-blacks-100">Summary</span>
-    </h2>
+    </div>
     <ToggleSwitch
       :checked="summary.isShow"
       @click="toggleShow"

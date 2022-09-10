@@ -49,55 +49,50 @@ async function sendFeedback() {
 <template>
   <Modal
     v-show="visible"
+    :title="title"
+    :subtitle="subtitle"
+    subtitle-style="margin-top: 0;"
     @close="toggle"
   >
-    <div class="px-2 pb-4">
-      <div class="leading text-primary-100 mt-1">
-        {{ title }}
-      </div>
-      <div class="paragraph text-blacks-70">
-        {{ subtitle }}
-      </div>
-      <textarea
-        v-model="content"
-        placeholder="Share your feedback here..."
-        class="form-textarea bg-primary-10 custom-scrollbar mt-8"
-      />
-      <div class="mt-6">
-        <label class="note text-blacks-70">Your Contact Info</label>
-        <input
-          v-model="name"
-          type="search"
-          placeholder="Name"
-          class="form-input bg-primary-10 mt-1"
-        >
-        <input
-          v-model="email"
-          type="search"
-          placeholder="Email"
-          class="form-input bg-primary-10 mt-3"
-        >
-      </div>
-      <div class="flex flex-col gap-6 mt-8 sm:flex-row sm:justify-between">
-        <button
-          class="btn-secondary px-8 flex-shrink-0"
-          @click="toggle"
-        >
-          <span class="subleading">
-            Next Time
-          </span>
-        </button>
-        <button
-          class="btn-primary px-8 flex-grow flex-shrink-0"
-          :class="{ 'text-blacks-40 bg-blacks-10': !enable}"
-          :disabled="!enable"
-          @click="sendFeedback"
-        >
-          <span class="subleading">
-            Send
-          </span>
-        </button>
-      </div>
+    <textarea
+      v-model="content"
+      placeholder="Share your feedback here..."
+      class="form-textarea bg-primary-10 custom-scrollbar mt-8"
+    />
+    <div class="mt-6">
+      <label class="note text-blacks-70">Your Contact Info</label>
+      <input
+        v-model="name"
+        type="search"
+        placeholder="Name"
+        class="form-input bg-primary-10 mt-1"
+      >
+      <input
+        v-model="email"
+        type="search"
+        placeholder="Email"
+        class="form-input bg-primary-10 mt-3"
+      >
+    </div>
+    <div class="flex flex-col gap-6 mt-8 sm:flex-row sm:justify-between">
+      <button
+        class="btn-secondary px-8 flex-shrink-0"
+        @click="toggle"
+      >
+        <span class="subleading">
+          Next Time
+        </span>
+      </button>
+      <button
+        class="btn-primary px-8 flex-grow flex-shrink-0"
+        :class="{ 'text-blacks-40 bg-blacks-10': !enable}"
+        :disabled="!enable"
+        @click="sendFeedback"
+      >
+        <span class="subleading">
+          Send
+        </span>
+      </button>
     </div>
   </Modal>
 </template>

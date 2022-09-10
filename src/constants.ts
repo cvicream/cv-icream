@@ -3,6 +3,8 @@ export const HIDDEN_INFORMATION = 'The session is currently hidden on CV. Click 
 export const MAX_SIDEBAR_WIDTH = 834
 export const MIN_SIDEBAR_WIDTH = 390
 export const MOBILE_BREAKPOINT = 640
+export const MAX_SCALE = 200
+export const MIN_SCALE = 50
 
 export const LAYOUTS = [
   {
@@ -116,7 +118,7 @@ export const DEFAULT_TEMPLATE = {
         subtitle: 'E.g. Institution',
         subtitle1: '',
         subtitle2: '',
-        paragraph: '<p>E.g. Graduated / Time</p><p>City, Country</p>',
+        paragraph: 'E.g. Graduated, Time, City, Country',
       },
     ],
   },

@@ -41,6 +41,7 @@ function isEditing() {
   }
   return false
 }
+
 /**
  * Whether to store current state in localstorage
  *
@@ -52,6 +53,15 @@ function isSaved() {
     return status.isSaved
   }
   return false
+}
+
+function getPreviousUrl() {
+  const statusStr = getStatus()
+  if (statusStr) {
+    const status = JSON.parse(statusStr)
+    return status.previousUrl
+  }
+  return ''
 }
 
 function getJsonUpload() {
@@ -157,7 +167,7 @@ function getColor(id: string) {
  *
  */
 function isEditorEmpty(value: string) {
-  return value === '<p><br></p>'
+  return (value === '<p><br></p>' || value === '')
 }
 
 /**
@@ -184,6 +194,7 @@ export {
   setStatus,
   isEditing,
   isSaved,
+  getPreviousUrl,
   getJsonUpload,
   rgbToHex,
   hexToRgb,
