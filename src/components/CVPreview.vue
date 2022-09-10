@@ -521,4 +521,11 @@ function isObjectEmpty(obj) {
 .cv-preview a {
   text-decoration: underline;
 }
+
+.cv-preview [data-draggable="true"]:hover {
+  @apply cursor-move border border-primary-100;
+}
+.cv-preview [draggable="true"] {
+  @apply cursor-grabbing border border-primary-100;
+}
 </style>
