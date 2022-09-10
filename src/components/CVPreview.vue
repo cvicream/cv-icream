@@ -66,7 +66,13 @@ function isObjectEmpty(obj) {
       <div class="flex justify-between">
         <div
           class="p-2 flex items-baseline flex-wrap gap-4 not-break-out"
-          :class="currentState.layout === 'layout-left' ? `ml-[25%] ${getEditingStyle(about.isEditing)}` : getEditingStyle(about.isEditing)"
+          :class="[
+            getEditingStyle(about.isEditing),
+            {
+              'ml-[25%]': currentState.layout === 'layout-left',
+              'mr-[25%]': currentState.layout === 'layout-right'
+            }
+          ]"
         >
           <div
             v-if="about.name"
