@@ -8,6 +8,7 @@ import { getColor } from '~/utils'
 const props = defineProps<{
   open: Boolean
   collapse: Function
+  isMobile: Boolean
 }>()
 
 const toolbar = useToolbarStore()
@@ -72,7 +73,11 @@ function onCollapse() {
       </div>
     </div>
 
-    <div v-if="open" class="btn-group-toolbar w-22 h-12">
+    <div
+      v-if="open"
+      class="btn-group-toolbar w-22 h-12"
+      :class="{ 'hidden': isCVPreviewVisible }"
+    >
       <div class="btn-toolbar">
         <button
           class="i-custom:undo w-8 h-8"
