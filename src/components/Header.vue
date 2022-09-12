@@ -3,7 +3,7 @@ import { onMounted, onUnmounted, ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useUserStore } from '~/stores/user'
 import { useToolbarStore } from '~/stores/toolbar'
-import { getJsonUpload, setStatus, stripHtml } from '~/utils'
+import { getJsonUpload, isMobileDevice, setStatus, stripHtml } from '~/utils'
 
 const props = defineProps<{
   isEdit: boolean
@@ -163,27 +163,33 @@ function closeAction() {
 
       <div
         v-if="isActionActive"
-        class="bg-white rounded-xl absolute right-2 top-[64px] z-3"
-        :class="isSafari() ? 'w-[262px] border-1 border-blacks-100' : 'w-[260px] outline outline-1 outline-blacks-100'"
+        class="absolute right-2 top-[64px] z-3"
       >
-        <button
-          class="w-full h-[45px] flex justify-start items-center px-4 py-3 rounded-t-xl hover:bg-primary-10"
-          @mousedown="redirectToDownload"
+        <div
+          class="bg-white rounded-xl overflow-hidden"
+          :class="isSafari() || isMobileDevice() ? 'w-[262px] border-1 border-blacks-100' : 'w-[260px] outline outline-1 outline-blacks-100'"
         >
-          <span class="paragraph text-blacks-100">Download as PDF</span>
-        </button>
-        <button
-          class="w-full h-[46px] flex justify-start items-center px-4 py-3 hover:bg-primary-10"
-          @mousedown="exportJsonFile"
-        >
-          <span class="paragraph text-blacks-100">Save as Draft</span>
-        </button>
-        <button
-          class="w-full h-[45px] flex justify-start items-center px-4 py-3 rounded-b-xl hover:bg-primary-10"
-          @mousedown="importJsonFile"
-        >
-          <span class="paragraph text-blacks-100">Upload CV Draft</span>
-        </button>
+          <button
+            class="w-full h-[45px] flex justify-start items-center px-4 py-3 hover:bg-primary-10"
+            :class="isSafari() || isMobileDevice() ? 'rounded-t-[11px]' : 'rounded-t-xl'"
+            @mousedown="redirectToDownload"
+          >
+            <span class="paragraph text-blacks-100">Download as PDF</span>
+          </button>
+          <button
+            class="w-full h-[46px] flex justify-start items-center px-4 py-3 hover:bg-primary-10"
+            @mousedown="exportJsonFile"
+          >
+            <span class="paragraph text-blacks-100">Save as Draft</span>
+          </button>
+          <button
+            class="w-full h-[45px] flex justify-start items-center px-4 py-3 hover:bg-primary-10"
+            :class="isSafari() || isMobileDevice() ? 'rounded-b-[11px]' : 'rounded-b-xl'"
+            @mousedown="importJsonFile"
+          >
+            <span class="paragraph text-blacks-100">Upload CV Draft</span>
+          </button>
+        </div>
       </div>
     </div>
   </header>

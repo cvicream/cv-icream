@@ -66,7 +66,13 @@ function isObjectEmpty(obj) {
       <div class="flex justify-between">
         <div
           class="p-2 flex items-baseline flex-wrap gap-4 not-break-out"
-          :class="currentState.layout === 'layout-left' ? `ml-[25%] ${getEditingStyle(about.isEditing)}` : getEditingStyle(about.isEditing)"
+          :class="[
+            getEditingStyle(about.isEditing),
+            {
+              'ml-[25%]': currentState.layout === 'layout-left',
+              'mr-[25%]': currentState.layout === 'layout-right'
+            }
+          ]"
         >
           <div
             v-if="about.name"
@@ -165,13 +171,19 @@ function isObjectEmpty(obj) {
                     class="flex justify-between"
                   >
                     <div
-                      v-if="showSection(item.isEditing, DEFAULT_TEMPLATE.experience.list[0].subtitle1, item.subtitle1)"
+                      v-if="
+                        showSection(item.isEditing, DEFAULT_TEMPLATE.experience.list[0].subtitle1, item.subtitle1) ||
+                          showSection(item.isEditing, DEFAULT_TEMPLATE.experience.list[0].subtitle2, item.subtitle2)
+                      "
                       :class="getFontSizeClassName(currentState.fontSize).subtitle"
                       class="text-blacks-40"
                       v-html="showSection(item.isEditing, DEFAULT_TEMPLATE.experience.list[0].subtitle1, item.subtitle1)"
                     />
                     <div
-                      v-if="showSection(item.isEditing, DEFAULT_TEMPLATE.experience.list[0].subtitle2, item.subtitle2)"
+                      v-if="
+                        showSection(item.isEditing, DEFAULT_TEMPLATE.experience.list[0].subtitle1, item.subtitle1) ||
+                          showSection(item.isEditing, DEFAULT_TEMPLATE.experience.list[0].subtitle2, item.subtitle2)
+                      "
                       :class="getFontSizeClassName(currentState.fontSize).subtitle"
                       class="text-blacks-40"
                       v-html="showSection(item.isEditing, DEFAULT_TEMPLATE.experience.list[0].subtitle2, item.subtitle2)"
@@ -218,13 +230,19 @@ function isObjectEmpty(obj) {
                     class="flex justify-between"
                   >
                     <div
-                      v-if="showSection(item.isEditing, DEFAULT_TEMPLATE.project.list[0].subtitle1, item.subtitle1)"
+                      v-if="
+                        showSection(item.isEditing, DEFAULT_TEMPLATE.project.list[0].subtitle1, item.subtitle1) ||
+                          showSection(item.isEditing, DEFAULT_TEMPLATE.project.list[0].subtitle2, item.subtitle2)
+                      "
                       :class="getFontSizeClassName(currentState.fontSize).subtitle"
                       class="text-blacks-40"
                       v-html="showSection(item.isEditing, DEFAULT_TEMPLATE.project.list[0].subtitle1, item.subtitle1)"
                     />
                     <div
-                      v-if="showSection(item.isEditing, DEFAULT_TEMPLATE.project.list[0].subtitle2, item.subtitle2)"
+                      v-if="
+                        showSection(item.isEditing, DEFAULT_TEMPLATE.project.list[0].subtitle1, item.subtitle1) ||
+                          showSection(item.isEditing, DEFAULT_TEMPLATE.project.list[0].subtitle2, item.subtitle2)
+                      "
                       :class="getFontSizeClassName(currentState.fontSize).subtitle"
                       class="text-blacks-40"
                       v-html="showSection(item.isEditing, DEFAULT_TEMPLATE.project.list[0].subtitle2, item.subtitle2)"
