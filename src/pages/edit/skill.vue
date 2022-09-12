@@ -130,9 +130,12 @@ function deleteItem(index: number) {
       @focusout="() => focusOut(index)"
     >
       <div class="flex justify-between items-center">
-        <h3 v-if="skill.name" class="subleading text-blacks-100 text-ellipsis whitespace-nowrap overflow-hidden">
-          {{ skill.name + ' ' + (index + 1) }}
-        </h3>
+        <div class="flex gap-1 overflow-hidden">
+          <h3 v-if="skill.name" class="subleading text-blacks-100 text-ellipsis whitespace-nowrap overflow-hidden">
+            {{ skill.name }}
+          </h3>
+          <span class="subleading text-blacks-100">{{ index + 1 }}</span>
+        </div>
         <div
           class="invisible flex items-center gap-3 ml-3"
           :class="{ 'group-hover:visible': skill.isShow }"
@@ -208,7 +211,7 @@ function deleteItem(index: number) {
         :class="skill.isShow && 'group-hover:text-blacks-70'"
       />
       <span class="subleading text-ellipsis whitespace-nowrap overflow-hidden" :class="skill.isShow && 'group-hover:text-blacks-100'">
-        Add {{ skill.name }}
+        Add
       </span>
     </button>
   </div>
