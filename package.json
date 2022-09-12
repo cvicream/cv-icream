@@ -3,9 +3,9 @@
   "packageManager": "pnpm@6.32.3",
   "scripts": {
     "build": "vite build",
-    "dev": "vite --port 3333 --open",
+    "dev": "vite --port 3333 --open --host",
     "lint": "eslint .",
-    "preview": "vite preview",
+    "preview": "vite preview --host",
     "preview-https": "serve dist",
     "test": "vitest",
     "test:e2e": "cypress open",

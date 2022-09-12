@@ -186,6 +186,10 @@ function validateEmail(email) {
   return pattern.test(email)
 }
 
+function isMobileDevice() {
+  return (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i).test(navigator.userAgent)
+}
+
 export {
   hasStorage,
   getStorage,
@@ -204,4 +208,5 @@ export {
   isEditorEmpty,
   stripHtml,
   validateEmail,
+  isMobileDevice,
 }
