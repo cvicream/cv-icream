@@ -163,7 +163,7 @@ function closeAction() {
 
       <div
         v-if="isActionActive"
-        class="bg-white rounded-xl absolute right-2 top-[64px] z-3"
+        class="bg-white rounded-xl absolute right-2 top-[64px] z-3 overflow-hidden"
         :class="isSafari() ? 'w-[262px] border-1 border-blacks-100' : 'w-[260px] outline outline-1 outline-blacks-100'"
       >
         <button
