@@ -6,7 +6,7 @@ import { useToolbarStore } from '~/stores/toolbar'
 import { getJsonUpload, isMobileDevice, setStatus, stripHtml } from '~/utils'
 
 const props = defineProps<{
-  isEdit: boolean
+  isEdit?: boolean
 }>()
 
 const isActionActive = ref(false)
