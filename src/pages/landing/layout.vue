@@ -2,7 +2,7 @@
 import { storeToRefs } from 'pinia'
 import { useUserStore } from '~/stores/user'
 import { useToolbarStore } from '~/stores/toolbar'
-import { getJsonUpload, setStatus } from '~/utils'
+import { getJsonUpload } from '~/utils'
 import { LAYOUTS } from '~/constants'
 
 const user = useUserStore()
@@ -40,7 +40,6 @@ async function importJsonFile() {
 }
 
 function redirectToEdit() {
-  setStatus({ isSaved: true })
   router.push('/edit/about')
 }
 

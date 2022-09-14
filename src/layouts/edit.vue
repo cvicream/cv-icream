@@ -1,18 +1,14 @@
 <script setup lang="ts">
 import { computed, onBeforeMount, onMounted, onUnmounted, ref } from 'vue'
 import { storeToRefs } from 'pinia'
-import { useUserStore } from '~/stores/user'
 import { useToolbarStore } from '~/stores/toolbar'
-import { getColor, getStorage, hasStorage, isSaved, setCssVariable, setStatus } from '~/utils'
+import { getColor, setCssVariable, setStatus } from '~/utils'
 import { MAX_SCALE, MAX_SIDEBAR_WIDTH, MIN_SCALE, MIN_SIDEBAR_WIDTH, MOBILE_BREAKPOINT } from '~/constants'
 
-const user = useUserStore()
 const toolbar = useToolbarStore()
 const { isCVPreviewVisible, currentState } = storeToRefs(toolbar)
 
 const isDesignBarOpen = ref(true)
-const saveModalVisible = ref(false)
-const recoverModalVisible = ref(false)
 const isMobile = ref(false)
 const scale = ref(100)
 
@@ -54,9 +50,6 @@ onBeforeMount(() => {
 onMounted(() => {
   setStatus({ isEditing: true })
 
-  if (isSaved() && !isUpload())
-    recoverModalVisible.value = isSaved()
-
   const color = getColor(currentState.value.color)
   setCssVariable('--primary-color', color.primary)
   setCssVariable('--secondary-color', color.secondary)
@@ -71,15 +64,12 @@ onMounted(() => {
 
 onUnmounted(() => {
   setStatus({ isEditing: false })
-  // window.removeEventListener('beforeunload', onBeforeUnload)
+  window.removeEventListener('beforeunload', onBeforeUnload)
 
   window.removeEventListener('resize', resize)
 })
 
 function onBeforeUnload(event) {
-  if (!isSaved())
-    saveModalVisible.value = true
-
   // cancel the event as stated by the standard
   event.preventDefault()
   // chrome requires returnValue to be set
@@ -87,52 +77,8 @@ function onBeforeUnload(event) {
   return false
 }
 
-function isUpload() {
-  const backUrl = window.history.state.back
-  return backUrl?.indexOf('/landing') >= 0
-}
-
-function save() {
-  setStatus({ isSaved: true })
-
-  // TODO: better way to start to save data in localstorage
-  user.$patch((state) => {
-    state.isSaved = true
-  })
-
-  saveModalVisible.value = false
-}
-
 function onCollapse() {
   isDesignBarOpen.value = !isDesignBarOpen.value
-}
-
-function recover() {
-  if (hasStorage()) {
-    const storage = getStorage()
-    if (storage) {
-      Object.keys(storage).forEach((key) => {
-        if (key === 'user') {
-          user.$patch((state) => {
-            Object.assign(state, storage[key])
-          })
-        }
-        else if (key === 'toolbar') {
-          toolbar.$patch((state) => {
-            Object.assign(state, storage[key])
-          })
-        }
-      })
-    }
-  }
-
-  recoverModalVisible.value = false
-  setStatus({ isEditing: true })
-}
-
-function cancelRecover() {
-  recoverModalVisible.value = false
-  setStatus({ isEditing: true })
 }
 
 function resize() {
@@ -319,58 +265,6 @@ function zoomOut() {
       :collapse="onCollapse"
       :is-mobile="isMobile"
     />
-
-    <Modal
-      v-show="recoverModalVisible"
-      title="Recover your information?"
-      subtitle="Would you like to recover your information?"
-      @close="recoverModalVisible = false"
-    >
-      <div class="flex flex-col gap-6 mt-6 sm:flex-row">
-        <button
-          class="btn-secondary px-8 flex-shrink-0"
-          @click="cancelRecover"
-        >
-          <span class="subleading">
-            No, thanks.
-          </span>
-        </button>
-        <button
-          class="btn-primary px-8 flex-shrink-0"
-          @click="recover"
-        >
-          <span class="subleading">
-            Yes, please.
-          </span>
-        </button>
-      </div>
-    </Modal>
-
-    <Modal
-      v-show="saveModalVisible"
-      title="Save your information?"
-      subtitle="Would you like to save your information and continue editing when you come back next time?"
-      @close="saveModalVisible = false"
-    >
-      <div class="flex flex-col gap-6 mt-6 sm:flex-row">
-        <button
-          class="btn-secondary px-8 flex-shrink-0"
-          @click="saveModalVisible = false"
-        >
-          <span class="subleading">
-            No, thanks.
-          </span>
-        </button>
-        <button
-          class="btn-primary px-8 flex-shrink-0"
-          @click="save"
-        >
-          <span class="subleading">
-            Yes, please.
-          </span>
-        </button>
-      </div>
-    </Modal>
   </main>
 </template>
 

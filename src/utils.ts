@@ -42,19 +42,6 @@ function isEditing() {
   return false
 }
 
-/**
- * Whether to store current state in localstorage
- *
- */
-function isSaved() {
-  const statusStr = getStatus()
-  if (statusStr) {
-    const status = JSON.parse(statusStr)
-    return status.isSaved
-  }
-  return false
-}
-
 function getPreviousUrl() {
   const statusStr = getStatus()
   if (statusStr) {
@@ -197,7 +184,6 @@ export {
   getStatus,
   setStatus,
   isEditing,
-  isSaved,
   getPreviousUrl,
   getJsonUpload,
   rgbToHex,
