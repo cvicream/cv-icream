@@ -82,6 +82,10 @@ html.dark {
   -ms-overflow-style: none; /* IE 10+ */
 }
 
+.custom-cursor {
+  cursor: url('../assets/icons/mouse.svg'), auto;	
+}
+
 .icon-color,
 .icon-color-item {
   @apply w-8 h-8 p-1 bg-transparent relative;

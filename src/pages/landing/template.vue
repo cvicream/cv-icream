@@ -122,21 +122,21 @@ const onNext = () => {
     </div>
     <div class="flex flex-col gap-10 sm:flex-row fix-padding-bottom">
       <button
-        class="w-[294px] btn-secondary"
-        @click="router.back()"
-      >
-        <span class="i-custom:expand w-6 h-6 text-blacks-70" />
-        <span class="subleading vertical-text-top ml-2">
-          {{ t('template.button.back') }}
-        </span>
-      </button>
-      <button
-        class="w-[294px] btn-primary"
+        class="w-[294px] btn-primary order-1 sm:order-2"
         @click="onNext"
       >
         <span class="i-custom:collapse w-6 h-6" />
         <span class="subleading vertical-text-top ml-2">
           {{ t('template.button.next_step') }}
+        </span>
+      </button>
+      <button
+        class="w-[294px] btn-secondary order-2 sm:order-1"
+        @click="router.back()"
+      >
+        <span class="i-custom:expand w-6 h-6 text-blacks-70" />
+        <span class="subleading vertical-text-top ml-2">
+          {{ t('template.button.back') }}
         </span>
       </button>
     </div>

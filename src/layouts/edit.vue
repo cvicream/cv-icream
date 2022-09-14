@@ -3,7 +3,7 @@ import { computed, onBeforeMount, onMounted, onUnmounted, ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useToolbarStore } from '~/stores/toolbar'
 import { getColor, setCssVariable, setStatus } from '~/utils'
-import { MAX_SCALE, MAX_SIDEBAR_WIDTH, MIN_SCALE, MIN_SIDEBAR_WIDTH, MOBILE_BREAKPOINT } from '~/constants'
+import { MAX_SIDEBAR_WIDTH, MIN_SIDEBAR_WIDTH, MOBILE_BREAKPOINT, SCALES } from '~/constants'
 
 const toolbar = useToolbarStore()
 const { isCVPreviewVisible, currentState } = storeToRefs(toolbar)
@@ -11,6 +11,7 @@ const { isCVPreviewVisible, currentState } = storeToRefs(toolbar)
 const isDesignBarOpen = ref(true)
 const isMobile = ref(false)
 const scale = ref(100)
+const isFitEnable = ref(false)
 
 const cvPreviewWidth = computed(() => {
   const width = 210 * scale.value / 100
@@ -154,13 +155,43 @@ function getElementMarginX(element) {
 }
 
 function zoomIn() {
-  if (scale.value < MAX_SCALE)
-    scale.value = scale.value * 2
+  const max = SCALES[SCALES.length - 1]
+  if (scale.value < max) {
+    if (SCALES.includes(scale.value)) { scale.value = scale.value * 2 }
+    else {
+      const filter = SCALES.filter(n => n >= scale.value)
+      scale.value = filter.length ? filter[0] : max
+    }
+  }
 }
 
 function zoomOut() {
-  if (scale.value > MIN_SCALE)
-    scale.value = scale.value / 2
+  const min = SCALES[0]
+  if (scale.value > min) {
+    if (SCALES.includes(scale.value)) { scale.value = scale.value / 2 }
+    else {
+      const filter = SCALES.filter(n => n < scale.value)
+      scale.value = filter.length ? filter[filter.length - 1] : min
+    }
+  }
+}
+
+function zoomFit() {
+  if (leftSide.value) {
+    const { width, height } = getElementInnerDimensions(leftSide.value)
+    scale.value = (width > height) ? Math.floor(height * 100 / 1122.5) : Math.floor(width * 100 / 793.7)
+  }
+}
+
+function getElementInnerDimensions(element) {
+  const computedStyle = getComputedStyle(element)
+  let width = element.clientWidth // width with padding
+  let height = element.clientHeight // height with padding
+
+  width -= parseFloat(computedStyle.paddingLeft) + parseFloat(computedStyle.paddingRight)
+  height -= parseFloat(computedStyle.paddingTop) + parseFloat(computedStyle.paddingBottom)
+
+  return { width, height }
 }
 </script>
 
@@ -171,7 +202,7 @@ function zoomOut() {
     <div class="w-full h-[calc(100%-137px)] border-b-1 border-blacks-20 sm:flex sm:flex-row sm:h-[calc(100%-57px)] sm:border-0 overflow-hidden">
       <div
         ref="leftSide"
-        class="h-[calc(100%-8px)] bg-white px-4 py-8 overflow-auto custom-scrollbar flex-grow flex-shrink sm:px-8 sm:py-16 m-1"
+        class="h-[calc(100%-8px)] bg-white px-3 py-7 overflow-auto custom-scrollbar flex-grow flex-shrink sm:px-7 sm:py-15 m-1"
         :class="{ 'absolute hidden': isMobile && !isCVPreviewVisible }"
       >
         <div
@@ -225,9 +256,15 @@ function zoomOut() {
             <button class="btn-icon-32" @click="zoomIn">
               <span class="i-custom:zoom-in w-6 h-6" />
             </button>
-            <span class="note text-blacks-70 text-center -mx-2 whitespace-nowrap">
-              {{ `${scale}%` }}
-            </span>
+            <button
+              class="note text-center whitespace-nowrap -mx-2"
+              :class="isFitEnable ? 'text-blacks-40' : 'text-blacks-70'"
+              @mouseover="isFitEnable = true"
+              @mouseout="isFitEnable = false"
+              @click="zoomFit"
+            >
+              {{ isFitEnable ? 'Fit' : `${scale}%` }}
+            </button>
             <button class="btn-icon-32" @click="zoomOut">
               <span class="i-custom:zoom-out w-6 h-6" />
             </button>
