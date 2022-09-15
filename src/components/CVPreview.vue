@@ -4,8 +4,6 @@ import { storeToRefs } from 'pinia'
 import draggable from 'vuedraggable'
 import { useUserStore } from '~/stores/user'
 import { useToolbarStore } from '~/stores/toolbar'
-import { isEditorEmpty } from '~/utils'
-import { DEFAULT_TEMPLATE } from '~/constants'
 
 const props = defineProps<{
   id: string
@@ -15,66 +13,63 @@ const id = ref(props.id || 'cv-preview')
 
 const user = useUserStore()
 const { about, summary, experience, project, skill, education, certificate, contact, social } = storeToRefs(user)
-const content = computed({
+
+const content = computed(() => {
+  return [
+    { key: 'about', ...about.value },
+    { key: 'summary', ...summary.value },
+    { key: 'experience', ...experience.value },
+    { key: 'project', ...project.value },
+    { key: 'skill', ...skill.value },
+    { key: 'education', ...education.value },
+    { key: 'certificate', ...certificate.value },
+    { key: 'contact', ...contact.value },
+    { key: 'social', ...social.value },
+  ].filter(item => item.isShow).sort((a, b) => a.order - b.order)
+})
+
+const topList = computed({
   get() {
-    return [
-      { key: 'about', ...about.value },
-      { key: 'summary', ...summary.value },
-      { key: 'experience', ...experience.value },
-      { key: 'project', ...project.value },
-      { key: 'skill', ...skill.value },
-      { key: 'education', ...education.value },
-      { key: 'certificate', ...certificate.value },
-      { key: 'contact', ...contact.value },
-      { key: 'social', ...social.value },
-    ].sort((a, b) => a.order - b.order)
+    return [content.value[0]]
   },
-  set(newContent) {
+  set(newValue) {
     user.$patch((state) => {
-      newContent.forEach((item, index) => {
+      newValue.forEach((item, index) => {
         state[item.key].order = index + 1 // order starts from 1
       })
+    })
+  },
+})
+const leftList = computed({
+  get() {
+    return content.value.filter((item, index) => index !== 0 && index <= (content.value.length / 2))
+  },
+  set(newValue) {
+    user.$patch((state) => {
+      newValue.forEach((item, index) => {
+        state[item.key].order = index + 2
+      })
+    })
+  },
+})
+const rightList = computed({
+  get() {
+    return content.value.filter((item, index) => index !== 0 && index > (content.value.length / 2))
+  },
+  set(newValue) {
+    user.$patch((state) => {
+      let total = content.value.length
+      for (let i = newValue.length - 1; i >= 0; i--) {
+        const item = newValue[i]
+        state[item.key].order = total // count from the end
+        total--
+      }
     })
   },
 })
 
 const toolbar = useToolbarStore()
 const { currentState } = storeToRefs(toolbar)
-const drag = ref(true)
-
-function getFontSizeClassName(id: string) {
-  return {
-    title: `title-${id}`,
-    subtitle: `subtitle-${id}`,
-    paragraph: `paragraph-${id}`,
-  }
-}
-
-function getEditingStyle(isEditing) {
-  let style = 'border rounded-xl transition ease-in delay-200 '
-  style += isEditing ? 'bg-primary-10 border-primary-40' : 'border-transparent'
-  return style
-}
-
-function getHintText(isEditing, hintTemplate: string) {
-  return ((isEditing) ? hintTemplate : '')
-}
-
-function showSection(isEditing, hintTemplate: string, content: string) {
-  return ((isEditorEmpty(content) ? getHintText(isEditing, hintTemplate) : content))
-}
-
-function isObjectEmpty(obj) {
-  let isEmpty = true
-  const keys = ['title', 'subtitle', 'subtitle1', 'subtitle2', 'paragraph', 'type']
-  for (const [key, value] of Object.entries(obj)) {
-    if (keys.includes(key) && !isEditorEmpty(value)) {
-      isEmpty = false
-      break
-    }
-  }
-  return isEmpty
-}
 </script>
 
 <template>
@@ -86,384 +81,61 @@ function isObjectEmpty(obj) {
     <div
       class="w-full h-full"
       :class="currentState.fontFamily"
+      style=""
     >
-      <draggable
-        v-model="content"
-        item-key="key"
-        tag="transition-group"
-        @start="drag = true"
-        @end="drag = false"
+      <div
+        :class="{
+          'w-full': currentState.layout === 'layout-full',
+          'w-3/4 ml-auto': currentState.layout === 'layout-left',
+          'w-3/4 mr-auto': currentState.layout === 'layout-right',
+        }"
       >
-        <template #item="{element}">
-          <div>
-            <div
-              v-if="element.key === 'about'"
-              class="p-2 flex items-baseline flex-wrap gap-4 not-break-out"
-              :class="currentState.layout === 'layout-left' ? `ml-[25%] ${getEditingStyle(about.isEditing)}` : getEditingStyle(about.isEditing)"
-            >
-              <div
-                v-if="about.name"
-                class="font-normal text-primary-100 text-size-[36px] leading-[41px]"
-                v-html="isEditorEmpty(about.name) ? DEFAULT_TEMPLATE.about.name : about.name"
-              />
-              <div
-                v-if="about.jobTitle"
-                class="font-normal text-blacks-100 text-size-[14px] leading-[16px]"
-                v-html="isEditorEmpty(about.jobTitle) ? getHintText(about.isEditing, DEFAULT_TEMPLATE.about.jobTitle) : about.jobTitle"
-              />
-            </div>
-
-            <section
-              v-else-if="element.key === 'summary' && summary.isShow"
-              class="p-2 flex flex-col gap-2 not-break-out"
-              :class="getEditingStyle(summary.isEditing)"
-            >
-              <div
-                v-if="summary.hashtags && summary.hashtags.length"
-                class="flex gap-4"
-              >
-                <div
-                  v-for="(item, index) in summary.hashtags.filter((tag, index) => {
-                    return !!(isEditorEmpty(tag) ? getHintText(summary.isEditing, DEFAULT_TEMPLATE.summary.hashtags[index]) : tag)
-                  })"
-                  :key="item"
-                  class="hashtag text-primary-100 bg-primary-10"
-                  :class="summary.isEditing ? 'bg-white' : 'bg-primary-10'"
-                  v-html="isEditorEmpty(item) ? getHintText(summary.isEditing, DEFAULT_TEMPLATE.summary.hashtags[index]) : item"
-                />
-              </div>
-              <div
-                :class="getFontSizeClassName(currentState.fontSize).paragraph"
-                class="text-blacks-70"
-                v-html="isEditorEmpty(summary.paragraph) ? getHintText(summary.isEditing, DEFAULT_TEMPLATE.summary.paragraph) : summary.paragraph"
-              />
-            </section>
-
-            <section
-              v-else-if="element.key === 'experience' && experience.isShow"
-              class="not-break-out"
-            >
-              <div
-                :class="getFontSizeClassName(currentState.fontSize).subtitle"
-                class="px-2 py-1 text-primary-100"
-              >
-                {{ experience.name ? experience.name : DEFAULT_TEMPLATE.experience.name }}
-              </div>
-              <div
-                v-for="(item, index) in experience.list"
-                :key="index"
-              >
-                <div
-                  v-if="item.isEditing || !isObjectEmpty(item)"
-                  :class="getEditingStyle(item.isEditing)"
-                >
-                  <div
-                    v-if="item.isShow"
-                    class="p-2 flex flex-col gap-1"
-                  >
-                    <div
-                      v-if="showSection(item.isEditing, DEFAULT_TEMPLATE.experience.list[0].title, item.title)"
-                      :class="getFontSizeClassName(currentState.fontSize).title"
-                      class="text-blacks-100"
-                      v-html="showSection(item.isEditing, DEFAULT_TEMPLATE.experience.list[0].title, item.title)"
-                    />
-                    <div
-                      v-if="item.isEditing || !isEditorEmpty(item.subtitle1) || !isEditorEmpty(item.subtitle2)"
-                      class="flex justify-between"
-                    >
-                      <div
-                        v-if="showSection(item.isEditing, DEFAULT_TEMPLATE.experience.list[0].subtitle1, item.subtitle1)
-                          || showSection(item.isEditing, DEFAULT_TEMPLATE.experience.list[0].subtitle2, item.subtitle2)
-                        "
-                        :class="getFontSizeClassName(currentState.fontSize).subtitle"
-                        class="text-blacks-40"
-                        v-html="showSection(item.isEditing, DEFAULT_TEMPLATE.experience.list[0].subtitle1, item.subtitle1)"
-                      />
-                      <div
-                        v-if="showSection(item.isEditing, DEFAULT_TEMPLATE.experience.list[0].subtitle1, item.subtitle1)
-                          || showSection(item.isEditing, DEFAULT_TEMPLATE.experience.list[0].subtitle2, item.subtitle2)
-                        "
-                        :class="getFontSizeClassName(currentState.fontSize).subtitle"
-                        class="text-blacks-40"
-                        v-html="showSection(item.isEditing, DEFAULT_TEMPLATE.experience.list[0].subtitle2, item.subtitle2)"
-                      />
-                    </div>
-                    <div
-                      v-if="showSection(item.isEditing, DEFAULT_TEMPLATE.experience.list[0].paragraph, item.paragraph)"
-                      :class="getFontSizeClassName(currentState.fontSize).paragraph"
-                      class="text-blacks-70"
-                      v-html="showSection(item.isEditing, DEFAULT_TEMPLATE.experience.list[0].paragraph, item.paragraph)"
-                    />
-                  </div>
-                </div>
-              </div>
-            </section>
-
-            <section
-              v-else-if="element.key === 'project' && project.isShow"
-              class="not-break-out"
-            >
-              <div
-                :class="getFontSizeClassName(currentState.fontSize).subtitle"
-                class="px-2 py-1 text-primary-100"
-              >
-                {{ project.name ? project.name : DEFAULT_TEMPLATE.project.name }}
-              </div>
-              <div
-                v-for="(item, index) in project.list"
-                :key="index"
-              >
-                <div
-                  v-if="item.isEditing || !isObjectEmpty(item)"
-                  :class="getEditingStyle(item.isEditing)"
-                >
-                  <div
-                    v-if="item.isShow"
-                    class="p-2 flex flex-col gap-1"
-                  >
-                    <div
-                      v-if="showSection(item.isEditing, DEFAULT_TEMPLATE.project.list[0].title, item.title)"
-                      :class="getFontSizeClassName(currentState.fontSize).title"
-                      class="text-blacks-100"
-                      v-html="showSection(item.isEditing, DEFAULT_TEMPLATE.project.list[0].title, item.title)"
-                    />
-                    <div
-                      v-if="item.isEditing || !isEditorEmpty(item.subtitle1) || !isEditorEmpty(item.subtitle2)"
-                      class="flex justify-between"
-                    >
-                      <div
-                        v-if="showSection(item.isEditing, DEFAULT_TEMPLATE.project.list[0].subtitle1, item.subtitle1)
-                          || showSection(item.isEditing, DEFAULT_TEMPLATE.project.list[0].subtitle2, item.subtitle2)
-                        "
-                        :class="getFontSizeClassName(currentState.fontSize).subtitle"
-                        class="text-blacks-40"
-                        v-html="showSection(item.isEditing, DEFAULT_TEMPLATE.project.list[0].subtitle1, item.subtitle1)"
-                      />
-                      <div
-                        v-if="showSection(item.isEditing, DEFAULT_TEMPLATE.project.list[0].subtitle1, item.subtitle1)
-                          || showSection(item.isEditing, DEFAULT_TEMPLATE.project.list[0].subtitle2, item.subtitle2)
-                        "
-                        :class="getFontSizeClassName(currentState.fontSize).subtitle"
-                        class="text-blacks-40"
-                        v-html="showSection(item.isEditing, DEFAULT_TEMPLATE.project.list[0].subtitle2, item.subtitle2)"
-                      />
-                    </div>
-                    <div
-                      v-if="showSection(item.isEditing, DEFAULT_TEMPLATE.project.list[0].paragraph, item.paragraph)"
-                      :class="getFontSizeClassName(currentState.fontSize).paragraph"
-                      class="text-blacks-70"
-                      v-html="showSection(item.isEditing, DEFAULT_TEMPLATE.project.list[0].paragraph, item.paragraph)"
-                    />
-                  </div>
-                </div>
-              </div>
-            </section>
-
-            <section
-              v-else-if="element.key === 'contact'"
-              class="pb-2 not-break-out"
-            >
-              <div
-                :class="getFontSizeClassName(currentState.fontSize).subtitle"
-                class="text-primary-100 py-1 px-2"
-              >
-                {{ contact.name ? contact.name : DEFAULT_TEMPLATE.contact.name }}
-              </div>
-              <div
-                v-for="(item, index) in contact.list"
-                :key="index"
-              >
-                <div
-                  v-if="item.isEditing || !isObjectEmpty(item)"
-                  :class="getEditingStyle(item.isEditing)"
-                >
-                  <div
-                    v-if="item.isShow"
-                    class="p-2 flex flex-col gap-1"
-                  >
-                    <div
-                      v-if="showSection(item.isEditing, DEFAULT_TEMPLATE.contact.list[0].paragraph, item.paragraph)"
-                      :class="getFontSizeClassName(currentState.fontSize).paragraph"
-                      class="text-blacks-70"
-                      v-html="showSection(item.isEditing, DEFAULT_TEMPLATE.contact.list[0].paragraph, item.paragraph)"
-                    />
-                  </div>
-                </div>
-              </div>
-            </section>
-
-            <section
-              v-else-if="element.key === 'skill' && skill.isShow"
-              class="py-2 not-break-out"
-            >
-              <div
-                :class="getFontSizeClassName(currentState.fontSize).subtitle"
-                class="py-1 px-2 text-primary-100"
-              >
-                {{ skill.name ? skill.name : DEFAULT_TEMPLATE.skill.name }}
-              </div>
-              <div
-                v-for="(item, index) in skill.list"
-                :key="index"
-              >
-                <div
-                  v-if="item.isEditing || !isObjectEmpty(item)"
-                  :class="getEditingStyle(item.isEditing)"
-                >
-                  <div
-                    v-if="item.isShow"
-                    class="p-2 flex flex-col gap-1"
-                  >
-                    <div
-                      v-if="showSection(item.isEditing, DEFAULT_TEMPLATE.skill.list[0].title,item.title)"
-                      :class="getFontSizeClassName(currentState.fontSize).title"
-                      class="text-blacks-100"
-                      v-html="showSection(item.isEditing, DEFAULT_TEMPLATE.skill.list[0].title,item.title)"
-                    />
-                    <div
-                      v-if="showSection(item.isEditing, DEFAULT_TEMPLATE.skill.list[0].subtitle,item.subtitle)"
-                      :class="getFontSizeClassName(currentState.fontSize).subtitle"
-                      class="text-blacks-40"
-                      v-html="showSection(item.isEditing, DEFAULT_TEMPLATE.skill.list[0].subtitle,item.subtitle)"
-                    />
-                    <div
-                      v-if="showSection(item.isEditing, DEFAULT_TEMPLATE.skill.list[0].paragraph,item.paragraph)"
-                      :class="getFontSizeClassName(currentState.fontSize).paragraph"
-                      class="text-blacks-70"
-                      v-html="showSection(item.isEditing, DEFAULT_TEMPLATE.skill.list[0].paragraph,item.paragraph)"
-                    />
-                  </div>
-                </div>
-              </div>
-            </section>
-
-            <section
-              v-else-if="element.key === 'certificate' && certificate.isShow"
-              class="py-2 not-break-out"
-            >
-              <div
-                :class="getFontSizeClassName(currentState.fontSize).subtitle"
-                class="text-primary-100 py-1 px-2"
-              >
-                {{ certificate.name ? certificate.name : DEFAULT_TEMPLATE.certificate.name }}
-              </div>
-              <div
-                v-for="(item, index) in certificate.list"
-                :key="index"
-              >
-                <div
-                  v-if="item.isEditing || !isObjectEmpty(item)"
-                  :class="getEditingStyle(item.isEditing)"
-                >
-                  <div
-                    v-if="item.isShow"
-                    class="p-2 flex flex-col gap-1"
-                  >
-                    <div
-                      v-if="showSection(item.isEditing, DEFAULT_TEMPLATE.certificate.list[0].title, item.title)"
-                      :class="getFontSizeClassName(currentState.fontSize).title"
-                      class="text-blacks-100"
-                      v-html="showSection(item.isEditing, DEFAULT_TEMPLATE.certificate.list[0].title, item.title)"
-                    />
-                    <div
-                      v-if="showSection(item.isEditing, DEFAULT_TEMPLATE.certificate.list[0].subtitle, item.subtitle)"
-                      :class="getFontSizeClassName(currentState.fontSize).subtitle"
-                      class="text-blacks-40"
-                      v-html="showSection(item.isEditing, DEFAULT_TEMPLATE.certificate.list[0].subtitle, item.subtitle)"
-                    />
-                    <div
-                      v-if="showSection(item.isEditing, DEFAULT_TEMPLATE.certificate.list[0].paragraph, item.paragraph)"
-                      :class="getFontSizeClassName(currentState.fontSize).paragraph"
-                      class="text-blacks-70"
-                      v-html="showSection(item.isEditing, DEFAULT_TEMPLATE.certificate.list[0].paragraph, item.paragraph)"
-                    />
-                  </div>
-                </div>
-              </div>
-            </section>
-
-            <section
-              v-else-if="element.key === 'education' && education.isShow"
-              class="py-2 not-break-out"
-            >
-              <div
-                :class="getFontSizeClassName(currentState.fontSize).subtitle"
-                class="text-primary-100 py-1 px-2"
-              >
-                {{ education.name ? education.name : DEFAULT_TEMPLATE.education.name }}
-              </div>
-              <div
-                v-for="(item, index) in education.list"
-                :key="index"
-              >
-                <div
-                  v-if="item.isEditing || !isObjectEmpty(item)"
-                  :class="getEditingStyle(item.isEditing)"
-                >
-                  <div
-                    v-if="item.isShow"
-                    class="p-2 flex flex-col gap-1"
-                  >
-                    <div
-                      v-if="showSection(item.isEditing, DEFAULT_TEMPLATE.education.list[0].title, item.title)"
-                      :class="getFontSizeClassName(currentState.fontSize).title"
-                      class="text-blacks-100"
-                      v-html="showSection(item.isEditing, DEFAULT_TEMPLATE.education.list[0].title, item.title)"
-                    />
-                    <div
-                      v-if="showSection(item.isEditing, DEFAULT_TEMPLATE.education.list[0].subtitle, item.subtitle)"
-                      :class="getFontSizeClassName(currentState.fontSize).subtitle"
-                      class="text-blacks-40"
-                      v-html="showSection(item.isEditing, DEFAULT_TEMPLATE.education.list[0].subtitle, item.subtitle)"
-                    />
-                    <div
-                      v-if="showSection(item.isEditing, DEFAULT_TEMPLATE.education.list[0].paragraph, item.paragraph)"
-                      :class="getFontSizeClassName(currentState.fontSize).paragraph"
-                      class="text-blacks-70"
-                      v-html="showSection(item.isEditing, DEFAULT_TEMPLATE.education.list[0].paragraph, item.paragraph)"
-                    />
-                  </div>
-                </div>
-              </div>
-            </section>
-
-            <section
-              v-else-if="element.key === 'social' && social.isShow"
-              class="py-2 not-break-out"
-            >
-              <div
-                :class="getFontSizeClassName(currentState.fontSize).subtitle"
-                class="text-primary-100 py-1 px-2 pb-2"
-              >
-                {{ social.name ? social.name : DEFAULT_TEMPLATE.social.name }}
-              </div>
-              <div
-                v-for="(item, index) in social.list"
-                :key="index"
-              >
-                <div
-                  v-if="item.isEditing || !isObjectEmpty(item)"
-                  :class="getEditingStyle(item.isEditing)"
-                >
-                  <div
-                    v-if="item.isShow"
-                    class="px-2"
-                    :class="getFontSizeClassName(currentState.fontSize).paragraph"
-                  >
-                    <a
-                      v-if="showSection(item.isEditing, DEFAULT_TEMPLATE.social.list[0].type, item.type)"
-                      class="text-blacks-70"
-                      :href="item.link"
-                      target="_blank"
-                      v-html="showSection(item.isEditing, DEFAULT_TEMPLATE.social.list[0].type, item.type)"
-                    />
-                  </div>
-                </div>
-              </div>
-            </section>
-          </div>
-        </template>
-      </draggable>
+        <draggable
+          v-model="topList"
+          group="section"
+          item-key="key"
+        >
+          <template #item="{element}">
+            <CVPreviewSection :element="element" />
+          </template>
+        </draggable>
+      </div>
+      <div class="flex flex-wrap">
+        <div
+          :class="{
+            'w-full': currentState.layout === 'layout-full',
+            'w-3/4 order-2': currentState.layout === 'layout-left',
+            'w-3/4 order-1': currentState.layout === 'layout-right',
+          }"
+        >
+          <draggable
+            v-model="leftList"
+            group="section"
+            item-key="key"
+          >
+            <template #item="{element}">
+              <CVPreviewSection :element="element" />
+            </template>
+          </draggable>
+        </div>
+        <div
+          :class="{
+            'w-full': currentState.layout === 'layout-full',
+            'w-1/4 order-1': currentState.layout === 'layout-left',
+            'w-1/4 order-2': currentState.layout === 'layout-right',
+          }"
+        >
+          <draggable
+            v-model="rightList"
+            group="section"
+            item-key="key"
+          >
+            <template #item="{element}">
+              <CVPreviewSection :element="element" />
+            </template>
+          </draggable>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -531,7 +203,7 @@ function isObjectEmpty(obj) {
 }
 
 .cv-preview [data-draggable="true"] {
-  @apply cursor-move border border-transparent;
+  @apply cursor-move border border-transparent rounded-xl;
 }
 .cv-preview [data-draggable="true"]:hover {
   @apply border-primary-100;
