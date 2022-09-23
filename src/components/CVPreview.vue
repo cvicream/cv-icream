@@ -203,12 +203,26 @@ const { currentState } = storeToRefs(toolbar)
 }
 
 .cv-preview [data-draggable="true"] {
-  @apply cursor-move border border-transparent rounded-xl;
+  @apply relative cursor-move bg-white rounded-xl;
+}
+.cv-preview [data-draggable="true"]::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform: translateX(-20px);
+  background-image: url('../assets/icons/drag-indicator.svg');
+  width: 20px;
+  height: 20px;
+  opacity: 0;
 }
 .cv-preview [data-draggable="true"]:hover {
-  @apply border-primary-100;
+  @apply bg-primary-10;
+}
+.cv-preview [data-draggable="true"]:hover::before {
+  opacity: 1;
 }
 .cv-preview [draggable="true"] {
-  @apply cursor-grabbing border border-primary-100;
+  @apply bg-primary-10;
 }
 </style>
