@@ -73,6 +73,12 @@ async function sendFeedback() {
         placeholder="Email"
         class="form-input bg-primary-10 mt-3"
       >
+      <p
+        v-if="email && !validateEmail(email)"
+        class="note text-warning mt-2"
+      >
+        It doesn't look quite right.
+      </p>
     </div>
     <div class="flex flex-col gap-6 mt-8 sm:flex-row sm:justify-between">
       <button
