@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
+import axios from 'axios'
 import { jsPDF as JsPDF } from 'jspdf'
 import { storeToRefs } from 'pinia'
 import { useUserStore } from '~/stores/user'
 import { useToolbarStore } from '~/stores/toolbar'
-import { getPreviousUrl, setStatus, stripHtml } from '~/utils'
+import { getPreviousUrl, getStorage, setStatus, stripHtml } from '~/utils'
 import arial from '~/assets/fonts/arial/arial-normal'
 import georgia from '~/assets/fonts/georgia/georgia-normal'
 import gillsans from '~/assets/fonts/gillsans/gillsans-normal'
@@ -104,6 +105,31 @@ function print() {
   toggleFeedbackModal()
 }
 
+async function generatePdf() {
+  const fileName = `${stripHtml(about.value.jobTitle)} - ${stripHtml(about.value.name)}`
+  const storage = getStorage()
+  const data = {
+    fileName,
+    data: storage,
+  }
+  try {
+    const url = 'http://localhost:5000/dodosoya-develop/us-central1/generatePdf'
+    axios({
+      method: 'get',
+      url,
+      data,
+    })
+    // await fetch(url, {
+    //   method: 'POST',
+    //   body: JSON.stringify(data),
+    // })
+    toggleFeedbackModal()
+  }
+  catch (error) {
+    console.error(error)
+  }
+}
+
 function back() {
   const previousUrl = getPreviousUrl()
   if (previousUrl) {
@@ -150,7 +176,7 @@ function back() {
       </div>
       <button
         class="w-full rounded-xl text-white inline-flex justify-center items-center gap-2 py-3 mt-6 bg-primary-100 border-1 border-transparent transition duration-300 ease-out hover:border-primary-20"
-        @click="print"
+        @click="generatePdf"
       >
         <span class="i-custom:download w-6 h-6" />
         <span class="subleading">Download</span>
