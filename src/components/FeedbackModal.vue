@@ -7,6 +7,7 @@ const props = defineProps<{
   subtitle: string
   visible: boolean
   toggle: () => void
+  notify: () => void
 }>()
 
 const content = ref('')
@@ -36,6 +37,7 @@ async function sendFeedback() {
       content: content.value,
     })}`)
     props.toggle()
+    props.notify()
     reset()
   }
   catch (error) {
