@@ -113,16 +113,18 @@ async function generatePdf() {
     data: storage,
   }
   try {
-    const url = 'http://localhost:5000/dodosoya-develop/us-central1/generatePdf'
-    axios({
-      method: 'get',
-      url,
+    const res = await axios({
+      method: 'POST',
+      url: 'https://us-central1-dodosoya-develop.cloudfunctions.net/generatePdf',
       data,
+      responseType: 'blob',
     })
-    // await fetch(url, {
-    //   method: 'POST',
-    //   body: JSON.stringify(data),
-    // })
+    const url = window.URL.createObjectURL(new Blob([res.data]))
+    const link = document.createElement('a')
+    link.href = url
+    link.setAttribute('download', `${fileName}.pdf`)
+    document.body.appendChild(link)
+    link.click()
     toggleFeedbackModal()
   }
   catch (error) {
