@@ -12,7 +12,7 @@ const props = defineProps<{
 const id = ref(props.id || 'cv-preview')
 
 const user = useUserStore()
-const { about, summary, experience, project, skill, education, certificate, contact, social } = storeToRefs(user)
+const { splitIndex, about, summary, experience, project, skill, education, certificate, contact, social } = storeToRefs(user)
 
 const content = computed(() => {
   return [
@@ -42,9 +42,10 @@ const topList = computed({
 })
 const leftList = computed({
   get() {
-    return content.value.filter((item, index) => index !== 0 && index <= (content.value.length / 2))
+    return content.value.filter((item, index) => index !== 0 && index <= splitIndex.value)
   },
   set(newValue) {
+    user.updateSplitIndex(newValue.length)
     user.$patch((state) => {
       newValue.forEach((item, index) => {
         state[item.key].order = index + 2
@@ -54,9 +55,10 @@ const leftList = computed({
 })
 const rightList = computed({
   get() {
-    return content.value.filter((item, index) => index !== 0 && index > (content.value.length / 2))
+    return content.value.filter((item, index) => index !== 0 && index > splitIndex.value)
   },
   set(newValue) {
+    user.updateSplitIndex(content.value.length - newValue.length - 1)
     user.$patch((state) => {
       let total = content.value.length
       for (let i = newValue.length - 1; i >= 0; i--) {
@@ -90,15 +92,7 @@ const { currentState } = storeToRefs(toolbar)
           'w-3/4 mr-auto': currentState.layout === 'layout-right',
         }"
       >
-        <draggable
-          v-model="topList"
-          group="section"
-          item-key="key"
-        >
-          <template #item="{element}">
-            <CVPreviewSection :element="element" />
-          </template>
-        </draggable>
+        <CVPreviewSection :element="topList[0]" />
       </div>
       <div class="flex flex-wrap">
         <div
@@ -112,6 +106,7 @@ const { currentState } = storeToRefs(toolbar)
             v-model="leftList"
             group="section"
             item-key="key"
+            class="h-full"
           >
             <template #item="{element}">
               <CVPreviewSection :element="element" />
@@ -129,6 +124,7 @@ const { currentState } = storeToRefs(toolbar)
             v-model="rightList"
             group="section"
             item-key="key"
+            class="h-full"
           >
             <template #item="{element}">
               <CVPreviewSection :element="element" />

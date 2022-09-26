@@ -40,6 +40,7 @@ export const TEMPLATE_LIST_ITEM = {
 
 export const DEFAULT_TEMPLATE = {
   template: 0,
+  splitIndex: 2,
   style: {
     fontFamily: 'font-gill-sans',
     layout: 'layout-right',
@@ -169,6 +170,7 @@ export const TEMPLATES = [
   JSON.parse(JSON.stringify(DEFAULT_TEMPLATE)), // deep copy
   {
     template: 1,
+    splitIndex: 2,
     style: {
       fontFamily: 'font-gill-sans',
       layout: 'layout-right',
@@ -325,6 +327,7 @@ Mandarin (native)`,
   },
   {
     template: 2,
+    splitIndex: 2,
     style: {
       fontFamily: 'font-georgia',
       layout: 'layout-right',
@@ -468,6 +471,7 @@ Mandarin (native)`,
   },
   {
     template: 3,
+    splitIndex: 2,
     style: {
       fontFamily: 'font-arial',
       layout: 'layout-left',
@@ -651,6 +655,7 @@ Mandarin (native)`,
   },
   {
     template: 4,
+    splitIndex: 2,
     style: {
       fontFamily: 'font-times-new-roman',
       layout: 'layout-full',
