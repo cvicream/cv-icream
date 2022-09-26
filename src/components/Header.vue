@@ -11,6 +11,7 @@ const props = defineProps<{
 
 const isActionActive = ref(false)
 const feedbackVisible = ref(false)
+const upload = ref(false)
 
 const router = useRouter()
 
@@ -98,7 +99,11 @@ function exportJsonFile() {
 
 async function importJsonFile() {
   closeAction()
+  upload.value = false
   const jsonFile = await getJsonUpload()
+  const fileType = jsonFile.slice(-3)
+  if (fileType !== '}}}')
+    upload.value = true
   const obj = JSON.parse(jsonFile as string)
   Object.keys(obj).forEach((key) => {
     if (key === 'user') {
@@ -201,4 +206,30 @@ function closeAction() {
     :visible="feedbackVisible"
     :toggle="toggleFeedbackModal"
   />
+
+  <Modal
+    v-show="upload"
+    title="Upload Your CV Draft"
+    subtitle="Please upload the filename extension with ‘.cvicream’."
+    @close="upload = false"
+  >
+    <div class="flex flex-col gap-6 mt-6 sm:flex-row">
+      <button
+        class="btn-secondary px-8 flex-shrink-0"
+        @click="upload = false"
+      >
+        <span class="subleading">
+          Cancel
+        </span>
+      </button>
+      <button
+        class="btn-primary px-8 flex-shrink-0"
+        @click="importJsonFile"
+      >
+        <span class="subleading">
+          Got it!
+        </span>
+      </button>
+    </div>
+  </Modal>
 </template>

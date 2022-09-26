@@ -61,8 +61,12 @@ function getJsonUpload() {
     inputFileElement.addEventListener('change', (event) => {
       const { files } = event.target as HTMLInputElement
       if (!files) return
-
-      resolve(files[0].text())
+      const fileName = files[0].name
+      const fileType = fileName.slice(-8)
+      if (fileType !== 'cvicream')
+        resolve(files[0].name)
+      else
+        resolve(files[0].text())
     }, false)
     inputFileElement.click()
   })

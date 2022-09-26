@@ -7,6 +7,7 @@ import { getJsonUpload } from '~/utils'
 const user = useUserStore()
 const toolbar = useToolbarStore()
 const { t } = useI18n()
+const uploadFiletype = ref(false)
 const router = useRouter()
 
 async function upload() {
@@ -15,7 +16,11 @@ async function upload() {
 }
 
 async function importJsonFile() {
+  uploadFiletype.value = false
   const jsonFile = await getJsonUpload()
+  const fileType = jsonFile.slice(-3)
+  if (fileType !== '}}}')
+    uploadFiletype.value = true
   const obj = JSON.parse(jsonFile as string)
   Object.keys(obj).forEach((key) => {
     if (key === 'user') {
@@ -84,6 +89,32 @@ const onNext = () => {
       </button>
     </div>
   </div>
+
+  <Modal
+    v-show="uploadFiletype"
+    title="Upload Your CV Draft"
+    subtitle="Please upload the filename extension with ‘.cvicream’."
+    @close="uploadFiletype = false"
+  >
+    <div class="flex flex-col gap-6 mt-6 sm:flex-row">
+      <button
+        class="btn-secondary px-8 flex-shrink-0"
+        @click="uploadFiletype = false"
+      >
+        <span class="subleading">
+          Cancel
+        </span>
+      </button>
+      <button
+        class="btn-primary px-8 flex-shrink-0"
+        @click="upload"
+      >
+        <span class="subleading">
+          Got it!
+        </span>
+      </button>
+    </div>
+  </Modal>
 </template>
 
 <route lang="yaml">
