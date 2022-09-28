@@ -13,10 +13,15 @@ const content = ref('')
 const name = ref('')
 const email = ref('')
 const loading = ref(false)
+const isEmailValid = ref(true)
 
 const enable = computed(() => {
-  return content.value && name.value && email.value && validateEmail(email.value)
+  return content.value && name.value && isEmailValid.value
 })
+
+function handleInputEmail() {
+  isEmailValid.value = validateEmail(email.value)
+}
 
 function reset() {
   name.value = ''
@@ -43,7 +48,6 @@ async function sendFeedback() {
   }
   loading.value = false
 }
-
 </script>
 
 <template>
@@ -72,9 +76,11 @@ async function sendFeedback() {
         type="search"
         placeholder="Email"
         class="form-input bg-primary-10 mt-3"
+        @keyup.enter="handleInputEmail"
+        @blur="handleInputEmail"
       >
       <p
-        v-if="email && !validateEmail(email)"
+        v-if="!isEmailValid"
         class="note text-warning mt-2"
       >
         It doesn't look quite right.
