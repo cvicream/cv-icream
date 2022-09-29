@@ -2,7 +2,7 @@
 import { useUserStore } from '~/stores/user'
 
 import { useToolbarStore } from '~/stores/toolbar'
-import { getJsonUpload, setStatus } from '~/utils'
+import { getJsonUpload } from '~/utils'
 
 const user = useUserStore()
 const toolbar = useToolbarStore()
@@ -36,11 +36,9 @@ async function importJsonFile() {
       })
     }
   })
-  setStatus({ isEditing: true })
 }
 
 function redirectToEdit() {
-  setStatus({ isSaved: true })
   router.push('/edit/about')
 }
 

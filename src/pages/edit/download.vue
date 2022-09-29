@@ -93,7 +93,6 @@ function downloadPDF() {
       callback(doc) {
         doc.save(`${stripHtml(about.value.jobTitle)} - ${stripHtml(about.value.name)}.pdf`)
         toggleFeedbackModal()
-        setStatus({ isSaved: false })
       },
     })
   }
@@ -102,7 +101,6 @@ function downloadPDF() {
 function print() {
   // document.title = `${stripHtml(about.value.jobTitle)} - ${stripHtml(about.value.name)}.pdf`
   window.print()
-  setStatus({ isSaved: false })
   toggleFeedbackModal()
 }
 
@@ -110,7 +108,11 @@ function back() {
   const previousUrl = getPreviousUrl()
   if (previousUrl) {
     setStatus({ previousUrl: '' })
-    window.location.href = previousUrl
+    const targetUrl = new URL(previousUrl)
+    if (targetUrl.origin === window.location.origin)
+      router.push(targetUrl.pathname)
+    else
+      window.location.href = previousUrl
   }
   else { router.push('/edit/about') }
 }
