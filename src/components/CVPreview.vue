@@ -222,6 +222,6 @@ const { currentState } = storeToRefs(toolbar)
   @apply bg-primary-10;
 }
 .sortable-chosen.sortable-ghost {
-  @apply h-1 bg-primary-10;
+  @apply h-1 bg-primary-10 my-1;
 }
 </style>
