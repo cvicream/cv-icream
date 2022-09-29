@@ -201,8 +201,8 @@ function deleteItem(index: number) {
       </div>
     </div>
     <button
-      class="w-full rounded-xl text-blacks-40 inline-flex justify-center items-center p-3 border-transparent border-1 group"
-      :class="certificate.isShow ? 'bg-primary-10 hover:border-primary-100 ' : 'bg-blacks-10'"
+      v-if="certificate.isShow"
+      class="w-full rounded-xl text-blacks-40 inline-flex justify-center items-center p-3 border-transparent border-1 group bg-primary-10 hover:border-primary-100"
       :disabled="!certificate.isShow"
       @click="addItem"
     >

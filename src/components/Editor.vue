@@ -272,7 +272,7 @@ export default defineComponent({
 }
 
 .ql-disabled {
-  @apply text-blacks-40 hover:border-white;
+  @apply text-blacks-40 hover:border-white bg-blacks-5;
 }
 
 .single-line [contenteditable] {

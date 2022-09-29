@@ -116,7 +116,8 @@ export default defineConfig({
         100: 'var(--primary-color)',
       },
       blacks: { // class="text-blacks-100"
-        10: 'rgba(34, 34, 34, 0.1)',
+        5: '#F4F4F4',
+        10: '#E9E9E9',
         20: '#d3d3d3',
         40: '#a7a7a7',
         70: '#656565',
