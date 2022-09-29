@@ -221,4 +221,7 @@ const { currentState } = storeToRefs(toolbar)
 .cv-preview [draggable="true"] {
   @apply bg-primary-10;
 }
+.sortable-chosen.sortable-ghost {
+  @apply h-1 bg-primary-10;
+}
 </style>

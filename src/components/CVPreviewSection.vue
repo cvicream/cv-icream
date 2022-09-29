@@ -18,6 +18,8 @@ const { currentState } = storeToRefs(toolbar)
 
 const isHover = ref(false)
 
+const router = useRouter()
+
 function getFontSizeClassName(id: string) {
   return {
     title: `title-${id}`,
@@ -57,6 +59,7 @@ function isObjectEmpty(obj) {
   <div
     @mouseover="isHover = true"
     @mouseout="isHover = false"
+    @mouseup="router.push(`/edit/${element.key}`)"
   >
     <div
       v-if="element.key === 'about'"
@@ -399,26 +402,28 @@ function isObjectEmpty(obj) {
       >
         {{ social.name ? social.name : DEFAULT_TEMPLATE.social.name }}
       </div>
-      <div
-        v-for="(item, index) in social.list"
-        :key="index"
-      >
+      <div class="inline-flex flex-col">
         <div
-          v-if="item.isEditing || !isObjectEmpty(item)"
-          :class="getEditingStyle(item.isEditing)"
+          v-for="(item, index) in social.list"
+          :key="index"
         >
           <div
-            v-if="item.isShow"
-            class="px-2"
-            :class="getFontSizeClassName(currentState.fontSize).paragraph"
+            v-if="item.isEditing || !isObjectEmpty(item)"
+            :class="getEditingStyle(item.isEditing)"
           >
-            <a
-              v-if="showSection(item.isEditing, DEFAULT_TEMPLATE.social.list[0].type, item.type)"
-              class="text-blacks-70"
-              :href="item.link"
-              target="_blank"
-              v-html="showSection(item.isEditing, DEFAULT_TEMPLATE.social.list[0].type, item.type)"
-            />
+            <div
+              v-if="item.isShow"
+              class="px-2"
+              :class="getFontSizeClassName(currentState.fontSize).paragraph"
+            >
+              <a
+                v-if="showSection(item.isEditing, DEFAULT_TEMPLATE.social.list[0].type, item.type)"
+                class="text-blacks-70"
+                :href="item.link"
+                target="_blank"
+                v-html="showSection(item.isEditing, DEFAULT_TEMPLATE.social.list[0].type, item.type)"
+              />
+            </div>
           </div>
         </div>
       </div>
