@@ -1,14 +1,15 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue'
 import { storeToRefs } from 'pinia'
+import draggable from 'vuedraggable'
 import { useUserStore } from '~/stores/user'
 import { MIN_SIDEBAR_WIDTH } from '~/constants'
 
 const user = useUserStore()
-const { timestamp } = storeToRefs(user)
+const { about, summary, experience, project, skill, education, certificate, contact, social, timestamp } = storeToRefs(user)
 
 const router = useRouter()
-const sidebarMenus = ref([
+const sidebarMenus = [
   {
     name: 'About',
     path: '/edit/about',
@@ -55,10 +56,35 @@ const sidebarMenus = ref([
     path: '/edit/social',
     icon: 'i-custom:social',
   },
-])
+]
+const menus = computed({
+  get() {
+    const content = [
+      { key: 'about', ...about.value },
+      { key: 'summary', ...summary.value },
+      { key: 'experience', ...experience.value },
+      { key: 'project', ...project.value },
+      { key: 'skill', ...skill.value },
+      { key: 'education', ...education.value },
+      { key: 'certificate', ...certificate.value },
+      { key: 'contact', ...contact.value },
+      { key: 'social', ...social.value },
+    ].sort((a, b) => a.order - b.order)
+    return content.map(item => sidebarMenus.find(menu => menu.name.toLowerCase() === item.key))
+  },
+  set(newMenus) {
+    user.$patch((state) => {
+      newMenus.forEach((item, index) => {
+        if (item)
+          state[item.name.toLowerCase()].order = index + 1 // order starts from 1
+      })
+    })
+  },
+})
 const sidebar = ref<any>(null)
 const isOpen = ref(false)
 const isSmallSidebar = ref(true)
+const drag = ref(true)
 
 const menuOpenWidth = computed(() => {
   return isOpen.value && !isSmallSidebar.value ? 218 : 64
@@ -118,30 +144,39 @@ function onMenuClick() {
       </button>
 
       <div class="flex flex-col gap-4 overflow-y-auto disable-scrollbar">
-        <router-link
-          v-for="menu in sidebarMenus"
-          :key="menu.path"
-          :to="menu.path"
-          :class="isActivePath(menu.path) && 'bg-primary-10 rounded'"
-          @click="onMenuClick"
+        <draggable
+          v-model="menus"
+          item-key="path"
+          tag="transition-group"
+          @start="drag = true"
+          @end="drag = false"
         >
-          <span
-            class="w-8 h-8"
-            :class="
-              user[menu.name.toLocaleLowerCase()].isShow
-                ? `${menu.icon} text-blacks-70` : `${menu.icon} text-blacks-40`"
-          />
-          <span
-            class="leading ml-4"
-            :class="{
-              'hidden': !isOpen,
-              'text-blacks-70': user[menu.name.toLocaleLowerCase()].isShow,
-              'text-blacks-40': !user[menu.name.toLocaleLowerCase()].isShow
-            }"
-          >
-            {{ menu.name }}
-          </span>
-        </router-link>
+          <template #item="{element}">
+            <router-link
+              :key="element.path"
+              :to="element.path"
+              :class="isActivePath(element.path) && 'bg-primary-10 rounded'"
+              @click="onMenuClick"
+            >
+              <span
+                class="w-8 h-8"
+                :class="
+                  user[element.name.toLocaleLowerCase()].isShow
+                    ? `${element.icon} text-blacks-70` : `${element.icon} text-blacks-40`"
+              />
+              <span
+                class="leading ml-4"
+                :class="{
+                  'hidden': !isOpen,
+                  'text-blacks-70': user[element.name.toLocaleLowerCase()].isShow,
+                  'text-blacks-40': !user[element.name.toLocaleLowerCase()].isShow
+                }"
+              >
+                {{ element.name }}
+              </span>
+            </router-link>
+          </template>
+        </draggable>
       </div>
     </div>
     <div
