@@ -210,12 +210,12 @@ function closeAction() {
   <Modal
     v-show="upload"
     title="Upload Your CV Draft"
-    subtitle="Please upload the filename extension with ‘.cvicream’."
+    subtitle="Please upload the file with the format in ‘.cvicream’."
     @close="upload = false"
   >
-    <div class="flex flex-col gap-6 mt-6 sm:flex-row">
+    <div class="flex justify-between gap-6 mt-6 sm:flex-row">
       <button
-        class="btn-secondary px-8 flex-shrink-0"
+        class="btn-secondary px-12 flex-shrink-0"
         @click="upload = false"
       >
         <span class="subleading">
@@ -223,7 +223,7 @@ function closeAction() {
         </span>
       </button>
       <button
-        class="btn-primary px-8 flex-shrink-0"
+        class="btn-primary px-12 flex-shrink-0"
         @click="importJsonFile"
       >
         <span class="subleading">
