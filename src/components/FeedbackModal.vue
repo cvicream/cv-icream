@@ -66,7 +66,7 @@ async function sendFeedback() {
       class="form-textarea bg-primary-10 custom-scrollbar mt-8"
     />
     <div class="mt-6">
-      <label class="note text-blacks-70">Your Contact Info</label>
+      <label class="block note text-blacks-70">Your Contact Info</label>
       <input
         v-model="name"
         type="search"
