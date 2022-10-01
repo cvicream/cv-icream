@@ -178,7 +178,7 @@ export default defineComponent({
       v-model:content="content"
       content-type="html"
       :enable="enable"
-      :read-only="false"
+      :read-only="!enable"
       :placeholder="placeholder"
       theme=""
       :toolbar="`#${toolbarId}`"
@@ -272,7 +272,7 @@ export default defineComponent({
 }
 
 .ql-disabled {
-  @apply text-blacks-40 hover:border-white bg-blacks-5;
+  @apply text-blacks-40 hover:border-white bg-blacks-5 border-blacks-5;
 }
 
 .single-line [contenteditable] {
