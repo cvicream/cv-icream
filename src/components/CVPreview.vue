@@ -107,6 +107,8 @@ const { currentState } = storeToRefs(toolbar)
             group="section"
             item-key="key"
             class="h-full"
+            delay-on-touch-only
+            delay="200"
           >
             <template #item="{element}">
               <CVPreviewSection :element="element" />
@@ -125,6 +127,8 @@ const { currentState } = storeToRefs(toolbar)
             group="section"
             item-key="key"
             class="h-full"
+            delay-on-touch-only
+            delay="200"
           >
             <template #item="{element}">
               <CVPreviewSection :element="element" />
