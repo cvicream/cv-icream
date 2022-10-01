@@ -4,6 +4,7 @@ import { storeToRefs } from 'pinia'
 import draggable from 'vuedraggable'
 import { useUserStore } from '~/stores/user'
 import { useToolbarStore } from '~/stores/toolbar'
+import { isMobileDevice } from '~/utils'
 
 const props = defineProps<{
   id: string
@@ -108,7 +109,7 @@ const { currentState } = storeToRefs(toolbar)
             item-key="key"
             class="h-full"
             delay-on-touch-only
-            delay="200"
+            :delay="isMobileDevice() ? 200 : 0"
           >
             <template #item="{element}">
               <CVPreviewSection :element="element" />
@@ -128,7 +129,7 @@ const { currentState } = storeToRefs(toolbar)
             item-key="key"
             class="h-full"
             delay-on-touch-only
-            delay="200"
+            :delay="isMobileDevice() ? 200 : 0"
           >
             <template #item="{element}">
               <CVPreviewSection :element="element" />

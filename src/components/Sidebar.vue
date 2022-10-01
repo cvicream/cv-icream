@@ -4,6 +4,7 @@ import { storeToRefs } from 'pinia'
 import draggable from 'vuedraggable'
 import { useUserStore } from '~/stores/user'
 import { MIN_SIDEBAR_WIDTH } from '~/constants'
+import { isMobileDevice } from '~/utils'
 
 const user = useUserStore()
 const { about, summary, experience, project, skill, education, certificate, contact, social, timestamp } = storeToRefs(user)
@@ -60,7 +61,7 @@ const sidebarMenus = [
 const menus = computed({
   get() {
     const content = [
-      { key: 'about', ...about.value },
+      // { key: 'about', ...about.value },
       { key: 'summary', ...summary.value },
       { key: 'experience', ...experience.value },
       { key: 'project', ...project.value },
@@ -76,7 +77,7 @@ const menus = computed({
     user.$patch((state) => {
       newMenus.forEach((item, index) => {
         if (item)
-          state[item.name.toLowerCase()].order = index + 1 // order starts from 1
+          state[item.name.toLowerCase()].order = index + 2 // order starts from 1 and skip the first one
       })
     })
   },
@@ -122,14 +123,16 @@ function isActivePath(targetPath: string) {
   return router.currentRoute.value.path.indexOf(targetPath) === 0
 }
 
-function onMenuClick() {
+function onMenuClick(path) {
   if (isSmallSidebar.value)
     isOpen.value = false
+
+  router.push(path)
 }
 </script>
 
 <template>
-  <div ref="sidebar" class="w-full h-full bg-white relative flex">
+  <div ref="sidebar" class="sidebar w-full h-full bg-white relative flex">
     <div
       class="h-full py-5 bg-white absolute top-0 left-0 z-1 sm:overflow-y-auto transition-all duration-100 flex flex-col gap-4"
       :class="isOpen ? 'sm:w-[218px] px-5' : 'sm:w-[64px] px-1'"
@@ -144,41 +147,40 @@ function onMenuClick() {
       </button>
 
       <div class="flex flex-col gap-4 overflow-y-auto disable-scrollbar">
+        <SidebarMenu
+          v-for="element in sidebarMenus.filter((menu, index) => index === 0)"
+          :key="element.path"
+          :path="element.path"
+          :name="element.name"
+          :icon="element.icon"
+          :show-only-icon="!isOpen"
+          :disabled="!user[element.name.toLocaleLowerCase()].isShow"
+          :click="onMenuClick"
+        />
+
         <draggable
           v-model="menus"
           item-key="path"
           tag="transition-group"
+          delay-on-touch-only
+          :delay="isMobileDevice() ? 200 : 0"
           @start="drag = true"
           @end="drag = false"
         >
           <template #item="{element}">
-            <router-link
-              :key="element.path"
-              :to="element.path"
-              :class="isActivePath(element.path) && 'bg-primary-10 rounded'"
-              @click="onMenuClick"
-            >
-              <span
-                class="w-8 h-8"
-                :class="
-                  user[element.name.toLocaleLowerCase()].isShow
-                    ? `${element.icon} text-blacks-70` : `${element.icon} text-blacks-40`"
-              />
-              <span
-                class="leading ml-4"
-                :class="{
-                  'hidden': !isOpen,
-                  'text-blacks-70': user[element.name.toLocaleLowerCase()].isShow,
-                  'text-blacks-40': !user[element.name.toLocaleLowerCase()].isShow
-                }"
-              >
-                {{ element.name }}
-              </span>
-            </router-link>
+            <SidebarMenu
+              :path="element.path"
+              :name="element.name"
+              :icon="element.icon"
+              :show-only-icon="!isOpen"
+              :disabled="!user[element.name.toLocaleLowerCase()].isShow"
+              :click="onMenuClick"
+            />
           </template>
         </draggable>
       </div>
     </div>
+
     <div
       class="w-[calc(100%-64px)] h-full ml-[64px] bg-white flex flex-col gap-6 px-4"
       :class="!isActivePath('/edit/download') ? 'py-8' : 'py-4'"
@@ -189,8 +191,11 @@ function onMenuClick() {
   </div>
 </template>
 
-<style scoped>
-a {
-  @apply flex items-center px-3 py-2 hover:bg-primary-10 hover:rounded
+<style>
+.sidebar .sortable-chosen.sortable-ghost {
+  @apply h-1 bg-primary-10 rounded py-[2px];
+}
+.sidebar .sortable-chosen.sortable-ghost > * {
+  @apply hidden;
 }
 </style>
