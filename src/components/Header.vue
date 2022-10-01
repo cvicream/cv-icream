@@ -4,6 +4,7 @@ import { storeToRefs } from 'pinia'
 import { useUserStore } from '~/stores/user'
 import { useToolbarStore } from '~/stores/toolbar'
 import { getJsonUpload, isMobileDevice, setStatus, stripHtml } from '~/utils'
+import { DRAFT_FILE_TYPE } from '~/constants'
 
 const props = defineProps<{
   isEdit?: boolean
@@ -89,7 +90,7 @@ function exportJsonFile() {
   const fileNames = ['CV']
   if (about.value.name) fileNames.push(stripHtml(about.value.name))
   if (about.value.jobTitle) fileNames.push(stripHtml(about.value.jobTitle))
-  const exportFileDefaultName = `${fileNames.join('_')}.cvicream`
+  const exportFileDefaultName = `${fileNames.join('_')}.${DRAFT_FILE_TYPE}`
 
   const linkElement = document.createElement('a')
   linkElement.setAttribute('href', dataUri)
@@ -100,30 +101,32 @@ function exportJsonFile() {
 async function importJsonFile() {
   closeAction()
   upload.value = false
-  const jsonFile = await getJsonUpload()
-  const fileType = jsonFile.slice(-3)
-  if (fileType !== '}}}')
+  try {
+    const json = await getJsonUpload()
+    const obj = JSON.parse(json as string)
+    Object.keys(obj).forEach((key) => {
+      if (key === 'user') {
+        const subObj = obj[key]
+        Object.keys(subObj).forEach((subKey) => {
+          user.$patch((state) => {
+            state[subKey] = subObj[subKey]
+          })
+        })
+        user.updateTimestamp()
+      }
+      else if (key === 'toolbar') {
+        const subObj = obj[key]
+        Object.keys(subObj).forEach((subKey) => {
+          toolbar.$patch((state) => {
+            state.currentState[subKey] = subObj[subKey]
+          })
+        })
+      }
+    })
+  }
+  catch (error) {
     upload.value = true
-  const obj = JSON.parse(jsonFile as string)
-  Object.keys(obj).forEach((key) => {
-    if (key === 'user') {
-      const subObj = obj[key]
-      Object.keys(subObj).forEach((subKey) => {
-        user.$patch((state) => {
-          state[subKey] = subObj[subKey]
-        })
-      })
-      user.updateTimestamp()
-    }
-    else if (key === 'toolbar') {
-      const subObj = obj[key]
-      Object.keys(subObj).forEach((subKey) => {
-        toolbar.$patch((state) => {
-          state.currentState[subKey] = subObj[subKey]
-        })
-      })
-    }
-  })
+  }
 }
 
 function onFocusOut() {
@@ -210,7 +213,7 @@ function closeAction() {
   <Modal
     v-show="upload"
     title="Upload Your CV Draft"
-    subtitle="Please upload the file with the format in ‘.cvicream’."
+    :subtitle="`Please upload the file with the format in ‘.${DRAFT_FILE_TYPE}’.`"
     @close="upload = false"
   >
     <div class="flex justify-between gap-6 mt-6 sm:flex-row">

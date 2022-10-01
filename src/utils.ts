@@ -1,4 +1,4 @@
-import { COLORS, LOCAL_STORAGE_KEY } from '~/constants'
+import { COLORS, DRAFT_FILE_TYPE, LOCAL_STORAGE_KEY } from '~/constants'
 
 function hasStorage() {
   return !!getStorage()
@@ -52,21 +52,21 @@ function getPreviousUrl() {
 }
 
 function getJsonUpload() {
-  return new Promise((resolve) => {
+  return new Promise((resolve, reject) => {
     const inputFileElement = document.createElement('input')
     inputFileElement.setAttribute('type', 'file')
     inputFileElement.setAttribute('multiple', 'false')
-    inputFileElement.setAttribute('accept', '.cvicream')
+    inputFileElement.setAttribute('accept', `.${DRAFT_FILE_TYPE}`)
 
     inputFileElement.addEventListener('change', (event) => {
       const { files } = event.target as HTMLInputElement
       if (!files) return
       const fileName = files[0].name
-      const fileType = fileName.slice(-8)
-      if (fileType !== 'cvicream')
-        resolve(files[0].name)
-      else
+      const fileType = fileName.slice(-DRAFT_FILE_TYPE.length)
+      if (fileType === DRAFT_FILE_TYPE)
         resolve(files[0].text())
+      else
+        reject(files[0])
     }, false)
     inputFileElement.click()
   })

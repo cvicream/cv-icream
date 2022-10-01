@@ -3,6 +3,7 @@ import { useUserStore } from '~/stores/user'
 
 import { useToolbarStore } from '~/stores/toolbar'
 import { getJsonUpload } from '~/utils'
+import { DRAFT_FILE_TYPE } from '~/constants'
 
 const user = useUserStore()
 const toolbar = useToolbarStore()
@@ -10,37 +11,35 @@ const { t } = useI18n()
 const uploadFiletype = ref(false)
 const router = useRouter()
 
-async function upload() {
-  await importJsonFile()
-  redirectToEdit()
-}
-
 async function importJsonFile() {
   uploadFiletype.value = false
-  const jsonFile = await getJsonUpload()
-  const fileType = jsonFile.slice(-3)
-  if (fileType !== '}}}')
+  try {
+    const json = await getJsonUpload()
+    const obj = JSON.parse(json as string)
+    Object.keys(obj).forEach((key) => {
+      if (key === 'user') {
+        const subObj = obj[key]
+        Object.keys(subObj).forEach((subKey) => {
+          user.$patch((state) => {
+            state[subKey] = subObj[subKey]
+          })
+        })
+        user.updateTimestamp()
+      }
+      else if (key === 'toolbar') {
+        const subObj = obj[key]
+        Object.keys(subObj).forEach((subKey) => {
+          toolbar.$patch((state) => {
+            state.currentState[subKey] = subObj[subKey]
+          })
+        })
+      }
+    })
+    redirectToEdit()
+  }
+  catch (error) {
     uploadFiletype.value = true
-  const obj = JSON.parse(jsonFile as string)
-  Object.keys(obj).forEach((key) => {
-    if (key === 'user') {
-      const subObj = obj[key]
-      Object.keys(subObj).forEach((subKey) => {
-        user.$patch((state) => {
-          state[subKey] = subObj[subKey]
-        })
-      })
-      user.updateTimestamp()
-    }
-    else if (key === 'toolbar') {
-      const subObj = obj[key]
-      Object.keys(subObj).forEach((subKey) => {
-        toolbar.$patch((state) => {
-          state.currentState[subKey] = subObj[subKey]
-        })
-      })
-    }
-  })
+  }
 }
 
 function redirectToEdit() {
@@ -75,7 +74,7 @@ const onNext = () => {
       </button>
       <button
         class="px-8 flex justify-center items-center w-101 h-66 rounded-xl flex-col gap-5 border-primary-100 shadow-custom hover:border-1 hover:bg-primary-10"
-        @click="upload"
+        @click="importJsonFile"
       >
         <div class="w-12 h-12 flex justify-center items-center p-2 rounded-full border-1 border-transparent shadow-custom">
           <span class="i-custom:load w-8 h-8" />
@@ -93,7 +92,7 @@ const onNext = () => {
   <Modal
     v-show="uploadFiletype"
     title="Upload Your CV Draft"
-    subtitle="Please upload the file with the format in ‘.cvicream’."
+    :subtitle="`Please upload the file with the format in ‘.${DRAFT_FILE_TYPE}’.`"
     @close="uploadFiletype = false"
   >
     <div class="flex justify-between gap-6 mt-6 sm:flex-row">
@@ -107,7 +106,7 @@ const onNext = () => {
       </button>
       <button
         class="btn-primary px-12 flex-shrink-0"
-        @click="upload"
+        @click="importJsonFile"
       >
         <span class="subleading">
           Got it!
