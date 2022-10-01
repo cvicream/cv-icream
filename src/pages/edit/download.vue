@@ -133,11 +133,11 @@ function back() {
       <div class="rounded-xl px-4 py-6 flex flex-col gap-6 bg-primary-10">
         <div>
           <label class="note text-blacks-70">File Type</label>
-          <div value="pdf" class="block form-input">
-            <option value="pdf">
-              PDF
-            </option>
-          </div>
+          <input
+            disabled
+            class="form-input"
+            value="PDF"
+          >
         </div>
         <div>
           <label class="note text-blacks-70">Preview</label>
