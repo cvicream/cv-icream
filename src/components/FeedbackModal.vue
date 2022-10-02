@@ -17,7 +17,10 @@ const loading = ref(false)
 const isEmailValid = ref(true)
 
 const enable = computed(() => {
-  return content.value && name.value && isEmailValid.value
+  return content.value
+    && name.value
+    && email.value && validateEmail(email.value) && isEmailValid.value
+    && !loading.value
 })
 
 function handleInputEmail() {
