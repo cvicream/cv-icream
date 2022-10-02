@@ -196,7 +196,7 @@ function getElementInnerDimensions(element) {
 </script>
 
 <template>
-  <CVPreview id="cv-preview-print" />
+  <CVPreview id="cv-preview-print" read-only />
   <main class="h-screen">
     <Header :is-edit="true" />
     <div class="w-full h-[calc(100%-137px)] border-b-1 border-blacks-20 sm:flex sm:flex-row sm:h-[calc(100%-57px)] sm:border-0 overflow-hidden">

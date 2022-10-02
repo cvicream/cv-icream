@@ -1,16 +1,21 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed } from 'vue'
 import { storeToRefs } from 'pinia'
 import draggable from 'vuedraggable'
 import { useUserStore } from '~/stores/user'
 import { useToolbarStore } from '~/stores/toolbar'
 import { isMobileDevice } from '~/utils'
 
-const props = defineProps<{
-  id: string
-}>()
-
-const id = ref(props.id || 'cv-preview')
+const props = defineProps({
+  id: {
+    type: String,
+    default: 'cv-preview',
+  },
+  readOnly: {
+    type: Boolean,
+    default: false,
+  },
+})
 
 const user = useUserStore()
 const { splitIndex, about, summary, experience, project, skill, education, certificate, contact, social } = storeToRefs(user)
@@ -104,17 +109,26 @@ const { currentState } = storeToRefs(toolbar)
           }"
         >
           <draggable
+            v-if="!readOnly"
             v-model="leftList"
             group="section"
             item-key="key"
             class="h-full"
             delay-on-touch-only
-            :delay="isMobileDevice() ? 200 : 0"
+            :delay="isMobileDevice() ? 250 : 0"
           >
             <template #item="{element}">
               <CVPreviewSection :element="element" />
             </template>
           </draggable>
+
+          <div
+            v-for="(element, index) in leftList"
+            v-else
+            :key="index"
+          >
+            <CVPreviewSection :element="element" read-only />
+          </div>
         </div>
         <div
           :class="{
@@ -124,17 +138,26 @@ const { currentState } = storeToRefs(toolbar)
           }"
         >
           <draggable
+            v-if="!readOnly"
             v-model="rightList"
             group="section"
             item-key="key"
             class="h-full"
             delay-on-touch-only
-            :delay="isMobileDevice() ? 200 : 0"
+            :delay="isMobileDevice() ? 250 : 0"
           >
             <template #item="{element}">
               <CVPreviewSection :element="element" />
             </template>
           </draggable>
+
+          <div
+            v-for="(element, index) in rightList"
+            v-else
+            :key="index"
+          >
+            <CVPreviewSection :element="element" read-only />
+          </div>
         </div>
       </div>
     </div>

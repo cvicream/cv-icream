@@ -163,7 +163,7 @@ function onMenuClick(path) {
           item-key="path"
           tag="transition-group"
           delay-on-touch-only
-          :delay="isMobileDevice() ? 200 : 0"
+          :delay="isMobileDevice() ? 250 : 0"
           @start="drag = true"
           @end="drag = false"
         >
