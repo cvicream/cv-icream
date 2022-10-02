@@ -17,6 +17,7 @@ const { about } = storeToRefs(user)
 const toolbar = useToolbarStore()
 const { currentState } = storeToRefs(toolbar)
 
+const loading = ref(false)
 const feedbackVisible = ref(false)
 
 function toggleFeedbackModal() {
@@ -106,6 +107,8 @@ function print() {
 }
 
 async function generatePdf() {
+  loading.value = true
+
   const fileName = `${stripHtml(about.value.jobTitle)} - ${stripHtml(about.value.name)}`
   const storage = getStorage()
   const data = {
@@ -130,6 +133,8 @@ async function generatePdf() {
   catch (error) {
     console.error(error)
   }
+
+  loading.value = false
 }
 
 function back() {
@@ -177,7 +182,9 @@ function back() {
         </div>
       </div>
       <button
-        class="w-full rounded-xl text-white inline-flex justify-center items-center gap-2 py-3 mt-6 bg-primary-100 border-1 border-transparent transition duration-300 ease-out hover:border-primary-20"
+        class="w-full rounded-xl inline-flex justify-center items-center gap-2 py-3 mt-6 border-1 border-transparent transition duration-300 ease-out hover:border-primary-20"
+        :class="loading ? 'text-blacks-40 bg-blacks-10' : 'text-white bg-primary-100'"
+        :disabled="loading"
         @click="generatePdf"
       >
         <span class="i-custom:download w-6 h-6" />
