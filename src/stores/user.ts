@@ -17,6 +17,9 @@ export const useUserStore = defineStore('user', {
     updateTimestamp() {
       this.timestamp = new Date().getTime()
     },
+    updateSplitIndex(index) {
+      this.splitIndex = index
+    },
   },
 })
 

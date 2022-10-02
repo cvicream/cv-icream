@@ -10,6 +10,8 @@ const { social } = storeToRefs(user)
 const isEditName = ref(false)
 const nameInput = ref<HTMLInputElement | null>(null)
 const componentKey = ref(0) // force Editor component to re-render
+const deleteBlockVisible = ref(false)
+const deleteIdx = ref(0)
 
 function forceRerender() {
   componentKey.value += 1
@@ -81,6 +83,21 @@ function deleteItem(index: number) {
   })
   forceRerender()
 }
+
+function toggleDeleteBlockModal() {
+  deleteBlockVisible.value = !deleteBlockVisible.value
+}
+
+function showDeleteBlockMessage(index: number) {
+  toggleDeleteBlockModal()
+  deleteIdx.value = index
+}
+
+function deleteBlock(index: number) {
+  toggleDeleteBlockModal()
+  deleteItem(index)
+}
+
 </script>
 
 <template>
@@ -149,7 +166,7 @@ function deleteItem(index: number) {
           <button @click="duplicateItem(index)">
             <span class="i-custom:variant icon-24" />
           </button>
-          <button v-if="social.list.length > 1" @click="deleteItem(index)">
+          <button v-if="social.list.length > 1" @click="showDeleteBlockMessage(index)">
             <span class="i-custom:delete icon-24" />
           </button>
         </div>
@@ -206,6 +223,12 @@ function deleteItem(index: number) {
       </span>
     </button>
   </div>
+  <DeleteBlockModal
+    :visible="deleteBlockVisible"
+    :delete-idx="deleteIdx"
+    :toggle="toggleDeleteBlockModal"
+    :delete-item="deleteBlock"
+  />
 </template>
 
 <route lang="yaml">

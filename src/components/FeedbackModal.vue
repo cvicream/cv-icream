@@ -7,16 +7,22 @@ const props = defineProps<{
   subtitle: string
   visible: boolean
   toggle: () => void
+  notify: () => void
 }>()
 
 const content = ref('')
 const name = ref('')
 const email = ref('')
 const loading = ref(false)
+const isEmailValid = ref(true)
 
 const enable = computed(() => {
-  return content.value && name.value && email.value && validateEmail(email.value)
+  return content.value && name.value && isEmailValid.value
 })
+
+function handleInputEmail() {
+  isEmailValid.value = validateEmail(email.value)
+}
 
 function reset() {
   name.value = ''
@@ -36,6 +42,7 @@ async function sendFeedback() {
       content: content.value,
     })}`)
     props.toggle()
+    props.notify()
     reset()
   }
   catch (error) {
@@ -43,7 +50,6 @@ async function sendFeedback() {
   }
   loading.value = false
 }
-
 </script>
 
 <template>
@@ -72,7 +78,15 @@ async function sendFeedback() {
         type="search"
         placeholder="Email"
         class="form-input bg-primary-10 mt-3"
+        @keyup.enter="handleInputEmail"
+        @blur="handleInputEmail"
       >
+      <p
+        v-if="!isEmailValid"
+        class="note text-warning mt-2"
+      >
+        It doesn't look quite right.
+      </p>
     </div>
     <div class="flex flex-col gap-6 mt-8 sm:flex-row sm:justify-between">
       <button
