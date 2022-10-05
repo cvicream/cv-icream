@@ -14,15 +14,14 @@ const content = ref('')
 const name = ref('')
 const email = ref('')
 const loading = ref(false)
-const isEmailValid = ref(true)
+const isEmailFocus = ref(false)
 
-const enable = computed(() => {
-  return content.value && name.value && isEmailValid.value
+const isEmailValid = computed(() => {
+  return validateEmail(email.value)
 })
-
-function handleInputEmail() {
-  isEmailValid.value = validateEmail(email.value)
-}
+const enable = computed(() => {
+  return content.value && name.value && email.value && isEmailValid.value
+})
 
 function reset() {
   name.value = ''
@@ -78,11 +77,11 @@ async function sendFeedback() {
         type="search"
         placeholder="Email"
         class="form-input bg-primary-10 mt-3"
-        @keyup.enter="handleInputEmail"
-        @blur="handleInputEmail"
+        @focus="isEmailFocus = true"
+        @blur="isEmailFocus = false"
       >
       <p
-        v-if="!isEmailValid"
+        v-if="email && !isEmailFocus && !isEmailValid"
         class="note text-warning mt-2"
       >
         It doesn't look quite right.
