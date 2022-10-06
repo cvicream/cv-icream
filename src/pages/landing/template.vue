@@ -120,7 +120,7 @@ const onNext = () => {
         >
       </div>
     </div>
-    <div class="flex flex-col gap-10 sm:flex-row fix-padding-bottom">
+    <div class="flex flex-col gap-4 sm:gap-10 sm:flex-row fix-padding-bottom">
       <button
         class="w-[294px] btn-primary order-1 sm:order-2"
         @click="onNext"

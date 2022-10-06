@@ -49,36 +49,36 @@ const onNext = () => {
 </script>
 
 <template>
-  <div class="h-full flex flex-col justify-center  items-center gap-16">
+  <div class="h-full flex flex-col justify-center items-center gap-8 sm:gap-16 p-4">
     <h1 class="heading1-mobile sm:heading1 text-center">
       {{ t('initial.title') }}
     </h1>
-    <div class="border-black-70 flex flex-col gap-16 lg:flex-row">
+    <div class="border-black-70 flex flex-col gap-8 sm:gap-16 lg:flex-row">
       <button
-        class="px-11 flex justify-center items-center w-101 h-66 rounded-xl flex-col gap-5 border-primary-100 shadow-custom hover:border-1 hover:bg-primary-10"
+        class="p-8 sm:p-10 flex justify-center items-center sm:w-101 sm:h-66 rounded-xl flex-col gap-5 border-primary-100 shadow-custom hover:border-1 hover:bg-primary-10"
         @click="onNext"
       >
         <div class="w-12 h-12 flex justify-center items-center p-2 rounded-full border-1 border-transparent shadow-custom">
           <span class="i-custom:preview w-8 h-8" />
         </div>
-        <span class="leading2 text-blacks-100">
+        <span class="heading2-mobile sm:heading2 text-blacks-100">
           {{ t('initial.action.new') }}
         </span>
-        <span>
+        <span class="paragraph">
           {{ t('initial.hint.new') }}
         </span>
       </button>
       <button
-        class="px-8 flex justify-center items-center w-101 h-66 rounded-xl flex-col gap-5 border-primary-100 shadow-custom hover:border-1 hover:bg-primary-10"
+        class="p-6 flex justify-center items-center sm:w-101 sm:h-66 rounded-xl flex-col gap-5 border-primary-100 shadow-custom hover:border-1 hover:bg-primary-10"
         @click="upload"
       >
         <div class="w-12 h-12 flex justify-center items-center p-2 rounded-full border-1 border-transparent shadow-custom">
           <span class="i-custom:load w-8 h-8" />
         </div>
-        <span class="leading2 text-blacks-100">
+        <span class="heading2-mobile sm:heading2 text-blacks-100">
           {{ t('initial.action.upload') }}
         </span>
-        <span>
+        <span class="paragraph">
           {{ t('initial.hint.upload') }}
         </span>
       </button>
