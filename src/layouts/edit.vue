@@ -276,11 +276,11 @@ function getElementInnerDimensions(element) {
       </div>
 
       <button
-        class="btn-icon-48 fixed bottom-28 right-8 z-2 sm:hidden"
+        class="btn-icon-48-fill fixed bottom-28 right-8 z-2 sm:hidden"
         @click="toggleCVPreview"
       >
         <span
-          class="icon-32"
+          class="icon-32 text-white"
           :class="isCVPreviewVisible ? 'i-custom:edit' : 'i-custom:preview'"
         />
       </button>
