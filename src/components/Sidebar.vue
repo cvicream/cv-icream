@@ -1,10 +1,17 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue'
 import { storeToRefs } from 'pinia'
-import draggable from 'vuedraggable'
+import vuedraggable from 'vuedraggable'
 import { useUserStore } from '~/stores/user'
 import { MIN_SIDEBAR_WIDTH } from '~/constants'
 import { isMobileDevice } from '~/utils'
+
+const props = defineProps({
+  draggable: {
+    type: Boolean,
+    default: true,
+  },
+})
 
 const user = useUserStore()
 const { about, summary, experience, project, skill, education, certificate, contact, social, timestamp } = storeToRefs(user)
@@ -146,7 +153,7 @@ function onMenuClick(path) {
         <span v-else class="i-custom:collapse w-6 h-6 text-blacks-40" />
       </button>
 
-      <div class="flex flex-col gap-4 overflow-y-auto disable-scrollbar">
+      <div v-if="draggable" class="flex flex-col gap-4 overflow-y-auto disable-scrollbar">
         <SidebarMenu
           v-for="element in sidebarMenus.filter((menu, index) => index === 0)"
           :key="element.path"
@@ -158,7 +165,7 @@ function onMenuClick(path) {
           :click="onMenuClick"
         />
 
-        <draggable
+        <vuedraggable
           v-model="menus"
           item-key="path"
           tag="transition-group"
@@ -177,7 +184,19 @@ function onMenuClick(path) {
               :click="onMenuClick"
             />
           </template>
-        </draggable>
+        </vuedraggable>
+      </div>
+      <div v-else class="flex flex-col gap-4 overflow-y-auto disable-scrollbar">
+        <SidebarMenu
+          v-for="element in sidebarMenus"
+          :key="element.path"
+          :path="element.path"
+          :name="element.name"
+          :icon="element.icon"
+          :show-only-icon="!isOpen"
+          :disabled="!user[element.name.toLocaleLowerCase()].isShow"
+          :click="onMenuClick"
+        />
       </div>
     </div>
 

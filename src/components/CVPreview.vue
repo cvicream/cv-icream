@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { storeToRefs } from 'pinia'
-import draggable from 'vuedraggable'
+import vuedraggable from 'vuedraggable'
 import { useUserStore } from '~/stores/user'
 import { useToolbarStore } from '~/stores/toolbar'
 import { isMobileDevice } from '~/utils'
@@ -108,7 +108,7 @@ const { currentState } = storeToRefs(toolbar)
             'w-3/4 order-1': currentState.layout === 'layout-right',
           }"
         >
-          <draggable
+          <vuedraggable
             v-if="!readOnly"
             v-model="leftList"
             group="section"
@@ -120,7 +120,7 @@ const { currentState } = storeToRefs(toolbar)
             <template #item="{element}">
               <CVPreviewSection :element="element" />
             </template>
-          </draggable>
+          </vuedraggable>
 
           <div
             v-for="(element, index) in leftList"
@@ -137,7 +137,7 @@ const { currentState } = storeToRefs(toolbar)
             'w-1/4 order-2': currentState.layout === 'layout-right',
           }"
         >
-          <draggable
+          <vuedraggable
             v-if="!readOnly"
             v-model="rightList"
             group="section"
@@ -149,7 +149,7 @@ const { currentState } = storeToRefs(toolbar)
             <template #item="{element}">
               <CVPreviewSection :element="element" />
             </template>
-          </draggable>
+          </vuedraggable>
 
           <div
             v-for="(element, index) in rightList"
