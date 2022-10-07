@@ -87,9 +87,11 @@ function resize() {
     isMobile.value = true
     isDesignBarOpen.value = true
     rightWidth.value = 0
-    rightSide.value.style.removeProperty('width')
-    rightSide.value.style.removeProperty('min-width')
-    leftSide.value.style.removeProperty('width')
+    if (rightSide.value) {
+      rightSide.value.style.removeProperty('width')
+      rightSide.value.style.removeProperty('min-width')
+      leftSide.value.style.removeProperty('width')
+    }
   }
   else {
     isMobile.value = false
