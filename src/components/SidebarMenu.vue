@@ -27,7 +27,7 @@ function handleClick(path) {
     @click="handleClick(path)"
   >
     <span
-      class="w-8 h-8"
+      class="w-8 h-8 flex-shrink-0"
       :class="!disabled ? `${icon} text-blacks-70` : `${icon} text-blacks-40`"
     />
     <span

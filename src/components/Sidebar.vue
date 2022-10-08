@@ -17,85 +17,114 @@ const user = useUserStore()
 const { about, summary, experience, project, skill, education, certificate, contact, social, timestamp } = storeToRefs(user)
 
 const router = useRouter()
-const sidebarMenus = [
-  {
-    name: 'About',
-    path: '/edit/about',
-    icon: 'i-custom:about',
-  },
-  {
-    name: 'Contact',
-    path: '/edit/contact',
-    // TODO: icon should use i-custom
-    icon: 'i-origin:contact',
-  },
-  {
-    name: 'Summary',
-    path: '/edit/summary',
-    icon: 'i-custom:summary',
-  },
-  {
-    name: 'Experience',
-    path: '/edit/experience',
-    icon: 'i-custom:experience',
-  },
-  {
-    name: 'Project',
-    path: '/edit/project',
-    icon: 'i-custom:project',
-  },
-  {
-    name: 'Skill',
-    path: '/edit/skill',
-    icon: 'i-custom:skill',
-  },
-  {
-    name: 'Education',
-    path: '/edit/education',
-    icon: 'i-custom:education',
-  },
-  {
-    name: 'Certificate',
-    path: '/edit/certificate',
-    icon: 'i-custom:certificate',
-  },
-  {
-    name: 'Social',
-    path: '/edit/social',
-    icon: 'i-custom:social',
-  },
-]
-const menus = computed({
+const sidebarMenus = computed(() => {
+  return [
+    {
+      id: 'about',
+      name: 'About',
+      path: '/edit/about',
+      icon: 'i-custom:about',
+      order: 0, // set to 0 if draggable is false
+      draggable: false,
+      ...getObjectProperties(about.value),
+    },
+    {
+      id: 'contact',
+      name: 'Contact',
+      path: '/edit/contact',
+      // TODO: icon should use i-custom
+      icon: 'i-origin:contact',
+      order: 1,
+      draggable: props.draggable,
+      ...getObjectProperties(contact.value),
+    },
+    {
+      id: 'summary',
+      name: 'Summary',
+      path: '/edit/summary',
+      icon: 'i-custom:summary',
+      order: 2,
+      draggable: props.draggable,
+      ...getObjectProperties(summary.value),
+    },
+    {
+      id: 'experience',
+      name: 'Experience',
+      path: '/edit/experience',
+      icon: 'i-custom:experience',
+      order: 3,
+      draggable: props.draggable,
+      ...getObjectProperties(experience.value),
+    },
+    {
+      id: 'project',
+      name: 'Project',
+      path: '/edit/project',
+      icon: 'i-custom:project',
+      order: 4,
+      draggable: props.draggable,
+      ...getObjectProperties(project.value),
+    },
+    {
+      id: 'skill',
+      name: 'Skill',
+      path: '/edit/skill',
+      icon: 'i-custom:skill',
+      order: 5,
+      draggable: props.draggable,
+      ...getObjectProperties(skill.value),
+    },
+    {
+      id: 'education',
+      name: 'Education',
+      path: '/edit/education',
+      icon: 'i-custom:education',
+      order: 6,
+      draggable: props.draggable,
+      ...getObjectProperties(education.value),
+    },
+    {
+      id: 'certificate',
+      name: 'Certificate',
+      path: '/edit/certificate',
+      icon: 'i-custom:certificate',
+      order: 7,
+      draggable: props.draggable,
+      ...getObjectProperties(certificate.value),
+    },
+    {
+      id: 'social',
+      name: 'Social Media',
+      path: '/edit/social',
+      icon: 'i-custom:social',
+      order: 8,
+      draggable: props.draggable,
+      ...getObjectProperties(social.value),
+    },
+  ].sort((a, b) => a.order - b.order)
+})
+
+const draggableMenus = computed({
   get() {
-    const content = [
-      // { key: 'about', ...about.value },
-      { key: 'summary', ...summary.value },
-      { key: 'experience', ...experience.value },
-      { key: 'project', ...project.value },
-      { key: 'skill', ...skill.value },
-      { key: 'education', ...education.value },
-      { key: 'certificate', ...certificate.value },
-      { key: 'contact', ...contact.value },
-      { key: 'social', ...social.value },
-    ].sort((a, b) => a.order - b.order)
-    return content.map(item => sidebarMenus.find(menu => menu.name.toLowerCase() === item.key))
+    return sidebarMenus.value.filter(item => item.draggable)
   },
   set(newMenus) {
     user.$patch((state) => {
       newMenus.forEach((item, index) => {
-        if (item)
-          state[item.name.toLowerCase()].order = index + 2 // order starts from 1 and skip the first one
+        if (item && item.draggable)
+          state[item.id].order = index + 1 // order starts from 1
       })
     })
   },
 })
+
 const sidebar = ref<any>(null)
 const isOpen = ref(false)
 const isSmallSidebar = ref(true)
 const drag = ref(true)
 
 const menuOpenWidth = computed(() => {
-  return isOpen.value && !isSmallSidebar.value ? 218 : 64
+  return isOpen.value && !isSmallSidebar.value ? 236 : 64
 })
 
 onMounted(() => {
@@ -107,8 +136,17 @@ onMounted(() => {
   }
 })
 
+function getObjectProperties(obj) {
+  const result = {}
+  const keys = ['order', 'isShow']
+  keys.forEach((key) => {
+    if (key in obj) result[key] = obj[key]
+  })
+  return result
+}
+
 function resize() {
-  if (sidebar.value.offsetWidth < (MIN_SIDEBAR_WIDTH + 218)) {
+  if (sidebar.value.offsetWidth < (MIN_SIDEBAR_WIDTH + 236)) {
     if (!isSmallSidebar.value)
       isOpen.value = false
 
@@ -142,7 +180,7 @@ function onMenuClick(path) {
   <div ref="sidebar" class="sidebar w-full h-full bg-white relative flex">
     <div
       class="h-full py-5 bg-white absolute top-0 left-0 z-1 sm:overflow-y-auto transition-all duration-100 flex flex-col gap-4"
-      :class="isOpen ? 'sm:w-[218px] px-5' : 'sm:w-[64px] px-1'"
+      :class="isOpen ? 'sm:w-[236px] px-5' : 'sm:w-[64px] px-1'"
     >
       <button
         :class="isOpen ? 'self-end' : 'self-center'"
@@ -153,20 +191,20 @@ function onMenuClick(path) {
         <span v-else class="i-custom:collapse w-6 h-6 text-blacks-40" />
       </button>
 
-      <div v-if="draggable" class="flex flex-col gap-4 overflow-y-auto disable-scrollbar">
+      <div class="flex flex-col gap-4 overflow-y-auto disable-scrollbar">
         <SidebarMenu
-          v-for="element in sidebarMenus.filter((menu, index) => index === 0)"
+          v-for="element in sidebarMenus.filter(item => !item.draggable)"
           :key="element.path"
           :path="element.path"
           :name="element.name"
           :icon="element.icon"
           :show-only-icon="!isOpen"
-          :disabled="!user[element.name.toLocaleLowerCase()].isShow"
+          :disabled="!user[element.id]?.isShow"
           :click="onMenuClick"
         />
 
         <vuedraggable
-          v-model="menus"
+          v-model="draggableMenus"
           item-key="path"
           tag="transition-group"
           delay-on-touch-only
@@ -180,23 +218,11 @@ function onMenuClick(path) {
               :name="element.name"
               :icon="element.icon"
               :show-only-icon="!isOpen"
-              :disabled="!user[element.name.toLocaleLowerCase()].isShow"
+              :disabled="!user[element.id]?.isShow"
               :click="onMenuClick"
             />
           </template>
         </vuedraggable>
-      </div>
-      <div v-else class="flex flex-col gap-4 overflow-y-auto disable-scrollbar">
-        <SidebarMenu
-          v-for="element in sidebarMenus"
-          :key="element.path"
-          :path="element.path"
-          :name="element.name"
-          :icon="element.icon"
-          :show-only-icon="!isOpen"
-          :disabled="!user[element.name.toLocaleLowerCase()].isShow"
-          :click="onMenuClick"
-        />
       </div>
     </div>
 
