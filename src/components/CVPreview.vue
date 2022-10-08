@@ -98,7 +98,7 @@ const { currentState } = storeToRefs(toolbar)
           'w-3/4 mr-auto': currentState.layout === 'layout-right',
         }"
       >
-        <CVPreviewSection :element="topList[0]" />
+        <CVPreviewSection :element="topList[0]" :read-only="readOnly" />
       </div>
       <div class="flex flex-wrap">
         <div
@@ -127,7 +127,7 @@ const { currentState } = storeToRefs(toolbar)
             v-else
             :key="index"
           >
-            <CVPreviewSection :element="element" read-only />
+            <CVPreviewSection :element="element" :read-only="readOnly" />
           </div>
         </div>
         <div
@@ -156,7 +156,7 @@ const { currentState } = storeToRefs(toolbar)
             v-else
             :key="index"
           >
-            <CVPreviewSection :element="element" read-only />
+            <CVPreviewSection :element="element" :read-only="readOnly" />
           </div>
         </div>
       </div>
