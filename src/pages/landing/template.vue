@@ -1,8 +1,9 @@
 <script setup lang="ts">
+import { onBeforeMount } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useUserStore } from '~/stores/user'
 import { useToolbarStore } from '~/stores/toolbar'
-import { TEMPLATES } from '~/constants'
+import { DEFAULT_TEMPLATE, TEMPLATES } from '~/constants'
 
 const user = useUserStore()
 const toolbar = useToolbarStore()
@@ -11,12 +12,10 @@ const { template } = storeToRefs(user)
 const { t } = useI18n()
 const router = useRouter()
 
-const setStyle = (style) => {
-  toolbar.changeColor(style.color)
-  toolbar.changeFontSize(style.fontSize)
-  toolbar.changeFontFamily(style.fontFamily)
-  toolbar.changeLayout(style.layout)
-}
+onBeforeMount(() => {
+  // make sure style change back
+  setStyle(DEFAULT_TEMPLATE.style)
+})
 
 watch(template, () => {
   const defaultTemplate = TEMPLATES.find(t => t.template === template.value)
@@ -27,8 +26,14 @@ watch(template, () => {
   }
 })
 
-const onNext = () => {
-  setStyle(user.style)
+function setStyle(style) {
+  toolbar.changeColor(style.color)
+  toolbar.changeFontSize(style.fontSize)
+  toolbar.changeFontFamily(style.fontFamily)
+  toolbar.changeLayout(style.layout)
+}
+
+function onNext() {
   router.push('/edit/about')
 }
 </script>

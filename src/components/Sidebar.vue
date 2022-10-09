@@ -100,7 +100,7 @@ onMounted(() => {
 })
 
 function resize() {
-  if (sidebar.value.offsetWidth < (MIN_SIDEBAR_WIDTH + 218)) {
+  if (sidebar.value?.offsetWidth < (MIN_SIDEBAR_WIDTH + 218)) {
     if (!isSmallSidebar.value)
       isOpen.value = false
 

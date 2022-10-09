@@ -7,13 +7,7 @@ import { getStorage, isEditing, setStorage } from '~/utils'
 export const install: UserModule = ({ app }) => {
   const pinia = createPinia()
 
-  if (isEditing()) {
-    const pathname = window.location.pathname
-    if (pathname && pathname.includes('/edit')) {
-      // when reload at edit page
-      pinia.state.value = getStorage()
-    }
-  }
+  pinia.state.value = getStorage()
 
   watch(
     pinia.state,
