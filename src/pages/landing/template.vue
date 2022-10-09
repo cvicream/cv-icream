@@ -12,14 +12,7 @@ const { template } = storeToRefs(user)
 const { t } = useI18n()
 const router = useRouter()
 
-watch(template, () => {
-  const defaultTemplate = TEMPLATES.find(t => t.template === template.value)
-  if (defaultTemplate) {
-    user.$patch((state) => {
-      Object.assign(state, defaultTemplate)
-    })
-  }
-})
+const selectedTemplate = ref(user.template)
 
 onBeforeMount(() => {
   // make sure style change back
@@ -34,6 +27,15 @@ function setStyle(style) {
 }
 
 function onNext() {
+  // if the selected template is different from the previous template
+  if (selectedTemplate.value !== template.value) {
+    const defaultTemplate = TEMPLATES.find(t => t.template === selectedTemplate.value)
+    if (defaultTemplate) {
+      user.$patch((state) => {
+        Object.assign(state, defaultTemplate)
+      })
+    }
+  }
   router.push('/edit/about')
 }
 </script>
@@ -53,7 +55,7 @@ function onNext() {
         </label>
         <input
           id="template-1"
-          v-model="user.template"
+          v-model="selectedTemplate"
           class="btn-radio mt-8"
           type="radio"
           name="template"
@@ -69,7 +71,7 @@ function onNext() {
         </label>
         <input
           id="template-2"
-          v-model="user.template"
+          v-model="selectedTemplate"
           class="btn-radio mt-8"
           type="radio"
           name="template"
@@ -85,7 +87,7 @@ function onNext() {
         </label>
         <input
           id="template-3"
-          v-model="user.template"
+          v-model="selectedTemplate"
           class="btn-radio mt-8"
           type="radio"
           name="template"
@@ -101,7 +103,7 @@ function onNext() {
         </label>
         <input
           id="template-4"
-          v-model="user.template"
+          v-model="selectedTemplate"
           class="btn-radio mt-8"
           type="radio"
           name="template"
@@ -117,7 +119,7 @@ function onNext() {
         </label>
         <input
           id="template-0"
-          v-model="user.template"
+          v-model="selectedTemplate"
           class="btn-radio mt-8"
           type="radio"
           name="template"
