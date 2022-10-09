@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted } from 'vue'
+import { onBeforeMount } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useUserStore } from '~/stores/user'
 import { useToolbarStore } from '~/stores/toolbar'
@@ -12,10 +12,12 @@ const { template } = storeToRefs(user)
 const { t } = useI18n()
 const router = useRouter()
 
-onMounted(() => {
-  // make sure style change back
-  setStyle(DEFAULT_TEMPLATE.style)
-})
+const setStyle = (style) => {
+  toolbar.changeColor(style.color)
+  toolbar.changeFontSize(style.fontSize)
+  toolbar.changeFontFamily(style.fontFamily)
+  toolbar.changeLayout(style.layout)
+}
 
 watch(template, () => {
   const defaultTemplate = TEMPLATES.find(t => t.template === template.value)
@@ -26,14 +28,12 @@ watch(template, () => {
   }
 })
 
-function setStyle(style) {
-  toolbar.changeColor(style.color)
-  toolbar.changeFontSize(style.fontSize)
-  toolbar.changeFontFamily(style.fontFamily)
-  toolbar.changeLayout(style.layout)
-}
+onBeforeMount(() => {
+  // make sure style change back
+  setStyle(DEFAULT_TEMPLATE.style)
+})
 
-function onNext() {
+const onNext = () => {
   router.push('/edit/about')
 }
 </script>
@@ -148,13 +148,13 @@ function onNext() {
   </div>
 </template>
 
-<route lang="yaml">
+  <route lang="yaml">
 meta:
   layout: home
-</route>
+  </route>
 
-<style scoped>
-.fix-padding-bottom > *:last-child {
-  margin-bottom: 4rem;
-}
-</style>
+  <style scoped>
+  .fix-padding-bottom > *:last-child {
+    margin-bottom: 4rem;
+  }
+  </style>
