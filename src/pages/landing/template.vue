@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onBeforeMount } from 'vue'
+import { onMounted } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useUserStore } from '~/stores/user'
 import { useToolbarStore } from '~/stores/toolbar'
@@ -12,7 +12,7 @@ const { template } = storeToRefs(user)
 const { t } = useI18n()
 const router = useRouter()
 
-onBeforeMount(() => {
+onMounted(() => {
   // make sure style change back
   setStyle(DEFAULT_TEMPLATE.style)
 })
