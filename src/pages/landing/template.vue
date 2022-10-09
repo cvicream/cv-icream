@@ -12,13 +12,6 @@ const { template } = storeToRefs(user)
 const { t } = useI18n()
 const router = useRouter()
 
-const setStyle = (style) => {
-  toolbar.changeColor(style.color)
-  toolbar.changeFontSize(style.fontSize)
-  toolbar.changeFontFamily(style.fontFamily)
-  toolbar.changeLayout(style.layout)
-}
-
 watch(template, () => {
   const defaultTemplate = TEMPLATES.find(t => t.template === template.value)
   if (defaultTemplate) {
@@ -33,7 +26,14 @@ onBeforeMount(() => {
   setStyle(DEFAULT_TEMPLATE.style)
 })
 
-const onNext = () => {
+function setStyle(style) {
+  toolbar.changeColor(style.color)
+  toolbar.changeFontSize(style.fontSize)
+  toolbar.changeFontFamily(style.fontFamily)
+  toolbar.changeLayout(style.layout)
+}
+
+function onNext() {
   router.push('/edit/about')
 }
 </script>

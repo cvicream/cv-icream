@@ -1,13 +1,14 @@
 import { createPinia } from 'pinia'
 import type { UserModule } from '~/types'
-import { getStorage, isEditing, setStorage } from '~/utils'
+import { getStorage, hasStorage, isEditing, setStorage } from '~/utils'
 
 // Setup Pinia
 // https://pinia.esm.dev/
 export const install: UserModule = ({ app }) => {
   const pinia = createPinia()
 
-  pinia.state.value = getStorage()
+  if (hasStorage())
+    pinia.state.value = getStorage()
 
   watch(
     pinia.state,
