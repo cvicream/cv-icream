@@ -148,13 +148,13 @@ const onNext = () => {
   </div>
 </template>
 
-  <route lang="yaml">
+<route lang="yaml">
 meta:
   layout: home
-  </route>
+</route>
 
-  <style scoped>
-  .fix-padding-bottom > *:last-child {
-    margin-bottom: 4rem;
-  }
-  </style>
+<style scoped>
+.fix-padding-bottom > *:last-child {
+  margin-bottom: 4rem;
+}
+</style>
