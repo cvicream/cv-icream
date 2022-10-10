@@ -174,21 +174,44 @@ function back() {
         </div>
         <div>
           <label class="note text-blacks-70">Preview</label>
-          <div id="download-preview-container">
-            <div id="download-preview" class="w-[210mm] min-w-[210mm] h-[297mm] min-h-[297mm] overflow-hidden border-1 border-blacks-70 rounded-xl">
+          <div id="download-preview-container" class="relative">
+            <div
+              id="download-preview"
+              class="w-[210mm] min-w-[210mm] h-[297mm] min-h-[297mm] overflow-hidden border-1 border-blacks-70 rounded-xl"
+            >
               <CVPreview id="cv-download-preview" />
+            </div>
+            <div
+              class="absolute top-0 bottom-0 left-0 right-0 z-1"
+              :class="loading ? 'visible' : 'invisible'"
+            >
+              <div
+                class="absolute top-0 bottom-0 left-0 right-0 opacity-[0.2] transition"
+                :class="loading ? 'bg-primary-100 opacity-[0.2]' : 'bg-transparent'"
+              />
+              <div
+                class="absolute top-0 bottom-0 left-0 right-0  flex flex-col justify-center items-center"
+                :class="loading ? 'text-blacks-100' : 'text-transparent'"
+              >
+                <span class="i-custom:download w-6 h-6 transition" />
+                <p class="paragraph mt-2 transition">
+                  Downloading...
+                </p>
+              </div>
             </div>
           </div>
         </div>
       </div>
       <button
-        class="w-full rounded-xl inline-flex justify-center items-center gap-2 py-3 mt-6 border-1 border-transparent transition duration-300 ease-out hover:border-primary-20"
-        :class="loading ? 'text-blacks-40 bg-blacks-10' : 'text-white bg-primary-100'"
+        class="w-full h-[46px] text-white bg-primary-100 rounded-xl inline-flex justify-center items-center gap-2 py-3 mt-6 border-1 border-transparent transition hover:border-primary-20"
         :disabled="loading"
         @click="generatePdf"
       >
-        <span class="i-custom:download w-6 h-6" />
-        <span class="subleading">Download</span>
+        <Loading v-if="loading" />
+        <template v-else>
+          <span class="i-custom:download w-6 h-6" />
+          <span class="subleading">Download</span>
+        </template>
       </button>
     </div>
 
