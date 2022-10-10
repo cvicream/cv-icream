@@ -179,7 +179,7 @@ export default defineComponent({
       content-type="html"
       :enable="enable"
       :read-only="!enable"
-      :placeholder="placeholder"
+      :placeholder="content?'':placeholder"
       theme=""
       :toolbar="`#${toolbarId}`"
       :class="{ 'single-line': isSingleLine }"
@@ -315,9 +315,11 @@ export default defineComponent({
 .ql-editor p,
 .ql-editor ul li,
 .ql-editor ol li {
-  @apply paragraph text-blacks-100 disabled:text-blacks-40
+  @apply paragraph text-blacks-100;
 }
-.ql-disabled .ql-editor p {
+.ql-disabled .ql-editor p,
+.ql-disabled .ql-editor ul li,
+.ql-disabled .ql-editor ol li{
   @apply text-blacks-40;
 }
 
