@@ -2,7 +2,7 @@
 import { computed, onBeforeMount, onMounted, onUnmounted, ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useToolbarStore } from '~/stores/toolbar'
-import { getColor, setCssVariable, setStatus } from '~/utils'
+import { getColor, isMobileDevice, setCssVariable, setStatus } from '~/utils'
 import { MAX_SIDEBAR_WIDTH, MIN_SIDEBAR_WIDTH, MOBILE_BREAKPOINT, SCALES } from '~/constants'
 
 const toolbar = useToolbarStore()
@@ -87,9 +87,11 @@ function resize() {
     isMobile.value = true
     isDesignBarOpen.value = true
     rightWidth.value = 0
-    rightSide.value.style.removeProperty('width')
-    rightSide.value.style.removeProperty('min-width')
-    leftSide.value.style.removeProperty('width')
+    if (rightSide.value) {
+      rightSide.value.style.removeProperty('width')
+      rightSide.value.style.removeProperty('min-width')
+      leftSide.value.style.removeProperty('width')
+    }
   }
   else {
     isMobile.value = false
@@ -196,7 +198,7 @@ function getElementInnerDimensions(element) {
 </script>
 
 <template>
-  <CVPreview id="cv-preview-print" />
+  <CVPreview id="cv-preview-print" read-only />
   <main class="h-screen">
     <Header :is-edit="true" />
     <div class="w-full h-[calc(100%-137px)] border-b-1 border-blacks-20 sm:flex sm:flex-row sm:h-[calc(100%-57px)] sm:border-0 overflow-hidden">
@@ -292,7 +294,7 @@ function getElementInnerDimensions(element) {
         ref="rightSide"
         class="w-full h-full sm:w-[390px] sm:min-w-[390px]"
       >
-        <Sidebar />
+        <Sidebar :draggable="!isMobile || !isMobileDevice" />
       </div>
     </div>
 

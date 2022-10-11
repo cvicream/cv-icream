@@ -1,15 +1,21 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed } from 'vue'
 import { storeToRefs } from 'pinia'
-import draggable from 'vuedraggable'
+import vuedraggable from 'vuedraggable'
 import { useUserStore } from '~/stores/user'
 import { useToolbarStore } from '~/stores/toolbar'
+import { isMobileDevice } from '~/utils'
 
-const props = defineProps<{
-  id: string
-}>()
-
-const id = ref(props.id || 'cv-preview')
+const props = defineProps({
+  id: {
+    type: String,
+    default: 'cv-preview',
+  },
+  readOnly: {
+    type: Boolean,
+    default: false,
+  },
+})
 
 const user = useUserStore()
 const { splitIndex, about, summary, experience, project, skill, education, certificate, contact, social } = storeToRefs(user)
@@ -92,7 +98,7 @@ const { currentState } = storeToRefs(toolbar)
           'w-3/4 mr-auto': currentState.layout === 'layout-right',
         }"
       >
-        <CVPreviewSection :element="topList[0]" />
+        <CVPreviewSection :element="topList[0]" :read-only="readOnly" />
       </div>
       <div class="flex flex-wrap">
         <div
@@ -102,16 +108,27 @@ const { currentState } = storeToRefs(toolbar)
             'w-3/4 order-1': currentState.layout === 'layout-right',
           }"
         >
-          <draggable
+          <vuedraggable
+            v-if="!readOnly"
             v-model="leftList"
             group="section"
             item-key="key"
             class="h-full"
+            delay-on-touch-only
+            :delay="isMobileDevice() ? 250 : 0"
           >
             <template #item="{element}">
               <CVPreviewSection :element="element" />
             </template>
-          </draggable>
+          </vuedraggable>
+
+          <div
+            v-for="(element, index) in leftList"
+            v-else
+            :key="index"
+          >
+            <CVPreviewSection :element="element" :read-only="readOnly" />
+          </div>
         </div>
         <div
           :class="{
@@ -120,16 +137,27 @@ const { currentState } = storeToRefs(toolbar)
             'w-1/4 order-2': currentState.layout === 'layout-right',
           }"
         >
-          <draggable
+          <vuedraggable
+            v-if="!readOnly"
             v-model="rightList"
             group="section"
             item-key="key"
             class="h-full"
+            delay-on-touch-only
+            :delay="isMobileDevice() ? 250 : 0"
           >
             <template #item="{element}">
               <CVPreviewSection :element="element" />
             </template>
-          </draggable>
+          </vuedraggable>
+
+          <div
+            v-for="(element, index) in rightList"
+            v-else
+            :key="index"
+          >
+            <CVPreviewSection :element="element" :read-only="readOnly" />
+          </div>
         </div>
       </div>
     </div>

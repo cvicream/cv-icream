@@ -143,7 +143,7 @@ function back() {
           <label class="note text-blacks-70">Preview</label>
           <div id="download-preview-container">
             <div id="download-preview" class="w-[210mm] min-w-[210mm] h-[297mm] min-h-[297mm] overflow-hidden border-1 border-blacks-70 rounded-xl">
-              <CVPreview id="cv-download-preview" />
+              <CVPreview id="cv-download-preview" read-only />
             </div>
           </div>
         </div>
