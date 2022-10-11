@@ -87,6 +87,7 @@ function resize() {
     isMobile.value = true
     isDesignBarOpen.value = true
     rightWidth.value = 0
+
     if (rightSide.value) {
       rightSide.value.style.removeProperty('width')
       rightSide.value.style.removeProperty('min-width')
@@ -199,7 +200,7 @@ function getElementInnerDimensions(element) {
 
 <template>
   <CVPreview id="cv-preview-print" read-only />
-  <main class="h-screen">
+  <main class="h-full">
     <Header :is-edit="true" />
     <div class="w-full h-[calc(100%-137px)] border-b-1 border-blacks-20 sm:flex sm:flex-row sm:h-[calc(100%-57px)] sm:border-0 overflow-hidden">
       <div
@@ -275,11 +276,11 @@ function getElementInnerDimensions(element) {
       </div>
 
       <button
-        class="btn-icon-48 fixed bottom-28 right-8 z-2 sm:hidden"
+        class="btn-icon-48-fill fixed bottom-28 right-8 z-2 sm:hidden"
         @click="toggleCVPreview"
       >
         <span
-          class="icon-32"
+          class="icon-32 text-white"
           :class="isCVPreviewVisible ? 'i-custom:edit' : 'i-custom:preview'"
         />
       </button>

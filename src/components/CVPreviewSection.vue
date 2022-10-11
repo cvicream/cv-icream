@@ -95,7 +95,7 @@ function redirect(path) {
       :class="getEditingStyle(summary.isEditing)"
     >
       <div
-        v-if="summary.hashtags && summary.hashtags.length"
+        v-if="summary.hashtags && summary.hashtags.length && summary.hashtags.some(tag => !isEditorEmpty(tag))"
         class="flex gap-4"
       >
         <div

@@ -36,19 +36,19 @@ function focusOut() {
     </h3>
     <div class="bg-primary-10 rounded-xl mt-3 px-4 py-6 flex flex-col gap-6">
       <div>
-        <label class="note text-blacks-70">Name</label>
+        <label class="block note text-blacks-70">Name</label>
         <Editor
           v-model="about.name"
-          class-name="h-[46px]"
+          class-name="h-[46px] mt-1"
           :placeholder="DEFAULT_TEMPLATE.about.name"
           :is-single-line="true"
         />
       </div>
       <div>
-        <label class="note text-blacks-70">Job Title</label>
+        <label class="block note text-blacks-70">Job Title</label>
         <Editor
           v-model="about.jobTitle"
-          class-name="h-[46px]"
+          class-name="h-[46px] mt-1"
           :placeholder="DEFAULT_TEMPLATE.about.jobTitle"
           :is-single-line="true"
         />

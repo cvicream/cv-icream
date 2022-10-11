@@ -185,10 +185,10 @@ function deleteBlock(index: number) {
           />
         </button>
         <div>
-          <label class="note text-blacks-70">Type</label>
+          <label class="block note text-blacks-70">Type</label>
           <Editor
             v-model="item.type"
-            class-name="h-[46px]"
+            class-name="h-[46px] mt-1"
             :enable="item.isShow"
             :placeholder="DEFAULT_TEMPLATE.social.list[0].type"
             :is-single-line="true"
@@ -196,10 +196,10 @@ function deleteBlock(index: number) {
         </div>
         <div :class="item.isCollapsed ? 'hidden' : 'flex flex-col gap-6'">
           <div>
-            <label class="note text-blacks-70">Link</label>
+            <label class="block note text-blacks-70">Link</label>
             <input
               v-model="item.link"
-              class="form-input"
+              class="form-input mt-1"
               :enable="item.isShow"
               :placeholder="DEFAULT_TEMPLATE.social.list[0].link"
               :is-single-line="true"
