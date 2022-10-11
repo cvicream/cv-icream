@@ -226,7 +226,7 @@ function getElementInnerDimensions(element) {
           </div>
         </div>
         <div
-          class="fixed bottom-0 left-0 right-0 z-2 sm:z-0"
+          class="fixed bottom-0 left-0 right-0 z-3 sm:z-0"
           :class="isDesignBarOpen ? 'sm:bottom-8' : 'sm:bottom-48'"
           :style="rightWidthStyle"
         >
