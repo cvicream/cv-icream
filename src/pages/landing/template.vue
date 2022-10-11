@@ -34,7 +34,7 @@ const onNext = () => {
 </script>
 
 <template>
-  <div class="h-full flex flex-col items-center gap-16">
+  <div class="h-full flex flex-col justify-start py-12 px-4 sm:p-4 items-center gap-16">
     <h1 class="heading1-mobile sm:heading1 text-center">
       {{ t('template.title') }}
     </h1>
@@ -120,7 +120,7 @@ const onNext = () => {
         >
       </div>
     </div>
-    <div class="flex flex-col gap-4 sm:gap-10 sm:flex-row fix-padding-bottom">
+    <div class="flex flex-col gap-5 sm:gap-10 sm:flex-row fix-padding-bottom">
       <button
         class="w-[294px] btn-primary order-1 sm:order-2"
         @click="onNext"
