@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import { computed, onBeforeMount, onMounted, onUnmounted, ref } from 'vue'
 import { storeToRefs } from 'pinia'
+import { useUserStore } from '~/stores/user'
 import { useToolbarStore } from '~/stores/toolbar'
 import { getColor, isMobileDevice, setCssVariable, setStatus } from '~/utils'
 import { MAX_SIDEBAR_WIDTH, MIN_SIDEBAR_WIDTH, MOBILE_BREAKPOINT, SCALES } from '~/constants'
 
+const user = useUserStore()
 const toolbar = useToolbarStore()
 const { isCVPreviewVisible, currentState } = storeToRefs(toolbar)
 
@@ -44,6 +46,8 @@ function toggleCVPreview() {
 }
 
 onBeforeMount(() => {
+  setStyle(user.style)
+
   window.addEventListener('beforeunload', onBeforeUnload)
   resize()
 })
@@ -76,6 +80,13 @@ function onBeforeUnload(event) {
   // chrome requires returnValue to be set
   event.returnValue = ''
   return false
+}
+
+function setStyle(style) {
+  toolbar.changeColor(style.color)
+  toolbar.changeFontSize(style.fontSize)
+  toolbar.changeFontFamily(style.fontFamily)
+  toolbar.changeLayout(style.layout)
 }
 
 function onCollapse() {
