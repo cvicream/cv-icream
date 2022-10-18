@@ -200,6 +200,7 @@ function deleteBlock(index: number) {
             <input
               v-model="item.link"
               class="form-input mt-1"
+              :class="{'bg-blacks-5': !social.isShow}"
               :enable="item.isShow"
               :placeholder="DEFAULT_TEMPLATE.social.list[0].link"
               :is-single-line="true"
@@ -209,8 +210,8 @@ function deleteBlock(index: number) {
       </div>
     </div>
     <button
-      class="w-full rounded-xl text-blacks-40 inline-flex justify-center items-center p-3 border-transparent border-1 group"
-      :class="social.isShow ? 'bg-primary-10 hover:border-primary-100 ' : 'bg-blacks-10'"
+      v-if="social.isShow"
+      class="w-full rounded-xl text-blacks-40 inline-flex justify-center items-center p-3 border-transparent border-1 group bg-primary-10 hover:border-primary-100"
       :disabled="!social.isShow"
       @click="addItem"
     >

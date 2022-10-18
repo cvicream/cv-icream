@@ -218,8 +218,8 @@ function deleteBlock(index: number) {
       </div>
     </div>
     <button
-      class="w-full rounded-xl text-blacks-40 inline-flex justify-center items-center p-3 border-transparent border-1 group"
-      :class="skill.isShow ? 'bg-primary-10 hover:border-primary-100 ' : 'bg-blacks-10'"
+      v-if="skill.isShow"
+      class="w-full rounded-xl text-blacks-40 inline-flex justify-center items-center p-3 border-transparent border-1 group bg-primary-10 hover:border-primary-100"
       :disabled="!skill.isShow"
       @click="addItem"
     >
