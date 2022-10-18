@@ -261,7 +261,7 @@ export default defineComponent({
 
 <style>
 .ql-container {
-  @apply w-full h-full relative bg-white rounded-xl mt-1 border-1 border-white hover:border-blacks-100 hover:disabled:border-white focus:text-blacks-100;
+  @apply w-full h-full relative bg-white rounded-xl border-1 border-white hover:border-blacks-100 hover:disabled:border-white focus:text-blacks-100;
 }
 
 .ql-container:not(.single-line) {

@@ -1,67 +1,130 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue'
 import { storeToRefs } from 'pinia'
+import vuedraggable from 'vuedraggable'
 import { useUserStore } from '~/stores/user'
 import { MIN_SIDEBAR_WIDTH } from '~/constants'
+import { isMobileDevice } from '~/utils'
+
+const props = defineProps({
+  draggable: {
+    type: Boolean,
+    default: true,
+  },
+})
 
 const user = useUserStore()
-const { timestamp } = storeToRefs(user)
+const { about, summary, experience, project, skill, education, certificate, contact, social, timestamp } = storeToRefs(user)
 
 const router = useRouter()
-const sidebarMenus = ref([
-  {
-    name: 'About',
-    path: '/edit/about',
-    icon: 'i-custom:about',
+const sidebarMenus = computed(() => {
+  return [
+    {
+      id: 'about',
+      name: 'About',
+      path: '/edit/about',
+      icon: 'i-custom:about',
+      order: 0, // set to 0 if draggable is false
+      draggable: false,
+      ...getObjectProperties(about.value),
+    },
+    {
+      id: 'contact',
+      name: 'Contact',
+      path: '/edit/contact',
+      // TODO: icon should use i-custom
+      icon: 'i-origin:contact',
+      order: 1,
+      draggable: props.draggable,
+      ...getObjectProperties(contact.value),
+    },
+    {
+      id: 'summary',
+      name: 'Summary',
+      path: '/edit/summary',
+      icon: 'i-custom:summary',
+      order: 2,
+      draggable: props.draggable,
+      ...getObjectProperties(summary.value),
+    },
+    {
+      id: 'experience',
+      name: 'Experience',
+      path: '/edit/experience',
+      icon: 'i-custom:experience',
+      order: 3,
+      draggable: props.draggable,
+      ...getObjectProperties(experience.value),
+    },
+    {
+      id: 'project',
+      name: 'Project',
+      path: '/edit/project',
+      icon: 'i-custom:project',
+      order: 4,
+      draggable: props.draggable,
+      ...getObjectProperties(project.value),
+    },
+    {
+      id: 'skill',
+      name: 'Skill',
+      path: '/edit/skill',
+      icon: 'i-custom:skill',
+      order: 5,
+      draggable: props.draggable,
+      ...getObjectProperties(skill.value),
+    },
+    {
+      id: 'education',
+      name: 'Education',
+      path: '/edit/education',
+      icon: 'i-custom:education',
+      order: 6,
+      draggable: props.draggable,
+      ...getObjectProperties(education.value),
+    },
+    {
+      id: 'certificate',
+      name: 'Certificate',
+      path: '/edit/certificate',
+      icon: 'i-custom:certificate',
+      order: 7,
+      draggable: props.draggable,
+      ...getObjectProperties(certificate.value),
+    },
+    {
+      id: 'social',
+      name: 'Social Media',
+      path: '/edit/social',
+      icon: 'i-custom:social',
+      order: 8,
+      draggable: props.draggable,
+      ...getObjectProperties(social.value),
+    },
+  ].sort((a, b) => a.order - b.order)
+})
+
+const draggableMenus = computed({
+  get() {
+    return sidebarMenus.value.filter(item => item.draggable)
   },
-  {
-    name: 'Contact',
-    path: '/edit/contact',
-    // TODO: icon should use i-custom
-    icon: 'i-origin:contact',
+  set(newMenus) {
+    user.$patch((state) => {
+      newMenus.forEach((item, index) => {
+        if (item && item.draggable)
+          state[item.id].order = index + 1 // order starts from 1
+      })
+    })
   },
-  {
-    name: 'Summary',
-    path: '/edit/summary',
-    icon: 'i-custom:summary',
-  },
-  {
-    name: 'Experience',
-    path: '/edit/experience',
-    icon: 'i-custom:experience',
-  },
-  {
-    name: 'Project',
-    path: '/edit/project',
-    icon: 'i-custom:project',
-  },
-  {
-    name: 'Skill',
-    path: '/edit/skill',
-    icon: 'i-custom:skill',
-  },
-  {
-    name: 'Education',
-    path: '/edit/education',
-    icon: 'i-custom:education',
-  },
-  {
-    name: 'Certificate',
-    path: '/edit/certificate',
-    icon: 'i-custom:certificate',
-  },
-  {
-    name: 'Social',
-    path: '/edit/social',
-    icon: 'i-custom:social',
-  },
-])
+})
+
 const sidebar = ref<any>(null)
 const isOpen = ref(false)
 const isSmallSidebar = ref(true)
+const drag = ref(true)
 
 const menuOpenWidth = computed(() => {
-  return isOpen.value && !isSmallSidebar.value ? 218 : 64
+  return isOpen.value && !isSmallSidebar.value ? 236 : 64
 })
 
 onMounted(() => {
@@ -73,8 +136,17 @@ onMounted(() => {
   }
 })
 
+function getObjectProperties(obj) {
+  const result = {}
+  const keys = ['order', 'isShow']
+  keys.forEach((key) => {
+    if (key in obj) result[key] = obj[key]
+  })
+  return result
+}
+
 function resize() {
-  if (sidebar.value.offsetWidth < (MIN_SIDEBAR_WIDTH + 218)) {
+  if (sidebar.value.offsetWidth < (MIN_SIDEBAR_WIDTH + 236)) {
     if (!isSmallSidebar.value)
       isOpen.value = false
 
@@ -96,17 +168,19 @@ function isActivePath(targetPath: string) {
   return router.currentRoute.value.path.indexOf(targetPath) === 0
 }
 
-function onMenuClick() {
+function onMenuClick(path) {
   if (isSmallSidebar.value)
     isOpen.value = false
+
+  router.push(path)
 }
 </script>
 
 <template>
-  <div ref="sidebar" class="w-full h-full bg-white relative flex">
+  <div ref="sidebar" class="sidebar w-full h-full bg-white relative flex">
     <div
       class="h-full py-5 bg-white absolute top-0 left-0 z-1 sm:overflow-y-auto transition-all duration-100 flex flex-col gap-4"
-      :class="isOpen ? 'sm:w-[218px] px-5' : 'sm:w-[64px] px-1'"
+      :class="isOpen ? 'sm:w-[236px] px-5' : 'sm:w-[64px] px-1'"
     >
       <button
         :class="isOpen ? 'self-end' : 'self-center'"
@@ -118,32 +192,40 @@ function onMenuClick() {
       </button>
 
       <div class="flex flex-col gap-4 overflow-y-auto disable-scrollbar">
-        <router-link
-          v-for="menu in sidebarMenus"
-          :key="menu.path"
-          :to="menu.path"
-          :class="isActivePath(menu.path) && 'bg-primary-10 rounded'"
-          @click="onMenuClick"
+        <SidebarMenu
+          v-for="element in sidebarMenus.filter(item => !item.draggable)"
+          :key="element.path"
+          :path="element.path"
+          :name="element.name"
+          :icon="element.icon"
+          :show-only-icon="!isOpen"
+          :disabled="!user[element.id]?.isShow"
+          :click="onMenuClick"
+        />
+
+        <vuedraggable
+          v-model="draggableMenus"
+          item-key="path"
+          tag="transition-group"
+          delay-on-touch-only
+          :delay="isMobileDevice() ? 250 : 0"
+          @start="drag = true"
+          @end="drag = false"
         >
-          <span
-            class="w-8 h-8"
-            :class="
-              user[menu.name.toLocaleLowerCase()].isShow
-                ? `${menu.icon} text-blacks-70` : `${menu.icon} text-blacks-40`"
-          />
-          <span
-            class="leading ml-4"
-            :class="{
-              'hidden': !isOpen,
-              'text-blacks-70': user[menu.name.toLocaleLowerCase()].isShow,
-              'text-blacks-40': !user[menu.name.toLocaleLowerCase()].isShow
-            }"
-          >
-            {{ menu.name }}
-          </span>
-        </router-link>
+          <template #item="{element}">
+            <SidebarMenu
+              :path="element.path"
+              :name="element.name"
+              :icon="element.icon"
+              :show-only-icon="!isOpen"
+              :disabled="!user[element.id]?.isShow"
+              :click="onMenuClick"
+            />
+          </template>
+        </vuedraggable>
       </div>
     </div>
+
     <div
       class="w-[calc(100%-64px)] h-full ml-[64px] bg-white flex flex-col gap-6 px-4"
       :class="!isActivePath('/edit/download') ? 'py-8' : 'py-4'"
@@ -154,8 +236,11 @@ function onMenuClick() {
   </div>
 </template>
 
-<style scoped>
-a {
-  @apply flex items-center px-3 py-2 hover:bg-primary-10 hover:rounded
+<style>
+.sidebar .sortable-chosen.sortable-ghost {
+  @apply h-1 bg-primary-10 rounded py-[2px];
+}
+.sidebar .sortable-chosen.sortable-ghost > * {
+  @apply hidden;
 }
 </style>

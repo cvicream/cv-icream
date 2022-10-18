@@ -10,6 +10,8 @@ const { social } = storeToRefs(user)
 const isEditName = ref(false)
 const nameInput = ref<HTMLInputElement | null>(null)
 const componentKey = ref(0) // force Editor component to re-render
+const deleteBlockVisible = ref(false)
+const deleteIdx = ref(0)
 
 function forceRerender() {
   componentKey.value += 1
@@ -81,6 +83,21 @@ function deleteItem(index: number) {
   })
   forceRerender()
 }
+
+function toggleDeleteBlockModal() {
+  deleteBlockVisible.value = !deleteBlockVisible.value
+}
+
+function showDeleteBlockMessage(index: number) {
+  toggleDeleteBlockModal()
+  deleteIdx.value = index
+}
+
+function deleteBlock(index: number) {
+  toggleDeleteBlockModal()
+  deleteItem(index)
+}
+
 </script>
 
 <template>
@@ -149,7 +166,7 @@ function deleteItem(index: number) {
           <button @click="duplicateItem(index)">
             <span class="i-custom:variant icon-24" />
           </button>
-          <button v-if="social.list.length > 1" @click="deleteItem(index)">
+          <button v-if="social.list.length > 1" @click="showDeleteBlockMessage(index)">
             <span class="i-custom:delete icon-24" />
           </button>
         </div>
@@ -168,10 +185,10 @@ function deleteItem(index: number) {
           />
         </button>
         <div>
-          <label class="note text-blacks-70">Type</label>
+          <label class="block note text-blacks-70">Type</label>
           <Editor
             v-model="item.type"
-            class-name="h-[46px]"
+            class-name="h-[46px] mt-1"
             :enable="item.isShow"
             :placeholder="DEFAULT_TEMPLATE.social.list[0].type"
             :is-single-line="true"
@@ -179,10 +196,10 @@ function deleteItem(index: number) {
         </div>
         <div :class="item.isCollapsed ? 'hidden' : 'flex flex-col gap-6'">
           <div>
-            <label class="note text-blacks-70">Link</label>
+            <label class="block note text-blacks-70">Link</label>
             <input
               v-model="item.link"
-              class="form-input"
+              class="form-input mt-1"
               :class="{'bg-blacks-5': !social.isShow}"
               :enable="item.isShow"
               :placeholder="DEFAULT_TEMPLATE.social.list[0].link"
@@ -207,6 +224,12 @@ function deleteItem(index: number) {
       </span>
     </button>
   </div>
+  <DeleteBlockModal
+    :visible="deleteBlockVisible"
+    :delete-idx="deleteIdx"
+    :toggle="toggleDeleteBlockModal"
+    :delete-item="deleteBlock"
+  />
 </template>
 
 <route lang="yaml">

@@ -6,6 +6,8 @@ declare module 'vue' {
   export interface GlobalComponents {
     Counter: typeof import('./components/Counter.vue')['default']
     CVPreview: typeof import('./components/CVPreview.vue')['default']
+    CVPreviewSection: typeof import('./components/CVPreviewSection.vue')['default']
+    DeleteBlockModal: typeof import('./components/DeleteBlockModal.vue')['default']
     DropdownMenu: typeof import('./components/DropdownMenu.vue')['default']
     Editor: typeof import('./components/Editor.vue')['default']
     FeedbackModal: typeof import('./components/FeedbackModal.vue')['default']
@@ -14,6 +16,7 @@ declare module 'vue' {
     Modal: typeof import('./components/Modal.vue')['default']
     README: typeof import('./components/README.md')['default']
     Sidebar: typeof import('./components/Sidebar.vue')['default']
+    SidebarMenu: typeof import('./components/SidebarMenu.vue')['default']
     ToggleSwitch: typeof import('./components/ToggleSwitch.vue')['default']
     Toolbar: typeof import('./components/Toolbar.vue')['default']
   }

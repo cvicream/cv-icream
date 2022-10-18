@@ -11,6 +11,7 @@ const props = defineProps<{
 
 const isActionActive = ref(false)
 const feedbackVisible = ref(false)
+const feedbackNotificationVisible = ref(false)
 
 const router = useRouter()
 
@@ -49,6 +50,10 @@ function onWindowClick() {
 
 function toggleFeedbackModal() {
   feedbackVisible.value = !feedbackVisible.value
+}
+
+function toggleFeedbackNotification() {
+  feedbackNotificationVisible.value = !feedbackNotificationVisible.value
 }
 
 function redirectToDownload() {
@@ -200,5 +205,25 @@ function closeAction() {
     subtitle="Leave us a message. We will get back to you as soon as possible : )"
     :visible="feedbackVisible"
     :toggle="toggleFeedbackModal"
+    :notify="toggleFeedbackNotification"
   />
+
+  <div
+    v-if="feedbackNotificationVisible"
+    class="fixed bottom-8 left-0 right-0 flex justify-center items-center z-99"
+  >
+    <div class="bg-primary-100 w-112 h-16 rounded-xl">
+      <div class="flex justify-between px-5 mt-4">
+        <div class=" text-white paragraph px-1 mt-1">
+          Your feedback has already been sent : )
+        </div>
+        <button class="w-10 h-8 rounded flex justify-center items-center gap-4" @click="toggleFeedbackNotification">
+          <span class="w-[1px] h-8 bg-blacks-20" />
+          <span
+            class="i-custom:cancel icon-24 bg-white"
+          />
+        </button>
+      </div>
+    </div>
+  </div>
 </template>
