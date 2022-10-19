@@ -4,6 +4,7 @@ import { storeToRefs } from 'pinia'
 import { useUserStore } from '~/stores/user'
 import { useToolbarStore } from '~/stores/toolbar'
 import { getJsonUpload, isMobileDevice, setStatus, stripHtml } from '~/utils'
+import { DRAFT_FILENAME_EXTENSION } from '~/constants'
 
 const props = defineProps<{
   isEdit?: boolean
@@ -88,12 +89,12 @@ function exportJsonFile() {
     },
   }
   const dataStr = JSON.stringify(jsonData)
-  const dataUri = `data:application/json;charset=utf-8,${encodeURIComponent(dataStr)}`
+  const dataUri = `data:application/${DRAFT_FILENAME_EXTENSION};charset=utf-8,${encodeURIComponent(dataStr)}`
 
   const fileNames = ['CV']
   if (about.value.name) fileNames.push(stripHtml(about.value.name))
   if (about.value.jobTitle) fileNames.push(stripHtml(about.value.jobTitle))
-  const exportFileDefaultName = `${fileNames.join('_')}.cvicream`
+  const exportFileDefaultName = `${fileNames.join('_')}.${DRAFT_FILENAME_EXTENSION}`
 
   const linkElement = document.createElement('a')
   linkElement.setAttribute('href', dataUri)
