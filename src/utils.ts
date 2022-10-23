@@ -1,4 +1,4 @@
-import { COLORS, LOCAL_STORAGE_KEY } from '~/constants'
+import { COLORS, DRAFT_FILE_TYPE, LOCAL_STORAGE_KEY } from '~/constants'
 
 function hasStorage() {
   return !!getStorage()
@@ -56,7 +56,7 @@ function getJsonUpload() {
     const inputFileElement = document.createElement('input')
     inputFileElement.setAttribute('type', 'file')
     inputFileElement.setAttribute('multiple', 'false')
-    inputFileElement.setAttribute('accept', '.cvicream')
+    inputFileElement.setAttribute('accept', `.${DRAFT_FILE_TYPE}`)
 
     inputFileElement.addEventListener('change', (event) => {
       const { files } = event.target as HTMLInputElement

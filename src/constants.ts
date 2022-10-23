@@ -1,4 +1,5 @@
 export const LOCAL_STORAGE_KEY = 'cvicream'
+export const DRAFT_FILE_TYPE = 'cvicream'
 export const HIDDEN_INFORMATION = 'The session is currently hidden on CV. Click the toggle if you would like to show it on CV.'
 export const MAX_SIDEBAR_WIDTH = 834
 export const MIN_SIDEBAR_WIDTH = 390
