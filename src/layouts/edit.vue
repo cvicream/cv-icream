@@ -3,7 +3,7 @@ import { computed, onBeforeMount, onMounted, onUnmounted, ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useUserStore } from '~/stores/user'
 import { useToolbarStore } from '~/stores/toolbar'
-import { getColor, isMobileDevice, setCssVariable, setStatus } from '~/utils'
+import { getColor, getStorage, hasStorage, isMobileDevice, setCssVariable, setStatus } from '~/utils'
 import { MAX_SIDEBAR_WIDTH, MIN_SIDEBAR_WIDTH, MOBILE_BREAKPOINT, SCALES } from '~/constants'
 
 const user = useUserStore()
@@ -46,7 +46,13 @@ function toggleCVPreview() {
 }
 
 onBeforeMount(() => {
-  setStyle(user.style)
+  let style = user.style
+  if (hasStorage()) {
+    const storage = getStorage()
+    if (user.template === storage.user.template)
+      style = storage.toolbar.currentState
+  }
+  setStyle(style)
 
   window.addEventListener('beforeunload', onBeforeUnload)
   resize()
