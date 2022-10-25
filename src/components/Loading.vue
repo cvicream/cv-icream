@@ -8,13 +8,13 @@
 
 <style scoped>
 .loader span {
-  animation: moving 1s linear infinite;
+  animation: moving 2s linear infinite;
 }
 .loader span:nth-child(2) {
-  animation-delay: 0.33s;
+  animation-delay: 0.5s;
 }
 .loader span:nth-child(3) {
-  animation-delay: 0.66s;
+  animation-delay: 1s;
 }
 
 @keyframes moving {
