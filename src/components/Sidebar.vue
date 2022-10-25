@@ -146,7 +146,7 @@ function getObjectProperties(obj) {
 }
 
 function resize() {
-  if (sidebar.value.offsetWidth < (MIN_SIDEBAR_WIDTH + 236)) {
+  if (sidebar.value && sidebar.value.offsetWidth < (MIN_SIDEBAR_WIDTH + 236)) {
     if (!isSmallSidebar.value)
       isOpen.value = false
 
