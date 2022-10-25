@@ -14,18 +14,17 @@ const content = ref('')
 const name = ref('')
 const email = ref('')
 const loading = ref(false)
-const isEmailValid = ref(true)
+const isEmailFocus = ref(false)
 
+const isEmailValid = computed(() => {
+  return validateEmail(email.value)
+})
 const enable = computed(() => {
   return content.value
     && name.value
     && email.value && validateEmail(email.value) && isEmailValid.value
     && !loading.value
 })
-
-function handleInputEmail() {
-  isEmailValid.value = validateEmail(email.value)
-}
 
 function reset() {
   name.value = ''
@@ -69,7 +68,7 @@ async function sendFeedback() {
       class="form-textarea bg-primary-10 custom-scrollbar mt-8"
     />
     <div class="mt-6">
-      <label class="note text-blacks-70">Your Contact Info</label>
+      <label class="block note text-blacks-70">Your Contact Info</label>
       <input
         v-model="name"
         type="search"
@@ -81,11 +80,11 @@ async function sendFeedback() {
         type="search"
         placeholder="Email"
         class="form-input bg-primary-10 mt-3"
-        @keyup.enter="handleInputEmail"
-        @blur="handleInputEmail"
+        @focus="isEmailFocus = true"
+        @blur="isEmailFocus = false"
       >
       <p
-        v-if="!isEmailValid"
+        v-if="email && !isEmailFocus && !isEmailValid"
         class="note text-warning mt-2"
       >
         It doesn't look quite right.

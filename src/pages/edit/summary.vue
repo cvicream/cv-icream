@@ -57,40 +57,40 @@ function focusOut(index) {
         :class="[(summary.isShow ? 'bg-primary-10': 'bg-blacks-10')]"
       >
         <div>
-          <label class="note text-blacks-70">Hashtag 1</label>
+          <label class="block note text-blacks-70">Hashtag 1</label>
           <Editor
             v-model="summary.hashtags[0]"
-            class-name="h-[46px]"
+            class-name="h-[46px] mt-1"
             :enable="summary.isShow"
             :placeholder="DEFAULT_TEMPLATE.summary.hashtags[0]"
             :is-single-line="true"
           />
         </div>
         <div>
-          <label class="note text-blacks-70">Hashtag 2</label>
+          <label class="block note text-blacks-70">Hashtag 2</label>
           <Editor
             v-model="summary.hashtags[1]"
-            class-name="h-[46px]"
+            class-name="h-[46px] mt-1"
             :enable="summary.isShow"
             :placeholder="DEFAULT_TEMPLATE.summary.hashtags[1]"
             :is-single-line="true"
           />
         </div>
         <div>
-          <label class="note text-blacks-70">Hashtag 3</label>
+          <label class="block note text-blacks-70">Hashtag 3</label>
           <Editor
             v-model="summary.hashtags[2]"
-            class-name="h-[46px]"
+            class-name="h-[46px] mt-1"
             :enable="summary.isShow"
             :placeholder="DEFAULT_TEMPLATE.summary.hashtags[2]"
             :is-single-line="true"
           />
         </div>
         <div>
-          <label class="note text-blacks-70">Summary</label>
+          <label class="block note text-blacks-70">Summary</label>
           <Editor
             v-model="summary.paragraph"
-            class-name="h-[130px]"
+            class-name="h-[130px] mt-1"
             :enable="summary.isShow"
             :placeholder="DEFAULT_TEMPLATE.summary.paragraph"
           />

@@ -22,7 +22,7 @@ const { currentState } = storeToRefs(toolbar)
 
 <style scoped>
 .slider {
-  @apply bg-blacks-40 absolute top-0 right-0 bottom-0 left-0 cursor-pointer duration-500
+  @apply bg-blacks-20 absolute top-0 right-0 bottom-0 left-0 cursor-pointer duration-500
 }
 .tick {
   @apply w-4 h-4 bg-white absolute content-none top-1 left-1 duration-500 flex flex-row justify-center items-center

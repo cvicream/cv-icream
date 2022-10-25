@@ -185,10 +185,10 @@ function deleteBlock(index: number) {
           />
         </button>
         <div>
-          <label class="note text-blacks-70">Title</label>
+          <label class="block note text-blacks-70">Title</label>
           <Editor
             v-model="item.title"
-            class-name="h-[46px]"
+            class-name="h-[46px] mt-1"
             :enable="item.isShow"
             :placeholder="DEFAULT_TEMPLATE.experience.list[0].title"
             :is-single-line="true"
@@ -196,30 +196,30 @@ function deleteBlock(index: number) {
         </div>
         <div :class="item.isCollapsed ? 'hidden' : 'flex flex-col gap-6'">
           <div>
-            <label class="note text-blacks-70">Subtitle (align left)</label>
+            <label class="block note text-blacks-70">Subtitle (align left)</label>
             <Editor
               v-model="item.subtitle1"
-              class-name="h-[46px]"
+              class-name="h-[46px] mt-1"
               :enable="item.isShow"
               :placeholder="DEFAULT_TEMPLATE.experience.list[0].subtitle1"
               :is-single-line="true"
             />
           </div>
           <div>
-            <label class="note text-blacks-70">Subtitle (align right)</label>
+            <label class="block note text-blacks-70">Subtitle (align right)</label>
             <Editor
               v-model="item.subtitle2"
-              class-name="h-[46px]"
+              class-name="h-[46px] mt-1"
               :enable="item.isShow"
               :placeholder="DEFAULT_TEMPLATE.experience.list[0].subtitle2"
               :is-single-line="true"
             />
           </div>
           <div>
-            <label class="note text-blacks-70">Description</label>
+            <label class="block note text-blacks-70">Description</label>
             <Editor
               v-model="item.paragraph"
-              class-name="h-[130px]"
+              class-name="h-[130px] mt-1"
               :enable="item.isShow"
               :placeholder="DEFAULT_TEMPLATE.experience.list[0].paragraph"
             />
@@ -228,8 +228,8 @@ function deleteBlock(index: number) {
       </div>
     </div>
     <button
-      class="w-full rounded-xl text-blacks-40 inline-flex justify-center items-center p-3 border-transparent border-1 group"
-      :class="experience.isShow ? 'bg-primary-10 hover:border-primary-100 ' : 'bg-blacks-10'"
+      v-if="experience.isShow"
+      class="w-full rounded-xl text-blacks-40 inline-flex justify-center items-center p-3 border-transparent border-1 group bg-primary-10 hover:border-primary-100"
       :disabled="!experience.isShow"
       @click="addItem"
     >

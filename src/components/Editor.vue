@@ -178,8 +178,8 @@ export default defineComponent({
       v-model:content="content"
       content-type="html"
       :enable="enable"
-      :read-only="false"
-      :placeholder="placeholder"
+      :read-only="!enable"
+      :placeholder="content ? '' : placeholder"
       theme=""
       :toolbar="`#${toolbarId}`"
       :class="{ 'single-line': isSingleLine }"
@@ -261,7 +261,7 @@ export default defineComponent({
 
 <style>
 .ql-container {
-  @apply w-full h-full relative bg-white rounded-xl mt-1 border-1 border-white hover:border-blacks-100 hover:disabled:border-white focus:text-blacks-100;
+  @apply w-full h-full relative bg-white rounded-xl border-1 border-white hover:border-blacks-100 hover:disabled:border-white focus:text-blacks-100;
 }
 
 .ql-container:not(.single-line) {
@@ -272,7 +272,7 @@ export default defineComponent({
 }
 
 .ql-disabled {
-  @apply text-blacks-40 hover:border-white;
+  @apply text-blacks-40 hover:border-white bg-blacks-5 border-blacks-5;
 }
 
 .single-line [contenteditable] {
@@ -315,9 +315,11 @@ export default defineComponent({
 .ql-editor p,
 .ql-editor ul li,
 .ql-editor ol li {
-  @apply paragraph text-blacks-100 disabled:text-blacks-40
+  @apply paragraph text-blacks-100;
 }
-.ql-disabled .ql-editor p {
+.ql-disabled .ql-editor p,
+.ql-disabled .ql-editor ul li,
+.ql-disabled .ql-editor ol li{
   @apply text-blacks-40;
 }
 

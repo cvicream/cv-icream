@@ -47,7 +47,7 @@ export default defineConfig({
     ['paragraph-large', 'font-normal text-size-[12px] leading-[14px]'],
 
     ['form-label', 'font-normal text-sm text-blacks-70 leading-[1.125rem] block'],
-    ['form-input', 'w-full h-[46px] bg-white rounded-xl outline-none font-normal text-base text-blacks-100 disabled:text-blacks-40 placeholder-blacks-40 focus:placeholder-transparent mt-1 pl-4 pr-2 py-3 border-1 border-transparent hover:border-blacks-100 hover:disabled:border-white focus:text-blacks-100'],
+    ['form-input', 'w-full h-[46px] bg-white rounded-xl appearance-none outline-none font-normal text-base text-blacks-100 disabled:text-blacks-40 placeholder-blacks-40 focus:placeholder-transparent pl-4 pr-2 py-3 border-1 border-transparent hover:border-blacks-100 hover:disabled:border-white focus:text-blacks-100'],
     ['form-textarea', 'w-full h-[130px] bg-white rounded-xl outline-none font-normal text-base text-blacks-100 resize-none disabled:text-blacks-40 placeholder-blacks-40 focus:placeholder-transparent mt-1 px-4 py-3 border-1 border-white hover:border-blacks-100 hover:disabled:border-white focus:text-blacks-100'],
     ['dropdown-menu', 'w-full bg-white border rounded-xl'],
     ['dropdown-item', 'w-full bg-white font-normal font-mark text-blacks-100 text-base leading-[22px] hover:bg-primary-10'],
@@ -116,7 +116,8 @@ export default defineConfig({
         100: 'var(--primary-color)',
       },
       blacks: { // class="text-blacks-100"
-        10: 'rgba(34, 34, 34, 0.1)',
+        5: '#F4F4F4',
+        10: '#E9E9E9',
         20: '#d3d3d3',
         40: '#a7a7a7',
         70: '#656565',

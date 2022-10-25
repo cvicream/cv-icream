@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import { computed, onBeforeMount, onMounted, onUnmounted, ref } from 'vue'
 import { storeToRefs } from 'pinia'
+import { useUserStore } from '~/stores/user'
 import { useToolbarStore } from '~/stores/toolbar'
-import { getColor, setCssVariable, setStatus } from '~/utils'
+import { getColor, isMobileDevice, setCssVariable, setStatus } from '~/utils'
 import { MAX_SIDEBAR_WIDTH, MIN_SIDEBAR_WIDTH, MOBILE_BREAKPOINT, SCALES } from '~/constants'
 
+const user = useUserStore()
 const toolbar = useToolbarStore()
 const { isCVPreviewVisible, currentState } = storeToRefs(toolbar)
 
@@ -44,6 +46,8 @@ function toggleCVPreview() {
 }
 
 onBeforeMount(() => {
+  setStyle(user.style)
+
   window.addEventListener('beforeunload', onBeforeUnload)
   resize()
 })
@@ -78,6 +82,13 @@ function onBeforeUnload(event) {
   return false
 }
 
+function setStyle(style) {
+  toolbar.changeColor(style.color)
+  toolbar.changeFontSize(style.fontSize)
+  toolbar.changeFontFamily(style.fontFamily)
+  toolbar.changeLayout(style.layout)
+}
+
 function onCollapse() {
   isDesignBarOpen.value = !isDesignBarOpen.value
 }
@@ -87,9 +98,12 @@ function resize() {
     isMobile.value = true
     isDesignBarOpen.value = true
     rightWidth.value = 0
-    rightSide.value.style.removeProperty('width')
-    rightSide.value.style.removeProperty('min-width')
-    leftSide.value.style.removeProperty('width')
+
+    if (rightSide.value) {
+      rightSide.value.style.removeProperty('width')
+      rightSide.value.style.removeProperty('min-width')
+      leftSide.value.style.removeProperty('width')
+    }
   }
   else {
     isMobile.value = false
@@ -196,8 +210,8 @@ function getElementInnerDimensions(element) {
 </script>
 
 <template>
-  <CVPreview id="cv-preview-print" />
-  <main class="h-screen">
+  <CVPreview id="cv-preview-print" read-only />
+  <main class="h-full">
     <Header :is-edit="true" />
     <div class="w-full h-[calc(100%-137px)] border-b-1 border-blacks-20 sm:flex sm:flex-row sm:h-[calc(100%-57px)] sm:border-0 overflow-hidden">
       <div
@@ -273,11 +287,11 @@ function getElementInnerDimensions(element) {
       </div>
 
       <button
-        class="btn-icon-48 fixed bottom-28 right-8 z-2 sm:hidden"
+        class="btn-icon-48-fill fixed bottom-28 right-8 z-2 sm:hidden"
         @click="toggleCVPreview"
       >
         <span
-          class="icon-32"
+          class="icon-32 text-white"
           :class="isCVPreviewVisible ? 'i-custom:edit' : 'i-custom:preview'"
         />
       </button>
@@ -292,7 +306,7 @@ function getElementInnerDimensions(element) {
         ref="rightSide"
         class="w-full h-full sm:w-[390px] sm:min-w-[390px]"
       >
-        <Sidebar />
+        <Sidebar :draggable="!isMobile || !isMobileDevice" />
       </div>
     </div>
 

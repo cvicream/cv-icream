@@ -17,6 +17,7 @@ declare module 'vue' {
     Modal: typeof import('./components/Modal.vue')['default']
     README: typeof import('./components/README.md')['default']
     Sidebar: typeof import('./components/Sidebar.vue')['default']
+    SidebarMenu: typeof import('./components/SidebarMenu.vue')['default']
     ToggleSwitch: typeof import('./components/ToggleSwitch.vue')['default']
     Toolbar: typeof import('./components/Toolbar.vue')['default']
   }

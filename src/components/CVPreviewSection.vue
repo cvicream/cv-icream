@@ -6,9 +6,16 @@ import { useToolbarStore } from '~/stores/toolbar'
 import { isEditorEmpty } from '~/utils'
 import { DEFAULT_TEMPLATE } from '~/constants'
 
-const props = defineProps<{
-  element: any
-}>()
+const props = defineProps({
+  element: {
+    type: Object,
+    required: true,
+  },
+  readOnly: {
+    type: Boolean,
+    default: false,
+  },
+})
 
 const user = useUserStore()
 const { about, summary, experience, project, skill, education, certificate, contact, social } = storeToRefs(user)
@@ -53,13 +60,17 @@ function isObjectEmpty(obj) {
   }
   return isEmpty
 }
+
+function redirect(path) {
+  if (!props.readOnly) router.push(path)
+}
 </script>
 
 <template>
   <div
-    @mouseover="isHover = true"
+    @mouseover="isHover = readOnly ? false : true"
     @mouseout="isHover = false"
-    @mouseup="router.push(`/edit/${element.key}`)"
+    @mouseup="redirect(`/edit/${element.key}`)"
   >
     <div
       v-if="element.key === 'about'"
@@ -84,7 +95,7 @@ function isObjectEmpty(obj) {
       :class="getEditingStyle(summary.isEditing)"
     >
       <div
-        v-if="summary.hashtags && summary.hashtags.length"
+        v-if="summary.hashtags && summary.hashtags.length && summary.hashtags.some(tag => !isEditorEmpty(tag))"
         class="flex gap-4"
       >
         <div
