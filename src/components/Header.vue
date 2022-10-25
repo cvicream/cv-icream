@@ -142,7 +142,7 @@ function closeAction() {
 </script>
 
 <template>
-  <header class="h-[56px] leading-56px text-center bg-white flex justify-between items-center px-6 py-3">
+  <header class="h-[56px] leading-56px text-center bg-white flex justify-between items-center px-6 py-3 touch-none">
     <div class="flex gap-3">
       <a class="btn-icon-32" href="https://cvicream.webflow.io/">
         <span class="i-origin:logo w-6 h-6" />

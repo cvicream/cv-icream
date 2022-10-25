@@ -57,7 +57,7 @@ function onCollapse() {
 
 <template>
   <div
-    class="w-full h-[80px] text-center bg-white flex justify-center gap-4 px-4 py-4 sm:w-auto sm-h-20 sm:rounded-xl sm:shadow-custom transition"
+    class="w-full h-[80px] text-center bg-white flex justify-center gap-4 px-4 py-4 sm:w-auto sm-h-20 sm:rounded-xl sm:shadow-custom transition touch-none"
     :class="{ 'hover:cursor-pointer': !open }"
     @click="onCollapse"
   >
