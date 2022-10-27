@@ -139,6 +139,12 @@ function closeAction() {
   isActionActive.value = false
 }
 
+onUnmounted(() => {
+  window.removeEventListener('click', closeAction)
+})
+
+window.addEventListener('click', closeAction, false)
+
 </script>
 
 <template>
@@ -154,7 +160,7 @@ function closeAction() {
         <span class="i-custom:feedback w-6 h-6" />
       </button>
     </div>
-    <div v-if="isEdit" @focusout="onFocusOut">
+    <div v-if="isEdit" @click="toggle">
       <button
         class="w-14 h-8 rounded flex justify-center items-center gap-1 hover:bg-primary-10"
         @click.stop="toggle"
