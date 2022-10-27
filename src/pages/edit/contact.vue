@@ -89,10 +89,10 @@ function focusOut(index) {
       >
         <div class="flex flex-col gap-6">
           <div>
-            <label class="note text-blacks-70">Contact Info</label>
+            <label class="block note text-blacks-70">Contact Info</label>
             <Editor
               v-model="item.paragraph"
-              class-name="h-[130px]"
+              class-name="h-[130px] mt-1"
               :enable="item.isShow"
               :placeholder="DEFAULT_TEMPLATE.contact.list[0].paragraph"
             />

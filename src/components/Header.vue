@@ -13,6 +13,7 @@ const props = defineProps<{
 const isActionActive = ref(false)
 const feedbackVisible = ref(false)
 const upload = ref(false)
+const feedbackNotificationVisible = ref(false)
 
 const router = useRouter()
 
@@ -53,6 +54,10 @@ function toggleFeedbackModal() {
   feedbackVisible.value = !feedbackVisible.value
 }
 
+function toggleFeedbackNotification() {
+  feedbackNotificationVisible.value = !feedbackNotificationVisible.value
+}
+
 function redirectToDownload() {
   toolbar.$patch((state) => {
     state.isCVPreviewVisible = false
@@ -85,7 +90,7 @@ function exportJsonFile() {
     },
   }
   const dataStr = JSON.stringify(jsonData)
-  const dataUri = `data:application/json;charset=utf-8,${encodeURIComponent(dataStr)}`
+  const dataUri = `data:application/${DRAFT_FILE_TYPE};charset=utf-8,${encodeURIComponent(dataStr)}`
 
   const fileNames = ['CV']
   if (about.value.name) fileNames.push(stripHtml(about.value.name))
@@ -141,6 +146,12 @@ function closeAction() {
   isActionActive.value = false
 }
 
+onUnmounted(() => {
+  window.removeEventListener('click', closeAction)
+})
+
+window.addEventListener('click', closeAction, false)
+
 </script>
 
 <template>
@@ -156,7 +167,7 @@ function closeAction() {
         <span class="i-custom:feedback w-6 h-6" />
       </button>
     </div>
-    <div v-if="isEdit" @focusout="onFocusOut">
+    <div v-if="isEdit" @click="toggle">
       <button
         class="w-14 h-8 rounded flex justify-center items-center gap-1 hover:bg-primary-10"
         @click.stop="toggle"
@@ -208,6 +219,7 @@ function closeAction() {
     subtitle="Leave us a message. We will get back to you as soon as possible : )"
     :visible="feedbackVisible"
     :toggle="toggleFeedbackModal"
+    :notify="toggleFeedbackNotification"
   />
 
   <Modal
@@ -235,4 +247,22 @@ function closeAction() {
       </button>
     </div>
   </Modal>
+  <div
+    v-if="feedbackNotificationVisible"
+    class="fixed bottom-8 left-0 right-0 flex justify-center items-center z-99"
+  >
+    <div class="bg-primary-100 w-112 h-16 rounded-xl">
+      <div class="flex justify-between px-5 mt-4">
+        <div class=" text-white paragraph px-1 mt-1">
+          Your feedback has already been sent : )
+        </div>
+        <button class="w-10 h-8 rounded flex justify-center items-center gap-4" @click="toggleFeedbackNotification">
+          <span class="w-[1px] h-8 bg-blacks-20" />
+          <span
+            class="i-custom:cancel icon-24 bg-white"
+          />
+        </button>
+      </div>
+    </div>
+  </div>
 </template>
