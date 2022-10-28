@@ -28,6 +28,7 @@ function focusOut() {
     </div>
   </div>
   <div
+    class="flex-grow pr-2 -mr-3 overflow-y-auto custom-scrollbar last-child-pb-4"
     @focusin="() => focusIn()"
     @focusout="() => focusOut()"
   >

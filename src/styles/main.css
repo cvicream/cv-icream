@@ -230,3 +230,7 @@ input[type="search"]:hover::-webkit-search-cancel-button {
             user-select: none; /* Non-prefixed version, currently
                                   supported by Chrome, Opera and Firefox */
 }
+
+.last-child-pb-4 > *:last-child {
+  margin-bottom: 1rem;
+}
