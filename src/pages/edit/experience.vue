@@ -103,7 +103,7 @@ function deleteBlock(index: number) {
 <template>
   <div class="flex items-center gap-2">
     <span class="i-custom:experience icon-32" />
-    <div class="flex-1 h-6 overflow-hidden">
+    <div class="flex-1 h-8 overflow-hidden">
       <input
         v-if="isEditName"
         ref="nameInput"
@@ -115,7 +115,7 @@ function deleteBlock(index: number) {
       >
       <div
         v-else
-        class="w-full h-full leading leading-6 text-blacks-100 text-ellipsis whitespace-nowrap overflow-hidden bg-transparent"
+        class="w-full h-full flex items-center leading leading-6 text-blacks-100 text-ellipsis whitespace-nowrap overflow-hidden bg-transparent"
         :title="experience.name"
       >
         {{ experience.name }}
