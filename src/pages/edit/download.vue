@@ -128,40 +128,38 @@ function back() {
       <span class="i-custom:cancel icon-24" />
     </button>
   </div>
-  <div class="flex flex-col gap-6 pr-2 -mr-3 overflow-y-scroll custom-scrollbar">
-    <div>
-      <div class="rounded-xl px-4 py-6 flex flex-col gap-6 bg-primary-10">
-        <div>
-          <label class="block note text-blacks-70">File Type</label>
-          <div class="flex items-center w-full h-[46px] bg-white rounded-xl px-4 py-3 mt-1">
-            <span class="paragraph text-blacks-100">PDF</span>
-          </div>
+  <div class="flex-grow pr-2 -mr-3 overflow-y-auto custom-scrollbar last-child-pb-4">
+    <div class="rounded-xl px-4 py-6 flex flex-col gap-6 bg-primary-10">
+      <div>
+        <label class="block note text-blacks-70">File Type</label>
+        <div class="flex items-center w-full h-[46px] bg-white rounded-xl px-4 py-3 mt-1">
+          <span class="paragraph text-blacks-100">PDF</span>
         </div>
-        <div>
-          <label class="block note text-blacks-70">Preview</label>
-          <div id="download-preview-container" class="mt-1">
-            <div id="download-preview" class="w-[210mm] min-w-[210mm] h-[297mm] min-h-[297mm] overflow-hidden border-1 border-blacks-70 rounded-xl">
-              <CVPreview id="cv-download-preview" read-only />
-            </div>
+      </div>
+      <div>
+        <label class="block note text-blacks-70">Preview</label>
+        <div id="download-preview-container" class="mt-1">
+          <div id="download-preview" class="w-[210mm] min-w-[210mm] h-[297mm] min-h-[297mm] overflow-hidden border-1 border-blacks-70 rounded-xl">
+            <CVPreview id="cv-download-preview" read-only />
           </div>
         </div>
       </div>
-      <button
-        class="w-full rounded-xl text-white inline-flex justify-center items-center gap-2 py-3 mt-6 bg-primary-100 border-1 border-transparent transition duration-300 ease-out hover:border-primary-20"
-        @click="print"
-      >
-        <span class="i-custom:download w-6 h-6" />
-        <span class="subleading">Download</span>
-      </button>
     </div>
-
-    <FeedbackModal
-      title="Are you happy with our service?"
-      subtitle="Leave us a message to let us know whether you are happy with our service or anything we can improve : )"
-      :visible="feedbackVisible"
-      :toggle="toggleFeedbackModal"
-    />
+    <button
+      class="w-full rounded-xl text-white inline-flex justify-center items-center gap-2 py-3 mt-6 bg-primary-100 border-1 border-transparent transition duration-300 ease-out hover:border-primary-20"
+      @click="print"
+    >
+      <span class="i-custom:download w-6 h-6" />
+      <span class="subleading">Download</span>
+    </button>
   </div>
+
+  <FeedbackModal
+    title="Are you happy with our service?"
+    subtitle="Leave us a message to let us know whether you are happy with our service or anything we can improve : )"
+    :visible="feedbackVisible"
+    :toggle="toggleFeedbackModal"
+  />
 </template>
 
 <route lang="yaml">
