@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useToolbarStore } from '~/stores/toolbar'
-import { getColor, setCssVariable, setStatus } from '~/utils'
+import { getColor, isMobileDevice, setCssVariable, setStatus } from '~/utils'
 
 // https://github.com/vueuse/head
 // you can use this to manipulate the document head in any components,
@@ -23,6 +23,37 @@ toolbar.$subscribe((mutation, state) => {
 })
 
 setStatus({ isEditing: false })
+
+function hasTouch() {
+  return 'ontouchstart' in document.documentElement
+         || navigator.maxTouchPoints > 0
+         // || navigator.msMaxTouchPoints > 0
+}
+
+if (hasTouch()) { // remove all the :hover stylesheets
+  try { // prevent exception on browsers not supporting DOM styleSheets properly
+    for (const si in document.styleSheets) {
+      const styleSheet = document.styleSheets[si]
+      const cssRules = styleSheet.cssRules
+      if (!cssRules) continue
+
+      for (let ri = cssRules.length - 1; ri >= 0; ri--) {
+        const rule = cssRules[ri]
+        if (!(rule instanceof CSSStyleRule)) continue
+
+        if (!rule.selectorText) continue
+
+        if (rule.selectorText.match(':hover') || rule.selectorText.match('.group:hover'))
+          styleSheet.deleteRule(ri)
+
+        if (!(rule instanceof CSSStyleRule))
+          continue
+      }
+    }
+  }
+  catch (ex) {}
+}
+
 </script>
 
 <template>
