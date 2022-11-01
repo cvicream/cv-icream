@@ -30,7 +30,7 @@ function hasTouch() {
          // || navigator.msMaxTouchPoints > 0
 }
 
-if (hasTouch()) { // remove all the :hover stylesheets
+if (hasTouch() || isMobileDevice()) { // remove all the :hover stylesheets
   try { // prevent exception on browsers not supporting DOM styleSheets properly
     for (const si in document.styleSheets) {
       const styleSheet = document.styleSheets[si]
