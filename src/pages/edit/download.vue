@@ -6,6 +6,7 @@ import { storeToRefs } from 'pinia'
 import { useUserStore } from '~/stores/user'
 import { useToolbarStore } from '~/stores/toolbar'
 import { getPreviousUrl, getStorage, setStatus, stripHtml } from '~/utils'
+import { A4_WIDTH_PX } from '~/constants'
 import arial from '~/assets/fonts/arial/arial-normal'
 import georgia from '~/assets/fonts/georgia/georgia-normal'
 import gillsans from '~/assets/fonts/gillsans/gillsans-normal'
@@ -40,12 +41,11 @@ function resize() {
   const downloadPreview = document.getElementById('download-preview')
 
   if (downloadPreviewContainer && downloadPreview) {
-    const maxWidth = 794 // A4 width
-    const maxHeight = 1123 // A4 height
+    const maxWidth = A4_WIDTH_PX
     const width = downloadPreviewContainer.clientWidth
     const scale = width / maxWidth
 
-    downloadPreviewContainer.style.height = `${maxHeight * scale}px`
+    downloadPreviewContainer.style.height = `${downloadPreview.clientHeight * scale}px`
     downloadPreview.style.transform = `scale(${scale})`
     downloadPreview.style['transform-origin'] = 'top left'
   }
@@ -175,7 +175,7 @@ function back() {
           <div id="download-preview-container" class="relative mt-1">
             <div
               id="download-preview"
-              class="w-[210mm] min-w-[210mm] h-[297mm] min-h-[297mm] overflow-hidden border-1 border-blacks-70 rounded-xl"
+              class="w-[210mm] min-w-[210mm] min-h-[297mm] overflow-hidden border-1 border-blacks-70 rounded-xl"
             >
               <CVPreview id="cv-download-preview" read-only />
             </div>
