@@ -38,7 +38,7 @@ function focusOut(index) {
   <div class="flex items-center gap-2">
     <!-- TODO: icon should use i-custom-->
     <span class="i-origin:contact icon-32" />
-    <div class="flex-1 h-6 overflow-hidden">
+    <div class="flex-1 h-8 overflow-hidden">
       <input
         v-if="isEditName"
         ref="nameInput"
@@ -50,7 +50,7 @@ function focusOut(index) {
       >
       <div
         v-else
-        class="w-full h-full leading leading-6 text-blacks-100 text-ellipsis whitespace-nowrap overflow-hidden bg-transparent"
+        class="w-full h-full flex items-center leading leading-6 text-blacks-100 text-ellipsis whitespace-nowrap overflow-hidden bg-transparent"
         :title="contact.name"
       >
         {{ contact.name }}
@@ -64,7 +64,7 @@ function focusOut(index) {
       />
     </button>
   </div>
-  <div class="flex flex-col gap-6 pr-2 -mr-3 overflow-y-scroll custom-scrollbar">
+  <div class="flex-grow flex flex-col gap-6 pr-2 -mr-3 overflow-y-auto custom-scrollbar last-child-pb-4">
     <p v-if="!contact.isShow" class="paragraph text-blacks-40">
       {{ HIDDEN_INFORMATION }}
     </p>

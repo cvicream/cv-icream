@@ -284,7 +284,7 @@ export default defineComponent({
   @apply pl-0 pr-2 py-1;
 }
 .single-line .ql-editor {
-  @apply p-0 mr-4;
+  @apply h-[22px] p-0 mr-4;
 }
 
 .btn-clear {
@@ -315,7 +315,7 @@ export default defineComponent({
 .ql-editor p,
 .ql-editor ul li,
 .ql-editor ol li {
-  @apply paragraph text-blacks-100;
+  @apply font-mark font-normal text-base leading-[1.375rem] text-blacks-100;
 }
 .ql-disabled .ql-editor p,
 .ql-disabled .ql-editor ul li,
@@ -324,8 +324,7 @@ export default defineComponent({
 }
 
 .ql-editor.ql-blank::before {
-  @apply paragraph text-blacks-40;
-  font-style: normal;
+  @apply font-mark font-normal text-base leading-[1.375rem] text-blacks-40;
 }
 
 .ql-editor a {
