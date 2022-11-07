@@ -34,7 +34,8 @@ const extraPages = ref<number>(0)
 const isShortPage = ref<boolean>(false)
 
 watch(height, () => {
-  extraPages.value = Math.ceil(height.value / scaleA4Height.value) - 1
+  const pages = Math.ceil(height.value / scaleA4Height.value)
+  extraPages.value = pages > 0 ? pages - 1 : 0
 })
 
 const resizer = ref<any>(null)
