@@ -18,7 +18,7 @@ function closeModal() {
     class="fixed top-0 right-0 bottom-0 left-0 z-99 flex justify-center items-center"
     style="background-color: rgba(241, 139, 107, 0.1);"
   >
-    <div class="w-[352px] p-6 bg-white rounded-2xl">
+    <div class="w-[352px] sm:w-[400px] p-6 bg-white rounded-2xl">
       <div class="flex justify-between items-start">
         <div>
           <div class="leading text-primary-100" :style="titleStyle">
