@@ -229,6 +229,13 @@ function getElementInnerDimensions(element) {
 
   return { width, height }
 }
+
+function handleLeftPageClick() {
+
+}
+function handleRightPageClick() {
+
+}
 </script>
 
 <template>
@@ -265,18 +272,32 @@ function getElementInnerDimensions(element) {
             :style="{ top: `${index * scaleA4Height}px`}"
             :class="isShortPage ? '-left-5 -right-5' : '-left-25 -right-25'"
           >
-            <div
-              class="note text-blacks-20 text-right pt-1 border-t border-dashed border-blacks-20"
-              :class="isShortPage ? 'w-10' : 'w-30 pr-7'"
+            <Tooltip
+              placement="right"
+              text="Click ‘Download’ to see how it shows on PDF"
+              style="width: 252px;"
             >
-              {{ isShortPage ? `p.${index + 1}` : `Page ${index + 1}` }}
-            </div>
-            <div
-              class="note text-blacks-20 text-left pt-1 border-t border-dashed border-blacks-20"
-              :class="isShortPage ? 'w-10' : 'w-30 pl-7'"
+              <div
+                class="note text-blacks-20 text-right pt-1 border-t border-dashed border-blacks-20"
+                :class="isShortPage ? 'w-10' : 'w-30 pr-7'"
+                @click="handleLeftPageClick"
+              >
+                {{ isShortPage ? `p.${index + 1}` : `Page ${index + 1}` }}
+              </div>
+            </Tooltip>
+            <Tooltip
+              placement="left"
+              text="Click ‘Download’ to see how it shows on PDF"
+              style="width: 252px;"
             >
-              {{ isShortPage ? `p.${index + 1}` : `Page ${index + 1}` }}
-            </div>
+              <div
+                class="note text-blacks-20 text-left pt-1 border-t border-dashed border-blacks-20"
+                :class="isShortPage ? 'w-10' : 'w-30 pl-7'"
+                @click="handleRightPageClick"
+              >
+                {{ isShortPage ? `p.${index + 1}` : `Page ${index + 1}` }}
+              </div>
+            </Tooltip>
           </div>
         </div>
         <div

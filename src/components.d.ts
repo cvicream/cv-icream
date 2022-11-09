@@ -20,6 +20,7 @@ declare module 'vue' {
     SidebarMenu: typeof import('./components/SidebarMenu.vue')['default']
     ToggleSwitch: typeof import('./components/ToggleSwitch.vue')['default']
     Toolbar: typeof import('./components/Toolbar.vue')['default']
+    Tooltip: typeof import('./components/Tooltip.vue')['default']
   }
 }
 
