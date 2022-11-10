@@ -182,11 +182,11 @@ function back() {
               :class="loading ? 'visible' : 'invisible'"
             >
               <div
-                class="absolute top-0 bottom-0 left-0 right-0 opacity-[0.2] transition"
+                class="absolute top-0 -bottom-[2px] left-0 right-0 rounded-lg opacity-[0.2] transition"
                 :class="loading ? 'bg-primary-100 opacity-[0.2]' : 'bg-transparent'"
               />
               <div
-                class="absolute top-0 bottom-0 left-0 right-0  flex flex-col justify-center items-center"
+                class="absolute top-0 bottom-0 left-0 right-0 flex flex-col justify-center items-center"
                 :class="loading ? 'text-blacks-100' : 'text-transparent'"
               >
                 <span class="i-custom:download w-6 h-6 transition" />
