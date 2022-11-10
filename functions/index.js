@@ -23,7 +23,7 @@ exports.generatePdf = functions.runWith(options).https.onRequest(
     const data = body.data
 
     // launch puppeteer in headless mode and without sandbox
-    const browser = await puppeteer.launch({ headless: true, args: ['--no-sandbox', '--disable-setuid-sandbox'] })
+    const browser = await puppeteer.launch({ headless: true, args: ['--no-sandbox', '--disable-setuid-sandbox', '--font-render-hinting=none'] })
 
     try {
       const page = await browser.newPage()
