@@ -87,7 +87,7 @@ async function sendFeedback() {
         It doesn't look quite right.
       </p>
     </div>
-    <div class="flex flex-col gap-6 mt-8 sm:flex-row sm:justify-between">
+    <div class="flex flex-col gap-5 sm:gap-6 mt-8 sm:flex-row sm:justify-between">
       <button
         class="sm:flex-1 btn-secondary px-8 flex-shrink-0"
         @click="toggle"

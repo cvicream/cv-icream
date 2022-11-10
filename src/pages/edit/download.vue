@@ -130,7 +130,7 @@ function back() {
   </div>
   <div class="flex flex-col gap-6 pr-2 -mr-3 overflow-y-scroll custom-scrollbar">
     <div>
-      <div class="rounded-xl px-4 py-6 flex flex-col gap-6 bg-primary-10">
+      <div class="rounded-xl px-4 py-6 flex flex-col gap-5 sm:gap-6 bg-primary-10">
         <div>
           <label class="block note text-blacks-70">File Type</label>
           <div class="flex items-center w-full h-[46px] bg-white rounded-xl px-4 py-3 mt-1">
