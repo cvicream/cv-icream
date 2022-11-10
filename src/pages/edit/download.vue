@@ -157,7 +157,7 @@ function back() {
 
     <FeedbackModal
       title="Are you happy with our service?"
-      subtitle="Leave a message to let us know whether you are happy with our service or anything we can improve : )"
+      subtitle="Leave a message to let us know if you are happy with our service or anything we can improve : )"
       :visible="feedbackVisible"
       :toggle="toggleFeedbackModal"
     />
