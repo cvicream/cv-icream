@@ -182,7 +182,7 @@ function back() {
               :class="loading ? 'visible' : 'invisible'"
             >
               <div
-                class="absolute top-0 -bottom-[2px] left-0 right-0 rounded-lg opacity-[0.2] transition"
+                class="absolute top-0 -bottom-[2px] left-0 right-0 rounded-md opacity-[0.2] transition"
                 :class="loading ? 'bg-primary-100 opacity-[0.2]' : 'bg-transparent'"
               />
               <div
