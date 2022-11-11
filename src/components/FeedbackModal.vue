@@ -36,7 +36,7 @@ async function sendFeedback() {
   try {
     const url = 'https://script.google.com/macros/s/AKfycbxq_a3TUrbsvWHxASqFqouHQ-12J2QQbYjvyumY4-DCc2d_Kb07pBAe_-NCuQ9t878Z/exec'
     await fetch(`${url}?${new URLSearchParams({
-      name: name.value,
+      name: name.value.trim(),
       email: email.value.trim(),
       content: content.value,
     })}`)
