@@ -17,7 +17,7 @@ const loading = ref(false)
 const isEmailFocus = ref(false)
 
 const isEmailValid = computed(() => {
-  return validateEmail(email.value)
+  return validateEmail(email.value.trim())
 })
 const enable = computed(() => {
   return content.value && name.value && email.value && isEmailValid.value
@@ -37,7 +37,7 @@ async function sendFeedback() {
     const url = 'https://script.google.com/macros/s/AKfycbxq_a3TUrbsvWHxASqFqouHQ-12J2QQbYjvyumY4-DCc2d_Kb07pBAe_-NCuQ9t878Z/exec'
     await fetch(`${url}?${new URLSearchParams({
       name: name.value,
-      email: email.value,
+      email: email.value.trim(),
       content: content.value,
     })}`)
     props.toggle()
