@@ -20,7 +20,10 @@ const isEmailValid = computed(() => {
   return validateEmail(email.value.trim())
 })
 const enable = computed(() => {
-  return content.value && name.value && email.value && isEmailValid.value
+  return content.value
+    && name.value
+    && email.value && validateEmail(email.value) && isEmailValid.value
+    && !loading.value
 })
 
 function reset() {

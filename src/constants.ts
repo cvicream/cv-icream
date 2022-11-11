@@ -5,6 +5,9 @@ export const MAX_SIDEBAR_WIDTH = 834
 export const MIN_SIDEBAR_WIDTH = 390
 export const MOBILE_BREAKPOINT = 640
 export const SCALES = [25, 50, 100, 200]
+export const A4_WIDTH_PX = 794
+export const A4_HEIGHT_PX = 1122.5
+export const PAGE_BREAKPOINT = 1340
 
 export const LAYOUTS = [
   {

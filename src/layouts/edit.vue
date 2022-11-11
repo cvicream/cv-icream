@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import { computed, onBeforeMount, onMounted, onUnmounted, ref } from 'vue'
+import { useElementSize } from '@vueuse/core'
 import { storeToRefs } from 'pinia'
 import { useUserStore } from '~/stores/user'
 import { useToolbarStore } from '~/stores/toolbar'
 import { getColor, getStorage, hasStorage, isMobileDevice, setCssVariable, setStatus } from '~/utils'
-import { MAX_SIDEBAR_WIDTH, MIN_SIDEBAR_WIDTH, MOBILE_BREAKPOINT, SCALES } from '~/constants'
+import { A4_HEIGHT_PX, MAX_SIDEBAR_WIDTH, MIN_SIDEBAR_WIDTH, MOBILE_BREAKPOINT, PAGE_BREAKPOINT, SCALES } from '~/constants'
 
 const user = useUserStore()
 const toolbar = useToolbarStore()
@@ -22,6 +23,19 @@ const cvPreviewWidth = computed(() => {
 const cvPreviewHeight = computed(() => {
   const height = 297 * scale.value / 100
   return `${height}mm`
+})
+
+const scaleA4Height = computed(() => {
+  return A4_HEIGHT_PX * scale.value / 100
+})
+const cvPreview = ref<any>(null)
+const { height } = useElementSize(cvPreview)
+const extraPages = ref<number>(0)
+const isShortPage = ref<boolean>(false)
+
+watch(height, () => {
+  const pages = Math.ceil(height.value / scaleA4Height.value)
+  extraPages.value = pages > 0 ? pages - 1 : 0
 })
 
 const resizer = ref<any>(null)
@@ -100,6 +114,8 @@ function onCollapse() {
 }
 
 function resize() {
+  isShortPage.value = window.innerWidth < PAGE_BREAKPOINT
+
   if (window.innerWidth <= MOBILE_BREAKPOINT) {
     isMobile.value = true
     isDesignBarOpen.value = true
@@ -199,7 +215,7 @@ function zoomOut() {
 function zoomFit() {
   if (leftSide.value) {
     const { width, height } = getElementInnerDimensions(leftSide.value)
-    scale.value = (width > height) ? Math.floor(height * 100 / 1122.5) : Math.floor(width * 100 / 793.7)
+    scale.value = (width > height) ? Math.floor(height * 100 / scaleA4Height.value) : Math.floor(width * 100 / 793.7)
   }
 }
 
@@ -213,6 +229,13 @@ function getElementInnerDimensions(element) {
 
   return { width, height }
 }
+
+function handleLeftPageClick() {
+
+}
+function handleRightPageClick() {
+
+}
 </script>
 
 <template>
@@ -222,24 +245,59 @@ function getElementInnerDimensions(element) {
     <div class="w-full h-[calc(100%-137px)] border-b-1 border-blacks-20 sm:flex sm:flex-row sm:h-[calc(100%-57px)] sm:border-0 overflow-hidden">
       <div
         ref="leftSide"
-        class="h-[calc(100%-8px)] bg-white px-3 py-7 overflow-auto custom-scrollbar flex-grow flex-shrink sm:px-7 sm:py-15 m-1"
+        class="h-[calc(100%-8px)] bg-white px-3 pt-7 overflow-auto custom-scrollbar flex-grow flex-shrink sm:px-7 sm:pt-15 m-1"
         :class="{ 'absolute hidden': isMobile && !isCVPreviewVisible }"
       >
         <div
-          class="mx-auto"
+          class="mx-auto relative"
           :style="{
             width: cvPreviewWidth,
             height: cvPreviewHeight,
           }"
         >
           <div
-            class="w-[210mm] h-[297mm]"
+            ref="cvPreview"
+            class="w-[210mm] min-h-[297mm] pb-7 sm:pb-15"
             :style="{
               transform: `scale(${scale}%)`,
               'transform-origin': '0 0',
             }"
           >
             <CVPreview id="cv-preview" />
+          </div>
+          <div
+            v-for="index in extraPages"
+            :key="index"
+            class="absolute flex justify-between"
+            :style="{ top: `${index * scaleA4Height}px`}"
+            :class="isShortPage ? '-left-5 -right-5' : '-left-25 -right-25'"
+          >
+            <Tooltip
+              placement="right"
+              text="Click ‘Download’ to see how it shows on PDF"
+              style="width: 252px;"
+            >
+              <div
+                class="note text-blacks-20 text-right pt-1 border-t border-dashed border-blacks-20"
+                :class="isShortPage ? 'w-10' : 'w-30 pr-7'"
+                @click="handleLeftPageClick"
+              >
+                {{ isShortPage ? `p.${index + 1}` : `Page ${index + 1}` }}
+              </div>
+            </Tooltip>
+            <Tooltip
+              placement="left"
+              text="Click ‘Download’ to see how it shows on PDF"
+              style="width: 252px;"
+            >
+              <div
+                class="note text-blacks-20 text-left pt-1 border-t border-dashed border-blacks-20"
+                :class="isShortPage ? 'w-10' : 'w-30 pl-7'"
+                @click="handleRightPageClick"
+              >
+                {{ isShortPage ? `p.${index + 1}` : `Page ${index + 1}` }}
+              </div>
+            </Tooltip>
           </div>
         </div>
         <div
@@ -348,5 +406,9 @@ function getElementInnerDimensions(element) {
 }
 .resizer::before:hover {
   @apply cursor-[col-resize];
+}
+
+.fix-padding-bottom > *:last-child {
+  margin-bottom: 28px;
 }
 </style>

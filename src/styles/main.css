@@ -10,7 +10,26 @@
     url('../assets/fonts/mark-pro/@font-face/7200c6dd8ac604abe09f5159e53a40c0.ttf') format('truetype'), /* chrome、firefox、opera、Safari, Android, iOS 4.2+ */
     url('../assets/fonts/mark-pro/@font-face/7200c6dd8ac604abe09f5159e53a40c0.svg#Mark Pro') format('svg'); /* iOS 4.1- */
 }
-
+@font-face {
+  font-family: 'Arial';
+  src: url('../assets/fonts/arial/arial-normal.ttf');
+}
+@font-face {
+  font-family: 'Georgia';
+  src: url('../assets/fonts/georgia/georgia-normal.ttf');
+}
+@font-face {
+  font-family: 'Gill Sans';
+  src: url('../assets/fonts/gillsans/GillSansStd.otf');
+}
+@font-face {
+  font-family: 'Helvetica';
+  src: url('../assets/fonts/helvetica/helvetica.ttf');
+}
+@font-face {
+  font-family: 'Times New Roman';
+  src: url('../assets/fonts/times-new-roman/times-new-roman-400.ttf');
+}
 @font-face {
   font-family: 'Lato';
   font-style: normal;
