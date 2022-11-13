@@ -52,7 +52,7 @@ function getPreviousUrl() {
 }
 
 function getJsonUpload() {
-  return new Promise((resolve) => {
+  return new Promise((resolve, reject) => {
     const inputFileElement = document.createElement('input')
     inputFileElement.setAttribute('type', 'file')
     inputFileElement.setAttribute('multiple', 'false')
@@ -61,8 +61,12 @@ function getJsonUpload() {
     inputFileElement.addEventListener('change', (event) => {
       const { files } = event.target as HTMLInputElement
       if (!files) return
-
-      resolve(files[0].text())
+      const fileName = files[0].name
+      const fileType = fileName.slice(-DRAFT_FILE_TYPE.length)
+      if (fileType === DRAFT_FILE_TYPE)
+        resolve(files[0].text())
+      else
+        reject(files[0])
     }, false)
     inputFileElement.click()
   })

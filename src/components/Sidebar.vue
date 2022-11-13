@@ -179,7 +179,7 @@ function onMenuClick(path) {
 <template>
   <div ref="sidebar" class="sidebar w-full h-full bg-white relative flex">
     <div
-      class="h-full py-5 bg-white absolute top-0 left-0 z-1 sm:overflow-y-auto transition-all duration-100 flex flex-col gap-4"
+      class="h-full pt-5 bg-white absolute top-0 left-0 z-1 sm:overflow-y-auto transition-all duration-100 flex flex-col gap-4"
       :class="isOpen ? 'sm:w-[236px] px-5' : 'sm:w-[64px] px-1'"
     >
       <button
@@ -191,7 +191,7 @@ function onMenuClick(path) {
         <span v-else class="i-custom:collapse w-6 h-6 text-blacks-40" />
       </button>
 
-      <div class="flex flex-col gap-4 overflow-y-auto disable-scrollbar">
+      <div class="flex flex-col gap-4 overflow-y-auto disable-scrollbar last-child-pb-4">
         <SidebarMenu
           v-for="element in sidebarMenus.filter(item => !item.draggable)"
           :key="element.path"
@@ -228,7 +228,7 @@ function onMenuClick(path) {
 
     <div
       class="w-[calc(100%-64px)] h-full ml-[64px] bg-white flex flex-col gap-6 px-4"
-      :class="!isActivePath('/edit/download') ? 'py-8' : 'py-4'"
+      :class="!isActivePath('/edit/download') ? 'pt-8' : 'pt-4'"
       :style="`margin-left: ${menuOpenWidth}px`"
     >
       <router-view :key="timestamp" />

@@ -85,6 +85,7 @@ const { currentState } = storeToRefs(toolbar)
   <div
     :id="id"
     class="w-full h-full bg-white flex-shrink-0 p-6 shadow-custom cv-preview"
+    style="min-height: inherit;"
   >
     <div
       class="w-full h-full"

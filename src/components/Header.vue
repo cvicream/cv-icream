@@ -12,6 +12,7 @@ const props = defineProps<{
 
 const isActionActive = ref(false)
 const feedbackVisible = ref(false)
+const upload = ref(false)
 const feedbackNotificationVisible = ref(false)
 
 const router = useRouter()
@@ -104,27 +105,33 @@ function exportJsonFile() {
 
 async function importJsonFile() {
   closeAction()
-  const jsonFile = await getJsonUpload()
-  const obj = JSON.parse(jsonFile as string)
-  Object.keys(obj).forEach((key) => {
-    if (key === 'user') {
-      const subObj = obj[key]
-      Object.keys(subObj).forEach((subKey) => {
-        user.$patch((state) => {
-          state[subKey] = subObj[subKey]
+  upload.value = false
+  try {
+    const json = await getJsonUpload()
+    const obj = JSON.parse(json as string)
+    Object.keys(obj).forEach((key) => {
+      if (key === 'user') {
+        const subObj = obj[key]
+        Object.keys(subObj).forEach((subKey) => {
+          user.$patch((state) => {
+            state[subKey] = subObj[subKey]
+          })
         })
-      })
-      user.updateTimestamp()
-    }
-    else if (key === 'toolbar') {
-      const subObj = obj[key]
-      Object.keys(subObj).forEach((subKey) => {
-        toolbar.$patch((state) => {
-          state.currentState[subKey] = subObj[subKey]
+        user.updateTimestamp()
+      }
+      else if (key === 'toolbar') {
+        const subObj = obj[key]
+        Object.keys(subObj).forEach((subKey) => {
+          toolbar.$patch((state) => {
+            state.currentState[subKey] = subObj[subKey]
+          })
         })
-      })
-    }
-  })
+      }
+    })
+  }
+  catch (error) {
+    upload.value = true
+  }
 }
 
 function onFocusOut() {
@@ -215,6 +222,31 @@ window.addEventListener('click', closeAction, false)
     :notify="toggleFeedbackNotification"
   />
 
+  <Modal
+    v-show="upload"
+    title="Upload Your CV Draft"
+    :subtitle="`Please upload the file with the format in ‘.${DRAFT_FILE_TYPE}’.`"
+    @close="upload = false"
+  >
+    <div class="flex justify-between gap-6 mt-6 sm:flex-row">
+      <button
+        class="btn-secondary px-12 flex-shrink-0"
+        @click="upload = false"
+      >
+        <span class="subleading">
+          Cancel
+        </span>
+      </button>
+      <button
+        class="btn-primary px-12 flex-shrink-0"
+        @click="importJsonFile"
+      >
+        <span class="subleading">
+          Got it!
+        </span>
+      </button>
+    </div>
+  </Modal>
   <div
     v-if="feedbackNotificationVisible"
     class="fixed bottom-8 left-0 right-0 flex justify-center items-center z-99"
