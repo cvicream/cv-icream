@@ -179,7 +179,7 @@ export default defineComponent({
       content-type="html"
       :enable="enable"
       :read-only="!enable"
-      :placeholder="content ? '' : placeholder"
+      :placeholder="(content.match('') || content.match('<p><br></p>')) ? placeholder:''"
       theme=""
       :toolbar="`#${toolbarId}`"
       :class="{ 'single-line': isSingleLine }"
@@ -325,6 +325,7 @@ export default defineComponent({
 
 .ql-editor.ql-blank::before {
   @apply font-mark font-normal text-base leading-[1.375rem] text-blacks-40;
+  font-style: normal;
 }
 
 .ql-editor a {
