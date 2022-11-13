@@ -90,9 +90,9 @@ async function sendFeedback() {
         It doesn't look quite right.
       </p>
     </div>
-    <div class="flex flex-col gap-6 mt-8 sm:flex-row sm:justify-between">
+    <div class="flex flex-col gap-5 sm:gap-6 mt-8 sm:flex-row sm:justify-between">
       <button
-        class="btn-secondary px-8 flex-shrink-0"
+        class="sm:flex-1 btn-secondary px-8 flex-shrink-0"
         @click="toggle"
       >
         <span class="subleading">
@@ -100,7 +100,7 @@ async function sendFeedback() {
         </span>
       </button>
       <button
-        class="btn-primary px-8 flex-grow flex-shrink-0"
+        class="sm:flex-1 btn-primary px-8 flex-grow flex-shrink-0"
         :class="{ 'text-blacks-40 bg-blacks-10': !enable}"
         :disabled="!enable"
         @click="sendFeedback"
