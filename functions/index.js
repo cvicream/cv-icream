@@ -40,7 +40,7 @@ exports.generatePdf = functions.runWith(options).https.onRequest(
       })
 
       res.setHeader('Content-Type', 'application/pdf')
-      res.setHeader('Content-Disposition', `attachment; filename=${fileName}.pdf`)
+      res.setHeader('Content-Disposition', `attachment; filename=${encodeURIComponent(fileName)}.pdf`)
       res.send(pdf)
     }
     catch (error) {
