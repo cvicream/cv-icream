@@ -92,10 +92,9 @@ function redirect(path) {
       />
     </div>
 
-    <!-- add padding between summary description and experience -->
     <section
       v-else-if="element.key === 'summary' && summary.isShow"
-      class="flex flex-col gap-2 not-break-out pb-5 p-2"
+      class="p-2 flex flex-col gap-2 not-break-out"
       :class="getEditingStyle(summary.isEditing)"
     >
       <div
@@ -119,10 +118,9 @@ function redirect(path) {
       />
     </section>
 
-    <!-- add padding between summary description and experience -->
     <section
       v-else-if="element.key === 'experience' && experience.isShow"
-      class="py-3 not-break-out"
+      class="py-2 not-break-out"
     >
       <div
         :class="getFontSizeClassName(currentState.fontSize).subtitle"
@@ -130,11 +128,9 @@ function redirect(path) {
       >
         {{ experience.name ? experience.name : DEFAULT_TEMPLATE.experience.name }}
       </div>
-      <!-- add padding for each experience -->
       <div
         v-for="(item, index) in experience.list"
         :key="index"
-        class="pb-2"
       >
         <div
           v-if="item.isEditing || !isObjectEmpty(item)"
@@ -195,7 +191,6 @@ function redirect(path) {
       <div
         v-for="(item, index) in project.list"
         :key="index"
-        class="pb-2"
       >
         <div
           v-if="item.isEditing || !isObjectEmpty(item)"
@@ -289,7 +284,6 @@ function redirect(path) {
       <div
         v-for="(item, index) in skill.list"
         :key="index"
-        class="pb-2"
       >
         <div
           v-if="item.isEditing || !isObjectEmpty(item)"
@@ -335,7 +329,6 @@ function redirect(path) {
       <div
         v-for="(item, index) in certificate.list"
         :key="index"
-        class="pb-2"
       >
         <div
           v-if="item.isEditing || !isObjectEmpty(item)"
@@ -381,7 +374,6 @@ function redirect(path) {
       <div
         v-for="(item, index) in education.list"
         :key="index"
-        class="pb-2"
       >
         <div
           v-if="item.isEditing || !isObjectEmpty(item)"

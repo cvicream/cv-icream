@@ -114,7 +114,7 @@ const { currentState } = storeToRefs(toolbar)
             v-model="leftList"
             group="section"
             item-key="key"
-            class="h-full"
+            class="h-full flex flex-col gap-2"
             delay-on-touch-only
             :delay="isMobileDevice() ? 250 : 0"
           >
@@ -144,7 +144,7 @@ const { currentState } = storeToRefs(toolbar)
             v-model="rightList"
             group="section"
             item-key="key"
-            class="h-full"
+            class="h-full flex flex-col gap-2"
             delay-on-touch-only
             :delay="isMobileDevice() ? 250 : 0"
           >
