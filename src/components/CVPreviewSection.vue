@@ -75,7 +75,7 @@ function redirect(path) {
   >
     <div
       v-if="element.key === 'about'"
-      class="p-2 flex items-baseline flex-wrap gap-4 not-break-out"
+      class="p-2 flex items-baseline flex-wrap gap-6 not-break-out"
       :class="getEditingStyle(about.isEditing)"
     >
       <div
@@ -106,8 +106,8 @@ function redirect(path) {
             return !!(isEditorEmpty(tag) ? getHintText(summary.isEditing, DEFAULT_TEMPLATE.summary.hashtags[index]) : tag)
           })"
           :key="item"
-          class="hashtag text-primary-100 bg-primary-10"
-          :class="[summary.isEditing || isHover ? 'bg-white' : 'bg-primary-10', getFontSizeClassName(currentState.fontSize).subtitle]"
+          class="hashtag text-blacks-70 bg-primary-20"
+          :class="[summary.isEditing || isHover ? 'bg-white' : '', getFontSizeClassName(currentState.fontSize).subtitle]"
           v-html="isEditorEmpty(item) ? getHintText(summary.isEditing, DEFAULT_TEMPLATE.summary.hashtags[index]) : item"
         />
       </div>
@@ -156,7 +156,7 @@ function redirect(path) {
                     || showSection(item.isEditing, DEFAULT_TEMPLATE.experience.list[0].subtitle2, item.subtitle2)
                   "
                   :class="getFontSizeClassName(currentState.fontSize).subtitle"
-                  class="text-blacks-40"
+                  class="text-blacks-60"
                   v-html="showSection(item.isEditing, DEFAULT_TEMPLATE.experience.list[0].subtitle1, item.subtitle1)"
                 />
                 <div
@@ -164,7 +164,7 @@ function redirect(path) {
                     || showSection(item.isEditing, DEFAULT_TEMPLATE.experience.list[0].subtitle2, item.subtitle2)
                   "
                   :class="getFontSizeClassName(currentState.fontSize).subtitle"
-                  class="text-blacks-40"
+                  class="text-blacks-60"
                   v-html="showSection(item.isEditing, DEFAULT_TEMPLATE.experience.list[0].subtitle2, item.subtitle2)"
                 />
               </div>
@@ -217,7 +217,7 @@ function redirect(path) {
                   || showSection(item.isEditing, DEFAULT_TEMPLATE.project.list[0].subtitle2, item.subtitle2)
                 "
                 :class="getFontSizeClassName(currentState.fontSize).subtitle"
-                class="text-blacks-40"
+                class="text-blacks-60"
                 v-html="showSection(item.isEditing, DEFAULT_TEMPLATE.project.list[0].subtitle1, item.subtitle1)"
               />
               <div
@@ -225,7 +225,7 @@ function redirect(path) {
                   || showSection(item.isEditing, DEFAULT_TEMPLATE.project.list[0].subtitle2, item.subtitle2)
                 "
                 :class="getFontSizeClassName(currentState.fontSize).subtitle"
-                class="text-blacks-40"
+                class="text-blacks-60"
                 v-html="showSection(item.isEditing, DEFAULT_TEMPLATE.project.list[0].subtitle2, item.subtitle2)"
               />
             </div>
@@ -304,7 +304,7 @@ function redirect(path) {
             <div
               v-if="showSection(item.isEditing, DEFAULT_TEMPLATE.skill.list[0].subtitle,item.subtitle)"
               :class="getFontSizeClassName(currentState.fontSize).subtitle"
-              class="text-blacks-40"
+              class="text-blacks-60"
               v-html="showSection(item.isEditing, DEFAULT_TEMPLATE.skill.list[0].subtitle,item.subtitle)"
             />
             <div
@@ -349,7 +349,7 @@ function redirect(path) {
             <div
               v-if="showSection(item.isEditing, DEFAULT_TEMPLATE.certificate.list[0].subtitle, item.subtitle)"
               :class="getFontSizeClassName(currentState.fontSize).subtitle"
-              class="text-blacks-40"
+              class="text-blacks-60"
               v-html="showSection(item.isEditing, DEFAULT_TEMPLATE.certificate.list[0].subtitle, item.subtitle)"
             />
             <div
@@ -394,7 +394,7 @@ function redirect(path) {
             <div
               v-if="showSection(item.isEditing, DEFAULT_TEMPLATE.education.list[0].subtitle, item.subtitle)"
               :class="getFontSizeClassName(currentState.fontSize).subtitle"
-              class="text-blacks-40"
+              class="text-blacks-60"
               v-html="showSection(item.isEditing, DEFAULT_TEMPLATE.education.list[0].subtitle, item.subtitle)"
             />
             <div
