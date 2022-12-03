@@ -108,7 +108,7 @@ function redirect(path) {
           })"
           :key="item"
           class="hashtag text-primary-100 bg-primary-10"
-          :class="getFontSizeClassName(currentState.fontSize).subtitle"
+          :class="[summary.isEditing || isHover ? 'bg-white' : 'bg-primary-10', getFontSizeClassName(currentState.fontSize).subtitle]"
           v-html="isEditorEmpty(item) ? getHintText(summary.isEditing, DEFAULT_TEMPLATE.summary.hashtags[index]) : item"
         />
       </div>
