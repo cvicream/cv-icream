@@ -29,6 +29,7 @@ const router = useRouter()
 
 function getFontSizeClassName(id: string) {
   return {
+    heading: `heading-${id}`,
     title: `title-${id}`,
     subtitle: `subtitle-${id}`,
     paragraph: `paragraph-${id}`,
@@ -79,19 +80,22 @@ function redirect(path) {
     >
       <div
         v-if="about.name"
-        class="font-normal text-primary-100 text-size-[36px] leading-[41px]"
+        class="font-normal text-primary-100"
+        :class="getFontSizeClassName(currentState.fontSize).heading"
         v-html="isEditorEmpty(about.name) ? DEFAULT_TEMPLATE.about.name : about.name"
       />
       <div
         v-if="about.jobTitle"
-        class="font-normal text-blacks-100 text-size-[14px] leading-[16px]"
+        :class="getFontSizeClassName(currentState.fontSize).title"
+        class="font-normal text-blacks-100"
         v-html="isEditorEmpty(about.jobTitle) ? getHintText(about.isEditing, DEFAULT_TEMPLATE.about.jobTitle) : about.jobTitle"
       />
     </div>
 
+    <!-- add padding between summary description and experience -->
     <section
       v-else-if="element.key === 'summary' && summary.isShow"
-      class="p-2 flex flex-col gap-2 not-break-out"
+      class="flex flex-col gap-2 not-break-out pb-5 p-2"
       :class="getEditingStyle(summary.isEditing)"
     >
       <div
@@ -104,7 +108,7 @@ function redirect(path) {
           })"
           :key="item"
           class="hashtag text-primary-100 bg-primary-10"
-          :class="summary.isEditing || isHover ? 'bg-white' : 'bg-primary-10'"
+          :class="getFontSizeClassName(currentState.fontSize).subtitle"
           v-html="isEditorEmpty(item) ? getHintText(summary.isEditing, DEFAULT_TEMPLATE.summary.hashtags[index]) : item"
         />
       </div>
@@ -115,9 +119,10 @@ function redirect(path) {
       />
     </section>
 
+    <!-- add padding between summary description and experience -->
     <section
       v-else-if="element.key === 'experience' && experience.isShow"
-      class="py-2 not-break-out"
+      class="py-3 not-break-out"
     >
       <div
         :class="getFontSizeClassName(currentState.fontSize).subtitle"
@@ -125,9 +130,11 @@ function redirect(path) {
       >
         {{ experience.name ? experience.name : DEFAULT_TEMPLATE.experience.name }}
       </div>
+      <!-- add padding for each experience -->
       <div
         v-for="(item, index) in experience.list"
         :key="index"
+        class="pb-2"
       >
         <div
           v-if="item.isEditing || !isObjectEmpty(item)"
@@ -188,6 +195,7 @@ function redirect(path) {
       <div
         v-for="(item, index) in project.list"
         :key="index"
+        class="pb-2"
       >
         <div
           v-if="item.isEditing || !isObjectEmpty(item)"
@@ -281,6 +289,7 @@ function redirect(path) {
       <div
         v-for="(item, index) in skill.list"
         :key="index"
+        class="pb-2"
       >
         <div
           v-if="item.isEditing || !isObjectEmpty(item)"
@@ -326,6 +335,7 @@ function redirect(path) {
       <div
         v-for="(item, index) in certificate.list"
         :key="index"
+        class="pb-2"
       >
         <div
           v-if="item.isEditing || !isObjectEmpty(item)"
@@ -371,6 +381,7 @@ function redirect(path) {
       <div
         v-for="(item, index) in education.list"
         :key="index"
+        class="pb-2"
       >
         <div
           v-if="item.isEditing || !isObjectEmpty(item)"
