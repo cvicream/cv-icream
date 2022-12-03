@@ -106,14 +106,14 @@ function redirect(path) {
             return !!(isEditorEmpty(tag) ? getHintText(summary.isEditing, DEFAULT_TEMPLATE.summary.hashtags[index]) : tag)
           })"
           :key="item"
-          class="hashtag text-blacks-70 bg-primary-20"
-          :class="[summary.isEditing || isHover ? 'bg-white' : 'bg-primary-20', getFontSizeClassName(currentState.fontSize).subtitle]"
+          class="hashtag text-blacks-100 bg-primary-10"
+          :class="[summary.isEditing || isHover ? 'bg-white' : '', getFontSizeClassName(currentState.fontSize).subtitle]"
           v-html="isEditorEmpty(item) ? getHintText(summary.isEditing, DEFAULT_TEMPLATE.summary.hashtags[index]) : item"
         />
       </div>
       <div
         :class="getFontSizeClassName(currentState.fontSize).paragraph"
-        class="text-blacks-70"
+        class="text-blacks-100"
         v-html="isEditorEmpty(summary.paragraph) ? getHintText(summary.isEditing, DEFAULT_TEMPLATE.summary.paragraph) : summary.paragraph"
       />
     </section>
@@ -171,7 +171,7 @@ function redirect(path) {
               <div
                 v-if="showSection(item.isEditing, DEFAULT_TEMPLATE.experience.list[0].paragraph, item.paragraph)"
                 :class="getFontSizeClassName(currentState.fontSize).paragraph"
-                class="text-blacks-70"
+                class="text-blacks-100"
                 v-html="showSection(item.isEditing, DEFAULT_TEMPLATE.experience.list[0].paragraph, item.paragraph)"
               />
             </div>
@@ -232,7 +232,7 @@ function redirect(path) {
             <div
               v-if="showSection(item.isEditing, DEFAULT_TEMPLATE.project.list[0].paragraph, item.paragraph)"
               :class="getFontSizeClassName(currentState.fontSize).paragraph"
-              class="text-blacks-70"
+              class="text-blacks-100"
               v-html="showSection(item.isEditing, DEFAULT_TEMPLATE.project.list[0].paragraph, item.paragraph)"
             />
           </div>
@@ -265,7 +265,7 @@ function redirect(path) {
             <div
               v-if="showSection(item.isEditing, DEFAULT_TEMPLATE.contact.list[0].paragraph, item.paragraph)"
               :class="getFontSizeClassName(currentState.fontSize).paragraph"
-              class="text-blacks-70"
+              class="text-blacks-100"
               v-html="showSection(item.isEditing, DEFAULT_TEMPLATE.contact.list[0].paragraph, item.paragraph)"
             />
           </div>
@@ -310,7 +310,7 @@ function redirect(path) {
             <div
               v-if="showSection(item.isEditing, DEFAULT_TEMPLATE.skill.list[0].paragraph,item.paragraph)"
               :class="getFontSizeClassName(currentState.fontSize).paragraph"
-              class="text-blacks-70"
+              class="text-blacks-100"
               v-html="showSection(item.isEditing, DEFAULT_TEMPLATE.skill.list[0].paragraph,item.paragraph)"
             />
           </div>
@@ -355,7 +355,7 @@ function redirect(path) {
             <div
               v-if="showSection(item.isEditing, DEFAULT_TEMPLATE.certificate.list[0].paragraph, item.paragraph)"
               :class="getFontSizeClassName(currentState.fontSize).paragraph"
-              class="text-blacks-70"
+              class="text-blacks-100"
               v-html="showSection(item.isEditing, DEFAULT_TEMPLATE.certificate.list[0].paragraph, item.paragraph)"
             />
           </div>
@@ -400,7 +400,7 @@ function redirect(path) {
             <div
               v-if="showSection(item.isEditing, DEFAULT_TEMPLATE.education.list[0].paragraph, item.paragraph)"
               :class="getFontSizeClassName(currentState.fontSize).paragraph"
-              class="text-blacks-70"
+              class="text-blacks-100"
               v-html="showSection(item.isEditing, DEFAULT_TEMPLATE.education.list[0].paragraph, item.paragraph)"
             />
           </div>
@@ -433,7 +433,7 @@ function redirect(path) {
             >
               <a
                 v-if="showSection(item.isEditing, DEFAULT_TEMPLATE.social.list[0].type, item.type)"
-                class="text-blacks-70"
+                class="text-blacks-100"
                 :href="item.link"
                 target="_blank"
                 v-html="showSection(item.isEditing, DEFAULT_TEMPLATE.social.list[0].type, item.type)"
