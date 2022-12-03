@@ -1,6 +1,6 @@
 export const LOCAL_STORAGE_KEY = 'cvicream'
 export const DRAFT_FILE_TYPE = 'cvicream'
-export const HIDDEN_INFORMATION = 'The session is currently hidden on CV. Click the toggle if you would like to show it on CV.'
+export const HIDDEN_INFORMATION = 'This section is currently hidden on CV. Click the toggle if you would like to show it on CV.'
 export const MAX_SIDEBAR_WIDTH = 834
 export const MIN_SIDEBAR_WIDTH = 390
 export const MOBILE_BREAKPOINT = 640
@@ -190,7 +190,7 @@ export const TEMPLATES = [
       isShow: true,
       isEditing: false,
       hashtags: ['#TeamPlayer', '#SelfMotivated', '#CanDoAttitude'],
-      paragraph: 'I care about the details and consider the UI/UX design of affordances to be crucial in creating effective, intuitive interfaces. I consider prototyping to be my weapon of choice in thinking through interaction models and new possibilities. I thrive on learning new things — I enjoy exploring new paths to familiar places. I really love snowboarding (I like both park and powder days). I also really enjoy exploring the amazing trails and landscapes around the bay area on my mountain bike. I’ve traveled a lot and enjoy seeing things from a fresh perspective :)',
+      paragraph: 'I care about the details and consider the UI/UX design to be crucial in creating effective and intuitive interfaces. I consider prototyping to be my weapon of choice in thinking through interaction models and new possibilities. I thrive on learning new things — I enjoy exploring new paths to familiar places. I really love snowboarding (I like both park and powder days). I also really enjoy exploring the amazing trails and landscapes around the bay area on my mountain bike. I’ve traveled a lot and enjoy seeing things from a fresh perspective :)',
     },
     experience: {
       isShow: true,
@@ -204,7 +204,7 @@ export const TEMPLATES = [
           subtitle: '',
           subtitle1: 'Company Name',
           subtitle2: 'February 2015 - Present',
-          paragraph: 'Creating functional prototype for an iPad Register product with Flinto alongside various web and client side components. Building a dashboard style guide to unify the design process across Square’s Dashboard. Launched a beta program for Online Store which involved the UX and Visuals for simplified onboarding experience, custom site editor, various templates, and order management.',
+          paragraph: 'Created functional prototype for an iPad Register product with Flinto alongside various web and client side components. Building a dashboard style guide to unify the design process across Square’s Dashboard. Launched a beta program for Online Store which involved the UX and Visuals for simplified onboarding experience, custom site editor, various templates, and order management.',
         },
         {
           isShow: true,
@@ -243,7 +243,7 @@ export const TEMPLATES = [
           isCollapsed: false,
           isEditing: false,
           title: '',
-          subtitle: 'Tool',
+          subtitle: 'Tools',
           subtitle1: '',
           subtitle2: '',
           paragraph:
@@ -254,7 +254,7 @@ export const TEMPLATES = [
           isCollapsed: false,
           isEditing: false,
           title: '',
-          subtitle: 'Language',
+          subtitle: 'Languages',
           subtitle1: '',
           subtitle2: '',
           paragraph:
@@ -400,7 +400,7 @@ Mandarin (native)`,
           isCollapsed: false,
           isEditing: false,
           title: '',
-          subtitle: 'Language',
+          subtitle: 'Languages',
           subtitle1: '',
           subtitle2: '',
           paragraph: '<p>English (fluent)</p><p>Mandarin (native)</p>',
@@ -534,7 +534,7 @@ Mandarin (native)`,
           isCollapsed: false,
           isEditing: false,
           title: '',
-          subtitle: 'Language',
+          subtitle: 'Languages',
           subtitle1: '',
           subtitle2: '',
           paragraph: 'C, C++, Java, SQL, Python, JavaScript, Vue, React',
@@ -544,7 +544,7 @@ Mandarin (native)`,
           isCollapsed: false,
           isEditing: false,
           title: '',
-          subtitle: 'Tool',
+          subtitle: 'Tools',
           subtitle1: '',
           subtitle2: '',
           paragraph: 'Eclipse, Intellij, WebStorm, Node.js',
