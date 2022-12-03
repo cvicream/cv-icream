@@ -137,7 +137,7 @@ function deleteBlock(index: number) {
       {{ HIDDEN_INFORMATION }}
     </p>
     <p v-else class="paragraph text-blacks-70">
-      Tell people more about your working experiences. Share more insights to impress you future employers!
+      Tell people more about your work experiences. Share more insights to impress you future employers!
     </p>
     <div
       v-for="(item, index) in experience.list"

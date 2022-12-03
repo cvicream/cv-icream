@@ -43,7 +43,7 @@ function focusOut(index) {
       {{ HIDDEN_INFORMATION }}
     </p>
     <p v-else class="paragraph text-blacks-70">
-      Let people get to know you quickly by giving them a brief about yourself and what your characteristics are.
+      Let people get to know you quickly by giving them a brief description of yourself and what your characteristics are.
     </p>
     <div
       @focusin="() =>focusIn(index)"
