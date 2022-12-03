@@ -80,14 +80,14 @@ function redirect(path) {
     >
       <div
         v-if="about.name"
-        class="font-normal text-primary-100"
+        class="text-primary-100"
         :class="getFontSizeClassName(currentState.fontSize).heading"
         v-html="isEditorEmpty(about.name) ? DEFAULT_TEMPLATE.about.name : about.name"
       />
       <div
         v-if="about.jobTitle"
         :class="getFontSizeClassName(currentState.fontSize).title"
-        class="font-normal text-blacks-100"
+        class="text-blacks-100"
         v-html="isEditorEmpty(about.jobTitle) ? getHintText(about.isEditing, DEFAULT_TEMPLATE.about.jobTitle) : about.jobTitle"
       />
     </div>
