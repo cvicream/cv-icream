@@ -184,11 +184,16 @@ function onMenuClick(path) {
     >
       <button
         :class="isOpen ? 'self-end' : 'self-center'"
-        :title="isOpen ? 'Hide Sidebar' : 'Open Sidebar'"
         @click="toggleSidebar"
       >
-        <span v-if="isOpen" class="i-custom:expand w-6 h-6 text-blacks-40" />
-        <span v-else class="i-custom:collapse w-6 h-6 text-blacks-40" />
+        <!-- TODO!!!!! -->
+        <Tooltip
+          :placement="isOpen ?'left': 'right'"
+          :text="isOpen ? 'Hide Sidebar' : 'Open Sidebar'"
+        >
+          <span v-if="isOpen" class="i-custom:expand w-6 h-6 text-blacks-40" />
+          <span v-else class="i-custom:collapse w-6 h-6 text-blacks-40" />
+        </Tooltip>
       </button>
 
       <div class="flex flex-col gap-4 overflow-y-auto disable-scrollbar last-child-pb-4">

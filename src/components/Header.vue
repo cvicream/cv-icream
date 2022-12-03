@@ -155,19 +155,29 @@ window.addEventListener('click', closeAction, false)
 </script>
 
 <template>
-  <header class="h-[56px] leading-56px text-center bg-white flex justify-between items-center px-6 py-3">
+  <header class="h-[56px] text-center bg-white flex justify-between items-center px-6 py-3">
     <div class="flex gap-3">
       <a class="btn-icon-32" href="/">
         <span class="i-origin:logo w-6 h-6" />
       </a>
-      <button class="btn-icon-32">
-        <span class="i-custom:idea w-6 h-6" />
-      </button>
-      <button class="btn-icon-32" @click="toggleFeedbackModal">
-        <span class="i-custom:feedback w-6 h-6" />
-      </button>
+      <Tooltip
+        placement="bottom"
+        text="Inspiration"
+      >
+        <button class="btn-icon-32">
+          <span class="i-custom:idea w-6 h-6" />
+        </button>
+      </Tooltip>
+      <Tooltip
+        placement="bottom"
+        text="Feedback"
+      >
+        <button class="btn-icon-32" @click="toggleFeedbackModal">
+          <span class="i-custom:feedback w-6 h-6" />
+        </button>
+      </Tooltip>
     </div>
-    <div v-if="isEdit" @click="toggle">
+    <div v-if="isEdit" class="leading-56px" @click="toggle">
       <button
         class="w-14 h-8 rounded flex justify-center items-center gap-1 hover:bg-primary-10"
         @click.stop="toggle"
