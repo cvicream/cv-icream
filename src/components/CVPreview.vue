@@ -101,7 +101,7 @@ const { currentState } = storeToRefs(toolbar)
       >
         <CVPreviewSection :element="topList[0]" :read-only="readOnly" />
       </div>
-      <div class="flex flex-wrap">
+      <div class="flex flex-wrap gap-y-3">
         <div
           :class="{
             'w-full': currentState.layout === 'layout-full',
@@ -114,7 +114,7 @@ const { currentState } = storeToRefs(toolbar)
             v-model="leftList"
             group="section"
             item-key="key"
-            class="h-full flex flex-col gap-2"
+            class="h-full flex flex-col gap-3"
             delay-on-touch-only
             :delay="isMobileDevice() ? 250 : 0"
           >
@@ -144,7 +144,7 @@ const { currentState } = storeToRefs(toolbar)
             v-model="rightList"
             group="section"
             item-key="key"
-            class="h-full flex flex-col gap-2"
+            class="h-full flex flex-col gap-3"
             delay-on-touch-only
             :delay="isMobileDevice() ? 250 : 0"
           >

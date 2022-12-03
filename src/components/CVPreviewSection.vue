@@ -120,7 +120,7 @@ function redirect(path) {
 
     <section
       v-else-if="element.key === 'experience' && experience.isShow"
-      class="py-2 not-break-out"
+      class="pt-1 not-break-out"
     >
       <div
         :class="getFontSizeClassName(currentState.fontSize).subtitle"
@@ -128,51 +128,53 @@ function redirect(path) {
       >
         {{ experience.name ? experience.name : DEFAULT_TEMPLATE.experience.name }}
       </div>
-      <div
-        v-for="(item, index) in experience.list"
-        :key="index"
-      >
+      <div class="flex flex-col gap-2">
         <div
-          v-if="item.isEditing || !isObjectEmpty(item)"
-          :class="getEditingStyle(item.isEditing)"
+          v-for="(item, index) in experience.list"
+          :key="index"
         >
           <div
-            v-if="item.isShow"
-            class="p-2 flex flex-col gap-1"
+            v-if="item.isEditing || !isObjectEmpty(item)"
+            :class="getEditingStyle(item.isEditing)"
           >
             <div
-              v-if="showSection(item.isEditing, DEFAULT_TEMPLATE.experience.list[0].title, item.title)"
-              :class="getFontSizeClassName(currentState.fontSize).title"
-              class="text-blacks-100"
-              v-html="showSection(item.isEditing, DEFAULT_TEMPLATE.experience.list[0].title, item.title)"
-            />
-            <div
-              v-if="item.isEditing || !isEditorEmpty(item.subtitle1) || !isEditorEmpty(item.subtitle2)"
-              class="flex justify-between"
+              v-if="item.isShow"
+              class="p-2 flex flex-col gap-1"
             >
               <div
-                v-if="showSection(item.isEditing, DEFAULT_TEMPLATE.experience.list[0].subtitle1, item.subtitle1)
-                  || showSection(item.isEditing, DEFAULT_TEMPLATE.experience.list[0].subtitle2, item.subtitle2)
-                "
-                :class="getFontSizeClassName(currentState.fontSize).subtitle"
-                class="text-blacks-40"
-                v-html="showSection(item.isEditing, DEFAULT_TEMPLATE.experience.list[0].subtitle1, item.subtitle1)"
+                v-if="showSection(item.isEditing, DEFAULT_TEMPLATE.experience.list[0].title, item.title)"
+                :class="getFontSizeClassName(currentState.fontSize).title"
+                class="text-blacks-100"
+                v-html="showSection(item.isEditing, DEFAULT_TEMPLATE.experience.list[0].title, item.title)"
               />
               <div
-                v-if="showSection(item.isEditing, DEFAULT_TEMPLATE.experience.list[0].subtitle1, item.subtitle1)
-                  || showSection(item.isEditing, DEFAULT_TEMPLATE.experience.list[0].subtitle2, item.subtitle2)
-                "
-                :class="getFontSizeClassName(currentState.fontSize).subtitle"
-                class="text-blacks-40"
-                v-html="showSection(item.isEditing, DEFAULT_TEMPLATE.experience.list[0].subtitle2, item.subtitle2)"
+                v-if="item.isEditing || !isEditorEmpty(item.subtitle1) || !isEditorEmpty(item.subtitle2)"
+                class="flex justify-between"
+              >
+                <div
+                  v-if="showSection(item.isEditing, DEFAULT_TEMPLATE.experience.list[0].subtitle1, item.subtitle1)
+                    || showSection(item.isEditing, DEFAULT_TEMPLATE.experience.list[0].subtitle2, item.subtitle2)
+                  "
+                  :class="getFontSizeClassName(currentState.fontSize).subtitle"
+                  class="text-blacks-40"
+                  v-html="showSection(item.isEditing, DEFAULT_TEMPLATE.experience.list[0].subtitle1, item.subtitle1)"
+                />
+                <div
+                  v-if="showSection(item.isEditing, DEFAULT_TEMPLATE.experience.list[0].subtitle1, item.subtitle1)
+                    || showSection(item.isEditing, DEFAULT_TEMPLATE.experience.list[0].subtitle2, item.subtitle2)
+                  "
+                  :class="getFontSizeClassName(currentState.fontSize).subtitle"
+                  class="text-blacks-40"
+                  v-html="showSection(item.isEditing, DEFAULT_TEMPLATE.experience.list[0].subtitle2, item.subtitle2)"
+                />
+              </div>
+              <div
+                v-if="showSection(item.isEditing, DEFAULT_TEMPLATE.experience.list[0].paragraph, item.paragraph)"
+                :class="getFontSizeClassName(currentState.fontSize).paragraph"
+                class="text-blacks-70"
+                v-html="showSection(item.isEditing, DEFAULT_TEMPLATE.experience.list[0].paragraph, item.paragraph)"
               />
             </div>
-            <div
-              v-if="showSection(item.isEditing, DEFAULT_TEMPLATE.experience.list[0].paragraph, item.paragraph)"
-              :class="getFontSizeClassName(currentState.fontSize).paragraph"
-              class="text-blacks-70"
-              v-html="showSection(item.isEditing, DEFAULT_TEMPLATE.experience.list[0].paragraph, item.paragraph)"
-            />
           </div>
         </div>
       </div>
@@ -180,7 +182,7 @@ function redirect(path) {
 
     <section
       v-else-if="element.key === 'project' && project.isShow"
-      class="py-2 not-break-out"
+      class="pt-1 not-break-out"
     >
       <div
         :class="getFontSizeClassName(currentState.fontSize).subtitle"
@@ -240,7 +242,7 @@ function redirect(path) {
 
     <section
       v-else-if="element.key === 'contact'"
-      class="py-2 not-break-out"
+      class="pt-1 not-break-out"
     >
       <div
         :class="getFontSizeClassName(currentState.fontSize).subtitle"
@@ -273,7 +275,7 @@ function redirect(path) {
 
     <section
       v-else-if="element.key === 'skill' && skill.isShow"
-      class="py-2 not-break-out"
+      class="pt-1 not-break-out"
     >
       <div
         :class="getFontSizeClassName(currentState.fontSize).subtitle"
@@ -318,7 +320,7 @@ function redirect(path) {
 
     <section
       v-else-if="element.key === 'certificate' && certificate.isShow"
-      class="py-2 not-break-out"
+      class="pt-1 not-break-out"
     >
       <div
         :class="getFontSizeClassName(currentState.fontSize).subtitle"
@@ -363,7 +365,7 @@ function redirect(path) {
 
     <section
       v-else-if="element.key === 'education' && education.isShow"
-      class="py-2 not-break-out"
+      class="pt-1 not-break-out"
     >
       <div
         :class="getFontSizeClassName(currentState.fontSize).subtitle"
@@ -408,15 +410,15 @@ function redirect(path) {
 
     <section
       v-else-if="element.key === 'social' && social.isShow"
-      class="py-2 not-break-out"
+      class="pt-1 not-break-out"
     >
       <div
         :class="getFontSizeClassName(currentState.fontSize).subtitle"
-        class="text-primary-100 py-1 px-2 pb-2"
+        class="text-primary-100 py-1 px-2"
       >
         {{ social.name ? social.name : DEFAULT_TEMPLATE.social.name }}
       </div>
-      <div class="inline-flex flex-col">
+      <div class="p-2 inline-flex flex-col">
         <div
           v-for="(item, index) in social.list"
           :key="index"
@@ -427,7 +429,6 @@ function redirect(path) {
           >
             <div
               v-if="item.isShow"
-              class="px-2"
               :class="getFontSizeClassName(currentState.fontSize).paragraph"
             >
               <a
