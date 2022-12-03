@@ -190,7 +190,7 @@ export const TEMPLATES = [
       isShow: true,
       isEditing: false,
       hashtags: ['#TeamPlayer', '#SelfMotivated', '#CanDoAttitude'],
-      paragraph: 'I care about the details and consider the UI/UX design of affordances to be crucial in creating effective, intuitive interfaces. I consider prototyping to be my weapon of choice in thinking through interaction models and new possibilities. I thrive on learning new things — I enjoy exploring new paths to familiar places. I really love snowboarding (I like both park and powder days). I also really enjoy exploring the amazing trails and landscapes around the bay area on my mountain bike. I’ve traveled a lot and enjoy seeing things from a fresh perspective :)',
+      paragraph: 'I care about the details and consider the UI/UX design to be crucial in creating effective and intuitive interfaces. I consider prototyping to be my weapon of choice in thinking through interaction models and new possibilities. I thrive on learning new things — I enjoy exploring new paths to familiar places. I really love snowboarding (I like both park and powder days). I also really enjoy exploring the amazing trails and landscapes around the bay area on my mountain bike. I’ve traveled a lot and enjoy seeing things from a fresh perspective :)',
     },
     experience: {
       isShow: true,
