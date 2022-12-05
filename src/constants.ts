@@ -53,8 +53,8 @@ export const DEFAULT_TEMPLATE = {
   about: {
     isShow: true,
     isEditing: false,
-    name: 'Your Name',
-    jobTitle: 'Job Title',
+    name: '<p>Your Name</p>',
+    jobTitle: '<p>Job Title</p>',
   },
   summary: {
     isShow: true,
@@ -183,8 +183,8 @@ export const TEMPLATES = [
     about: {
       isShow: true,
       isEditing: false,
-      name: 'Your Name',
-      jobTitle: 'UI Designer',
+      name: '<p>Your Name</p>',
+      jobTitle: '<p>UI Designer</p>',
     },
     summary: {
       isShow: true,
@@ -340,8 +340,8 @@ Mandarin (native)`,
     about: {
       isShow: true,
       isEditing: false,
-      name: 'Your Name',
-      jobTitle: 'User Experience Designer',
+      name: '<p>Your Name</p>',
+      jobTitle: '<p>User Experience Designer</p>',
     },
     summary: {
       isShow: true,
@@ -484,8 +484,8 @@ Mandarin (native)`,
     about: {
       isShow: true,
       isEditing: false,
-      name: 'Your Name',
-      jobTitle: 'Software Developer',
+      name: '<p>Your Name</p>',
+      jobTitle: '<p>Software Developer</p>',
     },
     summary: {
       isShow: true,
@@ -668,8 +668,8 @@ Mandarin (native)`,
     about: {
       isShow: true,
       isEditing: false,
-      name: 'Your Name',
-      jobTitle: 'Product Manager',
+      name: '<p>Your Name</p>',
+      jobTitle: '<p>Product Manager</p>',
     },
     summary: {
       isShow: true,

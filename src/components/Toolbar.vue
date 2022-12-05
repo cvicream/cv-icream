@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { onUnmounted } from 'vue'
 import { storeToRefs } from 'pinia'
+import { useUserStore } from '~/stores/user'
 import { useToolbarStore } from '~/stores/toolbar'
 import { COLORS, FONT_FAMILIES, FONT_SIZES, LAYOUTS } from '~/constants'
-import { getColor } from '~/utils'
+import { getColor, getRedo, getUndo, isRedoEmpty, isUndoEmpty, popRedo, popUndo, setRedo, setUndo } from '~/utils'
 
 const props = defineProps<{
   open: Boolean
@@ -11,6 +12,7 @@ const props = defineProps<{
   isMobile: Boolean
 }>()
 
+const user = useUserStore()
 const toolbar = useToolbarStore()
 const { isCVPreviewVisible, dropdownMenu, currentState } = storeToRefs(toolbar)
 
@@ -43,10 +45,48 @@ window.addEventListener('click', onClick, false)
 
 // TODO: better way to implement since execCommand is deprecated
 function undo() {
-  document.execCommand('undo', false)
+  const undo = getUndo()
+  if (undo.length >= 2) {
+    const newState = undo[undo.length - 2]
+    if (newState) {
+      const last = popUndo()
+      setRedo(last)
+      newState.user.action = 'undo'
+      updateStore(newState)
+    }
+  }
 }
 function redo() {
-  document.execCommand('redo', false)
+  const redo = getRedo()
+  if (redo.length) {
+    const newState = redo[redo.length - 1]
+    if (newState) {
+      popRedo()
+      updateStore(newState)
+    }
+  }
+}
+
+function updateStore(obj) {
+  Object.keys(obj).forEach((key) => {
+    if (key === 'user') {
+      const subObj = obj[key]
+      Object.keys(subObj).forEach((subKey) => {
+        user.$patch((state) => {
+          state[subKey] = subObj[subKey]
+        })
+      })
+      user.updateTimestamp()
+    }
+    else if (key === 'toolbar') {
+      const subObj = obj[key]
+      Object.keys(subObj).forEach((subKey) => {
+        toolbar.$patch((state) => {
+          state[subKey] = subObj[subKey]
+        })
+      })
+    }
+  })
 }
 
 function onCollapse() {
