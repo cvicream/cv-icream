@@ -700,7 +700,7 @@ Mandarin (native)`,
           subtitle: '',
           subtitle1: 'Company Name',
           subtitle2: 'April 2008 - April 2012',
-          paragraph: '<ul><li>Independently managing 20+ projects at a time, bringing in up to £2.2m revenue monthly.</li><li>Successfully completed projects of a total value of £65m. -Experienced in managing teams up to 25 employees, including front and back-end developers, analysts, designers, and testers.</li><li>Implemented a new online shopping solution for a fashion retailer that saw them increase their revenue by 7% instantly</li>.</ul>',
+          paragraph: '<ul><li>Independently managing 20+ projects at a time, bringing in up to £2.2m revenue monthly.</li><li>Successfully completed projects of a total value of £65m. -Experienced in managing teams up to 25 employees, including front and back-end developers, analysts, designers, and testers.</li><li>Implemented a new online shopping solution for a fashion retailer that saw them increase their revenue by 7% instantly.</li></ul>',
         },
         {
           isShow: true,

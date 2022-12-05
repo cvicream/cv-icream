@@ -81,7 +81,7 @@ const { currentState } = storeToRefs(toolbar)
 </script>
 
 <template>
-  <div class="title-default subtitle-default paragraph-default title-large subtitle-large paragraph-large" />
+  <div class="heading-default title-default subtitle-default paragraph-default heading-large title-large subtitle-large paragraph-large" />
   <div
     :id="id"
     class="w-full h-full bg-white flex-shrink-0 p-6 shadow-custom cv-preview"
@@ -101,7 +101,7 @@ const { currentState } = storeToRefs(toolbar)
       >
         <CVPreviewSection :element="topList[0]" :read-only="readOnly" />
       </div>
-      <div class="flex flex-wrap">
+      <div class="flex flex-wrap gap-y-3">
         <div
           :class="{
             'w-full': currentState.layout === 'layout-full',
@@ -114,7 +114,7 @@ const { currentState } = storeToRefs(toolbar)
             v-model="leftList"
             group="section"
             item-key="key"
-            class="h-full"
+            class="h-full flex flex-col gap-3"
             delay-on-touch-only
             :delay="isMobileDevice() ? 250 : 0"
           >
@@ -131,11 +131,12 @@ const { currentState } = storeToRefs(toolbar)
             <CVPreviewSection :element="element" :read-only="readOnly" />
           </div>
         </div>
+        <!-- add padding between left part and right part -->
         <div
           :class="{
             'w-full': currentState.layout === 'layout-full',
-            'w-1/4 order-1': currentState.layout === 'layout-left',
-            'w-1/4 order-2': currentState.layout === 'layout-right',
+            'w-1/4 order-1 pr-4': currentState.layout === 'layout-left',
+            'w-1/4 order-2 pl-4': currentState.layout === 'layout-right',
           }"
         >
           <vuedraggable
@@ -143,7 +144,7 @@ const { currentState } = storeToRefs(toolbar)
             v-model="rightList"
             group="section"
             item-key="key"
-            class="h-full"
+            class="h-full flex flex-col gap-3"
             delay-on-touch-only
             :delay="isMobileDevice() ? 250 : 0"
           >
