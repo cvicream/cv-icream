@@ -3,8 +3,10 @@ import { onUnmounted } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useUserStore } from '~/stores/user'
 import { useToolbarStore } from '~/stores/toolbar'
+import { useUndoStore } from '~/stores/undo'
+import { useRedoStore } from '~/stores/redo'
 import { COLORS, FONT_FAMILIES, FONT_SIZES, LAYOUTS } from '~/constants'
-import { getColor, getRedo, getUndo, isRedoEmpty, isUndoEmpty, popRedo, popUndo, setRedo, setUndo } from '~/utils'
+import { getColor } from '~/utils'
 
 const props = defineProps<{
   open: Boolean
@@ -14,6 +16,8 @@ const props = defineProps<{
 
 const user = useUserStore()
 const toolbar = useToolbarStore()
+const undoStore = useUndoStore()
+const redoStore = useRedoStore()
 const { isCVPreviewVisible, dropdownMenu, currentState } = storeToRefs(toolbar)
 
 const onClick = () => {
@@ -43,25 +47,25 @@ onUnmounted(() => {
 
 window.addEventListener('click', onClick, false)
 
-// TODO: better way to implement since execCommand is deprecated
 function undo() {
-  const undo = getUndo()
-  if (undo.length >= 2) {
-    const newState = undo[undo.length - 2]
+  const list = undoStore.list
+  if (list.length >= 2) {
+    const newState = list[list.length - 2]
     if (newState) {
-      const last = popUndo()
-      setRedo(last)
+      const last = undoStore.pop()
+      redoStore.push(last)
       newState.user.action = 'undo'
       updateStore(newState)
     }
   }
 }
 function redo() {
-  const redo = getRedo()
-  if (redo.length) {
-    const newState = redo[redo.length - 1]
+  const list = redoStore.list
+  if (list.length) {
+    const newState = list[list.length - 1]
     if (newState) {
-      popRedo()
+      redoStore.pop()
+      newState.user.action = 'redo'
       updateStore(newState)
     }
   }
@@ -118,18 +122,26 @@ function onCollapse() {
       class="btn-group-toolbar w-22 h-12"
       :class="{ 'hidden': isMobile && isCVPreviewVisible }"
     >
-      <div class="btn-toolbar">
-        <button
+      <button
+        class="btn-toolbar"
+        :disabled="undoStore.isEmpty"
+        @click="undo"
+      >
+        <span
           class="i-custom:undo w-8 h-8"
-          @click="undo"
+          :class="{ 'text-blacks-10': undoStore.isEmpty }"
         />
-      </div>
-      <div class="btn-toolbar">
-        <button
+      </button>
+      <button
+        class="btn-toolbar"
+        :disabled="redoStore.isEmpty"
+        @click="redo"
+      >
+        <span
           class="i-custom:redo w-8 h-8"
-          @click="redo"
+          :class="{ 'text-blacks-10': redoStore.isEmpty }"
         />
-      </div>
+      </button>
     </div>
 
     <div
