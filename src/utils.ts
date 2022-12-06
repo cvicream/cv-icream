@@ -34,54 +34,6 @@ function setStatus(value) {
   }
 }
 
-function getUndo() {
-  const statusStr = getStatus()
-  if (statusStr) {
-    const status = JSON.parse(statusStr)
-    return status.undo && status.undo.length ? status.undo : []
-  }
-  return []
-}
-
-function setUndo(state) {
-  const ignoreFields = [
-    'toolbar.dropdownMenu',
-    'toolbar.isCVPreviewVisible',
-    'user.about.isEditing',
-    'user.summary.isEditing',
-    'user.experience.isEditing',
-    'user.timestamp',
-    'user.action',
-    'isEditing',
-  ]
-
-  const undo = getUndo()
-  if (undo.length) {
-    let lastState = undo[undo.length - 1]
-    lastState = _.omit(lastState, ignoreFields)
-    omitArray(lastState, ignoreFields)
-    const newState = _.omit(state, ignoreFields)
-    omitArray(newState, ignoreFields)
-    if (_.isEqual(lastState, newState))
-      return
-  }
-
-  undo.push(state)
-  setStatus({ undo })
-}
-
-function popUndo() {
-  const undo = getUndo()
-  const last = undo.pop()
-  setStatus({ undo })
-  return last
-}
-
-function isUndoEmpty() {
-  const undo = getUndo()
-  return undo.length <= 1
-}
-
 function omitArray(obj, ignoreFields) {
   for (const property in obj) {
     const value = obj[property]
@@ -96,33 +48,6 @@ function omitArray(obj, ignoreFields) {
       }
     }
   }
-}
-
-function getRedo() {
-  const statusStr = getStatus()
-  if (statusStr) {
-    const status = JSON.parse(statusStr)
-    return status.redo && status.redo.length ? status.redo : []
-  }
-  return []
-}
-
-function setRedo(state) {
-  const redo = getRedo()
-  redo.push(state)
-  setStatus({ redo })
-}
-
-function popRedo() {
-  const redo = getRedo()
-  const last = redo.pop()
-  setStatus({ redo })
-  return last
-}
-
-function isRedoEmpty() {
-  const redo = getRedo()
-  return redo.length <= 1
 }
 
 function isEditing() {
@@ -279,14 +204,6 @@ export {
   setStorage,
   getStatus,
   setStatus,
-  getUndo,
-  setUndo,
-  popUndo,
-  isUndoEmpty,
-  getRedo,
-  setRedo,
-  popRedo,
-  isRedoEmpty,
   omitArray,
   isEditing,
   getPreviousUrl,
