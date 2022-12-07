@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
+import { isMobileDevice } from '~/utils'
 
 const props = defineProps({
   placement: {
@@ -28,7 +29,7 @@ const tooltipClass = computed(() => {
 <template>
   <div class="tooltip-container">
     <slot />
-    <div class="tooltip" :class="tooltipClass" :style="style">
+    <div v-if="!isMobileDevice()" class="tooltip" :class="tooltipClass" :style="style">
       <span class="paragraph text-blacks-100"> {{ text }}</span>
     </div>
   </div>
