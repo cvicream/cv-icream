@@ -193,7 +193,7 @@ function onMenuClick(path) {
     >
       <button
         :class="isOpen ? 'self-end' : 'self-center'"
-        @click="toggleSidebar"
+        @click="toggleSidebar(); expandTooltip = false"
         @mouseover="expandTooltip = true"
         @mouseout="expandTooltip = false"
       >
