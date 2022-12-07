@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { onUnmounted } from 'vue'
 import { storeToRefs } from 'pinia'
+import _ from 'lodash'
 import { useUserStore } from '~/stores/user'
 import { useToolbarStore } from '~/stores/toolbar'
 import { useUndoStore } from '~/stores/undo'
@@ -50,7 +51,7 @@ window.addEventListener('click', onClick, false)
 function undo() {
   const list = undoStore.list
   if (list.length >= 2) {
-    const newState = list[list.length - 2]
+    const newState = _.cloneDeep(list[list.length - 2])
     if (newState) {
       const last = undoStore.pop()
       redoStore.push(last)
