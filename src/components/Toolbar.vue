@@ -121,7 +121,6 @@ function onCollapse() {
     <div
       v-if="open"
       class="btn-group-toolbar w-22 h-12"
-      :class="{ 'hidden': isMobile && isCVPreviewVisible }"
     >
       <button
         class="btn-toolbar"
