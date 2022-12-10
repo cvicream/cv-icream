@@ -48,7 +48,7 @@ function onNext() {
     <div class="flex flex-col gap-16 sm:flex-row">
       <div class="flex flex-col justify-between items-center">
         <label for="template-1" class="flex flex-col gap-5 cursor-pointer">
-          <img src="../../assets/images/template-ui-designer.png">
+          <img class="w-[210px] sm:w-auto" src="../../assets/images/template-ui-designer.png">
           <span class="leading text-blacks-100 text-center">
             {{ t('template.job.uidesigner') }}
           </span>
@@ -64,7 +64,7 @@ function onNext() {
       </div>
       <div class="flex flex-col justify-between items-center">
         <label for="template-2" class="flex flex-col gap-5 cursor-pointer">
-          <img src="../../assets/images/template-ux-designer.png">
+          <img class="w-[210px] sm:w-auto" src="../../assets/images/template-ux-designer.png">
           <span class="leading text-blacks-100 text-center">
             {{ t('template.job.uxdesigner') }}
           </span>
@@ -80,7 +80,7 @@ function onNext() {
       </div>
       <div class="flex flex-col justify-between items-center">
         <label for="template-3" class="flex flex-col gap-5 cursor-pointer">
-          <img src="../../assets/images/template-developer.png">
+          <img class="w-[210px] sm:w-auto" src="../../assets/images/template-developer.png">
           <span class="leading text-blacks-100 text-center">
             {{ t('template.job.developer') }}
           </span>
@@ -96,7 +96,7 @@ function onNext() {
       </div>
       <div class="flex flex-col justify-between items-center">
         <label for="template-4" class="flex flex-col gap-5 cursor-pointer">
-          <img src="../../assets/images/template-product-manager.png">
+          <img class="w-[210px] sm:w-auto" src="../../assets/images/template-product-manager.png">
           <span class="leading text-blacks-100 text-center">
             {{ t('template.job.manager') }}
           </span>
@@ -112,7 +112,7 @@ function onNext() {
       </div>
       <div class="flex flex-col justify-between items-center">
         <label for="template-0" class="flex flex-col gap-5 cursor-pointer">
-          <img src="../../assets/images/template-scratch.png">
+          <img class="w-[210px] sm:w-auto" src="../../assets/images/template-scratch.png">
           <span class="leading text-blacks-100 text-center">
             {{ t('template.job.others') }}
           </span>
