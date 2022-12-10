@@ -24,6 +24,7 @@ const redoStore = useRedoStore()
 const { isCVPreviewVisible, dropdownMenu, currentState } = storeToRefs(toolbar)
 
 user.$subscribe((mutation, state) => {
+  console.log(mutation)
   if (Array.isArray(mutation.events)) {
     mutation.events.forEach((event) => {
       if (event.key === 'path') {
