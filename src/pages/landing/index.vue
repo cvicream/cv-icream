@@ -120,9 +120,3 @@ const onNext = () => {
 meta:
   layout: home
 </route>
-
-<style scoped>
-.fix-padding-bottom > *:last-child {
-  margin-bottom: 4rem;
-}
-</style>

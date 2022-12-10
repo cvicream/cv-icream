@@ -127,7 +127,7 @@ function onNext() {
         >
       </div>
     </div>
-    <div class="flex flex-col gap-5 sm:gap-10 sm:flex-row fix-padding-bottom">
+    <div class="flex flex-col gap-5 pb-16 sm:gap-10 sm:flex-row">
       <button
         class="w-[294px] btn-primary order-1 sm:order-2"
         @click="onNext"
@@ -154,9 +154,3 @@ function onNext() {
 meta:
   layout: home
 </route>
-
-<style scoped>
-.fix-padding-bottom > *:last-child {
-  margin-bottom: 4rem;
-}
-</style>

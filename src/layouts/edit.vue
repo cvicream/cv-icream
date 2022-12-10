@@ -407,8 +407,4 @@ function handleRightPageClick() {
 .resizer::before:hover {
   @apply cursor-[col-resize];
 }
-
-.fix-padding-bottom > *:last-child {
-  margin-bottom: 28px;
-}
 </style>
