@@ -21,18 +21,12 @@ const toolbar = useToolbarStore()
 const router = useRouter()
 const undoStore = useUndoStore()
 const redoStore = useRedoStore()
+const { path } = storeToRefs(user)
 const { isCVPreviewVisible, dropdownMenu, currentState } = storeToRefs(toolbar)
 
-user.$subscribe((mutation, state) => {
-  console.log(mutation)
-  if (Array.isArray(mutation.events)) {
-    mutation.events.forEach((event) => {
-      if (event.key === 'path') {
-        console.log(state.path)
-        router.push(state.path)
-      }
-    })
-  }
+watch(path, () => {
+  if (path.value !== router.currentRoute.value.path)
+    router.push(path.value)
 })
 
 const onClick = () => {
