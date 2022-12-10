@@ -26,8 +26,10 @@ const { isCVPreviewVisible, dropdownMenu, currentState } = storeToRefs(toolbar)
 user.$subscribe((mutation, state) => {
   if (Array.isArray(mutation.events)) {
     mutation.events.forEach((event) => {
-      if (event.key === 'path')
+      if (event.key === 'path') {
+        console.log(state.path)
         router.push(state.path)
+      }
     })
   }
 })
