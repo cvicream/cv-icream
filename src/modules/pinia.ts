@@ -21,7 +21,6 @@ export const install: UserModule = ({ app }) => {
         const savedState = _.cloneDeep(_.omit(state, ['undo', 'redo']))
         setStorage(savedState)
 
-        console.log(state.user.action)
         if (['undo', 'redo'].includes(state.user.action)) { state.user.action = '' }
         else {
           const undoStore = useUndoStore()

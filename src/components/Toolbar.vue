@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { stat } from 'fs'
 import { onUnmounted } from 'vue'
 import { storeToRefs } from 'pinia'
 import _ from 'lodash'
@@ -17,9 +18,19 @@ const props = defineProps<{
 
 const user = useUserStore()
 const toolbar = useToolbarStore()
+const router = useRouter()
 const undoStore = useUndoStore()
 const redoStore = useRedoStore()
 const { isCVPreviewVisible, dropdownMenu, currentState } = storeToRefs(toolbar)
+
+user.$subscribe((mutation, state) => {
+  if (Array.isArray(mutation.events)) {
+    mutation.events.forEach((event) => {
+      if (event.key === 'path')
+        router.push(state.path)
+    })
+  }
+})
 
 const onClick = () => {
   if (Object.values(dropdownMenu.value).some(item => item))

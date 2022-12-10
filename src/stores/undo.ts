@@ -13,11 +13,12 @@ export const useUndoStore = defineStore('undo', {
     push(data) {
       const ignoreFields = [
         'toolbar.dropdownMenu',
-        'toolbar.isCVPreviewVisible',
+        // 'toolbar.isCVPreviewVisible',
         'user.about.isEditing',
         'user.summary.isEditing',
         'user.experience.isEditing',
         'user.timestamp',
+        'user.path',
         'user.action',
         'isEditing',
       ]
@@ -29,7 +30,6 @@ export const useUndoStore = defineStore('undo', {
         omitArray(lastState, ignoreFields)
         const newState = _.omit(data, ignoreFields)
         omitArray(newState, ignoreFields)
-        console.log(_.isEqual(lastState, newState))
         if (_.isEqual(lastState, newState))
           return
       }
