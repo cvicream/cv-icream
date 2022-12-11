@@ -1,6 +1,6 @@
 export const LOCAL_STORAGE_KEY = 'cvicream'
 export const DRAFT_FILE_TYPE = 'cvicream'
-export const HIDDEN_INFORMATION = 'The session is currently hidden on CV. Click the toggle if you would like to show it on CV.'
+export const HIDDEN_INFORMATION = 'This section is currently hidden on CV. Click the toggle if you would like to show it on CV.'
 export const MAX_SIDEBAR_WIDTH = 834
 export const MIN_SIDEBAR_WIDTH = 390
 export const MOBILE_BREAKPOINT = 640
@@ -53,8 +53,8 @@ export const DEFAULT_TEMPLATE = {
   about: {
     isShow: true,
     isEditing: false,
-    name: 'Your Name',
-    jobTitle: 'Job Title',
+    name: '<p>Your Name</p>',
+    jobTitle: '<p>Job Title</p>',
   },
   summary: {
     isShow: true,
@@ -183,8 +183,8 @@ export const TEMPLATES = [
     about: {
       isShow: true,
       isEditing: false,
-      name: 'Your Name',
-      jobTitle: 'UI Designer',
+      name: '<p>Your Name</p>',
+      jobTitle: '<p>UI Designer</p>',
     },
     summary: {
       isShow: true,
@@ -204,7 +204,7 @@ export const TEMPLATES = [
           subtitle: '',
           subtitle1: 'Company Name',
           subtitle2: 'February 2015 - Present',
-          paragraph: 'Creating functional prototype for an iPad Register product with Flinto alongside various web and client side components. Building a dashboard style guide to unify the design process across Square’s Dashboard. Launched a beta program for Online Store which involved the UX and Visuals for simplified onboarding experience, custom site editor, various templates, and order management.',
+          paragraph: 'Created functional prototype for an iPad Register product with Flinto alongside various web and client side components. Building a dashboard style guide to unify the design process across Square’s Dashboard. Launched a beta program for Online Store which involved the UX and Visuals for simplified onboarding experience, custom site editor, various templates, and order management.',
         },
         {
           isShow: true,
@@ -243,7 +243,7 @@ export const TEMPLATES = [
           isCollapsed: false,
           isEditing: false,
           title: '',
-          subtitle: 'Tool',
+          subtitle: 'Tools',
           subtitle1: '',
           subtitle2: '',
           paragraph:
@@ -254,7 +254,7 @@ export const TEMPLATES = [
           isCollapsed: false,
           isEditing: false,
           title: '',
-          subtitle: 'Language',
+          subtitle: 'Languages',
           subtitle1: '',
           subtitle2: '',
           paragraph:
@@ -340,8 +340,8 @@ Mandarin (native)`,
     about: {
       isShow: true,
       isEditing: false,
-      name: 'Your Name',
-      jobTitle: 'User Experience Designer',
+      name: '<p>Your Name</p>',
+      jobTitle: '<p>User Experience Designer</p>',
     },
     summary: {
       isShow: true,
@@ -400,7 +400,7 @@ Mandarin (native)`,
           isCollapsed: false,
           isEditing: false,
           title: '',
-          subtitle: 'Language',
+          subtitle: 'Languages',
           subtitle1: '',
           subtitle2: '',
           paragraph: '<p>English (fluent)</p><p>Mandarin (native)</p>',
@@ -484,8 +484,8 @@ Mandarin (native)`,
     about: {
       isShow: true,
       isEditing: false,
-      name: 'Your Name',
-      jobTitle: 'Software Developer',
+      name: '<p>Your Name</p>',
+      jobTitle: '<p>Software Developer</p>',
     },
     summary: {
       isShow: true,
@@ -534,7 +534,7 @@ Mandarin (native)`,
           isCollapsed: false,
           isEditing: false,
           title: '',
-          subtitle: 'Language',
+          subtitle: 'Languages',
           subtitle1: '',
           subtitle2: '',
           paragraph: 'C, C++, Java, SQL, Python, JavaScript, Vue, React',
@@ -544,7 +544,7 @@ Mandarin (native)`,
           isCollapsed: false,
           isEditing: false,
           title: '',
-          subtitle: 'Tool',
+          subtitle: 'Tools',
           subtitle1: '',
           subtitle2: '',
           paragraph: 'Eclipse, Intellij, WebStorm, Node.js',
@@ -668,8 +668,8 @@ Mandarin (native)`,
     about: {
       isShow: true,
       isEditing: false,
-      name: 'Your Name',
-      jobTitle: 'Product Manager',
+      name: '<p>Your Name</p>',
+      jobTitle: '<p>Product Manager</p>',
     },
     summary: {
       isShow: true,
@@ -700,7 +700,7 @@ Mandarin (native)`,
           subtitle: '',
           subtitle1: 'Company Name',
           subtitle2: 'April 2008 - April 2012',
-          paragraph: '<ul><li>Independently managing 20+ projects at a time, bringing in up to £2.2m revenue monthly.</li><li>Successfully completed projects of a total value of £65m. -Experienced in managing teams up to 25 employees, including front and back-end developers, analysts, designers, and testers.</li><li>Implemented a new online shopping solution for a fashion retailer that saw them increase their revenue by 7% instantly</li>.</ul>',
+          paragraph: '<ul><li>Independently managing 20+ projects at a time, bringing in up to £2.2m revenue monthly.</li><li>Successfully completed projects of a total value of £65m. -Experienced in managing teams up to 25 employees, including front and back-end developers, analysts, designers, and testers.</li><li>Implemented a new online shopping solution for a fashion retailer that saw them increase their revenue by 7% instantly.</li></ul>',
         },
         {
           isShow: true,

@@ -1,3 +1,4 @@
+import _ from 'lodash'
 import { COLORS, DRAFT_FILE_TYPE, LOCAL_STORAGE_KEY } from '~/constants'
 
 function hasStorage() {
@@ -30,6 +31,22 @@ function setStatus(value) {
   }
   else {
     localStorage.setItem(`${LOCAL_STORAGE_KEY}-status`, JSON.stringify(value))
+  }
+}
+
+function omitArray(obj, ignoreFields) {
+  for (const property in obj) {
+    const value = obj[property]
+    if (typeof value === 'object' && value !== null) {
+      if (Array.isArray(value)) {
+        obj[property] = value.map((x) => {
+          return (typeof x === 'object' && x !== null) ? _.omit(x, ignoreFields) : x
+        })
+      }
+      else {
+        omitArray(value, ignoreFields)
+      }
+    }
   }
 }
 
@@ -187,6 +204,7 @@ export {
   setStorage,
   getStatus,
   setStatus,
+  omitArray,
   isEditing,
   getPreviousUrl,
   getJsonUpload,

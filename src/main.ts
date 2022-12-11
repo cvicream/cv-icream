@@ -3,6 +3,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import generatedRoutes from 'virtual:generated-pages'
 import { setupLayouts } from 'virtual:generated-layouts'
 import App from './App.vue'
+import { useUserStore } from '~/stores/user'
 
 import '@unocss/reset/tailwind.css'
 import './styles/main.css'
@@ -16,6 +17,13 @@ const router = createRouter({
   history: createWebHistory(),
   routes,
 })
+
+router.beforeEach((to, from, next) => {
+  const user = useUserStore()
+  user.setRoutePath(to.path)
+  next()
+})
+
 app.use(router)
 
 // install all modules under `modules/`

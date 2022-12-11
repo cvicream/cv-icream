@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { useUserStore } from '~/stores/user'
-
 import { useToolbarStore } from '~/stores/toolbar'
 import { getJsonUpload } from '~/utils'
 import { DRAFT_FILE_TYPE } from '~/constants'
@@ -120,9 +119,3 @@ const onNext = () => {
 meta:
   layout: home
 </route>
-
-<style scoped>
-.fix-padding-bottom > *:last-child {
-  margin-bottom: 4rem;
-}
-</style>

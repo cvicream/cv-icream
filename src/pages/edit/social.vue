@@ -137,7 +137,7 @@ function deleteBlock(index: number) {
       {{ HIDDEN_INFORMATION }}
     </p>
     <p v-else class="paragraph text-blacks-70">
-      Share your social media platforms, such as LinkedIn profile, the portfolio of your works, or your own website.
+      Share your social media platforms, such as LinkedIn profile, the portfolio of your work, or your own website.
     </p>
     <div
       v-for="(item, index) in social.list"
