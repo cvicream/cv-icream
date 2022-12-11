@@ -179,7 +179,7 @@ export default defineComponent({
       content-type="html"
       :enable="enable"
       :read-only="!enable"
-      :placeholder="(content.match('') || content.match('<p><br></p>')) ? placeholder:''"
+      :placeholder="(content !== '<p><br></p>' && content) ? '' : placeholder"
       theme=""
       :toolbar="`#${toolbarId}`"
       :class="{ 'single-line': isSingleLine }"
