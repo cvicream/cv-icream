@@ -225,7 +225,7 @@ window.addEventListener('click', closeAction, false)
   <div class="border-b border-b-blacks-20" />
 
   <FeedbackModal
-    title="Face a Problem or Need Help?"
+    title="Have a Problem or Need Help?"
     subtitle="Leave us a message. We will get back to you as soon as possible : )"
     :visible="feedbackVisible"
     :toggle="toggleFeedbackModal"
