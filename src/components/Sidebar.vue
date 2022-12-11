@@ -122,6 +122,7 @@ const sidebar = ref<any>(null)
 const isOpen = ref(false)
 const isSmallSidebar = ref(true)
 const drag = ref(true)
+const expandTooltip = ref(false)
 
 const menuOpenWidth = computed(() => {
   return isOpen.value && !isSmallSidebar.value ? 236 : 64
@@ -178,14 +179,23 @@ function onMenuClick(path) {
 
 <template>
   <div ref="sidebar" class="sidebar w-full h-full bg-white relative flex">
+    <div v-if="expandTooltip" class="absolute top-[34px]">
+      <Tooltip
+        :placement="isOpen ?'left': 'right'"
+        :text="isOpen ? 'Hide Sidebar' : 'Open Sidebar'"
+        :class="isOpen ? 'left-48':'left-13' "
+        style="display:block;"
+      />
+    </div>
     <div
       class="h-full pt-5 bg-white absolute top-0 left-0 z-1 sm:overflow-y-auto transition-all duration-100 flex flex-col gap-4"
       :class="isOpen ? 'sm:w-[236px] px-5' : 'sm:w-[64px] px-1'"
     >
       <button
         :class="isOpen ? 'self-end' : 'self-center'"
-        :title="isOpen ? 'Hide Sidebar' : 'Open Sidebar'"
-        @click="toggleSidebar"
+        @click="toggleSidebar(); expandTooltip = false"
+        @mouseover="expandTooltip = true"
+        @mouseout="expandTooltip = false"
       >
         <span v-if="isOpen" class="i-custom:expand w-6 h-6 text-blacks-40" />
         <span v-else class="i-custom:collapse w-6 h-6 text-blacks-40" />

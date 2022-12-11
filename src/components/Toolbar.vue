@@ -130,26 +130,36 @@ function onCollapse() {
       v-if="open"
       class="btn-group-toolbar w-22 h-12"
     >
-      <button
-        class="btn-toolbar"
-        :disabled="undoStore.isEmpty"
-        @click="undo"
+      <Tooltip
+        placement="top"
+        text="Undo"
       >
-        <span
-          class="i-custom:undo w-8 h-8"
-          :class="{ 'text-blacks-10': undoStore.isEmpty }"
-        />
-      </button>
-      <button
-        class="btn-toolbar"
-        :disabled="redoStore.isEmpty"
-        @click="redo"
+        <button
+          class="btn-toolbar"
+          :disabled="undoStore.isEmpty"
+          @click="undo"
+        >
+          <span
+            class="i-custom:undo w-8 h-8"
+            :class="{ 'text-blacks-10': undoStore.isEmpty }"
+          />
+        </button>
+      </Tooltip>
+      <Tooltip
+        placement="top"
+        text="Redo"
       >
-        <span
-          class="i-custom:redo w-8 h-8"
-          :class="{ 'text-blacks-10': redoStore.isEmpty }"
-        />
-      </button>
+        <button
+          class="btn-toolbar"
+          :disabled="redoStore.isEmpty"
+          @click="redo"
+        >
+          <span
+            class="i-custom:redo w-8 h-8"
+            :class="{ 'text-blacks-10': redoStore.isEmpty }"
+          />
+        </button>
+      </Tooltip>
     </div>
 
     <div
@@ -157,7 +167,7 @@ function onCollapse() {
       class="btn-group-toolbar w-42 h-12 relative sm:flex"
       :class="{ 'hidden': !isCVPreviewVisible }"
     >
-      <DropdownMenu id="layout" label="Layout" icon="i-custom:layout text-blacks-70">
+      <DropdownMenu id="layout" label="Layout" icon="i-custom:layout text-blacks-70" tooltip="Layout">
         <div
           v-for="item in LAYOUTS"
           :key="item.id"
@@ -177,7 +187,7 @@ function onCollapse() {
           '--color-primary': getColor(currentState.color).primary,
           '--color-secondary': getColor(currentState.color).secondary
         }"
-        label="Colour" icon="icon-color-item"
+        label="Colour" icon="icon-color-item" tooltip="Colour"
       >
         <div
           v-for="item in COLORS"
@@ -195,7 +205,7 @@ function onCollapse() {
           />
         </div>
       </DropdownMenu>
-      <DropdownMenu id="fontSize" label="Font Size" icon="i-custom:font-size text-blacks-70">
+      <DropdownMenu id="fontSize" label="Font Size" icon="i-custom:font-size text-blacks-70" tooltip="Font Size">
         <div
           v-for="item in FONT_SIZES"
           :key="item.id"
@@ -208,7 +218,7 @@ function onCollapse() {
           />
         </div>
       </DropdownMenu>
-      <DropdownMenu id="fontFamily" label="Font Family" icon="i-custom:font-family text-blacks-70">
+      <DropdownMenu id="fontFamily" label="Font Family" icon="i-custom:font-family text-blacks-70" tooltip="Font Family">
         <div class="w-full h-22 overflow-auto custom-scrollbar">
           <div
             v-for="item in FONT_FAMILIES"

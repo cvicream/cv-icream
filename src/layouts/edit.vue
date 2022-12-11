@@ -331,9 +331,15 @@ function handleRightPageClick() {
           :style="rightWidthStyle"
         >
           <div class="w-12 h-32 p-2 rounded-[69px] bg-white shadow-custom flex flex-col justify-between absolute bottom-0 right transition group">
-            <button class="btn-icon-32" @click="zoomIn">
-              <span class="i-custom:zoom-in w-6 h-6" />
-            </button>
+            <Tooltip
+              placement="left"
+              text="Zoom in"
+            >
+              <button class="btn-icon-32" @click="zoomIn">
+                <span class="i-custom:zoom-in w-6 h-6" />
+              </button>
+            </Tooltip>
+
             <button
               class="note text-center whitespace-nowrap -mx-2"
               :class="isFitEnable ? 'text-blacks-40' : 'text-blacks-70'"
@@ -343,9 +349,14 @@ function handleRightPageClick() {
             >
               {{ isFitEnable ? 'Fit' : `${scale}%` }}
             </button>
-            <button class="btn-icon-32" @click="zoomOut">
-              <span class="i-custom:zoom-out w-6 h-6" />
-            </button>
+            <Tooltip
+              placement="left"
+              text="Zoom out"
+            >
+              <button class="btn-icon-32" @click="zoomOut">
+                <span class="i-custom:zoom-out w-6 h-6" />
+              </button>
+            </Tooltip>
           </div>
         </div>
       </div>
