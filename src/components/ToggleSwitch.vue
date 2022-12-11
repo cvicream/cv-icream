@@ -7,7 +7,7 @@ const { currentState } = storeToRefs(toolbar)
 <template>
   <Tooltip
     placement="left"
-    text="Show on CV"
+    :text="$attrs.checked?'Hide on CV':'Show on CV'"
   >
     <label class="w-12 h-6 inline-block relative shrink-0">
       <input
