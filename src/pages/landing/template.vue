@@ -46,10 +46,10 @@ function onNext() {
       {{ t('template.title') }}
     </h1>
     <div class="flex flex-col gap-16 sm:flex-row">
-      <div class="text-center">
+      <div class="flex flex-col justify-between items-center">
         <label for="template-1" class="flex flex-col gap-5 cursor-pointer">
-          <img src="../../assets/images/template-UIDesigner.svg">
-          <span class="leading text-blacks-100">
+          <img class="w-[210px] sm:w-auto" src="../../assets/images/template-ui-designer.png">
+          <span class="leading text-blacks-100 text-center">
             {{ t('template.job.uidesigner') }}
           </span>
         </label>
@@ -62,10 +62,10 @@ function onNext() {
           :value="1"
         >
       </div>
-      <div class="text-center">
+      <div class="flex flex-col justify-between items-center">
         <label for="template-2" class="flex flex-col gap-5 cursor-pointer">
-          <img src="../../assets/images/template-UXDesigner.svg">
-          <span class="leading text-blacks-100">
+          <img class="w-[210px] sm:w-auto" src="../../assets/images/template-ux-designer.png">
+          <span class="leading text-blacks-100 text-center">
             {{ t('template.job.uxdesigner') }}
           </span>
         </label>
@@ -78,10 +78,10 @@ function onNext() {
           :value="2"
         >
       </div>
-      <div class="text-center">
+      <div class="flex flex-col justify-between items-center">
         <label for="template-3" class="flex flex-col gap-5 cursor-pointer">
-          <img src="../../assets/images/template-Developer.svg">
-          <span class="leading text-blacks-100">
+          <img class="w-[210px] sm:w-auto" src="../../assets/images/template-developer.png">
+          <span class="leading text-blacks-100 text-center">
             {{ t('template.job.developer') }}
           </span>
         </label>
@@ -94,10 +94,10 @@ function onNext() {
           :value="3"
         >
       </div>
-      <div class="text-center">
+      <div class="flex flex-col justify-between items-center">
         <label for="template-4" class="flex flex-col gap-5 cursor-pointer">
-          <img src="../../assets/images/template-ProductManager.svg">
-          <span class="leading text-blacks-100">
+          <img class="w-[210px] sm:w-auto" src="../../assets/images/template-product-manager.png">
+          <span class="leading text-blacks-100 text-center">
             {{ t('template.job.manager') }}
           </span>
         </label>
@@ -110,10 +110,10 @@ function onNext() {
           :value="4"
         >
       </div>
-      <div class="text-center">
+      <div class="flex flex-col justify-between items-center">
         <label for="template-0" class="flex flex-col gap-5 cursor-pointer">
-          <img src="../../assets/images/template-BuildfromScratch.svg">
-          <span class="leading text-blacks-100">
+          <img class="w-[210px] sm:w-auto" src="../../assets/images/template-scratch.png">
+          <span class="leading text-blacks-100 text-center">
             {{ t('template.job.others') }}
           </span>
         </label>
@@ -127,7 +127,7 @@ function onNext() {
         >
       </div>
     </div>
-    <div class="flex flex-col gap-5 sm:gap-10 sm:flex-row fix-padding-bottom">
+    <div class="flex flex-col gap-5 pb-16 sm:gap-10 sm:flex-row">
       <button
         class="w-[294px] btn-primary order-1 sm:order-2"
         @click="onNext"
@@ -154,9 +154,3 @@ function onNext() {
 meta:
   layout: home
 </route>
-
-<style scoped>
-.fix-padding-bottom > *:last-child {
-  margin-bottom: 4rem;
-}
-</style>
