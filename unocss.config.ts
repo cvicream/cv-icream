@@ -35,7 +35,7 @@ export default defineConfig({
     ['btn-header', 'flex inline-block w-8 h-8 p-2 bg-white rounded-full shadow-custom'],
     ['icon-24', 'w-6 h-6 text-blacks-40 hover:text-blacks-70'],
     ['icon-48', 'w-12 h-12 text-blacks-70 rounded-full border-1 border-transparent border-primary-100 shadow-custom'],
-    ['btn-toolbar', 'flex justify-center items-center text-blacks-70 hover:bg-primary-10 hover:rounded-full'],
+    ['btn-toolbar', 'flex justify-center items-center text-blacks-70 hover:bg-primary-10 hover:rounded-full disabled:bg-white'],
     ['btn-group-toolbar', 'flex justify-center items-center gap-2 bg-white rounded-[69px] shadow-custom px-2 py-2'],
     ['hashtag', 'px-2 py-1 font-normal text-size-[11px] leading-[13px] rounded'],
     ['heading-default', 'font-normal text-size-[40px] leading-[48px]'],

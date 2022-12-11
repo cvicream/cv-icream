@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { useUserStore } from '~/stores/user'
-
 import { useToolbarStore } from '~/stores/toolbar'
 import { getJsonUpload } from '~/utils'
 import { DRAFT_FILE_TYPE } from '~/constants'

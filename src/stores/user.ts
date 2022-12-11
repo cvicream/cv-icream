@@ -4,6 +4,7 @@ import { DEFAULT_TEMPLATE, TEMPLATES } from '~/constants'
 const initialState = {
   ...DEFAULT_TEMPLATE,
   template: 1,
+  path: '',
   timestamp: new Date().getTime(), // use it as an key to update `Sidebar.vue` due to `Editor.vue` initial value bug
 }
 
@@ -19,6 +20,9 @@ export const useUserStore = defineStore('user', {
     },
     updateSplitIndex(index) {
       this.splitIndex = index
+    },
+    setRoutePath(path: string) {
+      this.path = path
     },
   },
 })

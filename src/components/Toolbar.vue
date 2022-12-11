@@ -1,7 +1,12 @@
 <script setup lang="ts">
+import { stat } from 'fs'
 import { onUnmounted } from 'vue'
 import { storeToRefs } from 'pinia'
+import _ from 'lodash'
+import { useUserStore } from '~/stores/user'
 import { useToolbarStore } from '~/stores/toolbar'
+import { useUndoStore } from '~/stores/undo'
+import { useRedoStore } from '~/stores/redo'
 import { COLORS, FONT_FAMILIES, FONT_SIZES, LAYOUTS } from '~/constants'
 import { getColor } from '~/utils'
 
@@ -11,8 +16,18 @@ const props = defineProps<{
   isMobile: Boolean
 }>()
 
+const user = useUserStore()
 const toolbar = useToolbarStore()
+const router = useRouter()
+const undoStore = useUndoStore()
+const redoStore = useRedoStore()
+const { path } = storeToRefs(user)
 const { isCVPreviewVisible, dropdownMenu, currentState } = storeToRefs(toolbar)
+
+watch(path, () => {
+  if (path.value !== router.currentRoute.value.path)
+    router.push(path.value)
+})
 
 const onClick = () => {
   if (Object.values(dropdownMenu.value).some(item => item))
@@ -41,12 +56,50 @@ onUnmounted(() => {
 
 window.addEventListener('click', onClick, false)
 
-// TODO: better way to implement since execCommand is deprecated
 function undo() {
-  document.execCommand('undo', false)
+  const list = undoStore.list
+  if (list.length >= 2) {
+    const newState = _.cloneDeep(list[list.length - 2])
+    if (newState) {
+      const last = undoStore.pop()
+      redoStore.push(last)
+      newState.user.action = 'undo'
+      updateStore(newState)
+    }
+  }
 }
 function redo() {
-  document.execCommand('redo', false)
+  const list = redoStore.list
+  if (list.length) {
+    const newState = list[list.length - 1]
+    if (newState) {
+      redoStore.pop()
+      newState.user.action = 'redo'
+      updateStore(newState)
+    }
+  }
+}
+
+function updateStore(obj) {
+  Object.keys(obj).forEach((key) => {
+    if (key === 'user') {
+      const subObj = obj[key]
+      Object.keys(subObj).forEach((subKey) => {
+        user.$patch((state) => {
+          state[subKey] = subObj[subKey]
+        })
+      })
+      user.updateTimestamp()
+    }
+    else if (key === 'toolbar') {
+      const subObj = obj[key]
+      Object.keys(subObj).forEach((subKey) => {
+        toolbar.$patch((state) => {
+          state[subKey] = subObj[subKey]
+        })
+      })
+    }
+  })
 }
 
 function onCollapse() {
@@ -57,7 +110,7 @@ function onCollapse() {
 
 <template>
   <div
-    class="w-full h-[80px] text-center bg-white flex justify-center gap-4 px-4 py-4 sm:w-auto sm-h-20 sm:rounded-xl sm:shadow-custom transition"
+    class="w-full h-[80px] text-center bg-white flex justify-center gap-4 px-4 py-4 sm:w-auto sm-h-20 sm:rounded-xl sm:shadow-custom transition touch-manipulation"
     :class="{ 'hover:cursor-pointer': !open }"
     @click="onCollapse"
   >
@@ -76,20 +129,27 @@ function onCollapse() {
     <div
       v-if="open"
       class="btn-group-toolbar w-22 h-12"
-      :class="{ 'hidden': isMobile && isCVPreviewVisible }"
     >
-      <div class="btn-toolbar">
-        <button
+      <button
+        class="btn-toolbar"
+        :disabled="undoStore.isEmpty"
+        @click="undo"
+      >
+        <span
           class="i-custom:undo w-8 h-8"
-          @click="undo"
+          :class="{ 'text-blacks-10': undoStore.isEmpty }"
         />
-      </div>
-      <div class="btn-toolbar">
-        <button
+      </button>
+      <button
+        class="btn-toolbar"
+        :disabled="redoStore.isEmpty"
+        @click="redo"
+      >
+        <span
           class="i-custom:redo w-8 h-8"
-          @click="redo"
+          :class="{ 'text-blacks-10': redoStore.isEmpty }"
         />
-      </div>
+      </button>
     </div>
 
     <div
