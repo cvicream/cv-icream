@@ -4,6 +4,7 @@ import { QuillEditor } from '@vueup/vue-quill'
 import '@vueup/vue-quill/dist/vue-quill.snow.css'
 import '@vueup/vue-quill/dist/vue-quill.bubble.css'
 import { v4 as uuidv4 } from 'uuid'
+import { isEditorEmpty } from '~/utils'
 
 export default defineComponent({
   components: {
@@ -179,7 +180,7 @@ export default defineComponent({
       content-type="html"
       :enable="enable"
       :read-only="!enable"
-      :placeholder="(content !== '<p><br></p>' && content) ? '' : placeholder"
+      :placeholder="(content === '' || content === '<p><br></p>') ? placeholder : ''"
       theme=""
       :toolbar="`#${toolbarId}`"
       :class="{ 'single-line': isSingleLine }"
