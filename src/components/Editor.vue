@@ -1,5 +1,5 @@
 <script lang="ts">
-import { computed, defineComponent, nextTick, onMounted, ref } from 'vue'
+import { computed, defineComponent, onMounted, ref } from 'vue'
 import { QuillEditor } from '@vueup/vue-quill'
 import '@vueup/vue-quill/dist/vue-quill.snow.css'
 import '@vueup/vue-quill/dist/vue-quill.bubble.css'
@@ -179,7 +179,7 @@ export default defineComponent({
       content-type="html"
       :enable="enable"
       :read-only="!enable"
-      :placeholder="(content.match('') || content.match('<p><br></p>')) ? placeholder:''"
+      :placeholder="(content === '' || content === '<p><br></p>') ? placeholder : ''"
       theme=""
       :toolbar="`#${toolbarId}`"
       :class="{ 'single-line': isSingleLine }"
