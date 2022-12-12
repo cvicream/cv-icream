@@ -1,10 +1,9 @@
 <script lang="ts">
-import { computed, defineComponent, nextTick, onMounted, ref } from 'vue'
+import { computed, defineComponent, onMounted, ref } from 'vue'
 import { QuillEditor } from '@vueup/vue-quill'
 import '@vueup/vue-quill/dist/vue-quill.snow.css'
 import '@vueup/vue-quill/dist/vue-quill.bubble.css'
 import { v4 as uuidv4 } from 'uuid'
-import { isEditorEmpty } from '~/utils'
 
 export default defineComponent({
   components: {
