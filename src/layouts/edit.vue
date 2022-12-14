@@ -5,7 +5,7 @@ import { storeToRefs } from 'pinia'
 import { useUserStore } from '~/stores/user'
 import { useToolbarStore } from '~/stores/toolbar'
 import { getColor, getStorage, hasStorage, isMobileDevice, setCssVariable, setStatus } from '~/utils'
-import { A4_HEIGHT_PX, MAX_SIDEBAR_WIDTH, MIN_SIDEBAR_WIDTH, MOBILE_BREAKPOINT, PAGE_BREAKPOINT, SCALES } from '~/constants'
+import { A4_HEIGHT_PX, A4_WIDTH_PX, MAX_SIDEBAR_WIDTH, MIN_SIDEBAR_WIDTH, MOBILE_BREAKPOINT, PAGE_BREAKPOINT, SCALES } from '~/constants'
 
 const user = useUserStore()
 const toolbar = useToolbarStore()
@@ -215,7 +215,7 @@ function zoomOut() {
 function zoomFit() {
   if (leftSide.value) {
     const { width, height } = getElementInnerDimensions(leftSide.value)
-    scale.value = (width > height) ? Math.floor(height * 100 / scaleA4Height.value) : Math.floor(width * 100 / 793.7)
+    scale.value = (width > height) ? Math.floor(height * 100 / A4_HEIGHT_PX) : Math.floor(width * 100 / A4_WIDTH_PX)
   }
 }
 
