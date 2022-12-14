@@ -333,7 +333,7 @@ export default defineComponent({
 }
 
 .ql-editor ol {
-  @apply pl-3;
+  @apply pl-4;
   list-style: none;
   counter-reset: li;
 }
@@ -344,15 +344,15 @@ export default defineComponent({
 .ql-editor ol li:not(.ql-direction-rtl)::before {
   content: counter(li) '. ';
   display: inline-block;
-  width: 0.75rem;
-  margin-left: -0.75rem;
+  width: 1rem;
+  margin-left: -1rem;
 }
 .ql-editor li:not(.ql-direction-rtl)::before {
   @apply mr-0 text-left;
 }
 
 .ql-editor ul {
-  @apply pl-3;
+  @apply pl-4;
   list-style: none;
 }
 .ql-editor ul li:not(.ql-direction-rtl) {
@@ -361,49 +361,49 @@ export default defineComponent({
 .ql-editor ul li:not(.ql-direction-rtl)::before {
   content: '•';
   display: inline-block;
-  width: 0.75rem;
-  margin-left: -0.75rem;
+  width: 1rem;
+  margin-left: -1rem;
 }
 
 .ql-editor .ql-indent-1:not(.ql-direction-rtl),
 .ql-editor li.ql-indent-1:not(.ql-direction-rtl) {
-  @apply pl-3;
+  @apply pl-4;
 }
 .ql-editor .ql-indent-2:not(.ql-direction-rtl),
 .ql-editor li.ql-indent-2:not(.ql-direction-rtl) {
-  @apply pl-6;
+  @apply pl-8;
 }
 .ql-editor .ql-indent-3:not(.ql-direction-rtl),
 .ql-editor li.ql-indent-3:not(.ql-direction-rtl) {
-  @apply pl-9;
+  @apply pl-12;
 }
 .ql-editor .ql-indent-4:not(.ql-direction-rtl),
 .ql-editor li.ql-indent-4:not(.ql-direction-rtl) {
-  @apply pl-12;
+  @apply pl-16;
 }
 .ql-editor .ql-indent-5:not(.ql-direction-rtl),
 .ql-editor li.ql-indent-5:not(.ql-direction-rtl) {
-  @apply pl-15;
+  @apply pl-20;
 }
 .ql-editor .ql-indent-6:not(.ql-direction-rtl),
 .ql-editor li.ql-indent-6:not(.ql-direction-rtl) {
-  @apply pl-18;
+  @apply pl-24;
 }
 .ql-editor .ql-indent-7:not(.ql-direction-rtl),
 .ql-editor li.ql-indent-7:not(.ql-direction-rtl) {
-  @apply pl-21;
+  @apply pl-28;
 }
 .ql-editor .ql-indent-8:not(.ql-direction-rtl),
 .ql-editor li.ql-indent-8:not(.ql-direction-rtl) {
-  @apply pl-24;
+  @apply pl-32;
 }
 .ql-editor .ql-indent-9:not(.ql-direction-rtl),
 .ql-editor li.ql-indent-9:not(.ql-direction-rtl) {
-  @apply pl-27;
+  @apply pl-36;
 }
 .ql-editor .ql-indent-10:not(.ql-direction-rtl),
 .ql-editor li.ql-indent-10:not(.ql-direction-rtl) {
-  @apply pl-30;
+  @apply pl-40;
 }
 
 .ql-toolbar {
