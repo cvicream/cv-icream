@@ -157,7 +157,7 @@ window.addEventListener('click', closeAction, false)
 <template>
   <header class="h-[56px] text-center bg-white flex justify-between items-center px-6 py-3">
     <div class="flex gap-3">
-      <a class="btn-icon-32" href="/">
+      <a class="btn-icon-32" href="https://cvicream.com">
         <span class="i-origin:logo w-6 h-6" />
       </a>
       <Tooltip
