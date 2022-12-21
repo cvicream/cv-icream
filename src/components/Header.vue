@@ -164,9 +164,9 @@ window.addEventListener('click', closeAction, false)
         placement="bottom"
         text="Inspiration"
       >
-        <button class="btn-icon-32">
+        <a class="btn-icon-32" href="https://medium.com/cv-icream" target="_blank">
           <span class="i-custom:idea w-6 h-6" />
-        </button>
+        </a>
       </Tooltip>
       <Tooltip
         placement="bottom"
