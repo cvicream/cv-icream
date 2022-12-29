@@ -263,7 +263,10 @@ function redirect(path) {
           >
             <div
               v-if="showSection(item.isEditing, DEFAULT_TEMPLATE.contact.list[0].paragraph, item.paragraph)"
-              :class="getFontSizeClassName(currentState.fontSize).paragraph"
+              :class="[
+                getFontSizeClassName(currentState.fontSize).paragraph,
+                { 'text-right': currentState.layout === 'layout-full' }
+              ]"
               class="text-blacks-100"
               v-html="showSection(item.isEditing, DEFAULT_TEMPLATE.contact.list[0].paragraph, item.paragraph)"
             />
