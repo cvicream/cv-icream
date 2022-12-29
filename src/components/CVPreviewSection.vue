@@ -243,6 +243,7 @@ function redirect(path) {
       class="pt-1 not-break-out"
     >
       <div
+        v-if="currentState.layout !== 'layout-full'"
         :class="getFontSizeClassName(currentState.fontSize).subtitle"
         class="text-primary-100 py-1 px-2"
       >
