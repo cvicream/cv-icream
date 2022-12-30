@@ -19,6 +19,8 @@ const props = defineProps({
 
 const user = useUserStore()
 const { splitIndex, about, summary, experience, project, skill, education, certificate, contact, social } = storeToRefs(user)
+const toolbar = useToolbarStore()
+const { currentState } = storeToRefs(toolbar)
 
 const content = computed(() => {
   return [
@@ -36,7 +38,10 @@ const content = computed(() => {
 
 const topList = computed({
   get() {
-    return [content.value[0]]
+    if (currentState.value.layout === 'layout-full')
+      return [content.value[0], content.value.find(item => item.key === 'contact')]
+    else
+      return [content.value[0]]
   },
   set(newValue) {
     user.$patch((state) => {
@@ -48,7 +53,10 @@ const topList = computed({
 })
 const leftList = computed({
   get() {
-    return content.value.filter((item, index) => index !== 0 && index <= splitIndex.value)
+    if (currentState.value.layout === 'layout-full')
+      return content.value.filter((item, index) => index !== 0 && item.key !== 'contact' && index <= splitIndex.value)
+    else
+      return content.value.filter((item, index) => index !== 0 && index <= splitIndex.value)
   },
   set(newValue) {
     user.updateSplitIndex(newValue.length)
@@ -61,7 +69,10 @@ const leftList = computed({
 })
 const rightList = computed({
   get() {
-    return content.value.filter((item, index) => index !== 0 && index > splitIndex.value)
+    if (currentState.value.layout === 'layout-full')
+      return content.value.filter((item, index) => index !== 0 && item.key !== 'contact' && index > splitIndex.value)
+    else
+      return content.value.filter((item, index) => index !== 0 && index > splitIndex.value)
   },
   set(newValue) {
     user.updateSplitIndex(content.value.length - newValue.length - 1)
@@ -75,9 +86,6 @@ const rightList = computed({
     })
   },
 })
-
-const toolbar = useToolbarStore()
-const { currentState } = storeToRefs(toolbar)
 </script>
 
 <template>
@@ -94,12 +102,17 @@ const { currentState } = storeToRefs(toolbar)
     >
       <div
         :class="{
-          'w-full': currentState.layout === 'layout-full',
+          'w-full flex justify-between': currentState.layout === 'layout-full',
           'w-3/4 ml-auto': currentState.layout === 'layout-left',
           'w-3/4 mr-auto': currentState.layout === 'layout-right',
         }"
       >
-        <CVPreviewSection :element="topList[0]" :read-only="readOnly" />
+        <CVPreviewSection
+          v-for="item in topList"
+          :key="item.key"
+          :element="item"
+          :read-only="readOnly"
+        />
       </div>
       <div class="flex flex-wrap gap-y-3">
         <div
