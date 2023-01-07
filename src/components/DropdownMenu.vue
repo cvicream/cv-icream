@@ -4,7 +4,10 @@ import { useToolbarStore } from '~/stores/toolbar'
 
 export default {
   props: {
-    id: String,
+    id: {
+      type: String,
+      required: true,
+    },
     label: String,
     icon: String,
     tooltip: String,
@@ -12,7 +15,14 @@ export default {
   setup() {},
   computed: {
     ...mapStores(useToolbarStore),
-    ...mapState(useToolbarStore, ['dropdownMenu']),
+    ...mapState(useToolbarStore, ['dropdownMenu', 'currentState']),
+    information() {
+      if (this.id === 'fontSize') {
+        if (this.currentState.fontSize === 'default') return 'Smallest text: 12px (9pt)'
+        else if (this.currentState.fontSize === 'large') return 'Smallest text: 16px (12pt)'
+      }
+      return ''
+    },
   },
   methods: {
     ...mapActions(useToolbarStore, ['toggle']),
@@ -51,6 +61,9 @@ export default {
       <div class="mt-4 flex flex-wrap gap-x-2">
         <slot />
       </div>
+      <p v-if="information" class="note text-blacks-20 mt-[22px]">
+        {{ information }}
+      </p>
     </div>
   </div>
 </template>

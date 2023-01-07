@@ -245,7 +245,7 @@ function handleRightPageClick() {
     <div class="w-full h-[calc(100%-137px)] border-b-1 border-blacks-20 sm:flex sm:flex-row sm:h-[calc(100%-57px)] sm:border-0 overflow-hidden">
       <div
         ref="leftSide"
-        class="h-[calc(100%-8px)] bg-white px-3 py-7 overflow-auto custom-scrollbar flex-grow flex-shrink sm:px-7 sm:py-15 m-1"
+        class="h-[calc(100%-8px)] bg-white px-3 pt-[52px] pb-7 overflow-auto custom-scrollbar flex-grow flex-shrink sm:px-7 sm:py-15 m-1"
         :class="{ 'absolute hidden': isMobile && !isCVPreviewVisible }"
       >
         <div
@@ -255,6 +255,9 @@ function handleRightPageClick() {
             height: cvPreviewHeight,
           }"
         >
+          <p class="absolute -top-[26px] note text-blacks-20">
+            Layout size: A4 (21x29.7cm)
+          </p>
           <div
             ref="cvPreview"
             class="w-[210mm] min-h-[297mm]"
