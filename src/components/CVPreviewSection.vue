@@ -148,13 +148,16 @@ function redirect(path) {
             />
             <div
               v-if="item.isEditing || !isEditorEmpty(item.subtitle1) || !isEditorEmpty(item.subtitle2)"
-              class="flex justify-between"
+              class="flex justify-between gap-16"
             >
               <div
                 v-if="showSection(item.isEditing, DEFAULT_TEMPLATE.experience.list[0].subtitle1, item.subtitle1)
                   || showSection(item.isEditing, DEFAULT_TEMPLATE.experience.list[0].subtitle2, item.subtitle2)
                 "
-                :class="getFontSizeClassName(currentState.fontSize).subtitle"
+                :class="[
+                  getFontSizeClassName(currentState.fontSize).subtitle,
+                  'min-w-[40%] max-w-[60%]'
+                ]"
                 class="text-blacks-60"
                 v-html="showSection(item.isEditing, DEFAULT_TEMPLATE.experience.list[0].subtitle1, item.subtitle1)"
               />
@@ -162,7 +165,10 @@ function redirect(path) {
                 v-if="showSection(item.isEditing, DEFAULT_TEMPLATE.experience.list[0].subtitle1, item.subtitle1)
                   || showSection(item.isEditing, DEFAULT_TEMPLATE.experience.list[0].subtitle2, item.subtitle2)
                 "
-                :class="getFontSizeClassName(currentState.fontSize).subtitle"
+                :class="[
+                  getFontSizeClassName(currentState.fontSize).subtitle,
+                  'min-w-[20%] max-w-[40%]'
+                ]"
                 class="text-blacks-60"
                 v-html="showSection(item.isEditing, DEFAULT_TEMPLATE.experience.list[0].subtitle2, item.subtitle2)"
               />
@@ -208,13 +214,16 @@ function redirect(path) {
             />
             <div
               v-if="item.isEditing || !isEditorEmpty(item.subtitle1) || !isEditorEmpty(item.subtitle2)"
-              class="flex justify-between"
+              class="flex justify-between gap-16"
             >
               <div
                 v-if="showSection(item.isEditing, DEFAULT_TEMPLATE.project.list[0].subtitle1, item.subtitle1)
                   || showSection(item.isEditing, DEFAULT_TEMPLATE.project.list[0].subtitle2, item.subtitle2)
                 "
-                :class="getFontSizeClassName(currentState.fontSize).subtitle"
+                :class="[
+                  getFontSizeClassName(currentState.fontSize).subtitle,
+                  'min-w-[40%] max-w-[60%]'
+                ]"
                 class="text-blacks-60"
                 v-html="showSection(item.isEditing, DEFAULT_TEMPLATE.project.list[0].subtitle1, item.subtitle1)"
               />
@@ -222,7 +231,10 @@ function redirect(path) {
                 v-if="showSection(item.isEditing, DEFAULT_TEMPLATE.project.list[0].subtitle1, item.subtitle1)
                   || showSection(item.isEditing, DEFAULT_TEMPLATE.project.list[0].subtitle2, item.subtitle2)
                 "
-                :class="getFontSizeClassName(currentState.fontSize).subtitle"
+                :class="[
+                  getFontSizeClassName(currentState.fontSize).subtitle,
+                  'min-w-[20%] max-w-[40%]'
+                ]"
                 class="text-blacks-60"
                 v-html="showSection(item.isEditing, DEFAULT_TEMPLATE.project.list[0].subtitle2, item.subtitle2)"
               />
