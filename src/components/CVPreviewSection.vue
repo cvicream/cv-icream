@@ -265,7 +265,8 @@ function redirect(path) {
 
     <section
       v-else-if="element.key === 'contact'"
-      class="pt-1 not-break-out"
+      class="pt-1 not-break-out hover:bg-primary-10"
+      :class="getEditingStyle(contact.isEditing)"
     >
       <div
         v-if="currentState.layout !== 'layout-full'"
