@@ -169,7 +169,7 @@ function redirect(path) {
                   getFontSizeClassName(currentState.fontSize).subtitle,
                   'min-w-[20%] max-w-[40%]'
                 ]"
-                class="text-blacks-60"
+                class="text-blacks-60 text-right"
                 v-html="showSection(item.isEditing, DEFAULT_TEMPLATE.experience.list[0].subtitle2, item.subtitle2)"
               />
             </div>
@@ -235,7 +235,7 @@ function redirect(path) {
                   getFontSizeClassName(currentState.fontSize).subtitle,
                   'min-w-[20%] max-w-[40%]'
                 ]"
-                class="text-blacks-60"
+                class="text-blacks-60 text-right"
                 v-html="showSection(item.isEditing, DEFAULT_TEMPLATE.project.list[0].subtitle2, item.subtitle2)"
               />
             </div>
