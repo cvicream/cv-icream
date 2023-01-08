@@ -281,7 +281,7 @@ export default defineComponent({
 }
 
 .ql-editor {
-  @apply pl-0 pr-2 py-1;
+  @apply pl-0 pr-2 py-[3px];
 }
 .single-line .ql-editor {
   @apply h-[22px] p-0 mr-4;
