@@ -176,11 +176,14 @@ function isActivePath(targetPath: string) {
   return router.currentRoute.value.path.indexOf(targetPath) === 0
 }
 
-function onMenuClick(path) {
+function onMenuClick(path, id) {
   if (props.isMobile)
     props.setOpen(false)
 
   router.push(path)
+
+  // add for loop here
+  user.value.id.isEditing = true
 }
 </script>
 
@@ -219,6 +222,7 @@ function onMenuClick(path) {
       <div class="flex flex-col gap-4 overflow-y-auto disable-scrollbar last-child-pb-4">
         <SidebarMenu
           v-for="element in sidebarMenus.filter(item => !item.draggable)"
+          :id="element.id"
           :key="element.path"
           :path="element.path"
           :name="element.name"
@@ -239,6 +243,7 @@ function onMenuClick(path) {
         >
           <template #item="{element}">
             <SidebarMenu
+              :id="element.id"
               :path="element.path"
               :name="element.name"
               :icon="element.icon"
