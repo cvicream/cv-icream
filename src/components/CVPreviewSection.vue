@@ -76,7 +76,10 @@ function redirect(path) {
     <div
       v-if="element.key === 'about'"
       class="p-2 flex items-baseline flex-wrap gap-6 not-break-out hover:bg-primary-10"
-      :class="getEditingStyle(about.isEditing)"
+      :class="[
+        getEditingStyle(about.isEditing),
+        (toolbar.highlightSection === 'about')?'bg-primary-10':''
+      ]"
     >
       <div
         v-if="about.name"
@@ -97,7 +100,10 @@ function redirect(path) {
     <section
       v-else-if="element.key === 'summary' && summary.isShow"
       class="p-2 flex flex-col gap-2 not-break-out"
-      :class="getEditingStyle(summary.isEditing)"
+      :class="[
+        getEditingStyle(summary.isEditing),
+        (toolbar.highlightSection === 'summary')?'bg-primary-10':''
+      ]"
     >
       <div
         v-if="summary.hashtags && summary.hashtags.length && summary.hashtags.some(tag => !isEditorEmpty(tag))"
@@ -129,6 +135,7 @@ function redirect(path) {
     <section
       v-else-if="element.key === 'experience' && experience.isShow"
       class="pt-1 not-break-out"
+      :class="(toolbar.highlightSection === 'experience')?'bg-primary-10':''"
     >
       <div
         :class="getFontSizeClassName(currentState.fontSize).subtitle"
@@ -197,6 +204,7 @@ function redirect(path) {
     <section
       v-else-if="element.key === 'project' && project.isShow"
       class="pt-1 not-break-out"
+      :class="(toolbar.highlightSection === 'project')?'bg-primary-10':''"
     >
       <div
         :class="getFontSizeClassName(currentState.fontSize).subtitle"
@@ -266,7 +274,10 @@ function redirect(path) {
     <section
       v-else-if="element.key === 'contact'"
       class="pt-1 not-break-out hover:bg-primary-10"
-      :class="getEditingStyle(contact.isEditing)"
+      :class="[
+        getEditingStyle(contact.isEditing),
+        (toolbar.highlightSection === 'contact')?'bg-primary-10':''
+      ]"
     >
       <div
         v-if="currentState.layout !== 'layout-full'"
@@ -304,6 +315,7 @@ function redirect(path) {
     <section
       v-else-if="element.key === 'skill' && skill.isShow"
       class="pt-1 not-break-out"
+      :class=" (toolbar.highlightSection === 'skill')?'bg-primary-10':''"
     >
       <div
         :class="getFontSizeClassName(currentState.fontSize).subtitle"
@@ -355,6 +367,7 @@ function redirect(path) {
     <section
       v-else-if="element.key === 'certificate' && certificate.isShow"
       class="pt-1 not-break-out"
+      :class=" (toolbar.highlightSection === 'certificate')?'bg-primary-10':''"
     >
       <div
         :class="getFontSizeClassName(currentState.fontSize).subtitle"
@@ -406,6 +419,7 @@ function redirect(path) {
     <section
       v-else-if="element.key === 'education' && education.isShow"
       class="pt-1 not-break-out"
+      :class=" (toolbar.highlightSection === 'education')?'bg-primary-10':''"
     >
       <div
         :class="getFontSizeClassName(currentState.fontSize).subtitle"
@@ -457,6 +471,7 @@ function redirect(path) {
     <section
       v-else-if="element.key === 'social' && social.isShow"
       class="pt-1 not-break-out"
+      :class=" (toolbar.highlightSection === 'social')?'bg-primary-10':''"
     >
       <div
         :class="getFontSizeClassName(currentState.fontSize).subtitle"

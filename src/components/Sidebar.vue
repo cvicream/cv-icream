@@ -4,6 +4,7 @@ import { storeToRefs } from 'pinia'
 import vuedraggable from 'vuedraggable'
 import { useUserStore } from '~/stores/user'
 import { isMobileDevice } from '~/utils'
+import { useToolbarStore } from '~/stores/toolbar'
 
 const props = defineProps({
   isMobile: {
@@ -31,6 +32,7 @@ const props = defineProps({
 const user = useUserStore()
 const { about, summary, experience, project, skill, education, certificate, contact, social, timestamp } = storeToRefs(user)
 
+const toolbar = useToolbarStore()
 const router = useRouter()
 const sidebarMenus = computed(() => {
   return [
@@ -182,8 +184,9 @@ function onMenuClick(path, id) {
 
   router.push(path)
 
-  // add for loop here
-  user.value.id.isEditing = true
+  // toolbar.highlightSection = id
+  // add for loop here...
+  //  toolbar.highlightSection = 'none'
 }
 </script>
 
