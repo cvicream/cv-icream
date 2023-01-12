@@ -9,7 +9,6 @@ export const useToolbarStore = defineStore('toolbar', {
       fontFamily: false,
     },
     isCVPreviewVisible: false,
-    highlightSection: 'none',
     currentState: {
       fontFamily: 'font-gill-sans',
       layout: 'layout-right',

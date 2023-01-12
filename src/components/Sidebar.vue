@@ -4,7 +4,6 @@ import { storeToRefs } from 'pinia'
 import vuedraggable from 'vuedraggable'
 import { useUserStore } from '~/stores/user'
 import { isMobileDevice } from '~/utils'
-import { useToolbarStore } from '~/stores/toolbar'
 
 const props = defineProps({
   isMobile: {
@@ -32,7 +31,6 @@ const props = defineProps({
 const user = useUserStore()
 const { about, summary, experience, project, skill, education, certificate, contact, social, timestamp } = storeToRefs(user)
 
-const toolbar = useToolbarStore()
 const router = useRouter()
 const sidebarMenus = computed(() => {
   return [
@@ -178,15 +176,20 @@ function isActivePath(targetPath: string) {
   return router.currentRoute.value.path.indexOf(targetPath) === 0
 }
 
-function onMenuClick(path, id) {
-  if (props.isMobile)
-    props.setOpen(false)
+function onMenuClick(id, path) {
+  if (isSmallSidebar.value)
+    isOpen.value = false
+
+  user.$patch((state) => {
+    state[id].isEditing = true
+    setTimeout(() => {
+      user.$patch((state) => {
+        state[id].isEditing = false
+      })
+    }, 1000)
+  })
 
   router.push(path)
-
-  // toolbar.highlightSection = id
-  // add for loop here...
-  //  toolbar.highlightSection = 'none'
 }
 </script>
 
