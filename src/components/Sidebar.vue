@@ -177,8 +177,8 @@ function isActivePath(targetPath: string) {
 }
 
 function onMenuClick(id, path) {
-  if (isSmallSidebar.value)
-    isOpen.value = false
+  if (props.isMobile)
+    props.setOpen(false)
 
   user.$patch((state) => {
     state[id].isEditing = true
