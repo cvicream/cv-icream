@@ -183,9 +183,7 @@ function onMenuClick(id, path) {
   user.$patch((state) => {
     state[id].isEditing = true
     setTimeout(() => {
-      user.$patch((state) => {
-        state[id].isEditing = false
-      })
+      state[id].isEditing = false
     }, 1000)
   })
 
