@@ -129,6 +129,7 @@ function redirect(path) {
     <section
       v-else-if="element.key === 'experience' && experience.isShow"
       class="pt-1 not-break-out"
+      :class="getEditingStyle(experience.isEditing)"
     >
       <div
         :class="getFontSizeClassName(currentState.fontSize).subtitle"
@@ -197,6 +198,7 @@ function redirect(path) {
     <section
       v-else-if="element.key === 'project' && project.isShow"
       class="pt-1 not-break-out"
+      :class="getEditingStyle(project.isEditing)"
     >
       <div
         :class="getFontSizeClassName(currentState.fontSize).subtitle"
@@ -304,6 +306,7 @@ function redirect(path) {
     <section
       v-else-if="element.key === 'skill' && skill.isShow"
       class="pt-1 not-break-out"
+      :class="getEditingStyle(skill.isEditing)"
     >
       <div
         :class="getFontSizeClassName(currentState.fontSize).subtitle"
@@ -355,6 +358,7 @@ function redirect(path) {
     <section
       v-else-if="element.key === 'certificate' && certificate.isShow"
       class="pt-1 not-break-out"
+      :class="getEditingStyle(certificate.isEditing)"
     >
       <div
         :class="getFontSizeClassName(currentState.fontSize).subtitle"
@@ -406,6 +410,7 @@ function redirect(path) {
     <section
       v-else-if="element.key === 'education' && education.isShow"
       class="pt-1 not-break-out"
+      :class="getEditingStyle(education.isEditing)"
     >
       <div
         :class="getFontSizeClassName(currentState.fontSize).subtitle"
@@ -457,6 +462,7 @@ function redirect(path) {
     <section
       v-else-if="element.key === 'social' && social.isShow"
       class="pt-1 not-break-out"
+      :class="getEditingStyle(social.isEditing)"
     >
       <div
         :class="getFontSizeClassName(currentState.fontSize).subtitle"
