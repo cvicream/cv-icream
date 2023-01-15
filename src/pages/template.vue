@@ -3,7 +3,7 @@ import { onBeforeMount } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useUserStore } from '~/stores/user'
 import { useToolbarStore } from '~/stores/toolbar'
-import { DEFAULT_TEMPLATE, TEMPLATES } from '~/constants'
+import { DEFAULT_TEMPLATE, MOBILE_BREAKPOINT, TEMPLATES } from '~/constants'
 
 const user = useUserStore()
 const toolbar = useToolbarStore()
@@ -13,10 +13,19 @@ const { t } = useI18n()
 const router = useRouter()
 
 const selectedTemplate = ref(user.template)
+const isSmallWindow = ref(false)
 
 onBeforeMount(() => {
   // make sure style change back
   setStyle(DEFAULT_TEMPLATE.style)
+})
+
+onMounted(() => {
+  window.addEventListener('resize', resize)
+})
+
+onUnmounted(() => {
+  window.removeEventListener('resize', resize)
 })
 
 function setStyle(style) {
@@ -38,13 +47,25 @@ function onNext() {
   }
   router.push('/edit/about')
 }
+
+function resize() {
+  isSmallWindow.value = (window.innerWidth <= MOBILE_BREAKPOINT)
+}
 </script>
 
 <template>
   <div class="h-full flex flex-col justify-start py-12 px-4 sm:p-4 items-center gap-16">
-    <h1 class="heading1-mobile sm:heading1 text-center">
-      {{ t('template.title') }}
-    </h1>
+    <div>
+      <h1 class="heading1-mobile sm:heading1 text-center">
+        {{ t('template.title') }}
+      </h1>
+      <p class="px-4 py-4 paragraph text-center md:px-8 lg:px-12">
+        {{ isSmallWindow
+          ? 'The template you choose will add relevant text for the job type selected, and we suggest a layout, but everything is editable.'
+          : 'The template you choose will add relevant text for the job type selected, and we suggest a layout, but everything is editable. If you don’t see your job position, don’t worry. You can easily choose which layout you prefer or Build from scratch, and they all work perfectly fine with all jobs.'
+        }}
+      </p>
+    </div>
     <div class="flex flex-col gap-16 sm:flex-row">
       <div class="flex flex-col justify-between items-center">
         <label for="template-1" class="flex flex-col gap-5 cursor-pointer">
