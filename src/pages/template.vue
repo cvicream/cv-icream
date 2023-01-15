@@ -59,11 +59,11 @@ function resize() {
       <h1 class="heading1-mobile sm:heading1 text-center">
         {{ t('template.title') }}
       </h1>
-      <p v-if="isSmallWindow" class="py-4 px-4 paragraph text-center">
-        The template you choose will add relevant text for the job type selected, and we suggest a layout, but everything is editable.
-      </p>
-      <p v-else class="py-4 lg:px-12 md:px-8 paragraph text-center">
-        The template you choose will add relevant text for the job type selected, and we suggest a layout, but everything is editable. If you don’t see your job position, don’t worry. You can easily choose which layout you prefer or Build from scratch, and they all work perfectly fine with all jobs.
+      <p class="px-4 py-4 paragraph text-center md:px-8 lg:px-12">
+        {{ isSmallWindow
+          ? 'The template you choose will add relevant text for the job type selected, and we suggest a layout, but everything is editable.'
+          : 'The template you choose will add relevant text for the job type selected, and we suggest a layout, but everything is editable. If you don’t see your job position, don’t worry. You can easily choose which layout you prefer or Build from scratch, and they all work perfectly fine with all jobs.'
+        }}
       </p>
     </div>
     <div class="flex flex-col gap-16 sm:flex-row">
