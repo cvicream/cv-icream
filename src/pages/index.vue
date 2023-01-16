@@ -90,7 +90,7 @@ const onNext = () => {
 
   <Modal
     v-show="uploadFiletype"
-    title="Upload Your CV Draft"
+    title="Open Your CV Draft"
     :subtitle="`Please upload the file with the format in ‘.${DRAFT_FILE_TYPE}’.`"
     @close="uploadFiletype = false"
   >

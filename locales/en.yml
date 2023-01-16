@@ -19,10 +19,10 @@ initial:
   title: Let's Start! Would You Like...
   action: 
     new: Create a New CV
-    upload: Upload your CV Draft
+    upload: Open your CV Draft
   hint:
     new: Create a CV with the delightful templates in easy 4 steps.
-    upload: Upload your CV draft here if you have used the editor and saved your file previously.
+    upload: Open your CV draft here if you have used the editor and saved your file previously.
 layout:
   button:
     next_step: Next Step
