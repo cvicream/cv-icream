@@ -182,6 +182,7 @@ export default defineComponent({
       :placeholder="(content === '' || content === '<p><br></p>') ? placeholder : ''"
       theme=""
       :toolbar="`#${toolbarId}`"
+      class="deletable"
       :class="{ 'single-line': isSingleLine }"
       @focus="onFocus"
       @blur="toolbarVisible = false"
@@ -189,8 +190,9 @@ export default defineComponent({
     />
 
     <button
-      v-if="isSingleLine && enable && content !== '<p><br></p>'"
-      class="btn-clear"
+      v-if="enable && content !== '<p><br></p>'"
+      class="btn-clear i-custom:cancel w-6 h-6 absolute right-2 bg-blacks-40 opacity-0"
+      :class="isSingleLine ? 'top-[50%] -translate-y-1/2' : 'top-[11px]'"
       @click="onClear"
     />
 
@@ -281,20 +283,16 @@ export default defineComponent({
 }
 
 .ql-editor {
-  @apply pl-0 pr-2 py-[3px];
+  @apply pl-0 pr-5 py-[3px];
 }
 .single-line .ql-editor {
   @apply h-[22px] p-0 mr-4;
 }
 
-.btn-clear {
-  @apply i-custom:cancel w-6 h-6 absolute top-[50%] right-2 bg-blacks-40 opacity-0;
-  transform: translateY(-50%);
-}
 .btn-clear:hover {
-  @apply opacity-100 bg-blacks-70 cursor-pointer;
+  @apply opacity-100 bg-blacks-70;
 }
-.single-line:hover + .btn-clear {
+.deletable:hover + .btn-clear {
   @apply opacity-100;
 }
 
