@@ -6,7 +6,7 @@ import { storeToRefs } from 'pinia'
 import { useUserStore } from '~/stores/user'
 import { useToolbarStore } from '~/stores/toolbar'
 import { getPreviousUrl, getStorage, setStatus, stripHtml } from '~/utils'
-import { A4_WIDTH_PX } from '~/constants'
+import { A4_WIDTH_PX, DEFAULT_PDF_FILENAME } from '~/constants'
 import arial from '~/assets/fonts/arial/arial-normal'
 import georgia from '~/assets/fonts/georgia/georgia-normal'
 import gillsans from '~/assets/fonts/gillsans/gillsans-normal'
@@ -109,7 +109,7 @@ function print() {
 async function generatePdf() {
   loading.value = true
 
-  const fileName = generateFileName() || 'Your Name'
+  const fileName = generateFileName() || DEFAULT_PDF_FILENAME
   const storage = getStorage()
   const data = {
     fileName,
