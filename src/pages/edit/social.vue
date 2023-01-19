@@ -108,7 +108,7 @@ function deleteBlock(index: number) {
         v-if="isEditName"
         ref="nameInput"
         v-model="social.name"
-        type="text"
+        type="search"
         class="w-full h-full leading text-blacks-100 bg-transparent outline-none"
         :title="social.name"
         @keyup.enter="onEditNameClick"
@@ -199,6 +199,7 @@ function deleteBlock(index: number) {
             <label class="block note text-blacks-70">Link</label>
             <input
               v-model="item.link"
+              type="search"
               class="form-input mt-1"
               :class="{'bg-blacks-5': !social.isShow}"
               :enable="item.isShow"
