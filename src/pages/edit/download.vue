@@ -109,12 +109,13 @@ function print() {
 async function generatePdf() {
   loading.value = true
 
-  const fileName = `${stripHtml(about.value.jobTitle)} - ${stripHtml(about.value.name)}`
+  const fileName = generateFileName() || 'Your Name'
   const storage = getStorage()
   const data = {
     fileName,
     data: storage,
   }
+
   try {
     const res = await axios({
       method: 'POST',
@@ -135,6 +136,15 @@ async function generatePdf() {
   }
 
   loading.value = false
+}
+
+function generateFileName() {
+  const fileName: string[] = []
+  const name = stripHtml(about.value.name)
+  const jobTitle = stripHtml(about.value.jobTitle)
+  if (name) fileName.push(name)
+  if (jobTitle) fileName.push(jobTitle)
+  return fileName.join(' - ')
 }
 
 function back() {
