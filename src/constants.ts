@@ -8,7 +8,6 @@ export const SCALES = [25, 50, 100, 200]
 export const A4_WIDTH_PX = 794
 export const A4_HEIGHT_PX = 1122.5
 export const PAGE_BREAKPOINT = 1340
-export const DEFAULT_PDF_FILENAME = 'NAME_CV'
 
 export const LAYOUTS = [
   {

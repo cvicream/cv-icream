@@ -6,7 +6,7 @@ import { storeToRefs } from 'pinia'
 import { useUserStore } from '~/stores/user'
 import { useToolbarStore } from '~/stores/toolbar'
 import { getPreviousUrl, getStorage, setStatus, stripHtml } from '~/utils'
-import { A4_WIDTH_PX, DEFAULT_PDF_FILENAME } from '~/constants'
+import { A4_WIDTH_PX } from '~/constants'
 import arial from '~/assets/fonts/arial/arial-normal'
 import georgia from '~/assets/fonts/georgia/georgia-normal'
 import gillsans from '~/assets/fonts/gillsans/gillsans-normal'
@@ -109,7 +109,7 @@ function print() {
 async function generatePdf() {
   loading.value = true
 
-  const fileName = generateFileName() || DEFAULT_PDF_FILENAME
+  const fileName = generateFileName()
   const storage = getStorage()
   const data = {
     fileName,
@@ -139,12 +139,12 @@ async function generatePdf() {
 }
 
 function generateFileName() {
-  const fileName: string[] = []
   const name = stripHtml(about.value.name)
   const jobTitle = stripHtml(about.value.jobTitle)
-  if (name) fileName.push(name)
-  if (jobTitle) fileName.push(jobTitle)
-  return fileName.join(' - ')
+  if (name && jobTitle) return `CV_${name}_${jobTitle}`
+  else if (name && !jobTitle) return `CV_${name}`
+  else if (!name && jobTitle) return `CV_NAME_${jobTitle}`
+  else return 'CV_NAME_Job Title'
 }
 
 function back() {
