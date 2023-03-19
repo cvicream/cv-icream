@@ -132,5 +132,10 @@ export default defineConfig({
     boxShadow: {
       custom: '2px 2px 10px var(--shadow-color)',
     },
+    extend: {
+      screens: {
+        'hover-hover': { raw: '(hover: hover)' },
+      },
+    },
   },
 })
