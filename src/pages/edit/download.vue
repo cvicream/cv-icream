@@ -139,8 +139,10 @@ async function generatePdf() {
 }
 
 function generateFileName() {
-  const name = stripHtml(about.value.name)
-  const jobTitle = stripHtml(about.value.jobTitle)
+  let name = stripHtml(about.value.name)
+  name = name.replace(/\n/g, '') // remove line break
+  let jobTitle = stripHtml(about.value.jobTitle)
+  jobTitle = jobTitle.replace(/\n/g, '') // remove line break
   if (name && jobTitle) return `CV_${name}_${jobTitle}`
   else if (name && !jobTitle) return `CV_${name}`
   else if (!name && jobTitle) return `CV_NAME_${jobTitle}`
