@@ -112,21 +112,17 @@ function deleteBlock(index: number) {
         class="w-full h-full leading text-blacks-100 bg-transparent outline-none"
         :title="experience.name"
         @keyup.enter="onEditNameClick"
+        @focusout="onEditNameClick"
       >
       <div
         v-else
-        class="w-full h-full flex items-center leading leading-6 text-blacks-100 text-ellipsis whitespace-nowrap overflow-hidden bg-transparent"
+        class="hover:bg-#E9E9E9 hover:cursor-text w-full h-full flex items-center leading leading-6 text-blacks-100 text-ellipsis whitespace-nowrap overflow-hidden bg-transparent"
         :title="experience.name"
+        @click="onEditNameClick"
       >
         {{ experience.name }}
       </div>
     </div>
-    <button @click="onEditNameClick">
-      <span
-        class="icon-24"
-        :class="isEditName ? 'i-custom:ok' : 'i-custom:edit'"
-      />
-    </button>
     <ToggleSwitch
       :checked="experience.isShow"
       @click="toggleShowAll"
