@@ -24,10 +24,6 @@ watch(nameInput, () => {
   }
 })
 
-function onEditNameClick() {
-  isEditName.value = !isEditName.value
-}
-
 function focusIn(index) {
   user.$patch((state) => {
     state.social.list[index].isEditing = true
@@ -37,13 +33,6 @@ function focusIn(index) {
 function focusOut(index) {
   user.$patch((state) => {
     state.social.list[index].isEditing = false
-  })
-}
-
-function toggleShowAll() {
-  user.$patch((state) => {
-    state.social.isShow = !state.social.isShow
-    state.social.list.forEach(item => item.isShow = state.social.isShow)
   })
 }
 
@@ -101,37 +90,7 @@ function deleteBlock(index: number) {
 </script>
 
 <template>
-  <div class="flex items-center gap-2">
-    <span class="i-custom:social icon-32" />
-    <div class="flex-1 h-8 overflow-hidden">
-      <input
-        v-if="isEditName"
-        ref="nameInput"
-        v-model="social.name"
-        type="search"
-        class="w-full h-full leading text-blacks-100 bg-transparent outline-none"
-        :title="social.name"
-        @keyup.enter="onEditNameClick"
-      >
-      <div
-        v-else
-        class="w-full h-full flex items-center leading leading-6 text-blacks-100 text-ellipsis whitespace-nowrap overflow-hidden bg-transparent"
-        :title="social.name"
-      >
-        {{ social.name }}
-      </div>
-    </div>
-    <button @click="onEditNameClick">
-      <span
-        class="icon-24"
-        :class="isEditName ? 'i-custom:ok' : 'i-custom:edit'"
-      />
-    </button>
-    <ToggleSwitch
-      :checked="social.isShow"
-      @click="toggleShowAll"
-    />
-  </div>
+  <Title category="social" has-toggle-btn />
   <div class="flex-grow flex flex-col gap-6 pr-2 -mr-3 overflow-y-auto custom-scrollbar last-child-pb-4">
     <p v-if="!social.isShow" class="paragraph text-blacks-40">
       {{ HIDDEN_INFORMATION }}

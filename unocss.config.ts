@@ -66,7 +66,6 @@ export default defineConfig({
         ),
         origin: FileSystemIconLoader( // class="i-origin:<svg_filename>" which is for logo
           './src/assets/icons',
-          svg => svg,
         ),
       },
       extraProperties: {
