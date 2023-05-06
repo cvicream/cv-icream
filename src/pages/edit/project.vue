@@ -1,17 +1,21 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { onMounted, onUnmounted, ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useUserStore } from '~/stores/user'
+import { useToolbarStore } from '~/stores/toolbar'
 import { DEFAULT_TEMPLATE, HIDDEN_INFORMATION, TEMPLATE_LIST_ITEM } from '~/constants'
 
 const user = useUserStore()
 const { project } = storeToRefs(user)
+const toolbar = useToolbarStore()
+const { isMobileScreen } = storeToRefs(toolbar)
 
 const isEditName = ref(false)
 const nameInput = ref<HTMLInputElement | null>(null)
 const componentKey = ref(0) // force Editor component to re-render
 const deleteBlockVisible = ref(false)
 const deleteIdx = ref(0)
+const isMoreActionOpen = ref<number[]>([])
 
 function forceRerender() {
   componentKey.value += 1
@@ -22,6 +26,14 @@ watch(nameInput, () => {
     nameInput.value.focus()
     nameInput.value.select()
   }
+})
+
+onMounted(() => {
+  window.addEventListener('click', closeAction, false)
+})
+
+onUnmounted(() => {
+  window.removeEventListener('click', closeAction)
 })
 
 function onEditNameClick() {
@@ -47,10 +59,25 @@ function toggleShowAll() {
   })
 }
 
-function addItem() {
+function toggleMoreAction(index: number | null) {
+  if (index === null || isMoreActionOpen.value.includes(index))
+    isMoreActionOpen.value = []
+  else
+    isMoreActionOpen.value = [index]
+}
+
+function closeAction() {
+  isMoreActionOpen.value = []
+}
+
+function addItem(index: number | null) {
   user.$patch((state) => {
     const newItem = JSON.parse(JSON.stringify(TEMPLATE_LIST_ITEM))
-    state.project.list.push(newItem)
+    if (index === null) { state.project.list.push(newItem) }
+    else {
+      state.project.list.splice(index, 0, newItem)
+      forceRerender()
+    }
   })
 }
 
@@ -98,6 +125,16 @@ function deleteBlock(index: number) {
   deleteItem(index)
 }
 
+function swap(index1, index2) {
+  user.$patch((state) => {
+    state.project.list[index1].isEditing = false
+    state.project.list[index2].isEditing = false
+    const tmp = state.project.list[index2]
+    state.project.list[index2] = state.project.list[index1]
+    state.project.list[index1] = tmp
+  })
+  forceRerender()
+}
 </script>
 
 <template>
@@ -142,7 +179,7 @@ function deleteBlock(index: number) {
     <div
       v-for="(item, index) in project.list"
       :key="componentKey + '-' + index"
-      class="group"
+      :class="{ group: !isMobileScreen }"
       @focusin="() => focusIn(index)"
       @focusout="() => focusOut(index)"
     >
@@ -154,21 +191,48 @@ function deleteBlock(index: number) {
           <span class="subleading text-blacks-100">{{ index + 1 }}</span>
         </div>
         <div
-          class="invisible flex items-center gap-3 ml-3"
-          :class="{ 'group-hover:visible': project.isShow }"
+          class="flex items-center gap-3 ml-3"
+          :class="{
+            'invisible': !isMobileScreen,
+            'group-hover:visible': project.isShow
+          }"
         >
-          <button v-if="project.list.length > 1" @click="toggleShowItem(index)">
-            <span
-              class="icon-24"
-              :class="item.isShow ? 'i-custom:show' : 'i-custom:hide'"
-            />
+          <button v-if="index !== 0 && project.list.length > 1" @click="swap(index, index - 1)">
+            <span class="i-custom:move-up icon-24" />
           </button>
-          <button @click="duplicateItem(index)">
-            <span class="i-custom:variant icon-24" />
+          <button v-if="(index !== project.list.length - 1) && project.list.length > 1" @click="swap(index, index + 1)">
+            <span class="i-custom:move-down icon-24" />
           </button>
-          <button v-if="project.list.length > 1" @click="showDeleteBlockMessage(index)">
-            <span class="i-custom:delete icon-24" />
-          </button>
+          <div class="relative">
+            <button>
+              <span class="i-custom:more icon-24" @click.stop="toggleMoreAction(index)" />
+            </button>
+            <div
+              v-show="isMoreActionOpen.includes(index)"
+              class="absolute right-0 mt-2 w-[262px] bg-white border border-blacks-100 rounded-xl shadow-custom z-1 flex flex-col overflow-hidden"
+              @click="toggleMoreAction(null)"
+            >
+              <button v-if="project.list.length > 1" class="flex items-center px-4 py-3 hover:bg-primary-10" @click="toggleShowItem(index)">
+                <span
+                  class="w-6 h-6 text-blacks-70"
+                  :class="item.isShow ? 'i-custom:show' : 'i-custom:hide'"
+                />
+                <span class="paragraph text-blacks-100 ml-2">{{ item.isShow ? 'Hide on CV' : 'Show on CV' }}</span>
+              </button>
+              <button class="flex items-center px-4 py-3 hover:bg-primary-10" @click="addItem(index + 1)">
+                <span class="i-custom:add w-6 h-6 text-blacks-70" />
+                <span class="paragraph text-blacks-100 ml-2">Add New</span>
+              </button>
+              <button class="flex items-center px-4 py-3 hover:bg-primary-10" @click="duplicateItem(index)">
+                <span class="i-custom:variant w-6 h-6 text-blacks-70" />
+                <span class="paragraph text-blacks-100 ml-2">Duplicate</span>
+              </button>
+              <button v-if="project.list.length > 1" class="flex items-center px-4 py-3 hover:bg-primary-10" @click="showDeleteBlockMessage(index)">
+                <span class="i-custom:delete w-6 h-6 text-blacks-70" />
+                <span class="paragraph text-blacks-100 ml-2">Delete</span>
+              </button>
+            </div>
+          </div>
         </div>
       </div>
       <div
@@ -228,7 +292,7 @@ function deleteBlock(index: number) {
       v-if="project.isShow "
       class="w-full rounded-xl text-blacks-40 inline-flex justify-center items-center p-3 border-transparent border-1 group bg-primary-10 hover:border-primary-100"
       :disabled="!project.isShow"
-      @click="addItem"
+      @click="addItem(null)"
     >
       <span
         class="i-custom:add w-6 h-6 text-blacks-40 flex-shrink-0"

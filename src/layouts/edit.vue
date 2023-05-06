@@ -9,10 +9,9 @@ import { A4_HEIGHT_PX, A4_WIDTH_PX, MAX_SIDEBAR_WIDTH, MIN_SIDEBAR_WIDTH, MOBILE
 
 const user = useUserStore()
 const toolbar = useToolbarStore()
-const { isCVPreviewVisible, currentState } = storeToRefs(toolbar)
+const { isCVPreviewVisible, currentState, isMobileScreen } = storeToRefs(toolbar)
 
 const isDesignBarOpen = ref(true)
-const isMobile = ref(false)
 const scale = ref(100)
 const isFitEnable = ref(false)
 
@@ -119,7 +118,7 @@ function resize() {
   isShortPage.value = window.innerWidth < PAGE_BREAKPOINT
 
   if (window.innerWidth <= MOBILE_BREAKPOINT) {
-    isMobile.value = true
+    toolbar.setIsMobileScreen(true)
     isDesignBarOpen.value = true
     rightWidth.value = 0
 
@@ -129,7 +128,7 @@ function resize() {
     }
   }
   else {
-    isMobile.value = false
+    toolbar.setIsMobileScreen(false)
     if (rightSide?.value?.offsetWidth)
       rightWidth.value = rightSide.value.offsetWidth
   }
@@ -272,7 +271,7 @@ function toggleSidebar(isOpen) {
       <div
         ref="leftSide"
         class="h-[calc(100%-8px)] bg-white px-3 pt-[52px] pb-7 overflow-auto custom-scrollbar flex-grow flex-shrink sm:px-7 sm:py-15 m-1 transition-all duration-200"
-        :class="{ 'absolute hidden': isMobile && !isCVPreviewVisible }"
+        :class="{ 'absolute hidden': isMobileScreen && !isCVPreviewVisible }"
       >
         <div
           class="mx-auto relative"
@@ -350,7 +349,7 @@ function toggleSidebar(isOpen) {
             <Toolbar
               :open="isDesignBarOpen"
               :collapse="onCollapse"
-              :is-mobile="isMobile"
+              :is-mobile="isMobileScreen"
             />
           </div>
         </div>
@@ -403,7 +402,7 @@ function toggleSidebar(isOpen) {
       <div
         ref="resizer"
         class="resizer h-full sm:border-l border-blacks-20 cursor-[col-resize]"
-        :class="{ 'hidden': isMobile }"
+        :class="{ 'hidden': isMobileScreen }"
       />
 
       <div
@@ -411,9 +410,9 @@ function toggleSidebar(isOpen) {
         class="w-full h-full sm:w-[390px] sm:min-w-[390px] transition-all duration-200"
       >
         <Sidebar
-          :is-mobile="isMobile"
+          :is-mobile="isMobileScreen"
           :is-open="isSidebarOpen"
-          :draggable="!isMobile || !isMobileDevice()"
+          :draggable="!isMobileScreen || !isMobileDevice()"
           :toggle="toggleSidebar"
           :set-open="setSidebarOpen"
         />
@@ -421,10 +420,10 @@ function toggleSidebar(isOpen) {
     </div>
 
     <Toolbar
-      v-if="isMobile && !isCVPreviewVisible"
+      v-if="isMobileScreen && !isCVPreviewVisible"
       :open="isDesignBarOpen"
       :collapse="onCollapse"
-      :is-mobile="isMobile"
+      :is-mobile="isMobileScreen"
     />
   </main>
 </template>
