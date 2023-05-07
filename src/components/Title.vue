@@ -51,7 +51,7 @@ function toggleShowAll() {
       >
       <div
         v-else
-        class="hover:bg-blacks-20 hover:cursor-text w-full h-full flex items-center leading leading-6 text-blacks-100 text-ellipsis whitespace-nowrap overflow-hidden bg-transparent"
+        class="hover:bg-blacks-10 hover:cursor-text w-full h-full flex items-center leading leading-6 text-blacks-100 text-ellipsis whitespace-nowrap overflow-hidden bg-transparent"
         :title="item.name"
         @click="onChangToEdit"
       >
