@@ -436,5 +436,6 @@ export default defineComponent({
   background-color: transparent;
   position: absolute;
   bottom: -64px;
+  z-index: -1;
 }
 </style>
