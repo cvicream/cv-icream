@@ -189,7 +189,7 @@ const rightList = computed({
   counter-increment: li;
 }
 .cv-preview ol li::before {
-  content: counter(li) '. ';
+  content: counter(li) '. ' !important;
   display: inline-block;
   width: 1rem;
   margin-left: -1rem;

@@ -339,8 +339,8 @@ export default defineComponent({
   @apply pl-0;
   counter-increment: li;
 }
-.ql-editor ol li:not(.ql-direction-rtl)::before {
-  content: counter(li) '. ';
+.ql-editor ol li:not(.ql-direction-rtl):not(.ql-indent-1)::before {
+  content: counter(li) '. ' !important;
   display: inline-block;
   width: 1rem;
   margin-left: -1rem;
