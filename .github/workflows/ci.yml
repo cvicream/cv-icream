@@ -6,8 +6,8 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
-      - run: npm install && npm install -g @lhci/cli@0.6.x
-      - run: npm run build
+      - run: npx pnpm i --store=node_modules/.pnpm-store && npx pnpm run build
+      - run: npm install -g @lhci/cli@0.6.x
       - run: lhci autorun
         env:
           LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
