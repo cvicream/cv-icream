@@ -13,7 +13,7 @@ jobs:
           node-version: '16'
 
       - name: Install dependencies & build project
-        run: npx pnpm i --store=node_modules/.pnpm-store && npx pnpm run build
+        run: npx pnpm@6.32.3 i --store=node_modules/.pnpm-store && npx pnpm@6.32.3 run build
 
       - name: Install & run Lighthouse CI
         run: npm install -g @lhci/cli@0.6.x && lhci autorun
