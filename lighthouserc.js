@@ -10,6 +10,7 @@ module.exports = {
         'service-worker': 'off',
         'unused-css-rules': 'off',
         'unused-javascript': 'off',
+        'uses-rel-preconnect': 'off',
       },
     },
   },
