@@ -32,6 +32,7 @@ function focusIn(index) {
   user.$patch((state) => {
     state.experience.list[index].isEditing = true
   })
+  document.querySelector(`#cv-preview #experience-${index}`)?.scrollIntoView({ behavior: 'smooth' })
 }
 
 function focusOut(index) {

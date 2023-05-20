@@ -146,6 +146,7 @@ function redirect(path) {
       >
         <div
           v-if="item.isEditing || !isObjectEmpty(item)"
+          :id="`experience-${index}`"
           :class="getEditingStyle(item.isEditing)"
         >
           <div

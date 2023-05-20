@@ -182,7 +182,7 @@ function onMenuClick(id, path) {
 
   user.$patch((state) => {
     state[id].isEditing = true
-    document.querySelector(`#cv-preview #${id}`)?.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
+    document.querySelector(`#cv-preview #${id}`)?.scrollIntoView({ behavior: 'smooth' })
     setTimeout(() => {
       state[id].isEditing = false
     }, 1000)
