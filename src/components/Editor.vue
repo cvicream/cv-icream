@@ -333,14 +333,11 @@ export default defineComponent({
 .ql-editor ol {
   @apply pl-4;
   list-style: none;
-  counter-reset: li;
 }
 .ql-editor ol li:not(.ql-direction-rtl) {
   @apply pl-0;
-  counter-increment: li;
 }
-.ql-editor ol li:not(.ql-direction-rtl):not(.ql-indent-1)::before {
-  content: counter(li) '. ' !important;
+.ql-editor ol li:not(.ql-direction-rtl)::before {
   display: inline-block;
   width: 1rem;
   margin-left: -1rem;

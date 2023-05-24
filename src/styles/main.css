@@ -219,22 +219,41 @@ input[type="search"]:hover::-webkit-search-cancel-button {
 .ql-editor ol {
   list-style-type: none !important; /* Remove default numbering */
 }
-.ql-editor ol > li:before {
-  counter-increment: count !important;
-  content: counter(count) ". " !important;
+.ql-editor ol > li:not(.ql-indent-1) {
+  counter-reset: list-1 list-2 list-3 list-4 list-5 list-6 list-7 list-8 list-9;
+}
+.ql-editor ol > li:not(.ql-indent-1)::before {
+  counter-increment: list-0 ;
+  content: counter(list-0) ". ";
 }
 .ql-editor ol:first-of-type {
-  counter-reset: count !important;
+  counter-reset: list-0;
 }
+.ql-editor ol li.ql-indent-1::before {
+  counter-increment: list-1 ; 
+  content: counter(list-1) ". " !important;
+}
+
+/* order list mechanism for CV preview */
 .cv-preview ol {
   list-style-type: none !important; /* Remove default numbering */
 }
-.cv-preview ol > li:before {
-  counter-increment: count !important;
-  content: counter(count) ". " !important;
+.cv-preview ol > li:not(.ql-indent-1) {
+  counter-reset: list-1 list-2 list-3 list-4 list-5 list-6 list-7 list-8 list-9;
+}
+.cv-preview ol > li:not(.ql-indent-1)::before {
+  counter-increment: list-0 ;
+  content: counter(list-0) ". " ;
 }
 .cv-preview ol:first-of-type {
-  counter-reset: count !important;
+  counter-reset: list-0;
+}
+.cv-preview ol li.ql-indent-1{
+  counter-increment: list-1;
+}
+.cv-preview ol li.ql-indent-1::before {
+  content: counter(list-1) ". ";
+  counter-reset: list-2 list-3 list-4 list-5 list-6 list-7 list-8 list-9;
 }
 
 .user-select-none {
