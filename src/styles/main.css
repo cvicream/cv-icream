@@ -223,14 +223,12 @@ input[type="search"]:hover::-webkit-search-cancel-button {
   counter-reset: list-1 list-2 list-3 list-4 list-5 list-6 list-7 list-8 list-9;
 }
 .ql-editor ol > li:not(.ql-indent-1)::before {
-  counter-increment: list-0 ;
   content: counter(list-0) ". ";
 }
 .ql-editor ol:first-of-type {
   counter-reset: list-0;
 }
 .ql-editor ol li.ql-indent-1::before {
-  counter-increment: list-1 ; 
   content: counter(list-1) ". " !important;
 }
 
