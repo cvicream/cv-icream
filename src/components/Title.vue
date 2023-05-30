@@ -44,7 +44,7 @@ function toggleShowAll() {
         ref="nameInput"
         v-model="item.name"
         type="text"
-        class="w-full h-full leading text-blacks-100 bg-transparent outline-none"
+        class="w-full h-full leading text-blacks-100 outline-none bg-blacks-10"
         :title="item.name"
         @keyup.enter="onChangeToDisplay"
         @focusout="onChangeToDisplay"
