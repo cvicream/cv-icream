@@ -169,7 +169,7 @@ function swap(index1, index2) {
       @click="toggleShowAll"
     />
   </div>
-  <div class="flex-grow flex flex-col gap-6 pr-2 -mr-3 overflow-y-auto custom-scrollbar last-child-pb-4">
+  <div class="flex-grow flex flex-col pr-2 -mr-3 overflow-y-auto custom-scrollbar last-child-pb-4">
     <p v-if="!social.isShow" class="paragraph text-blacks-40">
       {{ HIDDEN_INFORMATION }}
     </p>
@@ -179,12 +179,16 @@ function swap(index1, index2) {
     <div
       v-for="(item, index) in social.list"
       :key="componentKey + '-' + index"
-      :class="{ group: !isMobileScreen }"
+      class="transition ease-in-out"
+      :class="[
+        { group: !isMobileScreen },
+        item.isCollapsed ? 'mt-2' : 'mt-6'
+      ]"
       @focusin="() => focusIn(index)"
       @focusout="() => focusOut(index)"
     >
       <div class="flex justify-between items-center">
-        <div class="flex gap-1 overflow-hidden">
+        <div class="flex gap-1 overflow-hidden invisible">
           <h3 v-if="social.name" class="subleading text-blacks-100 text-ellipsis whitespace-nowrap overflow-hidden">
             {{ social.name }}
           </h3>
@@ -240,8 +244,11 @@ function swap(index1, index2) {
         </div>
       </div>
       <div
-        class="rounded-xl mt-3 px-4 py-6 flex flex-col gap-6 relative"
-        :class="[(item.isShow ? 'bg-primary-10': 'bg-blacks-10')]"
+        class="rounded-xl mt-1 px-4 py-6 flex flex-col gap-6 relative"
+        :class="[
+          (item.isShow ? 'bg-primary-10': 'bg-blacks-10'),
+          (item.isCollapsed ? 'mt-1' : 'mt-3')
+        ]"
       >
         <button
           class="absolute top-4 right-4"
@@ -280,7 +287,7 @@ function swap(index1, index2) {
     </div>
     <button
       v-if="social.isShow"
-      class="w-full rounded-xl text-blacks-40 inline-flex justify-center items-center p-3 border-transparent border-1 group bg-primary-10 hover:border-primary-100"
+      class="w-full rounded-xl text-blacks-40 inline-flex justify-center items-center p-3 mt-6 border-transparent border-1 group bg-primary-10 hover:border-primary-100"
       :disabled="!social.isShow"
       @click="addItem(null)"
     >
