@@ -244,7 +244,7 @@ function swap(index1, index2) {
         </div>
       </div>
       <div
-        class="rounded-xl mt-1 px-4 py-6 flex flex-col gap-6 relative"
+        class="rounded-xl px-4 py-6 flex flex-col gap-6 relative"
         :class="[
           (item.isShow ? 'bg-primary-10': 'bg-blacks-10'),
           (item.isCollapsed ? 'mt-1' : 'mt-3')
