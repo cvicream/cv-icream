@@ -201,46 +201,63 @@ function swap(index1, index2) {
             'group-hover:visible': experience.isShow
           }"
         >
-          <button v-if="index !== 0 && experience.list.length > 1" @click="swap(index, index - 1)">
-            <span class="i-custom:move-up icon-24" />
-          </button>
-          <button v-if="(index !== experience.list.length - 1) && experience.list.length > 1" @click="swap(index, index + 1)">
-            <span class="i-custom:move-down icon-24" />
-          </button>
-          <div class="relative">
-            <button>
-              <span
-                class="icon-24"
-                :class="isMoreActionOpen.includes(index) ? 'i-custom:cancel' : 'i-custom:more'"
-                @click.stop="toggleMoreAction(index)"
-              />
+          <Tooltip
+            v-if="index !== 0 && experience.list.length > 1"
+            placement="bottom"
+            text="Move up"
+          >
+            <button @click="swap(index, index - 1)">
+              <span class="i-custom:move-up icon-24" />
             </button>
-            <div
-              v-show="isMoreActionOpen.includes(index)"
-              class="absolute right-0 mt-2 w-[262px] bg-white border border-blacks-100 rounded-xl shadow-custom z-1 flex flex-col overflow-hidden"
-              @click="toggleMoreAction(null)"
-            >
-              <button v-if="experience.list.length > 1" class="flex items-center px-4 py-3 hover:bg-primary-10" @click="toggleShowItem(index)">
+          </Tooltip>
+          <Tooltip
+            v-if="(index !== experience.list.length - 1) && experience.list.length > 1"
+            placement="bottom"
+            text="Move down"
+          >
+            <button @click="swap(index, index + 1)">
+              <span class="i-custom:move-down icon-24" />
+            </button>
+          </Tooltip>
+          <Tooltip
+            placement="left"
+            text="More Actions..."
+          >
+            <div class="relative">
+              <button>
                 <span
-                  class="w-6 h-6 text-blacks-70"
-                  :class="item.isShow ? 'i-custom:show' : 'i-custom:hide'"
+                  class="icon-24"
+                  :class="isMoreActionOpen.includes(index) ? 'i-custom:cancel' : 'i-custom:more'"
+                  @click.stop="toggleMoreAction(index)"
                 />
-                <span class="paragraph text-blacks-100 ml-2">{{ item.isShow ? 'Hide on CV' : 'Show on CV' }}</span>
               </button>
-              <button class="flex items-center px-4 py-3 hover:bg-primary-10" @click="addItem(index + 1)">
-                <span class="i-custom:add w-6 h-6 text-blacks-70" />
-                <span class="paragraph text-blacks-100 ml-2">Add New</span>
-              </button>
-              <button class="flex items-center px-4 py-3 hover:bg-primary-10" @click="duplicateItem(index)">
-                <span class="i-custom:variant w-6 h-6 text-blacks-70" />
-                <span class="paragraph text-blacks-100 ml-2">Duplicate</span>
-              </button>
-              <button v-if="experience.list.length > 1" class="flex items-center px-4 py-3 hover:bg-primary-10" @click="showDeleteBlockMessage(index)">
-                <span class="i-custom:delete w-6 h-6 text-blacks-70" />
-                <span class="paragraph text-blacks-100 ml-2">Delete</span>
-              </button>
+              <div
+                v-show="isMoreActionOpen.includes(index)"
+                class="absolute right-0 mt-2 w-[262px] bg-white border border-blacks-100 rounded-xl shadow-custom z-1 flex flex-col overflow-hidden"
+                @click="toggleMoreAction(null)"
+              >
+                <button v-if="experience.list.length > 1" class="flex items-center px-4 py-3 hover:bg-primary-10" @click="toggleShowItem(index)">
+                  <span
+                    class="w-6 h-6 text-blacks-70"
+                    :class="item.isShow ? 'i-custom:show' : 'i-custom:hide'"
+                  />
+                  <span class="paragraph text-blacks-100 ml-2">{{ item.isShow ? 'Hide on CV' : 'Show on CV' }}</span>
+                </button>
+                <button class="flex items-center px-4 py-3 hover:bg-primary-10" @click="addItem(index + 1)">
+                  <span class="i-custom:add w-6 h-6 text-blacks-70" />
+                  <span class="paragraph text-blacks-100 ml-2">Add New</span>
+                </button>
+                <button class="flex items-center px-4 py-3 hover:bg-primary-10" @click="duplicateItem(index)">
+                  <span class="i-custom:variant w-6 h-6 text-blacks-70" />
+                  <span class="paragraph text-blacks-100 ml-2">Duplicate</span>
+                </button>
+                <button v-if="experience.list.length > 1" class="flex items-center px-4 py-3 hover:bg-primary-10" @click="showDeleteBlockMessage(index)">
+                  <span class="i-custom:delete w-6 h-6 text-blacks-70" />
+                  <span class="paragraph text-blacks-100 ml-2">Delete</span>
+                </button>
+              </div>
             </div>
-          </div>
+          </Tooltip>
         </div>
       </div>
       <div
@@ -251,7 +268,7 @@ function swap(index1, index2) {
         ]"
       >
         <button
-          class="absolute top-4 right-4"
+          class="absolute top-2 right-4"
           @click.prevent="toggleCollapseItem(index)"
         >
           <span
