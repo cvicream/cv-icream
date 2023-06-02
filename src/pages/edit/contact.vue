@@ -64,7 +64,7 @@ function focusOut(index) {
       />
     </button>
   </div>
-  <div class="flex-grow flex flex-col gap-6 pr-2 -mr-3 overflow-y-auto custom-scrollbar last-child-pb-4">
+  <div class="flex-grow flex flex-col pr-2 -mr-3 overflow-y-auto custom-scrollbar last-child-pb-4">
     <p v-if="!contact.isShow" class="paragraph text-blacks-40">
       {{ HIDDEN_INFORMATION }}
     </p>
@@ -78,7 +78,7 @@ function focusOut(index) {
       @focusin="() => focusIn(index)"
       @focusout="() => focusOut(index)"
     >
-      <div class="flex justify-between items-center">
+      <div class="flex justify-between items-center invisible">
         <h3 v-if="contact.name" class="subleading text-blacks-100 text-ellipsis whitespace-nowrap overflow-hidden">
           {{ contact.name }}
         </h3>
