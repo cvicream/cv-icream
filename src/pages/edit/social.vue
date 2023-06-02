@@ -261,22 +261,29 @@ function swap(index1, index2) {
         </div>
       </div>
       <div
-        class="rounded-xl px-4 py-6 flex flex-col gap-6 relative"
+        class="rounded-xl px-4 pt-2 pb-6 flex flex-col relative"
         :class="[
           (item.isShow ? 'bg-primary-10': 'bg-blacks-10'),
           (item.isCollapsed ? 'mt-1' : 'mt-3')
         ]"
       >
-        <button
-          class="absolute top-2 right-4"
-          @click.prevent="toggleCollapseItem(index)"
-        >
-          <span
-            class="icon-24"
-            :class="item.isCollapsed ? 'i-origin:open' : 'i-origin:close'"
-          />
-        </button>
-        <div>
+        <div class="flex justify-end">
+          <Tooltip
+            placement="left"
+            :text="item.isCollapsed ? 'Expand block' : 'Collapse block'"
+          >
+            <button
+              class="w-6 h-6"
+              @click.prevent="toggleCollapseItem(index)"
+            >
+              <span
+                class="icon-24"
+                :class="item.isCollapsed ? 'i-origin:open' : 'i-origin:close'"
+              />
+            </button>
+          </Tooltip>
+        </div>
+        <div class="-mt-2">
           <label class="block note text-blacks-70">Type</label>
           <Editor
             v-model="item.type"
@@ -286,7 +293,10 @@ function swap(index1, index2) {
             :is-single-line="true"
           />
         </div>
-        <div :class="item.isCollapsed ? 'hidden' : 'flex flex-col gap-6'">
+        <div
+          class="mt-6"
+          :class="item.isCollapsed ? 'hidden' : 'flex flex-col gap-6'"
+        >
           <div>
             <label class="block note text-blacks-70">Link</label>
             <input
