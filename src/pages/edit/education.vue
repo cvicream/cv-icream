@@ -267,7 +267,7 @@ function swap(index1, index2) {
         <div class="flex justify-end">
           <Tooltip
             placement="left"
-            :text="item.isCollapsed ? 'Expand block' : 'Collapse block'"
+            :text="item.isCollapsed ? 'Expand Block' : 'Collapse Block'"
           >
             <button
               class="w-6 h-6"
