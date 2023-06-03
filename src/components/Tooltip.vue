@@ -63,7 +63,7 @@ const tooltipClass = computed(() => {
 }
 .tooltip-left::after {
   top: 50%;
-  right: -8.5px;
+  right: -8px;
   transform: translateY(-50%) rotate(45deg);
 }
 
@@ -74,7 +74,7 @@ const tooltipClass = computed(() => {
 }
 .tooltip-right::after {
   top: 50%;
-  left: -8.5px;
+  left: -8px;
   transform: translateY(-50%) rotate(-135deg);
 }
 
@@ -85,7 +85,7 @@ const tooltipClass = computed(() => {
 }
 .tooltip-top::after {
   left: 50%;
-  bottom: -8.5px;
+  bottom: -8px;
   transform: translateX(-50%) rotate(135deg);
 }
 
@@ -96,7 +96,7 @@ const tooltipClass = computed(() => {
 }
 .tooltip-bottom::after {
   left: 50%;
-  top: -8.5px;
+  top: -8px;
   transform: translateX(-50%) rotate(-45deg);
 }
 </style>
