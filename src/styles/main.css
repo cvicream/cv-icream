@@ -231,7 +231,7 @@ input[type="search"]:hover::-webkit-search-cancel-button {
 .ql-editor ol li.ql-indent-1::before {
   content: counter(list-1) ". " !important;
 }
-// Should be refined if we have Sass
+/* Should be refined if we have Sass*/
 .ql-editor ol li.ql-indent-2::before {
   content: counter(list-2) ". " !important;
 }
@@ -278,7 +278,7 @@ input[type="search"]:hover::-webkit-search-cancel-button {
   content: counter(list-1) ". ";
   counter-reset: list-2 list-3 list-4 list-5 list-6 list-7 list-8 list-9;
 }
-// Should be refined if we have Sass
+/* Should be refined if we have Sass*/
 .cv-preview ol li.ql-indent-2{
   counter-increment: list-2;
 }
