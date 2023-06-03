@@ -224,13 +224,10 @@ function swap(index1, index2) {
             text="More Actions..."
           >
             <div class="relative">
-              <button>
-                <span
-                  class="icon-24"
-                  :class="isMoreActionOpen.includes(index) ? 'i-custom:cancel' : 'i-custom:more'"
-                  @click.stop="toggleMoreAction(index)"
-                />
-              </button>
+              <MoreActions
+                :open="isMoreActionOpen.includes(index)"
+                @click.stop="toggleMoreAction(index)"
+              />
               <div
                 v-show="isMoreActionOpen.includes(index)"
                 class="absolute right-0 mt-2 w-[262px] bg-white border border-blacks-100 rounded-xl shadow-custom z-1 flex flex-col overflow-hidden"
