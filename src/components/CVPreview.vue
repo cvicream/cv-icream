@@ -201,6 +201,7 @@ const rightList = computed({
   display: inline-block;
   width: 1rem;
   margin-left: -1rem;
+  padding-left: 0.1rem;
 }
 
 .cv-preview .ql-indent-1 {
