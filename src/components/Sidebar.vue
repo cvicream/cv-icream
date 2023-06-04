@@ -32,6 +32,7 @@ const user = useUserStore()
 const { about, summary, experience, project, skill, education, certificate, contact, social, timestamp } = storeToRefs(user)
 
 const router = useRouter()
+
 const sidebarMenus = computed(() => {
   return [
     {
@@ -177,16 +178,15 @@ function isActivePath(targetPath: string) {
 }
 
 function onMenuClick(id, path) {
-  if (props.isMobile)
-    props.setOpen(false)
+  if (props.isMobile) props.setOpen(false)
 
   user.$patch((state) => {
     state[id].isEditing = true
+    document.querySelector(`#cv-preview #${id}`)?.scrollIntoView({ behavior: 'smooth' })
     setTimeout(() => {
       state[id].isEditing = false
     }, 1000)
   })
-
   router.push(path)
 }
 </script>
