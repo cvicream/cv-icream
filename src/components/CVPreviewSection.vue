@@ -246,6 +246,7 @@ function redirect(path) {
                   getFontSizeClassName(currentState.fontSize).subtitle,
                   'min-w-[40%] max-w-[60%]'
                 ]"
+                class="text-blacks-60"
                 v-html="showSection(item.isEditing, DEFAULT_TEMPLATE.project.list[0].subtitle1, item.subtitle1)"
               />
               <div
