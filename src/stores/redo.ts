@@ -3,7 +3,7 @@ import { defineStore } from 'pinia'
 export const useRedoStore = defineStore('redo', {
   state: () => ({
     list: [],
-    maxRestore: 0,
+    maxRestore: 0, // the maximum number of operation for redo/undo, the value will be assigned as a constant once the first undo happened.
   }),
   getters: {
     isEmpty: state => state.list.length === 0,

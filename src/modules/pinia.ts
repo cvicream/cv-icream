@@ -31,6 +31,7 @@ export const install: UserModule = ({ app }) => {
         }
         else {
           undoStore.push(savedState)
+          // new operation is added after undo operation, then reset undo buffer
           if (redoStore.maxRestore !== 0
               && (redoStore.list.length + undoStore.list.length) !== redoStore.maxRestore) {
             redoStore.reset()
