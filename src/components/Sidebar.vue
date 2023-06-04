@@ -3,13 +3,28 @@ import { computed, onMounted, ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import vuedraggable from 'vuedraggable'
 import { useUserStore } from '~/stores/user'
-import { MIN_SIDEBAR_WIDTH } from '~/constants'
 import { isMobileDevice } from '~/utils'
 
 const props = defineProps({
+  isMobile: {
+    type: Boolean,
+    required: true,
+  },
+  isOpen: {
+    type: Boolean,
+    required: true,
+  },
   draggable: {
     type: Boolean,
     default: true,
+  },
+  setOpen: {
+    type: Function,
+    default: () => {},
+  },
+  toggle: {
+    type: Function,
+    default: () => {},
   },
 })
 
@@ -17,6 +32,7 @@ const user = useUserStore()
 const { about, summary, experience, project, skill, education, certificate, contact, social, timestamp } = storeToRefs(user)
 
 const router = useRouter()
+
 const sidebarMenus = computed(() => {
   return [
     {
@@ -119,13 +135,11 @@ const draggableMenus = computed({
 })
 
 const sidebar = ref<any>(null)
-const isOpen = ref(false)
-const isSmallSidebar = ref(true)
 const drag = ref(true)
 const expandTooltip = ref(false)
 
 const menuOpenWidth = computed(() => {
-  return isOpen.value && !isSmallSidebar.value ? 236 : 64
+  return props.isOpen && !props.isMobile ? 236 : 64
 })
 
 onMounted(() => {
@@ -147,32 +161,32 @@ function getObjectProperties(obj) {
 }
 
 function resize() {
-  if (sidebar.value && sidebar.value.offsetWidth < (MIN_SIDEBAR_WIDTH + 236)) {
-    if (!isSmallSidebar.value)
-      isOpen.value = false
-
-    isSmallSidebar.value = true
-  }
-  else {
-    if (isOpen.value)
-      isOpen.value = false
-
-    isSmallSidebar.value = false
-  }
+  if (props.isMobile)
+    props.setOpen(false)
 }
 
 function toggleSidebar() {
-  isOpen.value = !isOpen.value
+  const value = !props.isOpen
+  props.setOpen(value)
+
+  if (!props.isMobile)
+    props.toggle(value)
 }
 
 function isActivePath(targetPath: string) {
   return router.currentRoute.value.path.indexOf(targetPath) === 0
 }
 
-function onMenuClick(path) {
-  if (isSmallSidebar.value)
-    isOpen.value = false
+function onMenuClick(id, path) {
+  if (props.isMobile) props.setOpen(false)
 
+  user.$patch((state) => {
+    state[id].isEditing = true
+    document.querySelector(`#cv-preview #${id}`)?.scrollIntoView({ behavior: 'smooth' })
+    setTimeout(() => {
+      state[id].isEditing = false
+    }, 1000)
+  })
   router.push(path)
 }
 </script>
@@ -188,7 +202,7 @@ function onMenuClick(path) {
       />
     </div>
     <div
-      class="h-full pt-5 bg-white absolute top-0 left-0 z-1 sm:overflow-y-auto transition-all duration-100 flex flex-col gap-4"
+      class="h-full pt-5 bg-white absolute top-0 left-0 z-1 sm:overflow-y-auto transition-all duration-200 flex flex-col gap-4"
       :class="isOpen ? 'sm:w-[236px] px-5' : 'sm:w-[64px] px-1'"
     >
       <button
@@ -197,13 +211,22 @@ function onMenuClick(path) {
         @mouseover="expandTooltip = true"
         @mouseout="expandTooltip = false"
       >
-        <span v-if="isOpen" class="i-custom:expand w-6 h-6 text-blacks-40" />
-        <span v-else class="i-custom:collapse w-6 h-6 text-blacks-40" />
+        <span
+          v-if="isOpen"
+          class="w-6 h-6 text-blacks-40"
+          :class="isMobile ? 'i-custom:expand' : 'i-custom:collapse'"
+        />
+        <span
+          v-else
+          class="w-6 h-6 text-blacks-40"
+          :class="isMobile ? 'i-custom:collapse' : 'i-custom:expand'"
+        />
       </button>
 
       <div class="flex flex-col gap-4 overflow-y-auto disable-scrollbar last-child-pb-4">
         <SidebarMenu
           v-for="element in sidebarMenus.filter(item => !item.draggable)"
+          :id="element.id"
           :key="element.path"
           :path="element.path"
           :name="element.name"
@@ -224,6 +247,7 @@ function onMenuClick(path) {
         >
           <template #item="{element}">
             <SidebarMenu
+              :id="element.id"
               :path="element.path"
               :name="element.name"
               :icon="element.icon"
@@ -237,8 +261,11 @@ function onMenuClick(path) {
     </div>
 
     <div
-      class="w-[calc(100%-64px)] h-full ml-[64px] bg-white flex flex-col gap-6 px-4"
-      :class="!isActivePath('/edit/download') ? 'pt-8' : 'pt-4'"
+      class="h-full bg-white flex flex-col gap-6 px-4 transition-all duration-200"
+      :class="[
+        !isActivePath('/edit/download') ? 'pt-8' : 'pt-4',
+        isOpen ? 'w-[calc(100%-236px)]' : 'w-[calc(100%-64px)]'
+      ]"
       :style="`margin-left: ${menuOpenWidth}px`"
     >
       <router-view :key="timestamp" />

@@ -1,11 +1,12 @@
 <script setup lang="ts">
 const props = defineProps<{
+  id: string
   path: string
   name: string
   icon: string
   showOnlyIcon: boolean
   disabled: boolean
-  click: (path: string) => void
+  click: (id: string, path: string) => void
 }>()
 
 const router = useRouter()
@@ -14,8 +15,8 @@ function isActivePath(targetPath: string) {
   return router.currentRoute.value.path.indexOf(targetPath) === 0
 }
 
-function handleClick(path) {
-  props.click(path)
+function handleClick() {
+  props.click(props.id, props.path)
 }
 </script>
 
@@ -24,7 +25,7 @@ function handleClick(path) {
     :key="path"
     class="flex items-center px-3 py-2 user-select-none hover:bg-primary-10 hover:rounded"
     :class="isActivePath(path) && 'bg-primary-10 rounded'"
-    @click="handleClick(path)"
+    @click="handleClick"
   >
     <span
       class="w-8 h-8 flex-shrink-0"

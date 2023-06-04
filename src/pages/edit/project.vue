@@ -191,7 +191,6 @@ function deleteBlock(index: number) {
             class-name="h-[46px] mt-1"
             :enable="item.isShow"
             :placeholder="DEFAULT_TEMPLATE.project.list[0].title"
-            :is-single-line="true"
           />
         </div>
         <div :class="item.isCollapsed ? 'hidden' : 'flex flex-col gap-6'">
@@ -202,7 +201,6 @@ function deleteBlock(index: number) {
               class-name="h-[46px] mt-1"
               :enable="item.isShow"
               :placeholder="DEFAULT_TEMPLATE.project.list[0].subtitle1"
-              :is-single-line="true"
             />
           </div>
           <div>
@@ -212,7 +210,6 @@ function deleteBlock(index: number) {
               class-name="h-[46px] mt-1"
               :enable="item.isShow"
               :placeholder="DEFAULT_TEMPLATE.project.list[0].subtitle2"
-              :is-single-line="true"
             />
           </div>
           <div>

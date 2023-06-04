@@ -41,6 +41,8 @@ watch(height, () => {
 const resizer = ref<any>(null)
 const leftSide = ref<any>(null)
 const rightSide = ref<any>(null)
+const isSidebarOpen = ref(false)
+
 // current position of mouse
 const x = ref(0)
 const y = ref(0)
@@ -123,7 +125,6 @@ function resize() {
 
     if (rightSide.value) {
       rightSide.value.style.removeProperty('width')
-      rightSide.value.style.removeProperty('min-width')
       leftSide.value.style.removeProperty('width')
     }
   }
@@ -141,6 +142,9 @@ function mouseDownHandler(e) {
   leftWidth.value = leftSide.value.offsetWidth
   rightWidth.value = rightSide.value.offsetWidth
 
+  leftSide.value.classList.remove('transition-all', 'duration-200')
+  rightSide.value.classList.remove('transition-all', 'duration-200')
+
   // attach the listeners to `document`
   document.addEventListener('mousemove', mouseMoveHandler)
   document.addEventListener('mouseup', mouseUpHandler)
@@ -150,11 +154,17 @@ function mouseMoveHandler(e) {
   // how far the mouse has been moved
   const dx = resizer.value.parentNode.offsetWidth - e.clientX
 
-  if (dx >= MIN_SIDEBAR_WIDTH && dx <= MAX_SIDEBAR_WIDTH) {
+  if (
+    (
+      (isSidebarOpen.value && dx >= (MIN_SIDEBAR_WIDTH + 172))
+        || (!isSidebarOpen.value && dx >= (MIN_SIDEBAR_WIDTH))
+    ) && (
+      dx <= MAX_SIDEBAR_WIDTH
+    )
+  ) {
     const leftMargin = getElementMarginX(leftSide.value)
     leftSide.value.style.width = `${e.clientX - resizer.value.offsetWidth - leftMargin}px`
     rightSide.value.style.width = `${dx}px`
-    rightSide.value.style['min-width'] = `${dx}px`
     rightWidth.value = dx
   }
 
@@ -174,9 +184,11 @@ function mouseUpHandler() {
 
   leftSide.value.style.removeProperty('user-select')
   leftSide.value.style.removeProperty('pointer-events')
+  leftSide.value.classList.add('transition-all', 'duration-200')
 
   rightSide.value.style.removeProperty('user-select')
   rightSide.value.style.removeProperty('pointer-events')
+  rightSide.value.classList.add('transition-all', 'duration-200')
 
   // remove the handlers of `mousemove` and `mouseup`
   document.removeEventListener('mousemove', mouseMoveHandler)
@@ -236,6 +248,20 @@ function handleLeftPageClick() {
 function handleRightPageClick() {
 
 }
+
+function setSidebarOpen(value) {
+  isSidebarOpen.value = value
+}
+function toggleSidebar(isOpen) {
+  if (isOpen) {
+    leftSide.value.style.width = `${leftSide.value.offsetWidth - 172}px`
+    rightSide.value.style.width = `${rightSide.value.offsetWidth + 172}px`
+  }
+  else {
+    leftSide.value.style.width = `${leftSide.value.offsetWidth + 172}px`
+    rightSide.value.style.width = `${rightSide.value.offsetWidth - 172}px`
+  }
+}
 </script>
 
 <template>
@@ -245,7 +271,7 @@ function handleRightPageClick() {
     <div class="w-full h-[calc(100%-137px)] border-b-1 border-blacks-20 sm:flex sm:flex-row sm:h-[calc(100%-57px)] sm:border-0 overflow-hidden">
       <div
         ref="leftSide"
-        class="h-[calc(100%-8px)] bg-white px-3 py-7 overflow-auto custom-scrollbar flex-grow flex-shrink sm:px-7 sm:py-15 m-1"
+        class="h-[calc(100%-8px)] bg-white px-3 pt-[52px] pb-7 overflow-auto custom-scrollbar flex-grow flex-shrink sm:px-7 sm:py-15 m-1 transition-all duration-200"
         :class="{ 'absolute hidden': isMobile && !isCVPreviewVisible }"
       >
         <div
@@ -255,6 +281,9 @@ function handleRightPageClick() {
             height: cvPreviewHeight,
           }"
         >
+          <p class="absolute -top-[26px] note text-blacks-20">
+            Layout size: A4 (21x29.7cm)
+          </p>
           <div
             ref="cvPreview"
             class="w-[210mm] min-h-[297mm]"
@@ -379,9 +408,15 @@ function handleRightPageClick() {
 
       <div
         ref="rightSide"
-        class="w-full h-full sm:w-[390px] sm:min-w-[390px]"
+        class="w-full h-full sm:w-[390px] sm:min-w-[390px] transition-all duration-200"
       >
-        <Sidebar :draggable="!isMobile || !isMobileDevice" />
+        <Sidebar
+          :is-mobile="isMobile"
+          :is-open="isSidebarOpen"
+          :draggable="!isMobile || !isMobileDevice()"
+          :toggle="toggleSidebar"
+          :set-open="setSidebarOpen"
+        />
       </div>
     </div>
 

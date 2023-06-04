@@ -162,7 +162,7 @@ window.addEventListener('click', closeAction, false)
       </a>
       <Tooltip
         placement="bottom"
-        text="Inspiration"
+        text="Blog"
       >
         <a class="btn-icon-32" href="https://medium.com/cv-icream" target="_blank">
           <span class="i-custom:idea w-6 h-6" />
@@ -203,20 +203,20 @@ window.addEventListener('click', closeAction, false)
             :class="isSafari() || isMobileDevice() ? 'rounded-t-[11px]' : 'rounded-t-xl'"
             @mousedown="redirectToDownload"
           >
-            <span class="paragraph text-blacks-100">Download as PDF</span>
+            <span class="paragraph text-blacks-100">Export as PDF</span>
           </button>
           <button
             class="w-full h-[46px] flex justify-start items-center px-4 py-3 hover:bg-primary-10"
             @mousedown="exportJsonFile"
           >
-            <span class="paragraph text-blacks-100">Save as Draft</span>
+            <span class="paragraph text-blacks-100">Download as Draft</span>
           </button>
           <button
             class="w-full h-[45px] flex justify-start items-center px-4 py-3 hover:bg-primary-10"
             :class="isSafari() || isMobileDevice() ? 'rounded-b-[11px]' : 'rounded-b-xl'"
             @mousedown="importJsonFile"
           >
-            <span class="paragraph text-blacks-100">Upload CV Draft</span>
+            <span class="paragraph text-blacks-100">Open CV Draft</span>
           </button>
         </div>
       </div>
@@ -234,7 +234,7 @@ window.addEventListener('click', closeAction, false)
 
   <Modal
     v-show="upload"
-    title="Upload Your CV Draft"
+    title="Open your CV Draft"
     :subtitle="`Please upload the file with the format in ‘.${DRAFT_FILE_TYPE}’.`"
     @close="upload = false"
   >
