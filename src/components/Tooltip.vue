@@ -30,7 +30,7 @@ const tooltipClass = computed(() => {
   <div class="tooltip-container">
     <slot />
     <div v-if="!isMobileDevice()" class="tooltip" :class="tooltipClass" :style="style">
-      <span class="paragraph text-blacks-100"> {{ text }}</span>
+      <span class="note text-blacks-100"> {{ text }}</span>
     </div>
   </div>
 </template>
@@ -45,7 +45,7 @@ const tooltipClass = computed(() => {
 }
 
 .tooltip {
-  @apply flex justify-center items-center absolute px-4 py-3 bg-white rounded-lg border border-blacks-20 transition duration-500 ease-in-out;
+  @apply flex justify-center items-center absolute px-3 py-2 bg-white rounded-lg border border-blacks-20 transition duration-500 ease-in-out;
   width: max-content;
   z-index: 999;
   display: none;
