@@ -39,7 +39,7 @@ const sidebarMenus = computed(() => {
       id: 'about',
       name: 'About',
       path: '/edit/about',
-      icon: 'i-custom:about',
+      icon: 'i-origin:about',
       order: 0, // set to 0 if draggable is false
       draggable: false,
       ...getObjectProperties(about.value),
@@ -48,7 +48,6 @@ const sidebarMenus = computed(() => {
       id: 'contact',
       name: 'Contact',
       path: '/edit/contact',
-      // TODO: icon should use i-custom
       icon: 'i-origin:contact',
       order: 1,
       draggable: props.draggable,
@@ -58,7 +57,7 @@ const sidebarMenus = computed(() => {
       id: 'summary',
       name: 'Summary',
       path: '/edit/summary',
-      icon: 'i-custom:summary',
+      icon: 'i-origin:summary',
       order: 2,
       draggable: props.draggable,
       ...getObjectProperties(summary.value),
@@ -67,7 +66,7 @@ const sidebarMenus = computed(() => {
       id: 'experience',
       name: 'Experience',
       path: '/edit/experience',
-      icon: 'i-custom:experience',
+      icon: 'i-origin:experience',
       order: 3,
       draggable: props.draggable,
       ...getObjectProperties(experience.value),
@@ -76,7 +75,7 @@ const sidebarMenus = computed(() => {
       id: 'project',
       name: 'Project',
       path: '/edit/project',
-      icon: 'i-custom:project',
+      icon: 'i-origin:project',
       order: 4,
       draggable: props.draggable,
       ...getObjectProperties(project.value),
@@ -85,7 +84,7 @@ const sidebarMenus = computed(() => {
       id: 'skill',
       name: 'Skill',
       path: '/edit/skill',
-      icon: 'i-custom:skill',
+      icon: 'i-origin:skill',
       order: 5,
       draggable: props.draggable,
       ...getObjectProperties(skill.value),
@@ -94,7 +93,7 @@ const sidebarMenus = computed(() => {
       id: 'education',
       name: 'Education',
       path: '/edit/education',
-      icon: 'i-custom:education',
+      icon: 'i-origin:education',
       order: 6,
       draggable: props.draggable,
       ...getObjectProperties(education.value),
@@ -103,7 +102,7 @@ const sidebarMenus = computed(() => {
       id: 'certificate',
       name: 'Certificate',
       path: '/edit/certificate',
-      icon: 'i-custom:certificate',
+      icon: 'i-origin:certificate',
       order: 7,
       draggable: props.draggable,
       ...getObjectProperties(certificate.value),
@@ -112,7 +111,7 @@ const sidebarMenus = computed(() => {
       id: 'social',
       name: 'Social Media',
       path: '/edit/social',
-      icon: 'i-custom:social',
+      icon: 'i-origin:social',
       order: 8,
       draggable: props.draggable,
       ...getObjectProperties(social.value),
@@ -214,12 +213,12 @@ function onMenuClick(id, path) {
         <span
           v-if="isOpen"
           class="w-6 h-6 text-blacks-40"
-          :class="isMobile ? 'i-custom:expand' : 'i-custom:collapse'"
+          :class="isMobile ? 'i-origin:expand' : 'i-origin:collapse'"
         />
         <span
           v-else
           class="w-6 h-6 text-blacks-40"
-          :class="isMobile ? 'i-custom:collapse' : 'i-custom:expand'"
+          :class="isMobile ? 'i-origin:collapse' : 'i-origin:expand'"
         />
       </button>
 
