@@ -19,6 +19,7 @@ declare module 'vue' {
     README: typeof import('./components/README.md')['default']
     Sidebar: typeof import('./components/Sidebar.vue')['default']
     SidebarMenu: typeof import('./components/SidebarMenu.vue')['default']
+    Title: typeof import('./components/Title.vue')['default']
     ToggleSwitch: typeof import('./components/ToggleSwitch.vue')['default']
     Toolbar: typeof import('./components/Toolbar.vue')['default']
     Tooltip: typeof import('./components/Tooltip.vue')['default']

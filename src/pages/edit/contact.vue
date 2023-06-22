@@ -17,10 +17,6 @@ watch(nameInput, () => {
   }
 })
 
-function onEditNameClick() {
-  isEditName.value = !isEditName.value
-}
-
 function focusIn(index) {
   user.$patch((state) => {
     state.contact.list[index].isEditing = true
@@ -35,36 +31,8 @@ function focusOut(index) {
 </script>
 
 <template>
-  <div class="flex items-center gap-2">
-    <!-- TODO: icon should use i-custom-->
-    <span class="i-origin:contact icon-32" />
-    <div class="flex-1 h-8 overflow-hidden">
-      <input
-        v-if="isEditName"
-        ref="nameInput"
-        v-model="contact.name"
-        type="text"
-        class="w-full h-full leading text-blacks-100 bg-transparent outline-none"
-        :title="contact.name"
-        @keyup.enter="onEditNameClick"
-      >
-      <div
-        v-else
-        class="w-full h-full flex items-center leading leading-6 text-blacks-100 text-ellipsis whitespace-nowrap overflow-hidden bg-transparent"
-        :title="contact.name"
-      >
-        {{ contact.name }}
-      </div>
-    </div>
-
-    <button class="flex-shrink-0" @click="onEditNameClick">
-      <span
-        class="icon-24"
-        :class="isEditName ? 'i-custom:ok' : 'i-custom:edit'"
-      />
-    </button>
-  </div>
-  <div class="flex-grow flex flex-col pr-2 -mr-3 overflow-y-auto custom-scrollbar last-child-pb-4">
+  <Title category="contact" />
+  <div class="flex-grow flex flex-col gap-6 pr-2 -mr-3 overflow-y-auto custom-scrollbar last-child-pb-4">
     <p v-if="!contact.isShow" class="paragraph text-blacks-40">
       {{ HIDDEN_INFORMATION }}
     </p>

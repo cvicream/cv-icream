@@ -36,10 +36,6 @@ onUnmounted(() => {
   window.removeEventListener('click', closeAction)
 })
 
-function onEditNameClick() {
-  isEditName.value = !isEditName.value
-}
-
 function focusIn(index) {
   user.$patch((state) => {
     state.project.list[index].isEditing = true
@@ -49,13 +45,6 @@ function focusIn(index) {
 function focusOut(index) {
   user.$patch((state) => {
     state.project.list[index].isEditing = false
-  })
-}
-
-function toggleShowAll() {
-  user.$patch((state) => {
-    state.project.isShow = !state.project.isShow
-    state.project.list.forEach(item => item.isShow = state.project.isShow)
   })
 }
 
@@ -138,38 +127,8 @@ function swap(index1, index2) {
 </script>
 
 <template>
-  <div class="flex items-center gap-2">
-    <span class="i-custom:project icon-32" />
-    <div class="flex-1 h-8 overflow-hidden">
-      <input
-        v-if="isEditName"
-        ref="nameInput"
-        v-model="project.name"
-        type="text"
-        class="w-full h-full leading text-blacks-100 bg-transparent outline-none"
-        :title="project.name"
-        @keyup.enter="onEditNameClick"
-      >
-      <div
-        v-else
-        class="w-full h-full flex items-center leading leading-6 text-blacks-100 text-ellipsis whitespace-nowrap overflow-hidden bg-transparent"
-        :title="project.name"
-      >
-        {{ project.name }}
-      </div>
-    </div>
-    <button @click="onEditNameClick">
-      <span
-        class="icon-24"
-        :class="isEditName ? 'i-custom:ok' : 'i-custom:edit'"
-      />
-    </button>
-    <ToggleSwitch
-      :checked="project.isShow"
-      @click="toggleShowAll"
-    />
-  </div>
-  <div class="flex-grow flex flex-col pr-2 -mr-3 overflow-y-auto custom-scrollbar last-child-pb-4">
+  <Title category="project" has-toggle-btn />
+  <div class="flex-grow flex flex-col gap-6 pr-2 -mr-3 overflow-y-auto custom-scrollbar last-child-pb-4">
     <p v-if="!project.isShow" class="paragraph text-blacks-40">
       {{ HIDDEN_INFORMATION }}
     </p>
