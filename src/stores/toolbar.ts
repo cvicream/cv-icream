@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia'
+import { MOBILE_BREAKPOINT } from '~/constants'
 
 export const useToolbarStore = defineStore('toolbar', {
   state: () => ({
@@ -15,6 +16,7 @@ export const useToolbarStore = defineStore('toolbar', {
       color: 'default',
       fontSize: 'default',
     },
+    isMobileScreen: window.innerWidth <= MOBILE_BREAKPOINT,
   }),
   actions: {
     toggle(value: string) {
@@ -36,6 +38,9 @@ export const useToolbarStore = defineStore('toolbar', {
     },
     changeLayout(id: string) {
       this.currentState.layout = id
+    },
+    setIsMobileScreen(val: boolean) {
+      this.isMobileScreen = val
     },
   },
 })
