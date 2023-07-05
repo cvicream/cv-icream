@@ -268,7 +268,7 @@ function swap(index1, index2) {
         </div>
       </div>
     </div>
-    <button
+    <!-- <button
       v-if="social.isShow"
       class="w-full rounded-xl text-blacks-40 inline-flex justify-center items-center p-3 mt-6 border-transparent border-1 group bg-primary-10 hover:border-primary-100"
       :disabled="!social.isShow"
@@ -281,7 +281,7 @@ function swap(index1, index2) {
       <span class="subleading text-ellipsis whitespace-nowrap overflow-hidden" :class="social.isShow && 'group-hover:text-blacks-100'">
         Add
       </span>
-    </button>
+    </button> -->
   </div>
   <DeleteBlockModal
     :visible="deleteBlockVisible"
