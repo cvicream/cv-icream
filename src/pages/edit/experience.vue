@@ -200,7 +200,7 @@ function swap(index1, index2) {
                   />
                   <span class="paragraph text-blacks-100 ml-2">{{ item.isShow ? 'Hide on CV' : 'Show on CV' }}</span>
                 </button>
-                <button class="flex items-center px-4 py-3 hover:bg-primary-10" @click="addItem(index + 1)">
+                <button class="flex items-center px-4 py-3 hover:bg-primary-10" @click="addItem(index)">
                   <span class="i-custom:add w-6 h-6 text-blacks-70" />
                   <span class="paragraph text-blacks-100 ml-2">Add New</span>
                 </button>
