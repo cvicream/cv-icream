@@ -20,7 +20,7 @@ const props = defineProps({
 const user = useUserStore()
 const { splitIndex, about, summary, experience, project, skill, education, certificate, contact, social } = storeToRefs(user)
 const toolbar = useToolbarStore()
-const { currentState } = storeToRefs(toolbar)
+const { currentState, noteList } = storeToRefs(toolbar)
 
 const content = computed(() => {
   return [
@@ -89,6 +89,9 @@ const rightList = computed({
 </script>
 
 <template>
+  <div v-if="!readOnly">
+    <Note v-for="note in noteList" :key="note.id" :note="note" />
+  </div>
   <div class="heading-default title-default subtitle-default paragraph-default heading-large title-large subtitle-large paragraph-large" />
   <div
     :id="id"
@@ -266,5 +269,8 @@ const rightList = computed({
 }
 .sortable-chosen.sortable-ghost {
   @apply h-1 bg-primary-10 my-1;
+}
+.cv-preview.adding-note-mode {
+  cursor: url('../assets/icons/note.svg'), auto;
 }
 </style>

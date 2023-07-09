@@ -1,7 +1,25 @@
 import { defineStore } from 'pinia'
+import type { Note } from '~/types'
+
+interface State {
+  dropdownMenu: {
+    layout: boolean
+    color: boolean
+    fontSize: boolean
+    fontFamily: boolean
+  }
+  isCVPreviewVisible: boolean
+  currentState: {
+    fontFamily: string
+    layout: string
+    color: string
+    fontSize: string
+  }
+  noteList: Note[]
+}
 
 export const useToolbarStore = defineStore('toolbar', {
-  state: () => ({
+  state: (): State => ({
     dropdownMenu: {
       layout: false,
       color: false,
@@ -15,6 +33,7 @@ export const useToolbarStore = defineStore('toolbar', {
       color: 'default',
       fontSize: 'default',
     },
+    noteList: [],
   }),
   actions: {
     toggle(value: string) {
@@ -36,6 +55,11 @@ export const useToolbarStore = defineStore('toolbar', {
     },
     changeLayout(id: string) {
       this.currentState.layout = id
+    },
+    addNote(note: Note) {
+      if (this.noteList === undefined)
+        this.noteList = []
+      this.noteList.push(note)
     },
   },
 })
