@@ -16,6 +16,7 @@ declare module 'vue' {
     Loading: typeof import('./components/Loading.vue')['default']
     Modal: typeof import('./components/Modal.vue')['default']
     MoreActions: typeof import('./components/MoreActions.vue')['default']
+    PaymentModal: typeof import('./components/PaymentModal.vue')['default']
     README: typeof import('./components/README.md')['default']
     Sidebar: typeof import('./components/Sidebar.vue')['default']
     SidebarMenu: typeof import('./components/SidebarMenu.vue')['default']
