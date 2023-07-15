@@ -2,7 +2,6 @@
 import { ref } from 'vue'
 
 defineProps<{
-  visible: boolean
   toggle: () => void
 }>()
 
@@ -19,7 +18,6 @@ function pay() {
 
 <template>
   <Modal
-    v-show="visible"
     class="select-none"
     @close="toggle"
   >

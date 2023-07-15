@@ -231,15 +231,15 @@ function togglePaymentModal() {
   <div class="border-b border-b-blacks-20" />
 
   <FeedbackModal
+    v-if="feedbackVisible"
     title="Have a Problem or Need Help?"
     subtitle="Leave us a message. We will get back to you as soon as possible : )"
-    :visible="feedbackVisible"
     :toggle="toggleFeedbackModal"
     :notify="toggleFeedbackNotification"
   />
 
   <PaymentModal
-    :visible="paymentVisible"
+    v-if="paymentVisible"
     :toggle="togglePaymentModal"
   />
 
