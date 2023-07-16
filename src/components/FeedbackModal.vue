@@ -29,7 +29,7 @@ const enable = computed(() => {
 
 function handleStarClick(n: number) {
   if (n === 1 && star.value === 1) star.value = 0
-  else if (n === star.value) star.value = star.value ? 0 : n
+  else if (n === star.value) star.value = star.value ? star.value - 1 : n
   else star.value = n
 }
 
