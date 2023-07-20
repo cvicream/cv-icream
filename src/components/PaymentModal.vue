@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 
-defineProps<{
+const props = defineProps<{
   toggle: () => void
 }>()
 
@@ -12,7 +12,8 @@ function togglePaypal() {
 }
 
 function pay() {
-  // TODO:
+  window.open('https://www.sandbox.paypal.com/donate/?hosted_button_id=SC6NS6HVUHY4Y')
+  props.toggle()
 }
 </script>
 
