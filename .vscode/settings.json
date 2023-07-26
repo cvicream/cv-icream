@@ -14,6 +14,7 @@
     "vitejs",
     "Vitesse",
     "vitest",
+    "vueup",
     "vueuse"
   ],
   "i18n-ally.sourceLanguage": "en",
@@ -28,4 +29,5 @@
     "*.css": "postcss",
   },
   "editor.formatOnSave": false,
+  "css.lint.unknownAtRules": "ignore",
 }
