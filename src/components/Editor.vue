@@ -1,5 +1,6 @@
 <script lang="ts">
-import { computed, defineComponent, onMounted, ref } from 'vue'
+import { computed, defineComponent, onMounted, ref, watch } from 'vue'
+import type { Quill } from '@vueup/vue-quill'
 import { QuillEditor } from '@vueup/vue-quill'
 import '@vueup/vue-quill/dist/vue-quill.snow.css'
 import '@vueup/vue-quill/dist/vue-quill.bubble.css'
@@ -62,18 +63,15 @@ export default defineComponent({
 
     onMounted(() => {
       if (editor.value) {
-        const quill = editor.value.getQuill()
+        const quill = (editor.value as Quill).getQuill()
         const toolbar = quill.getModule('toolbar')
 
         // customize link handler
         toolbar.addHandler('link', (value) => {
-          if (value) {
-            toolbarVisible.value = false
+          if (value)
             linkVisible.value = true
-          }
-          else {
+          else
             quill.format('link', false)
-          }
         })
 
         // customize background handler
@@ -102,7 +100,19 @@ export default defineComponent({
       }
     })
 
+    watch(toolbarVisible, () => {
+      const editorElement = (editor.value as Quill).getEditor()
+      if (toolbarVisible.value) {
+        editorElement.style.transition = 'padding 0.3s'
+        editorElement.style.paddingTop = '60px'
+      }
+      else { editorElement.style.paddingTop = '8px' }
+    })
+
     function onFocus(elementRef) {
+      if (!props.isSingleLine)
+        toolbarVisible.value = true
+
       const obj = elementRef.value.getBoundingClientRect()
       toolbarTop.value = obj.height + 8
 
@@ -117,23 +127,24 @@ export default defineComponent({
       }
     }
 
+    function onBlur() {
+      if (!props.isSingleLine && !linkVisible.value)
+        toolbarVisible.value = false
+    }
+
     function preventEnter(event) {
       if (event.key === 'Enter')
         event.preventDefault()
     }
 
-    function selectionChange({ range, oldRange, source }) {
-      toolbarVisible.value = range && range.length > 0
-    }
-
     function onClear() {
       if (editor.value)
-        editor.value.setHTML('')
+        (editor.value as Quill).setHTML('')
     }
 
     function onLinkBlur() {
       if (editor.value && link.value) {
-        const quill = editor.value.getQuill()
+        const quill = (editor.value as Quill).getQuill()
         quill.format('link', link.value)
       }
 
@@ -155,7 +166,7 @@ export default defineComponent({
       linkVisible,
       content,
       onFocus,
-      selectionChange,
+      onBlur,
       onClear,
       onLinkBlur,
       onLinkClose,
@@ -170,6 +181,7 @@ export default defineComponent({
     class="relative"
     :class="className"
     :style="{
+      // @ts-ignore
       '--toolbar-top': toolbarTop + 'px'
     }"
   >
@@ -185,14 +197,13 @@ export default defineComponent({
       class="deletable"
       :class="{ 'single-line': isSingleLine }"
       @focus="onFocus"
-      @blur="toolbarVisible = false"
-      @selection-change="selectionChange"
+      @blur="onBlur"
     />
 
     <button
       v-if="enable && content !== '<p><br></p>'"
-      class="btn-clear i-custom:cancel w-6 h-6 absolute right-2 bg-blacks-40 opacity-0"
-      :class="isSingleLine ? 'top-[50%] -translate-y-1/2' : 'top-[11px]'"
+      class="btn-clear i-custom:cancel w-6 h-6 absolute right-2 bg-blacks-40 opacity-0 transition-[top] duration-300"
+      :class="isSingleLine ? 'top-[50%] -translate-y-1/2' : (toolbarVisible ? 'top-[59px]' : 'top-[11px]')"
       @click="onClear"
     />
 
@@ -233,7 +244,7 @@ export default defineComponent({
 
     <div
       v-if="linkVisible"
-      class="w-[232px] h-[126px] absolute top-[var(--toolbar-top)] right-0 z-10 bg-primary-10 p-4 rounded-[1.25rem] shadow-custom"
+      class="h-[126px] absolute top-[var(--toolbar-top)] left-0 right-0 z-10 bg-white p-4 rounded-[1.25rem] shadow-custom"
     >
       <div class="flex justify-between">
         <div class="flex gap-2 items-center">
@@ -250,14 +261,12 @@ export default defineComponent({
         v-model="link"
         type="search"
         placeholder="http://"
-        class="form-input mt-4"
+        class="form-input bg-primary-10 mt-4"
         @keyup.enter="onLinkBlur"
         @blur="onLinkBlur"
       >
       <div class="fix-margin-bottom" style="top: 126px; bottom: 0; left: 0;" />
     </div>
-
-    <div class="fix-margin-bottom" />
   </div>
 </template>
 
@@ -402,24 +411,23 @@ export default defineComponent({
 }
 
 .ql-toolbar {
-  @apply absolute left-0 right-0 z-1 h-[54px] p-2 bg-white rounded-lg shadow-custom;
-  top: var(--toolbar-top);
+  @apply absolute top-0 left-0 right-0 z-1 h-12 p-2 m-[1px] bg-white rounded-t-xl;
   transition: visibility 0.15s linear, opacity 0.15s linear;
 }
 .ql-toolbar > div {
-  @apply h-[38px] flex gap-2;
+  @apply flex justify-center gap-2;
   overflow-x: scroll;
-  /* For Firefox */
-  scrollbar-color: rgba(34, 34, 34, 0.1) transparent;
-  scrollbar-width: thin;
+  scrollbar-width: none;    /* Firefox */
+  -ms-overflow-style: none; /* IE 10+ */
 }
 .ql-toolbar > div::-webkit-scrollbar {
-  width: 4px;
-  height: 4px;
+  width: 0;
+  height: 0;
+  background: transparent; /* Chrome/Safari */
 }
-.ql-toolbar > div::-webkit-scrollbar-thumb {
-  border-radius: 2px;
-  background-color: rgba(34, 34, 34, 0.1);
+.ql-toolbar::after {
+  @apply absolute -left-[1px] -right-[1px] bottom-0 border-b border-b-blacks-20;
+  content: '';
 }
 
 .ql-active {
