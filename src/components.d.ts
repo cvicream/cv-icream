@@ -4,7 +4,6 @@
 
 declare module 'vue' {
   export interface GlobalComponents {
-    Counter: typeof import('./components/Counter.vue')['default']
     CVPreview: typeof import('./components/CVPreview.vue')['default']
     CVPreviewSection: typeof import('./components/CVPreviewSection.vue')['default']
     DeleteBlockModal: typeof import('./components/DeleteBlockModal.vue')['default']
