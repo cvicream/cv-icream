@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { stat } from 'fs'
 import { onUnmounted } from 'vue'
 import { storeToRefs } from 'pinia'
 import _ from 'lodash'
@@ -7,8 +6,8 @@ import { useUserStore } from '~/stores/user'
 import { useToolbarStore } from '~/stores/toolbar'
 import { useUndoStore } from '~/stores/undo'
 import { useRedoStore } from '~/stores/redo'
-import { COLORS, FONT_FAMILIES, FONT_SIZES, LAYOUTS } from '~/constants'
 import { getColor } from '~/utils'
+import { COLORS, FONT_FAMILIES, FONT_SIZES, LAYOUTS } from '~/constants'
 
 const props = defineProps<{
   open: Boolean
@@ -80,11 +79,14 @@ function redo() {
   }
 }
 function onNoteClick() {
-  document.getElementById('cv-preview')?.classList.toggle('adding-note-mode')
+  if (document.getElementById('cv-preview')?.classList.contains('adding-note-mode'))
+    return
+
+  document.getElementById('cv-preview')?.classList.add('adding-note-mode')
   const createNote = (event: MouseEvent) => {
     toolbar.addNote({
       id: Date.now(),
-      value: '',
+      value: '<p><br></p>',
       location: {
         left: event.layerX,
         top: event.layerY,
@@ -93,7 +95,8 @@ function onNoteClick() {
   }
   const removeClickListener = (event: KeyboardEvent) => {
     if (event.key === 'Escape') {
-      document.removeEventListener('click', createNote)
+      document.getElementById('cv-preview')?.removeEventListener('click', createNote)
+      document.removeEventListener('keydown', removeClickListener)
       document.getElementById('cv-preview')?.classList.remove('adding-note-mode')
     }
   }

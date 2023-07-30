@@ -30,11 +30,12 @@ export default defineComponent({
       type: Boolean,
       default: false,
     },
+    editorRef: {
+    },
   },
-  emits: ['update:modelValue'],
+  emits: ['update:modelValue', 'update:editorRef'],
   setup: (props, { emit }) => {
     const root = ref(null)
-    const editor = ref(null)
     const toolbarId = ref(`toolbar-${uuidv4().replaceAll('-', '')}`)
     const toolbarTop = ref(0)
     const toolbarVisible = ref(false)
@@ -57,6 +58,13 @@ export default defineComponent({
       },
       set: (value) => {
         emit('update:modelValue', value)
+      },
+    })
+
+    const editor = computed({
+      get: () => props.editorRef,
+      set: (value) => {
+        emit('update:editorRef', value)
       },
     })
 
@@ -147,13 +155,13 @@ export default defineComponent({
 
     return {
       root,
-      editor,
       toolbarId,
       toolbarTop,
       toolbarVisible,
       link,
       linkVisible,
       content,
+      editor,
       onFocus,
       selectionChange,
       onClear,

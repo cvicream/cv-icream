@@ -61,5 +61,24 @@ export const useToolbarStore = defineStore('toolbar', {
         this.noteList = []
       this.noteList.push(note)
     },
+    modifyNote(note: Note) {
+      this.noteList = this.noteList.map((el) => {
+        if (el.id === note.id)
+          return note
+        return el
+      })
+    },
+    removeNote(id: number) {
+      this.noteList = this.noteList.filter(note => note.id !== id)
+    },
+    removeEmptyNotes() {
+      this.noteList = this.noteList.reduce<Note[]>((acc, curr) => {
+        const parser = new DOMParser()
+        const doc = parser.parseFromString(curr.value, 'text/html')
+        if (doc?.body?.firstChild?.textContent)
+          return [...acc, curr]
+        return acc
+      }, [])
+    },
   },
 })
