@@ -257,14 +257,23 @@ export default defineComponent({
           <span class="i-custom:cancel w-5 h-5 text-blacks-40 hover:text-blacks-70" />
         </button>
       </div>
-      <input
-        v-model="link"
-        type="search"
-        placeholder="http://"
-        class="form-input bg-primary-10 mt-4"
-        @keyup.enter="onLinkBlur"
-        @blur="onLinkBlur"
-      >
+      <div class="relative mt-4">
+        <input
+          v-model="link"
+          type="text"
+          placeholder="http://"
+          class="form-input bg-primary-10"
+          @keyup.enter="onLinkBlur"
+          @blur="onLinkBlur"
+        >
+        <button
+          class="w-6 h-6 absolute top-[50%] right-2 -translate-y-1/2 transition-[opacity] duration-300"
+          :class="{'opacity-0': !link}"
+          @click="onLinkBlur"
+        >
+          <span class="i-custom:ok w-6 h-6 text-blacks-40 hover:text-blacks-70" />
+        </button>
+      </div>
       <div class="fix-margin-bottom" style="top: 126px; bottom: 0; left: 0;" />
     </div>
   </div>
