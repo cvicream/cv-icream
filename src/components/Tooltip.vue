@@ -30,7 +30,7 @@ const tooltipClass = computed(() => {
   <div class="tooltip-container">
     <slot />
     <div v-if="!isMobileDevice()" class="tooltip" :class="tooltipClass" :style="style">
-      <span class="paragraph text-blacks-100"> {{ text }}</span>
+      <span class="note text-blacks-100"> {{ text }}</span>
     </div>
   </div>
 </template>
@@ -45,7 +45,7 @@ const tooltipClass = computed(() => {
 }
 
 .tooltip {
-  @apply flex justify-center items-center absolute px-4 py-3 bg-white rounded-lg border border-blacks-20 transition duration-500 ease-in-out;
+  @apply flex justify-center items-center absolute px-3 py-2 bg-white rounded-lg border border-blacks-20 transition duration-500 ease-in-out;
   width: max-content;
   z-index: 999;
   display: none;
@@ -63,7 +63,7 @@ const tooltipClass = computed(() => {
 }
 .tooltip-left::after {
   top: 50%;
-  right: -8.5px;
+  right: -8px;
   transform: translateY(-50%) rotate(45deg);
 }
 
@@ -74,7 +74,7 @@ const tooltipClass = computed(() => {
 }
 .tooltip-right::after {
   top: 50%;
-  left: -8.5px;
+  left: -8px;
   transform: translateY(-50%) rotate(-135deg);
 }
 
@@ -85,7 +85,7 @@ const tooltipClass = computed(() => {
 }
 .tooltip-top::after {
   left: 50%;
-  bottom: -8.5px;
+  bottom: -8px;
   transform: translateX(-50%) rotate(135deg);
 }
 
@@ -96,7 +96,7 @@ const tooltipClass = computed(() => {
 }
 .tooltip-bottom::after {
   left: 50%;
-  top: -8.5px;
+  top: -8px;
   transform: translateX(-50%) rotate(-45deg);
 }
 </style>

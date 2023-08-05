@@ -341,14 +341,11 @@ export default defineComponent({
 .ql-editor ol {
   @apply pl-4;
   list-style: none;
-  counter-reset: li;
 }
 .ql-editor ol li:not(.ql-direction-rtl) {
   @apply pl-0;
-  counter-increment: li;
 }
 .ql-editor ol li:not(.ql-direction-rtl)::before {
-  content: counter(li) '. ';
   display: inline-block;
   width: 1rem;
   margin-left: -1rem;
@@ -444,5 +441,6 @@ export default defineComponent({
   background-color: transparent;
   position: absolute;
   bottom: -64px;
+  z-index: -1;
 }
 </style>

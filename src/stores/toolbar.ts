@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
 import type { Note } from '~/types'
+import { MOBILE_BREAKPOINT } from '~/constants'
 
 interface State {
   dropdownMenu: {
@@ -16,6 +17,7 @@ interface State {
     fontSize: string
   }
   noteList: Note[]
+  isMobileScreen: boolean
 }
 
 export const useToolbarStore = defineStore('toolbar', {
@@ -34,6 +36,7 @@ export const useToolbarStore = defineStore('toolbar', {
       fontSize: 'default',
     },
     noteList: [],
+    isMobileScreen: window.innerWidth <= MOBILE_BREAKPOINT,
   }),
   actions: {
     toggle(value: string) {
@@ -79,6 +82,9 @@ export const useToolbarStore = defineStore('toolbar', {
           return [...acc, curr]
         return acc
       }, [])
+    },
+    setIsMobileScreen(val: boolean) {
+      this.isMobileScreen = val
     },
   },
 })

@@ -199,13 +199,10 @@ const rightList = computed({
 .cv-preview ol {
   @apply pl-4;
   list-style: none;
-  counter-reset: li;
 }
 .cv-preview ol li {
-  counter-increment: li;
 }
 .cv-preview ol li::before {
-  content: counter(li) '. ';
   display: inline-block;
   width: 1rem;
   margin-left: -1rem;
@@ -220,6 +217,7 @@ const rightList = computed({
   display: inline-block;
   width: 1rem;
   margin-left: -1rem;
+  padding-left: 0.1rem;
 }
 
 .cv-preview .ql-indent-1 {

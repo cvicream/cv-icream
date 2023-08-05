@@ -75,6 +75,7 @@ function redirect(path) {
   >
     <div
       v-if="element.key === 'about'"
+      id="about"
       class="p-2 flex items-baseline flex-wrap gap-6 not-break-out hover:bg-primary-10"
       :class="getEditingStyle(about.isEditing)"
     >
@@ -96,6 +97,7 @@ function redirect(path) {
 
     <section
       v-else-if="element.key === 'summary' && summary.isShow"
+      id="summary"
       class="p-2 flex flex-col gap-2 not-break-out"
       :class="getEditingStyle(summary.isEditing)"
     >
@@ -128,6 +130,7 @@ function redirect(path) {
 
     <section
       v-else-if="element.key === 'experience' && experience.isShow"
+      id="experience"
       class="pt-1 not-break-out"
       :class="getEditingStyle(experience.isEditing)"
     >
@@ -143,6 +146,7 @@ function redirect(path) {
       >
         <div
           v-if="item.isEditing || !isObjectEmpty(item)"
+          :id="`experience-${index}`"
           :class="getEditingStyle(item.isEditing)"
         >
           <div
@@ -159,7 +163,7 @@ function redirect(path) {
             />
             <div
               v-if="item.isEditing || !isEditorEmpty(item.subtitle1) || !isEditorEmpty(item.subtitle2)"
-              class="flex justify-between"
+              class="flex justify-between gap-16"
             >
               <div
                 v-if="showSection(item.isEditing, DEFAULT_TEMPLATE.experience.list[0].subtitle1, item.subtitle1)
@@ -167,8 +171,9 @@ function redirect(path) {
                 "
                 :class="[
                   getFontSizeClassName(currentState.fontSize).subtitle,
-                  isEditorEmpty(item.subtitle1) ? 'text-blacks-40' : 'text-blacks-60'
+                  'min-w-[40%] max-w-[60%]'
                 ]"
+                class="text-blacks-60"
                 v-html="showSection(item.isEditing, DEFAULT_TEMPLATE.experience.list[0].subtitle1, item.subtitle1)"
               />
               <div
@@ -177,8 +182,9 @@ function redirect(path) {
                 "
                 :class="[
                   getFontSizeClassName(currentState.fontSize).subtitle,
-                  isEditorEmpty(item.subtitle2) ? 'text-blacks-40' : 'text-blacks-60'
+                  'min-w-[20%] max-w-[40%]'
                 ]"
+                class="text-blacks-60 text-right"
                 v-html="showSection(item.isEditing, DEFAULT_TEMPLATE.experience.list[0].subtitle2, item.subtitle2)"
               />
             </div>
@@ -197,6 +203,7 @@ function redirect(path) {
 
     <section
       v-else-if="element.key === 'project' && project.isShow"
+      id="project"
       class="pt-1 not-break-out"
       :class="getEditingStyle(project.isEditing)"
     >
@@ -229,7 +236,7 @@ function redirect(path) {
             />
             <div
               v-if="item.isEditing || !isEditorEmpty(item.subtitle1) || !isEditorEmpty(item.subtitle2)"
-              class="flex justify-between"
+              class="flex justify-between gap-16"
             >
               <div
                 v-if="showSection(item.isEditing, DEFAULT_TEMPLATE.project.list[0].subtitle1, item.subtitle1)
@@ -237,8 +244,9 @@ function redirect(path) {
                 "
                 :class="[
                   getFontSizeClassName(currentState.fontSize).subtitle,
-                  isEditorEmpty(item.subtitle1) ? 'text-blacks-40' : 'text-blacks-60'
+                  'min-w-[40%] max-w-[60%]'
                 ]"
+                class="text-blacks-60"
                 v-html="showSection(item.isEditing, DEFAULT_TEMPLATE.project.list[0].subtitle1, item.subtitle1)"
               />
               <div
@@ -247,8 +255,9 @@ function redirect(path) {
                 "
                 :class="[
                   getFontSizeClassName(currentState.fontSize).subtitle,
-                  isEditorEmpty(item.subtitle2) ? 'text-blacks-40' : 'text-blacks-60'
+                  'min-w-[20%] max-w-[40%]'
                 ]"
+                class="text-blacks-60 text-right"
                 v-html="showSection(item.isEditing, DEFAULT_TEMPLATE.project.list[0].subtitle2, item.subtitle2)"
               />
             </div>
@@ -267,6 +276,7 @@ function redirect(path) {
 
     <section
       v-else-if="element.key === 'contact'"
+      id="contact"
       class="pt-1 not-break-out hover:bg-primary-10"
       :class="getEditingStyle(contact.isEditing)"
     >
@@ -305,6 +315,7 @@ function redirect(path) {
 
     <section
       v-else-if="element.key === 'skill' && skill.isShow"
+      id="skill"
       class="pt-1 not-break-out"
       :class="getEditingStyle(skill.isEditing)"
     >
@@ -357,6 +368,7 @@ function redirect(path) {
 
     <section
       v-else-if="element.key === 'certificate' && certificate.isShow"
+      id="certificate"
       class="pt-1 not-break-out"
       :class="getEditingStyle(certificate.isEditing)"
     >
@@ -409,6 +421,7 @@ function redirect(path) {
 
     <section
       v-else-if="element.key === 'education' && education.isShow"
+      id="education"
       class="pt-1 not-break-out"
       :class="getEditingStyle(education.isEditing)"
     >
@@ -461,6 +474,7 @@ function redirect(path) {
 
     <section
       v-else-if="element.key === 'social' && social.isShow"
+      id="social"
       class="pt-1 not-break-out"
       :class="getEditingStyle(social.isEditing)"
     >

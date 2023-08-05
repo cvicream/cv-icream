@@ -38,7 +38,7 @@ function focusOut(index) {
       @click="toggleShow"
     />
   </div>
-  <div class="flex-grow flex flex-col gap-6 pr-2 -mr-3 overflow-y-auto custom-scrollbar last-child-pb-4">
+  <div class="flex-grow flex flex-col pr-2 -mr-3 overflow-y-auto custom-scrollbar last-child-pb-4">
     <p v-if="!summary.isShow" class="paragraph text-blacks-40">
       {{ HIDDEN_INFORMATION }}
     </p>
@@ -49,7 +49,7 @@ function focusOut(index) {
       @focusin="() =>focusIn(index)"
       @focusout="() => focusOut(index)"
     >
-      <h3 class="subleading text-blacks-100">
+      <h3 class="subleading text-blacks-100 invisible">
         Summary
       </h3>
       <div

@@ -33,7 +33,7 @@ function focusOut() {
     @focusin="() => focusIn()"
     @focusout="() => focusOut()"
   >
-    <h3 class="subleading text-blacks-100">
+    <h3 class="subleading text-blacks-100 invisible">
       About
     </h3>
     <div class="bg-primary-10 rounded-xl mt-3 px-4 py-6 flex flex-col gap-6">
