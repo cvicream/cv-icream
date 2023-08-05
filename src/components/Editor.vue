@@ -39,8 +39,11 @@ export default defineComponent({
     const toolbarId = ref(`toolbar-${uuidv4().replaceAll('-', '')}`)
     const toolbarTop = ref(0)
     const toolbarVisible = ref(false)
+    const draftLink = ref('')
     const link = ref('')
-    const linkVisible = ref(false)
+    const linkEditVisible = ref(false)
+    const linkHoverPosition = ref({ x: 0, y: 0 })
+    const linkHoverVisible = ref(false)
 
     const content = computed({
       get: () => {
@@ -57,6 +60,7 @@ export default defineComponent({
         return value
       },
       set: (value) => {
+        createAnchorListeners()
         emit('update:modelValue', value)
       },
     })
@@ -70,7 +74,7 @@ export default defineComponent({
         // customize link handler
         toolbar.addHandler('link', (value) => {
           if (value)
-            linkVisible.value = true
+            linkEditVisible.value = true
           else
             quill.format('link', false)
         })
@@ -107,6 +111,8 @@ export default defineComponent({
           }
         })
       }
+
+      createAnchorListeners()
     })
 
     watch(toolbarVisible, () => {
@@ -137,8 +143,10 @@ export default defineComponent({
     }
 
     function onBlur() {
-      if (!props.isSingleLine && !linkVisible.value)
+      if (!props.isSingleLine && !linkEditVisible.value)
         toolbarVisible.value = false
+
+      closeLinkHover()
     }
 
     function preventEnter(event) {
@@ -152,17 +160,58 @@ export default defineComponent({
     }
 
     function onLinkBlur() {
-      if (editor.value && link.value) {
+      if (editor.value && draftLink.value) {
         const quill = (editor.value as Quill).getQuill()
-        quill.format('link', link.value)
+        quill.format('link', draftLink.value)
+        resetLink()
       }
 
-      onLinkClose()
+      closeLinkEdit()
     }
 
-    function onLinkClose() {
-      linkVisible.value = false
+    function closeLinkEdit() {
+      linkEditVisible.value = false
+      resetLink()
+    }
+
+    function openLinkEdit() {
+      linkHoverVisible.value = false
+      linkEditVisible.value = true
+    }
+
+    function createAnchorListeners() {
+      document.querySelectorAll('.ql-editor a').forEach((element) => {
+        element.addEventListener('mouseover', (e) => {
+          e.stopPropagation()
+          const anchor = (e.target as HTMLAnchorElement)
+          const rect = anchor.getBoundingClientRect()
+          linkHoverPosition.value = { x: rect.left, y: rect.bottom + 8 }
+          link.value = anchor.href
+          draftLink.value = link.value
+          linkHoverVisible.value = true
+        })
+      })
+    }
+
+    function closeLinkHover() {
+      linkHoverPosition.value = { x: 0, y: 0 }
+      linkHoverVisible.value = false
+    }
+
+    function removeLink() {
+      const quill = (editor.value as Quill).getQuill()
+      quill.format('link', false)
+      linkEditVisible.value = false
+      resetLink()
+    }
+
+    function resetLink() {
+      draftLink.value = ''
       link.value = ''
+    }
+
+    function onEditorChange(data) {
+      closeLinkHover()
     }
 
     return {
@@ -171,14 +220,21 @@ export default defineComponent({
       toolbarId,
       toolbarTop,
       toolbarVisible,
+      draftLink,
       link,
-      linkVisible,
+      linkEditVisible,
+      linkHoverPosition,
+      linkHoverVisible,
       content,
       onFocus,
       onBlur,
       onClear,
       onLinkBlur,
-      onLinkClose,
+      closeLinkEdit,
+      openLinkEdit,
+      removeLink,
+      resetLink,
+      onEditorChange,
     }
   },
 })
@@ -207,6 +263,7 @@ export default defineComponent({
       :class="{ 'single-line': isSingleLine }"
       @focus="onFocus"
       @blur="onBlur"
+      @editor-change="onEditorChange"
     />
 
     <button
@@ -252,8 +309,28 @@ export default defineComponent({
     </div>
 
     <div
-      v-if="linkVisible"
-      class="h-[126px] absolute top-[var(--toolbar-top)] left-0 right-0 z-10 bg-white p-4 rounded-[1.25rem] shadow-custom"
+      v-if="linkHoverVisible && toolbarVisible"
+      class="fixed flex justify-between gap-2 px-3 py-2 bg-white border-1 border-black rounded-xl shadow-custom"
+      :style="{top: `${linkHoverPosition.y}px`, left: `${linkHoverPosition.x}px`}"
+    >
+      <a
+        class="paragraph text-blacks-100 truncate"
+        target="_blank"
+        :href="link"
+      >
+        {{ link }}
+      </a>
+      <button
+        class="note pl-2 border-l border-blacks-20 text-blacks-40 hover:text-blacks-70 transition-[color] duration-300"
+        @click="openLinkEdit"
+      >
+        Edit
+      </button>
+    </div>
+
+    <div
+      v-if="linkEditVisible"
+      class="absolute top-[var(--toolbar-top)] left-0 right-0 z-10 bg-white p-4 rounded-[1.25rem] shadow-custom"
     >
       <div class="flex justify-between">
         <div class="flex gap-2 items-center">
@@ -268,7 +345,7 @@ export default defineComponent({
       </div>
       <div class="relative mt-4">
         <input
-          v-model="link"
+          v-model="draftLink"
           type="text"
           placeholder="http://"
           class="form-input bg-primary-10"
@@ -277,10 +354,18 @@ export default defineComponent({
         >
         <button
           class="w-6 h-6 absolute top-[50%] right-2 -translate-y-1/2 transition-[opacity] duration-300"
-          :class="{'opacity-0': !link}"
+          :class="{'opacity-0': !draftLink}"
           @click="onLinkBlur"
         >
           <span class="i-custom:ok w-6 h-6 text-blacks-40 hover:text-blacks-70" />
+        </button>
+      </div>
+      <div v-if="link" class="text-right mt-3">
+        <button
+          class="note text-blacks-40 hover:text-blacks-70 transition-[color] duration-300"
+          @click="removeLink"
+        >
+          Remove Link
         </button>
       </div>
       <div class="fix-margin-bottom" style="top: 126px; bottom: 0; left: 0;" />
