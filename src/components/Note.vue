@@ -58,10 +58,28 @@ const onClickOutside = () => {
   }
 }
 
+const onDragStart = (event: DragEvent) => {
+  document.getElementById('cv-preview')?.addEventListener('dragover', (event) => {
+    event.preventDefault()
+  }, false)
+  event.target?.classList.add('dragging')
+}
+
+const onDragEnd = (event: DragEvent) => {
+  event.target?.classList.remove('dragging')
+  toolbar.modifyNote({
+    ...props.note,
+    location: {
+      left: event.layerX,
+      top: event.layerY,
+    },
+  })
+}
+
 </script>
 
 <template>
-  <div v-on-click-outside="onClickOutside" class="note-container">
+  <div v-on-click-outside="onClickOutside" draggable="true" class="note-container" @dragstart="onDragStart" @dragend="onDragEnd">
     <button
       class="note-icon bg-yellow"
       @click="onToggleNote"
@@ -110,5 +128,8 @@ const onClickOutside = () => {
   border-bottom: 2px solid #72B255;
   border-right: 2px solid #72B255;
   margin: 1px 10px 0 7px;
+}
+.dragging {
+  opacity: 0.1;
 }
 </style>
