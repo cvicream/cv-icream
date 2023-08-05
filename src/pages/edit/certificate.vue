@@ -246,6 +246,7 @@ function swap(index1, index2) {
             class-name="h-[46px] mt-1"
             :enable="item.isShow"
             :placeholder="DEFAULT_TEMPLATE.certificate.list[0].title"
+            :is-single-line="true"
           />
         </div>
         <div
@@ -259,6 +260,7 @@ function swap(index1, index2) {
               class-name="h-[46px] mt-1"
               :enable="item.isShow"
               :placeholder="DEFAULT_TEMPLATE.certificate.list[0].subtitle"
+              :is-single-line="true"
             />
           </div>
           <div>
