@@ -12,7 +12,7 @@ function togglePaypal() {
 }
 
 function pay() {
-  window.open('https://www.sandbox.paypal.com/donate/?hosted_button_id=SC6NS6HVUHY4Y')
+  window.open('https://buy.stripe.com/test_9AQ4hLagT2t71ywfYY')
   props.toggle()
 }
 </script>
