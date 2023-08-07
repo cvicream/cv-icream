@@ -112,7 +112,7 @@ function redirect(path) {
           :key="item"
           class="hashtag bg-primary-10"
           :class="[
-            summary.isEditing || isHover ? 'bg-white' : '',
+            summary.isEditing || isHover ? 'sm:bg-white' : '',
             getFontSizeClassName(currentState.fontSize).subtitle,
             isEditorEmpty(item) ? 'text-blacks-40' : 'text-blacks-100'
           ]"
