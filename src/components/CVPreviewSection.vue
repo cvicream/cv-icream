@@ -76,7 +76,7 @@ function redirect(path) {
     <div
       v-if="element.key === 'about'"
       id="about"
-      class="p-2 flex items-baseline flex-wrap gap-6 not-break-out hover:bg-primary-10"
+      class="p-2 flex items-baseline flex-wrap gap-6 not-break-out sm:hover:bg-primary-10"
       :class="getEditingStyle(about.isEditing)"
     >
       <div
@@ -277,7 +277,7 @@ function redirect(path) {
     <section
       v-else-if="element.key === 'contact'"
       id="contact"
-      class="pt-1 not-break-out hover:bg-primary-10"
+      class="pt-1 not-break-out sm:hover:bg-primary-10"
       :class="getEditingStyle(contact.isEditing)"
     >
       <div

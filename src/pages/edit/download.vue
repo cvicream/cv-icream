@@ -213,7 +213,7 @@ function back() {
     </div>
 
     <button
-      class="w-full h-[46px] text-white bg-primary-100 rounded-xl inline-flex justify-center items-center gap-2 py-3 mt-6 border-1 border-transparent transition hover:border-primary-20"
+      class="w-full h-[46px] text-white bg-primary-100 rounded-xl inline-flex justify-center items-center gap-2 py-3 mt-6 border-1 border-transparent transition sm:hover:border-primary-20"
       :disabled="loading"
       @click="generatePdf"
     >
