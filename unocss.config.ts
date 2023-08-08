@@ -132,7 +132,7 @@ export default defineConfig({
       },
       success: '#72b355',
       warning: '#de6d6d',
-      paypal: '#ffc43a',
+      payment: '#ffc43a',
     },
     boxShadow: {
       custom: '2px 2px 10px var(--shadow-color)',
