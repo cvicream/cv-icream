@@ -40,8 +40,8 @@ function pay() {
           class="w-full max-w-[300px] flex justify-center items-center px-4 py-3 mx-auto bg-paypal rounded-[32px]"
           @click="pay"
         >
-          <span class="paragraph text-blacks-100">Pay with Paypal</span>
-          <span class="i-origin:paypal w-[66px] h-4 ml-4" />
+          <span class="paragraph text-blacks-100">Pay with Stripe</span>
+          <span class="i-origin:stripe w-20 h-10 ml-1" />
         </button>
         <p class="max-w-[312px] note text-center text-blacks-70 mx-auto mt-3">
           You will be redirected to PayPal to complete your payment securely.
