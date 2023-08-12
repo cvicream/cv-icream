@@ -12,8 +12,11 @@ function togglePayment() {
 }
 
 function pay() {
-  window.open('https://buy.stripe.com/test_9AQ4hLagT2t71ywfYY')
-  props.toggle()
+  const stripeUrl: string = import.meta.env.VITE_STRIPE_URL as string
+  if (stripeUrl) {
+    window.open(stripeUrl)
+    props.toggle()
+  }
 }
 </script>
 
