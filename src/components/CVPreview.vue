@@ -2,11 +2,13 @@
 import { computed } from 'vue'
 import { storeToRefs } from 'pinia'
 import vuedraggable from 'vuedraggable'
+import { Pane, Splitpanes } from 'splitpanes'
+import 'splitpanes/dist/splitpanes.css'
 import { useUserStore } from '~/stores/user'
 import { useToolbarStore } from '~/stores/toolbar'
 import { isMobileDevice } from '~/utils'
 
-const props = defineProps({
+defineProps({
   id: {
     type: String,
     default: 'cv-preview',
@@ -98,7 +100,6 @@ const rightList = computed({
     <div
       class="w-full h-full"
       :class="currentState.fontFamily"
-      style=""
     >
       <div
         :class="{
@@ -107,21 +108,18 @@ const rightList = computed({
           'w-3/4 mr-auto': currentState.layout === 'layout-right',
         }"
       >
-        <CVPreviewSection
-          v-for="item in topList"
-          :key="item.key"
-          :element="item"
-          :read-only="readOnly"
-        />
+        <Splitpanes>
+          <Pane v-for="(item, index) in topList" :key="item.key" :size="index === 0 ? '75' : '25'">
+            <CVPreviewSection
+              :element="item"
+              :read-only="readOnly"
+            />
+          </Pane>
+        </Splitpanes>
       </div>
-      <div class="flex flex-wrap gap-y-3">
-        <div
-          :class="{
-            'w-full': currentState.layout === 'layout-full',
-            'w-3/4 order-2': currentState.layout === 'layout-left',
-            'w-3/4 order-1': currentState.layout === 'layout-right',
-          }"
-        >
+
+      <div v-if="currentState.layout === 'layout-full'">
+        <div>
           <vuedraggable
             v-if="!readOnly"
             v-model="leftList"
@@ -144,14 +142,7 @@ const rightList = computed({
             <CVPreviewSection :element="element" :read-only="readOnly" />
           </div>
         </div>
-        <!-- add padding between left part and right part -->
-        <div
-          :class="{
-            'w-full': currentState.layout === 'layout-full',
-            'w-1/4 order-1 pr-4': currentState.layout === 'layout-left',
-            'w-1/4 order-2 pl-4': currentState.layout === 'layout-right',
-          }"
-        >
+        <div class="mt-3">
           <vuedraggable
             v-if="!readOnly"
             v-model="rightList"
@@ -175,6 +166,104 @@ const rightList = computed({
           </div>
         </div>
       </div>
+
+      <Splitpanes v-else-if="currentState.layout === 'layout-right'">
+        <Pane size="75">
+          <vuedraggable
+            v-if="!readOnly"
+            v-model="leftList"
+            group="section"
+            item-key="key"
+            class="h-full flex flex-col gap-3"
+            delay-on-touch-only
+            :delay="isMobileDevice() ? 250 : 0"
+          >
+            <template #item="{element}">
+              <CVPreviewSection :element="element" />
+            </template>
+          </vuedraggable>
+
+          <div
+            v-for="(element, index) in leftList"
+            v-else
+            :key="index"
+          >
+            <CVPreviewSection :element="element" :read-only="readOnly" />
+          </div>
+        </Pane>
+        <Pane size="25">
+          <vuedraggable
+            v-if="!readOnly"
+            v-model="rightList"
+            group="section"
+            item-key="key"
+            class="h-full flex flex-col gap-3"
+            delay-on-touch-only
+            :delay="isMobileDevice() ? 250 : 0"
+          >
+            <template #item="{element}">
+              <CVPreviewSection :element="element" />
+            </template>
+          </vuedraggable>
+
+          <div
+            v-for="(element, index) in rightList"
+            v-else
+            :key="index"
+          >
+            <CVPreviewSection :element="element" :read-only="readOnly" />
+          </div>
+        </Pane>
+      </Splitpanes>
+
+      <Splitpanes v-else-if="currentState.layout === 'layout-left'">
+        <Pane size="25">
+          <vuedraggable
+            v-if="!readOnly"
+            v-model="rightList"
+            group="section"
+            item-key="key"
+            class="h-full flex flex-col gap-3"
+            delay-on-touch-only
+            :delay="isMobileDevice() ? 250 : 0"
+          >
+            <template #item="{element}">
+              <CVPreviewSection :element="element" />
+            </template>
+          </vuedraggable>
+
+          <div
+            v-for="(element, index) in rightList"
+            v-else
+            :key="index"
+          >
+            <CVPreviewSection :element="element" :read-only="readOnly" />
+          </div>
+        </Pane>
+        <Pane size="75">
+          <vuedraggable
+            v-if="!readOnly"
+            v-model="leftList"
+            group="section"
+            item-key="key"
+            class="h-full flex flex-col gap-3"
+            delay-on-touch-only
+            :delay="isMobileDevice() ? 250 : 0"
+          >
+            <template #item="{element}">
+              <CVPreviewSection :element="element" />
+            </template>
+          </vuedraggable>
+
+          <div
+            v-for="(element, index) in leftList"
+            v-else
+            :key="index"
+          >
+            <CVPreviewSection :element="element" :read-only="readOnly" />
+          </div>
+        </Pane>
+      </Splitpanes>
     </div>
   </div>
 </template>
@@ -267,5 +356,57 @@ const rightList = computed({
 }
 .sortable-chosen.sortable-ghost {
   @apply h-1 bg-primary-10 my-1;
+}
+
+.splitpanes {
+  background: transparent;
+}
+.splitpanes__splitter {
+  position: relative;
+  user-select: none;
+}
+.splitpanes__splitter::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  opacity: 0;
+  z-index: 1;
+}
+.splitpanes__splitter:hover::before {
+  opacity: 1;
+}
+.splitpanes--horizontal > .splitpanes__splitter {
+  @apply bg-primary-70;
+  min-height: 2px;
+}
+.splitpanes--horizontal > .splitpanes__splitter::before {
+  top: -10px;
+  bottom: -10px;
+  width: 100%;
+}
+.splitpanes--vertical > .splitpanes__splitter {
+  @apply bg-primary-70 my-3;
+  min-width: 2px;
+}
+.splitpanes--vertical > .splitpanes__splitter::before {
+  left: -10px;
+  right: -10px;
+  height: 100%;
+}
+.splitpanes--vertical > .splitpanes__splitter::after {
+  content: url('~/assets/icons/moving.svg');
+  width: 38px;
+  height: 37px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+  opacity: 0;
+  transition: opacity 0.4s;
+}
+.splitpanes--vertical > .splitpanes__splitter:hover::after {
+  opacity: 1;
 }
 </style>
