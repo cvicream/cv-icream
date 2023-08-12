@@ -112,8 +112,6 @@ function print() {
 }
 
 async function generatePdf() {
-  const generatePdfUrl: string = import.meta.env.VITE_GENERATE_PDF_URL as string
-
   loading.value = true
 
   const fileName = generateFileName()
@@ -123,25 +121,23 @@ async function generatePdf() {
     data: storage,
   }
 
-  if (generatePdfUrl) {
-    try {
-      const res = await axios({
-        method: 'POST',
-        url: generatePdfUrl,
-        data,
-        responseType: 'blob',
-      })
-      const url = window.URL.createObjectURL(new Blob([res.data]))
-      const link = document.createElement('a')
-      link.href = url
-      link.setAttribute('download', `${fileName}.pdf`)
-      document.body.appendChild(link)
-      link.click()
-      toggleFeedbackModal()
-    }
-    catch (error) {
-      console.error(error)
-    }
+  try {
+    const res = await axios({
+      method: 'POST',
+      url: 'https://us-central1-dodosoya-develop.cloudfunctions.net/generatePdf',
+      data,
+      responseType: 'blob',
+    })
+    const url = window.URL.createObjectURL(new Blob([res.data]))
+    const link = document.createElement('a')
+    link.href = url
+    link.setAttribute('download', `${fileName}.pdf`)
+    document.body.appendChild(link)
+    link.click()
+    toggleFeedbackModal()
+  }
+  catch (error) {
+    console.error(error)
   }
 
   loading.value = false
