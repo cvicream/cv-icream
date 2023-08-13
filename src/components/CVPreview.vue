@@ -364,6 +364,7 @@ const rightList = computed({
 .splitpanes__splitter {
   position: relative;
   user-select: none;
+  opacity: 0;
 }
 .splitpanes__splitter::before {
   content: '';
@@ -373,6 +374,7 @@ const rightList = computed({
   opacity: 0;
   z-index: 1;
 }
+.splitpanes__splitter:hover,
 .splitpanes__splitter:hover::before {
   opacity: 1;
 }
@@ -393,20 +395,5 @@ const rightList = computed({
   left: -10px;
   right: -10px;
   height: 100%;
-}
-.splitpanes--vertical > .splitpanes__splitter::after {
-  content: url('~/assets/icons/moving.svg');
-  width: 38px;
-  height: 37px;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 1;
-  opacity: 0;
-  transition: opacity 0.4s;
-}
-.splitpanes--vertical > .splitpanes__splitter:hover::after {
-  opacity: 1;
 }
 </style>
