@@ -11,15 +11,25 @@ exports.generatePdf = functions.runWith(options).https.onRequest(
     if (req.method === 'OPTIONS') {
       res.set('Access-Control-Allow-Headers', 'authorization,content-type')
       res.set('Access-Control-Allow-Origin', '*')
-      res.status(204).send('')
+      return res.status(204).send('')
     }
     else {
       res.set('Access-Control-Allow-Origin', '*')
     }
 
     const body = req.body
-    if (!body || !body.data || Object.keys(body.data).length === 0) res.status(400).send()
-    const fileName = body.fileName ? body.fileName : 'cv'
+    if (!body || !body.data || Object.keys(body.data).length === 0) return res.status(400).send()
+
+    // eslint-disable-next-line no-console
+    console.log(`payload: ${JSON.stringify(body)}`)
+
+    let targetUrl = body.targetUrl
+    if (targetUrl)
+      targetUrl = targetUrl.replace(/\/+$/g, '') // remove trailing slashes
+    else
+      targetUrl = 'https://edit.cvicream.com'
+
+    const fileName = body.fileName || 'cv'
     const data = body.data
 
     // launch puppeteer in headless mode and without sandbox
@@ -27,12 +37,12 @@ exports.generatePdf = functions.runWith(options).https.onRequest(
 
     try {
       const page = await browser.newPage()
-      await page.goto('https://develop-cvicream.netlify.app', { waitUntil: 'networkidle2' })
+      await page.goto(targetUrl, { waitUntil: 'networkidle2' })
       await page.evaluate((data) => {
         localStorage.setItem('cvicream', JSON.stringify(data))
         localStorage.setItem('cvicream-status', JSON.stringify({ isEditing: true }))
       }, data)
-      await page.goto('https://develop-cvicream.netlify.app/edit/about', { waitUntil: 'networkidle2' })
+      await page.goto(`${targetUrl}/edit/about`, { waitUntil: 'networkidle2' })
       await page.emulateMediaType('print')
       const pdf = await page.pdf({
         printBackground: true,
