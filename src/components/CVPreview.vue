@@ -195,7 +195,7 @@ const rightList = computed({
   </div>
 </template>
 
-<style>
+<style scoped>
 .cv-preview ol {
   @apply pl-4;
   list-style: none;
@@ -283,5 +283,8 @@ const rightList = computed({
 }
 .cv-preview.adding-note-mode {
   cursor: url('../assets/icons/note.svg'), auto;
+}
+.temp-static {
+  position: static !important;
 }
 </style>

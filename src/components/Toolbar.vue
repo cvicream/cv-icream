@@ -193,19 +193,6 @@ function onCollapse() {
       class="btn-group-toolbar h-12 relative sm:flex"
       :class="{ 'hidden': !isCVPreviewVisible }"
     >
-      <Tooltip
-        placement="top"
-        text="Note"
-      >
-        <button
-          class="btn-toolbar"
-          @click="onNoteClick"
-        >
-          <span
-            class="i-custom:note w-8 h-8"
-          />
-        </button>
-      </Tooltip>
       <DropdownMenu id="layout" label="Layout" icon="i-custom:layout text-blacks-70" tooltip="Layout">
         <div
           v-for="item in LAYOUTS"
@@ -274,6 +261,25 @@ function onCollapse() {
           </div>
         </div>
       </DropdownMenu>
+    </div>
+
+    <div
+      v-if="open"
+      class="btn-group-toolbar h-12"
+    >
+      <Tooltip
+        placement="top"
+        text="Note"
+      >
+        <button
+          class="btn-toolbar"
+          @click="onNoteClick"
+        >
+          <span
+            class="i-custom:note w-8 h-8"
+          />
+        </button>
+      </Tooltip>
     </div>
     <!-- <div v-if="open" class="btn-group-toolbar w-12 h-12">
       <div class="btn-toolbar">

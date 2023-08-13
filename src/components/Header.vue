@@ -31,7 +31,7 @@ const {
   contact,
   social,
 } = storeToRefs(user)
-const { currentState } = storeToRefs(toolbar)
+const { currentState, noteList } = storeToRefs(toolbar)
 
 const isSafari = () => ('safari' in window)
 
@@ -71,10 +71,13 @@ function exportJsonFile() {
   closeAction()
   const jsonData = {
     toolbar: {
-      layout: currentState.value.layout,
-      fontSize: currentState.value.fontSize,
-      color: currentState.value.color,
-      fontFamily: currentState.value.fontFamily,
+      currentState: {
+        layout: currentState.value.layout,
+        fontSize: currentState.value.fontSize,
+        color: currentState.value.color,
+        fontFamily: currentState.value.fontFamily,
+      },
+      noteList: noteList.value,
     },
     user: {
       template: template.value,
@@ -123,7 +126,7 @@ async function importJsonFile() {
         const subObj = obj[key]
         Object.keys(subObj).forEach((subKey) => {
           toolbar.$patch((state) => {
-            state.currentState[subKey] = subObj[subKey]
+            state[subKey] = subObj[subKey]
           })
         })
       }

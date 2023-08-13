@@ -59,6 +59,7 @@ const onClickOutside = () => {
 }
 
 const onDragStart = (event: DragEvent) => {
+  document.querySelectorAll('#cv-preview [data-draggable="true"]').forEach(el => el.classList.add('temp-static'))
   document.getElementById('cv-preview')?.addEventListener('dragover', (event) => {
     event.preventDefault()
   }, false)
@@ -66,6 +67,7 @@ const onDragStart = (event: DragEvent) => {
 }
 
 const onDragEnd = (event: DragEvent) => {
+  document.querySelectorAll('#cv-preview [data-draggable="true"]').forEach(el => el.classList.remove('temp-static'))
   event.target?.classList.remove('dragging')
   toolbar.modifyNote({
     ...props.note,
@@ -79,7 +81,13 @@ const onDragEnd = (event: DragEvent) => {
 </script>
 
 <template>
-  <div v-on-click-outside="onClickOutside" draggable="true" class="note-container" @dragstart="onDragStart" @dragend="onDragEnd">
+  <div
+    v-on-click-outside="onClickOutside"
+    class="note-container"
+    draggable="true"
+    @dragstart="onDragStart"
+    @dragend="onDragEnd"
+  >
     <button
       class="note-icon bg-yellow"
       @click="onToggleNote"
