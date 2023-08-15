@@ -7,6 +7,11 @@ import 'splitpanes/dist/splitpanes.css'
 import { useUserStore } from '~/stores/user'
 import { useToolbarStore } from '~/stores/toolbar'
 import { isMobileDevice } from '~/utils'
+import {
+  DEFAULT_LEFT_PANEL_WIDTH,
+  DEFAULT_RIGHT_PANEL_WIDTH,
+  DEFAULT_TOP_PANEL_WIDTH,
+} from '~/constants'
 
 defineProps({
   id: {
@@ -88,6 +93,26 @@ const rightList = computed({
     })
   },
 })
+
+const topPanelWidth = computed(() => {
+  return currentState.value.topPanelWidth || DEFAULT_TOP_PANEL_WIDTH
+})
+const leftPanelWidth = computed(() => {
+  return currentState.value.leftPanelWidth || DEFAULT_LEFT_PANEL_WIDTH
+})
+const rightPanelWidth = computed(() => {
+  return currentState.value.rightPanelWidth || DEFAULT_RIGHT_PANEL_WIDTH
+})
+
+const handleTopPanelResized = (values) => {
+  toolbar.setTopPanelWidth(values.map(val => val.size))
+}
+const handleLeftPanelResized = (values) => {
+  toolbar.setLeftPanelWidth(values.map(val => val.size))
+}
+const handleRightPanelResized = (values) => {
+  toolbar.setRightPanelWidth(values.map(val => val.size))
+}
 </script>
 
 <template>
@@ -108,8 +133,8 @@ const rightList = computed({
           'w-3/4 mr-auto': currentState.layout === 'layout-right',
         }"
       >
-        <Splitpanes>
-          <Pane v-for="(item, index) in topList" :key="item.key" :size="index === 0 ? '75' : '25'">
+        <Splitpanes @resized="handleTopPanelResized">
+          <Pane v-for="(item, index) in topList" :key="item.key" :size="index === 0 ? topPanelWidth[0] : topPanelWidth[1]">
             <CVPreviewSection
               :element="item"
               :read-only="readOnly"
@@ -167,8 +192,11 @@ const rightList = computed({
         </div>
       </div>
 
-      <Splitpanes v-else-if="currentState.layout === 'layout-right'">
-        <Pane size="75">
+      <Splitpanes
+        v-else-if="currentState.layout === 'layout-right'"
+        @resized="handleRightPanelResized"
+      >
+        <Pane :size="rightPanelWidth[0]">
           <vuedraggable
             v-if="!readOnly"
             v-model="leftList"
@@ -191,7 +219,7 @@ const rightList = computed({
             <CVPreviewSection :element="element" :read-only="readOnly" />
           </div>
         </Pane>
-        <Pane size="25">
+        <Pane :size="rightPanelWidth[1]">
           <vuedraggable
             v-if="!readOnly"
             v-model="rightList"
@@ -216,8 +244,11 @@ const rightList = computed({
         </Pane>
       </Splitpanes>
 
-      <Splitpanes v-else-if="currentState.layout === 'layout-left'">
-        <Pane size="25">
+      <Splitpanes
+        v-else-if="currentState.layout === 'layout-left'"
+        @resized="handleLeftPanelResized"
+      >
+        <Pane :size="leftPanelWidth[0]">
           <vuedraggable
             v-if="!readOnly"
             v-model="rightList"
@@ -240,7 +271,7 @@ const rightList = computed({
             <CVPreviewSection :element="element" :read-only="readOnly" />
           </div>
         </Pane>
-        <Pane size="75">
+        <Pane :size="leftPanelWidth[1]">
           <vuedraggable
             v-if="!readOnly"
             v-model="leftList"

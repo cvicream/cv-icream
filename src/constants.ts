@@ -8,6 +8,9 @@ export const SCALES = [25, 50, 100, 200]
 export const A4_WIDTH_PX = 794
 export const A4_HEIGHT_PX = 1122.5
 export const PAGE_BREAKPOINT = 1340
+export const DEFAULT_TOP_PANEL_WIDTH = [75, 25] // value in percent
+export const DEFAULT_LEFT_PANEL_WIDTH = [25, 75] // value in percent
+export const DEFAULT_RIGHT_PANEL_WIDTH = [75, 25] // value in percent
 
 export const LAYOUTS = [
   {

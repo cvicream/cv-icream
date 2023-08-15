@@ -1,5 +1,10 @@
 import { defineStore } from 'pinia'
-import { MOBILE_BREAKPOINT } from '~/constants'
+import {
+  DEFAULT_LEFT_PANEL_WIDTH,
+  DEFAULT_RIGHT_PANEL_WIDTH,
+  DEFAULT_TOP_PANEL_WIDTH,
+  MOBILE_BREAKPOINT,
+} from '~/constants'
 
 export const useToolbarStore = defineStore('toolbar', {
   state: () => ({
@@ -15,6 +20,9 @@ export const useToolbarStore = defineStore('toolbar', {
       layout: 'layout-right',
       color: 'default',
       fontSize: 'default',
+      topPanelWidth: DEFAULT_TOP_PANEL_WIDTH,
+      leftPanelWidth: DEFAULT_LEFT_PANEL_WIDTH,
+      rightPanelWidth: DEFAULT_RIGHT_PANEL_WIDTH,
     },
     isMobileScreen: window.innerWidth <= MOBILE_BREAKPOINT,
   }),
@@ -44,6 +52,15 @@ export const useToolbarStore = defineStore('toolbar', {
     },
     setIsCVPreviewVisible(val: boolean) {
       this.isCVPreviewVisible = val
+    },
+    setTopPanelWidth(val: number[]) {
+      this.currentState.topPanelWidth = val
+    },
+    setLeftPanelWidth(val: number[]) {
+      this.currentState.leftPanelWidth = val
+    },
+    setRightPanelWidth(val: number[]) {
+      this.currentState.rightPanelWidth = val
     },
   },
 })
