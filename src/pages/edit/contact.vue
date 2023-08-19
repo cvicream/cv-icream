@@ -60,7 +60,7 @@ function focusOut(index) {
             <label class="block note text-blacks-70">Contact Info</label>
             <Editor
               v-model="item.paragraph"
-              class-name="h-[130px] mt-1"
+              class-name="mt-1"
               :enable="item.isShow"
               :placeholder="DEFAULT_TEMPLATE.contact.list[0].paragraph"
             />
