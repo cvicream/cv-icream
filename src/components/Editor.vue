@@ -119,14 +119,13 @@ export default defineComponent({
       const editorElement = (editor.value as Quill).getEditor()
       if (toolbarVisible.value) {
         editorElement.style.transition = 'padding 0.3s'
-        editorElement.style.paddingTop = '60px'
+        editorElement.style.paddingTop = '52px'
       }
-      else { editorElement.style.paddingTop = '8px' }
+      else { editorElement.style.paddingTop = '12px' }
     })
 
     function onFocus(elementRef) {
-      if (!props.isSingleLine)
-        toolbarVisible.value = true
+      toolbarVisible.value = true
 
       const obj = elementRef.value.getBoundingClientRect()
       toolbarTop.value = obj.height + 8
@@ -143,7 +142,7 @@ export default defineComponent({
     }
 
     function onBlur() {
-      if (!props.isSingleLine && !linkEditVisible.value)
+      if (!linkEditVisible.value)
         toolbarVisible.value = false
 
       closeLinkHover()
@@ -246,7 +245,7 @@ export default defineComponent({
     class="relative transition-[height] duration-300"
     :class="[
       className,
-      toolbarVisible ? 'h-[220px]' : 'h-[180px]'
+      isSingleLine ? (toolbarVisible ? 'h-[86px]' : 'h-[46px]') : (toolbarVisible ? 'h-[220px]' : 'h-[180px]')
     ]"
     :style="{
       // @ts-ignore
@@ -272,7 +271,7 @@ export default defineComponent({
     <button
       v-if="enable && content !== '<p><br></p>'"
       class="btn-clear i-custom:cancel w-6 h-6 absolute right-2 bg-blacks-40 opacity-0 transition-[top] duration-300"
-      :class="isSingleLine ? 'top-[50%] -translate-y-1/2' : (toolbarVisible ? 'top-[59px]' : 'top-[11px]')"
+      :class="isSingleLine ? (toolbarVisible ? 'top-[63px] -translate-y-1/2' : 'top-[50%] -translate-y-1/2') : (toolbarVisible ? 'top-[52px]' : 'top-[8px]')"
       @click="onClear"
     />
 
@@ -284,29 +283,29 @@ export default defineComponent({
       }"
     >
       <div>
-        <button class="ql-list btn-icon-32 p-1" value="bullet">
-          <span class="i-custom:list-bullet w-6 h-6" />
+        <button class="ql-list btn-icon-24" value="bullet">
+          <span class="i-custom:list-bullet w-4.5 h-4.5" />
         </button>
-        <button class="ql-list btn-icon-32 p-1" value="ordered">
-          <span class="i-custom:list-number w-6 h-6" />
+        <button class="ql-list btn-icon-24" value="ordered">
+          <span class="i-custom:list-number w-4.5 h-4.5" />
         </button>
-        <button class="ql-indent btn-icon-32 p-1" value="+1">
-          <span class="i-custom:indent w-6 h-6" />
+        <button class="ql-indent btn-icon-24" value="+1">
+          <span class="i-custom:indent w-4.5 h-4.5" />
         </button>
-        <button class="ql-indent btn-icon-32 p-1" value="-1">
-          <span class="i-custom:unindent w-6 h-6" />
+        <button class="ql-indent btn-icon-24" value="-1">
+          <span class="i-custom:unindent w-4.5 h-4.5" />
         </button>
-        <button class="ql-bold btn-icon-32 p-1">
-          <span class="i-custom:bold w-6 h-6" />
+        <button class="ql-bold btn-icon-24">
+          <span class="i-custom:bold w-4.5 h-4.5" />
         </button>
-        <button class="ql-italic btn-icon-32 p-1">
-          <span class="i-custom:italic w-6 h-6" />
+        <button class="ql-italic btn-icon-24">
+          <span class="i-custom:italic w-4.5 h-4.5" />
         </button>
-        <button class="ql-background btn-icon-32 p-1">
-          <span class="i-origin:highlight w-6 h-6" />
+        <button class="ql-background btn-icon-24">
+          <span class="i-origin:highlight w-4.5 h-4.5" />
         </button>
-        <button class="ql-link btn-icon-32 p-1">
-          <span class="i-custom:link w-6 h-6" />
+        <button class="ql-link btn-icon-24">
+          <span class="i-custom:link w-4.5 h-4.5" />
         </button>
       </div>
     </div>
@@ -382,7 +381,7 @@ export default defineComponent({
 }
 
 .ql-container:not(.single-line) {
-  @apply pl-4 pr-1 py-2;
+  @apply pl-4 pr-1 py-3;
 }
 .ql-container.single-line {
   @apply px-4 py-3;
@@ -398,7 +397,7 @@ export default defineComponent({
 }
 
 .ql-editor {
-  @apply pl-0 pr-5 py-[3px];
+  @apply pl-0 pr-5 py-0;
 }
 .single-line .ql-editor {
   @apply h-[22px] p-0 mr-4;
@@ -518,7 +517,7 @@ export default defineComponent({
 }
 
 .ql-toolbar {
-  @apply absolute top-0 left-0 right-0 z-1 h-12 p-2 m-[1px] bg-white rounded-t-xl;
+  @apply absolute top-0 left-0 right-0 z-1 h-10 p-2 m-[1px] bg-white rounded-t-xl;
   transition: visibility 0.15s linear, opacity 0.15s linear;
 }
 .ql-toolbar > div {
