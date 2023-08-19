@@ -243,7 +243,7 @@ export default defineComponent({
 <template>
   <div
     ref="root"
-    class="relative"
+    class="relative transition-[height] duration-300"
     :class="[
       className,
       toolbarVisible ? 'h-[220px]' : 'h-[180px]'
