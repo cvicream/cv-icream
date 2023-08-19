@@ -243,7 +243,7 @@ function swap(index1, index2) {
           <label class="block note text-blacks-70">Type</label>
           <Editor
             v-model="item.type"
-            class-name="h-[46px] mt-1"
+            class-name="mt-1"
             :enable="item.isShow"
             :placeholder="DEFAULT_TEMPLATE.social.list[0].type"
             :is-single-line="true"

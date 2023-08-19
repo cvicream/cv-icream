@@ -60,7 +60,7 @@ function focusOut(index) {
           <label class="block note text-blacks-70">Hashtag 1</label>
           <Editor
             v-model="summary.hashtags[0]"
-            class-name="h-[46px] mt-1"
+            class-name="mt-1"
             :enable="summary.isShow"
             :placeholder="DEFAULT_TEMPLATE.summary.hashtags[0]"
             :is-single-line="true"
@@ -70,7 +70,7 @@ function focusOut(index) {
           <label class="block note text-blacks-70">Hashtag 2</label>
           <Editor
             v-model="summary.hashtags[1]"
-            class-name="h-[46px] mt-1"
+            class-name="mt-1"
             :enable="summary.isShow"
             :placeholder="DEFAULT_TEMPLATE.summary.hashtags[1]"
             :is-single-line="true"
@@ -80,7 +80,7 @@ function focusOut(index) {
           <label class="block note text-blacks-70">Hashtag 3</label>
           <Editor
             v-model="summary.hashtags[2]"
-            class-name="h-[46px] mt-1"
+            class-name="mt-1"
             :enable="summary.isShow"
             :placeholder="DEFAULT_TEMPLATE.summary.hashtags[2]"
             :is-single-line="true"

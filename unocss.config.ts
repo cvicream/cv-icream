@@ -26,7 +26,7 @@ export default defineConfig({
     ['btn-icon-48', 'w-12 h-12 p-2 rounded-full text-blacks-70 bg-white shadow-custom hover:bg-primary-10'],
     ['btn-icon-48-fill', 'w-12 h-12 p-[calc(0.5rem-1px)] rounded-full text-white bg-primary-100 shadow-custom border-1 border-transparent hover:border-primary-20'],
     ['btn-icon-32', 'w-8 h-8 flex justify-center items-center text-blacks-70 rounded-full hover:bg-primary-10'],
-    ['btn-icon-24', 'w-6 h-6 text-blacks-40 hover:text-blacks-70'],
+    ['btn-icon-24', 'w-6 h-6 p-[3px] flex justify-center items-center text-blacks-70 rounded-full hover:bg-primary-10'],
     ['icon-32', 'w-8 h-8 p-1 block text-blacks-70'],
     ['icon-32-fill', 'w-8 h-8 block text-block'],
     ['btn', 'px-4 py-1 rounded inline-block bg-teal-600 text-white cursor-pointer hover:bg-teal-700 disabled:cursor-default disabled:bg-gray-600 disabled:opacity-50'],
