@@ -235,7 +235,10 @@ export default defineComponent({
   <div
     ref="root"
     class="relative"
-    :class="className"
+    :class="[
+      className,
+      toolbarVisible ? 'h-[220px]' : 'h-[180px]'
+    ]"
     :style="{
       // @ts-ignore
       '--toolbar-top': toolbarTop + 'px'

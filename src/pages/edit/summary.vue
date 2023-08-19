@@ -90,7 +90,7 @@ function focusOut(index) {
           <label class="block note text-blacks-70">Summary</label>
           <Editor
             v-model="summary.paragraph"
-            class-name="h-[130px] mt-1"
+            class-name="mt-1"
             :enable="summary.isShow"
             :placeholder="DEFAULT_TEMPLATE.summary.paragraph"
           />
