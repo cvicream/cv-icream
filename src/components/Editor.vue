@@ -5,6 +5,8 @@ import { QuillEditor } from '@vueup/vue-quill'
 import '@vueup/vue-quill/dist/vue-quill.snow.css'
 import '@vueup/vue-quill/dist/vue-quill.bubble.css'
 import { v4 as uuidv4 } from 'uuid'
+import { storeToRefs } from 'pinia'
+import { useToolbarStore } from '~/stores/toolbar'
 
 export default defineComponent({
   components: {
@@ -34,6 +36,8 @@ export default defineComponent({
   },
   emits: ['update:modelValue'],
   setup: (props, { emit }) => {
+    const toolbar = useToolbarStore()
+    const { isMobileScreen } = storeToRefs(toolbar)
     const root = ref(null)
     const editor = ref(null)
     const toolbarId = ref(`toolbar-${uuidv4().replaceAll('-', '')}`)
@@ -115,14 +119,22 @@ export default defineComponent({
       createAnchorListeners()
     })
 
+    watch(isMobileScreen, () => {
+      handleToolbarVisible()
+    })
+
     watch(toolbarVisible, () => {
+      handleToolbarVisible()
+    })
+
+    function handleToolbarVisible() {
       const editorElement = (editor.value as Quill).getEditor()
       if (toolbarVisible.value) {
         editorElement.style.transition = 'padding 0.3s'
-        editorElement.style.paddingTop = '52px'
+        editorElement.style.paddingTop = isMobileScreen.value ? '60px' : '52px'
       }
       else { editorElement.style.paddingTop = '12px' }
-    })
+    }
 
     function onFocus(elementRef) {
       toolbarVisible.value = true
@@ -214,6 +226,7 @@ export default defineComponent({
     }
 
     return {
+      isMobileScreen,
       root,
       editor,
       toolbarId,
@@ -245,7 +258,7 @@ export default defineComponent({
     class="relative transition-[height] duration-300"
     :class="[
       className,
-      isSingleLine ? (toolbarVisible ? 'h-[86px]' : 'h-[46px]') : (toolbarVisible ? 'h-[220px]' : 'h-[180px]')
+      isSingleLine ? (toolbarVisible ? 'h-[94px] sm:h-[86px]' : 'h-[46px]') : (toolbarVisible ? 'h-[228px] sm:h-[220px]' : 'h-[180px]')
     ]"
     :style="{
       // @ts-ignore
@@ -271,41 +284,43 @@ export default defineComponent({
     <button
       v-if="enable && content !== '<p><br></p>'"
       class="btn-clear i-custom:cancel w-6 h-6 absolute right-2 bg-blacks-40 opacity-0 transition-[top] duration-300"
-      :class="isSingleLine ? (toolbarVisible ? 'top-[63px] -translate-y-1/2' : 'top-[50%] -translate-y-1/2') : (toolbarVisible ? 'top-[52px]' : 'top-[8px]')"
+      :class="isSingleLine ? (toolbarVisible ? 'top-[50%] top-[71px] sm:top-[63px] -translate-y-1/2' : 'top-[50%] -translate-y-1/2') : (toolbarVisible ? 'top-[59px] sm:top-[51px]' : 'top-[11px]')"
       @click="onClear"
     />
 
     <div
       :id="toolbarId"
+      class="ql-toolbar"
+      :class="isMobileScreen ? 'h-[48px]' : 'h-[40px]'"
       :style="{
         'visibility': enable && toolbarVisible ? 'visible' : 'hidden',
         'opacity': enable && toolbarVisible ? 1 : 0
       }"
     >
-      <div>
-        <button class="ql-list btn-icon-24" value="bullet">
-          <span class="i-custom:list-bullet w-4.5 h-4.5" />
+      <div class="toolbar-button-group">
+        <button class="ql-list" :class="isMobileScreen ? 'btn-icon-32' : 'btn-icon-24'" value="bullet">
+          <span class="i-custom:list-bullet" :class="isMobileScreen ? 'w-6 h-6' : 'w-4.5 h-4.5'" />
         </button>
-        <button class="ql-list btn-icon-24" value="ordered">
-          <span class="i-custom:list-number w-4.5 h-4.5" />
+        <button class="ql-list" :class="isMobileScreen ? 'btn-icon-32' : 'btn-icon-24'" value="ordered">
+          <span class="i-custom:list-number" :class="isMobileScreen ? 'w-6 h-6' : 'w-4.5 h-4.5'" />
         </button>
-        <button class="ql-indent btn-icon-24" value="+1">
-          <span class="i-custom:indent w-4.5 h-4.5" />
+        <button class="ql-indent" :class="isMobileScreen ? 'btn-icon-32' : 'btn-icon-24'" value="+1">
+          <span class="i-custom:indent" :class="isMobileScreen ? 'w-6 h-6' : 'w-4.5 h-4.5'" />
         </button>
-        <button class="ql-indent btn-icon-24" value="-1">
-          <span class="i-custom:unindent w-4.5 h-4.5" />
+        <button class="ql-indent" :class="isMobileScreen ? 'btn-icon-32' : 'btn-icon-24'" value="-1">
+          <span class="i-custom:unindent" :class="isMobileScreen ? 'w-6 h-6' : 'w-4.5 h-4.5'" />
         </button>
-        <button class="ql-bold btn-icon-24">
-          <span class="i-custom:bold w-4.5 h-4.5" />
+        <button class="ql-bold" :class="isMobileScreen ? 'btn-icon-32' : 'btn-icon-24'">
+          <span class="i-custom:bold" :class="isMobileScreen ? 'w-6 h-6' : 'w-4.5 h-4.5'" />
         </button>
-        <button class="ql-italic btn-icon-24">
-          <span class="i-custom:italic w-4.5 h-4.5" />
+        <button class="ql-italic" :class="isMobileScreen ? 'btn-icon-32' : 'btn-icon-24'">
+          <span class="i-custom:italic" :class="isMobileScreen ? 'w-6 h-6' : 'w-4.5 h-4.5'" />
         </button>
-        <button class="ql-background btn-icon-24">
-          <span class="i-origin:highlight w-4.5 h-4.5" />
+        <button class="ql-background" :class="isMobileScreen ? 'btn-icon-32' : 'btn-icon-24'">
+          <span class="i-origin:highlight" :class="isMobileScreen ? 'w-6 h-6' : 'w-4.5 h-4.5'" />
         </button>
-        <button class="ql-link btn-icon-24">
-          <span class="i-custom:link w-4.5 h-4.5" />
+        <button class="ql-link" :class="isMobileScreen ? 'btn-icon-32' : 'btn-icon-24'">
+          <span class="i-custom:link" :class="isMobileScreen ? 'w-6 h-6' : 'w-4.5 h-4.5'" />
         </button>
       </div>
     </div>
@@ -517,16 +532,16 @@ export default defineComponent({
 }
 
 .ql-toolbar {
-  @apply absolute top-0 left-0 right-0 z-1 h-10 p-2 m-[1px] bg-white rounded-t-xl;
+  @apply absolute top-0 left-0 right-0 z-1 h-12 p-2 m-[1px] bg-white rounded-t-xl sm:h-10;
   transition: visibility 0.15s linear, opacity 0.15s linear;
 }
-.ql-toolbar > div {
+.toolbar-button-group {
   @apply flex justify-center gap-2;
   overflow-x: scroll;
   scrollbar-width: none;    /* Firefox */
   -ms-overflow-style: none; /* IE 10+ */
 }
-.ql-toolbar > div::-webkit-scrollbar {
+.toolbar-button-group::-webkit-scrollbar {
   width: 0;
   height: 0;
   background: transparent; /* Chrome/Safari */
