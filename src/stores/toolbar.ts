@@ -15,7 +15,7 @@ export const useToolbarStore = defineStore('toolbar', {
       fontFamily: false,
     },
     isCVPreviewVisible: false,
-    currentState: {
+    currentState: { // will be exported in the draft file
       fontFamily: 'font-gill-sans',
       layout: 'layout-right',
       color: 'default',
