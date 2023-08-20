@@ -134,7 +134,7 @@ function swap(index1, index2) {
       {{ HIDDEN_INFORMATION }}
     </p>
     <p v-else class="paragraph text-blacks-70">
-      Tell people more about your work experiences. Share more insights to impress you future employers!
+      Tell people more about your work experiences. Share more insights to impress your future employers!
     </p>
     <div
       v-for="(item, index) in experience.list"
