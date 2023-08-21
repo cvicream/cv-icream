@@ -281,7 +281,7 @@ const rightList = computed({
 .sortable-chosen.sortable-ghost {
   @apply h-1 bg-primary-10 my-1;
 }
-.cv-preview.adding-note-mode {
+.cv-preview.adding-note-mode, .cv-preview.adding-note-mode [data-draggable="true"] {
   cursor: url('../assets/icons/note.svg'), auto;
 }
 .temp-static {

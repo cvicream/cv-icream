@@ -20,6 +20,7 @@ const toolbar = useToolbarStore()
 const router = useRouter()
 const undoStore = useUndoStore()
 const redoStore = useRedoStore()
+const noteBtnRef = ref<HTMLDivElement | null>(null)
 const { path } = storeToRefs(user)
 const { isCVPreviewVisible, dropdownMenu, currentState } = storeToRefs(toolbar)
 
@@ -78,32 +79,42 @@ function redo() {
     }
   }
 }
-function onNoteClick() {
-  if (document.getElementById('cv-preview')?.classList.contains('adding-note-mode'))
-    return
 
+const createNote = (event: MouseEvent) => {
+  const boundingBox = document.getElementById('cv-preview')?.getBoundingClientRect()!
+
+  toolbar.addNote({
+    id: Date.now(),
+    value: '<p><br></p>',
+    location: {
+      left: event.clientX - boundingBox.x,
+      top: event.clientY - boundingBox.y,
+    },
+  })
+}
+
+const removeClickListener = (event: KeyboardEvent) => {
+  if (event.key === 'Escape') {
+    document.getElementById('cv-preview')?.removeEventListener('click', createNote)
+    document.removeEventListener('keydown', removeClickListener)
+    document.getElementById('cv-preview')?.classList.remove('adding-note-mode')
+    noteBtnRef.value!.classList.remove('adding-note-mode')
+  }
+}
+
+function onNoteClick(event: MouseEvent) {
+  if (document.getElementById('cv-preview')?.classList.contains('adding-note-mode')) {
+    document.getElementById('cv-preview')?.removeEventListener('click', createNote)
+    document.removeEventListener('keydown', removeClickListener)
+    document.getElementById('cv-preview')?.classList.remove('adding-note-mode')
+    noteBtnRef.value!.classList.remove('adding-note-mode')
+    return
+  }
+
+  noteBtnRef.value!.classList.add('adding-note-mode')
   document.getElementById('cv-preview')?.classList.add('adding-note-mode')
-  const createNote = (event: MouseEvent) => {
-    toolbar.addNote({
-      id: Date.now(),
-      value: '<p><br></p>',
-      location: {
-        left: event.layerX,
-        top: event.layerY,
-      },
-    })
-  }
-  const removeClickListener = (event: KeyboardEvent) => {
-    if (event.key === 'Escape') {
-      document.getElementById('cv-preview')?.removeEventListener('click', createNote)
-      document.removeEventListener('keydown', removeClickListener)
-      document.getElementById('cv-preview')?.classList.remove('adding-note-mode')
-    }
-  }
-  setTimeout(() => {
-    document.getElementById('cv-preview')?.addEventListener('click', createNote)
-    document.addEventListener('keydown', removeClickListener)
-  }, 500)
+  document.getElementById('cv-preview')?.addEventListener('click', createNote)
+  document.addEventListener('keydown', removeClickListener)
 }
 
 function updateStore(obj) {
@@ -272,6 +283,7 @@ function onCollapse() {
         text="Note"
       >
         <button
+          ref="noteBtnRef"
           class="btn-toolbar"
           @click="onNoteClick"
         >
@@ -288,3 +300,10 @@ function onCollapse() {
     </div> -->
   </div>
 </template>
+
+<style scoped>
+.adding-note-mode.btn-toolbar {
+  background: var(--secondary-color);
+  border-radius: 50%;
+}
+</style>

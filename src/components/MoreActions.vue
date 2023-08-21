@@ -1,9 +1,6 @@
 <script setup lang="ts">
 defineProps<{
-  open: {
-    type: boolean
-    default: false
-  }
+  open: boolean
 }>()
 
 </script>

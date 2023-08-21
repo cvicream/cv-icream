@@ -69,11 +69,18 @@ const onDragStart = (event: DragEvent) => {
 const onDragEnd = (event: DragEvent) => {
   document.querySelectorAll('#cv-preview [data-draggable="true"]').forEach(el => el.classList.remove('temp-static'))
   event.target?.classList.remove('dragging')
+
+  const boundingBox = document.getElementById('cv-preview')?.getBoundingClientRect()!
+  const left = event.clientX - boundingBox.x
+  const top = event.clientY - boundingBox.y
+  if (left < 0 || top < 0 || left > boundingBox?.width || top > boundingBox?.height)
+    return
+
   toolbar.modifyNote({
     ...props.note,
     location: {
-      left: event.layerX,
-      top: event.layerY,
+      left,
+      top,
     },
   })
 }
@@ -99,7 +106,7 @@ const onDragEnd = (event: DragEvent) => {
     <div v-if="show" class="note bg-yellow">
       <div class="flex justify-between items-center mb-1">
         <span class="text-blacks-70">Note</span>
-        <div class="flex gap-4">
+        <div class="flex gap-3">
           <button v-if="value" class="i-custom:delete icon-24 cursor-pointer" @click="onRemove" />
           <span v-if="value !== props.note.value" class="checkmark cursor-pointer" @click="onSave" />
           <button v-else class="i-custom:cancel icon-24 cursor-pointer" @click="onToggleNote" />
@@ -131,11 +138,11 @@ const onDragEnd = (event: DragEvent) => {
 .checkmark {
   display: inline-block;
   transform: rotate(45deg);
-  height: 16px;
+  height: 12px;
   width: 7px;
   border-bottom: 2px solid #72B255;
   border-right: 2px solid #72B255;
-  margin: 1px 10px 0 7px;
+  margin: 4px 10px 0 7px;
 }
 .dragging {
   opacity: 0.1;
