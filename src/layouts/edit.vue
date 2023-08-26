@@ -5,7 +5,16 @@ import { storeToRefs } from 'pinia'
 import { useUserStore } from '~/stores/user'
 import { useToolbarStore } from '~/stores/toolbar'
 import { getColor, getStorage, hasStorage, isMobileDevice, setCssVariable, setStatus } from '~/utils'
-import { A4_HEIGHT_PX, A4_WIDTH_PX, MAX_SIDEBAR_WIDTH, MIN_SIDEBAR_WIDTH, MOBILE_BREAKPOINT, PAGE_BREAKPOINT, SCALES } from '~/constants'
+import {
+  A4_HEIGHT_PX,
+  A4_WIDTH_PX,
+  MAX_SCALE,
+  MAX_SIDEBAR_WIDTH,
+  MIN_SCALE,
+  MIN_SIDEBAR_WIDTH,
+  MOBILE_BREAKPOINT,
+  PAGE_BREAKPOINT,
+} from '~/constants'
 
 const user = useUserStore()
 const toolbar = useToolbarStore()
@@ -210,31 +219,22 @@ function getElementMarginX(element) {
 }
 
 function handleScaleChange(event) {
-  const value = event.target.value.replace(/[^0-9]/g, '')
-  if (parseInt(value))
-    scale.value = value
+  const value = parseInt(event.target.value.replace(/[^0-9]/g, ''))
+  if (value) {
+    if (value >= MAX_SCALE) scale.value = MAX_SCALE
+    else if (value <= MIN_SCALE) scale.value = MIN_SCALE
+    else scale.value = value
+  }
 }
 
 function zoomIn() {
-  const max = SCALES[SCALES.length - 1]
-  if (scale.value < max) {
-    if (SCALES.includes(scale.value)) { scale.value = scale.value * 2 }
-    else {
-      const filter = SCALES.filter(n => n >= scale.value)
-      scale.value = filter.length ? filter[0] : max
-    }
-  }
+  const value = Math.round(scale.value * 2)
+  scale.value = value < MAX_SCALE ? value : MAX_SCALE
 }
 
 function zoomOut() {
-  const min = SCALES[0]
-  if (scale.value > min) {
-    if (SCALES.includes(scale.value)) { scale.value = scale.value / 2 }
-    else {
-      const filter = SCALES.filter(n => n < scale.value)
-      scale.value = filter.length ? filter[filter.length - 1] : min
-    }
-  }
+  const value = Math.round(scale.value / 2)
+  scale.value = value > MIN_SCALE ? value : MIN_SCALE
 }
 
 function zoomFit() {
