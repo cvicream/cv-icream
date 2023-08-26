@@ -338,7 +338,7 @@ export default defineComponent({
         {{ link }}
       </a>
       <button
-        class="note pl-2 border-l border-blacks-20 text-blacks-40 hover:text-blacks-70 transition-[color] duration-300"
+        class="note pl-2 border-l border-blacks-20 text-blacks-40 sm:hover:text-blacks-70 transition-[color] duration-300"
         @click="openLinkEdit"
       >
         Edit
@@ -374,12 +374,12 @@ export default defineComponent({
           :class="{'opacity-0': !draftLink}"
           @click="onLinkBlur"
         >
-          <span class="i-custom:ok w-6 h-6 text-blacks-40 hover:text-blacks-70" />
+          <span class="i-custom:ok w-6 h-6 text-blacks-40 sm:hover:text-blacks-70" />
         </button>
       </div>
       <div v-if="link" class="text-right mt-3">
         <button
-          class="note text-blacks-40 hover:text-blacks-70 transition-[color] duration-300"
+          class="note text-blacks-40 sm:hover:text-blacks-70 transition-[color] duration-300"
           @click="removeLink"
         >
           Remove Link
