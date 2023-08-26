@@ -13,7 +13,10 @@ const { isCVPreviewVisible, currentState, isMobileScreen } = storeToRefs(toolbar
 
 const isDesignBarOpen = ref(true)
 const scale = ref(100)
-const isFitEnable = ref(false)
+
+const scaleText = computed(() => {
+  return `${scale.value.toString().replace(/[^0-9]/g, '')}%`
+})
 
 const cvPreviewWidth = computed(() => {
   const width = 210 * scale.value / 100
@@ -206,6 +209,12 @@ function getElementMarginX(element) {
   return marginLeft + marginRight
 }
 
+function handleScaleChange(event) {
+  const value = event.target.value.replace(/[^0-9]/g, '')
+  if (parseInt(value))
+    scale.value = value
+}
+
 function zoomIn() {
   const max = SCALES[SCALES.length - 1]
   if (scale.value < max) {
@@ -363,32 +372,42 @@ function toggleSidebar(isOpen) {
           class="fixed bottom-0 left-0 right-0 z-2 bottom-48 sm:bottom-8 sm:z-0"
           :style="rightWidthStyle"
         >
-          <div class="w-12 h-32 p-2 rounded-[69px] bg-white shadow-custom flex flex-col justify-between absolute bottom-0 right transition group">
-            <Tooltip
-              placement="left"
-              text="Zoom in"
-            >
-              <button class="btn-icon-32" @click="zoomIn">
+          <div class="w-12 h-32 p-2 rounded-[69px] bg-white shadow-custom flex flex-col justify-between items-center absolute bottom-0 right transition group">
+            <Tooltip placement="left">
+              <button class="btn-icon-32 transition-[background] duration-300" @click="zoomIn">
                 <span class="i-custom:zoom-in w-6 h-6" />
               </button>
+              <template #content>
+                <div class="flex justify-center items-center gap-4">
+                  <span class="note text-blacks-100">Zoom in</span>
+                  <div class="w-4 h-4 flex justify-center items-center p-[2px] border border-blacks-40 rounded">
+                    <span class="i-custom:plus w-3 h-3 text-blacks-40" />
+                  </div>
+                </div>
+              </template>
             </Tooltip>
 
-            <button
-              class="note text-center whitespace-nowrap -mx-2"
-              :class="isFitEnable ? 'text-blacks-40' : 'text-blacks-70'"
-              @mouseover="isFitEnable = true"
-              @mouseout="isFitEnable = false"
-              @click="zoomFit"
-            >
-              {{ isFitEnable ? 'Fit' : `${scale}%` }}
-            </button>
-            <Tooltip
-              placement="left"
-              text="Zoom out"
-            >
-              <button class="btn-icon-32" @click="zoomOut">
+            <Tooltip placement="left" text="Double-click to fit the screen">
+              <input
+                class="max-w-[42px] note text-center whitespace-nowrap text-blacks-70 outline-none hover:bg-blacks-10 focus:bg-blacks-10 transition-[background] duration-300"
+                :value="scaleText"
+                @change="handleScaleChange"
+                @dblclick="zoomFit"
+              >
+            </Tooltip>
+
+            <Tooltip placement="left">
+              <button class="btn-icon-32 transition-[background] duration-300" @click="zoomOut">
                 <span class="i-custom:zoom-out w-6 h-6" />
               </button>
+              <template #content>
+                <div class="flex justify-center items-center gap-4">
+                  <span class="note text-blacks-100">Zoom out</span>
+                  <div class="w-4 h-4 flex justify-center items-center p-[2px] border border-blacks-40 rounded">
+                    <span class="i-custom:minus w-3 h-3 text-blacks-40" />
+                  </div>
+                </div>
+              </template>
             </Tooltip>
           </div>
         </div>
