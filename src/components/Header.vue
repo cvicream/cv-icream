@@ -179,7 +179,7 @@ window.addEventListener('click', closeAction, false)
     </div>
     <div v-if="isEdit" class="leading-56px" @click="toggle">
       <button
-        class="w-14 h-8 rounded flex justify-center items-center gap-1 hover:bg-primary-10"
+        class="w-14 h-8 rounded flex justify-center items-center gap-1 sm:hover:bg-primary-10"
         @click.stop="toggle"
       >
         <span class="i-custom:download w-6 h-6 text-blacks-70" />
@@ -199,20 +199,20 @@ window.addEventListener('click', closeAction, false)
           :class="isSafari() || isMobileDevice() ? 'w-[262px] border-1 border-blacks-100' : 'w-[260px] outline outline-1 outline-blacks-100'"
         >
           <button
-            class="w-full h-[45px] flex justify-start items-center px-4 py-3 hover:bg-primary-10"
+            class="w-full h-[45px] flex justify-start items-center px-4 py-3 sm:hover:bg-primary-10"
             :class="isSafari() || isMobileDevice() ? 'rounded-t-[11px]' : 'rounded-t-xl'"
             @mousedown="redirectToDownload"
           >
             <span class="paragraph text-blacks-100">Export as PDF</span>
           </button>
           <button
-            class="w-full h-[46px] flex justify-start items-center px-4 py-3 hover:bg-primary-10"
+            class="w-full h-[46px] flex justify-start items-center px-4 py-3 sm:hover:bg-primary-10"
             @mousedown="exportJsonFile"
           >
             <span class="paragraph text-blacks-100">Download as Draft</span>
           </button>
           <button
-            class="w-full h-[45px] flex justify-start items-center px-4 py-3 hover:bg-primary-10"
+            class="w-full h-[45px] flex justify-start items-center px-4 py-3 sm:hover:bg-primary-10"
             :class="isSafari() || isMobileDevice() ? 'rounded-b-[11px]' : 'rounded-b-xl'"
             @mousedown="importJsonFile"
           >

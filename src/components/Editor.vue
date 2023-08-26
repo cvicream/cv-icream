@@ -243,7 +243,7 @@ export default defineComponent({
           <span class="leading text-blacks-100">Link</span>
         </div>
         <button @click="onLinkClose">
-          <span class="i-custom:cancel w-5 h-5 text-blacks-40 hover:text-blacks-70" />
+          <span class="i-custom:cancel w-5 h-5 text-blacks-40 sm:hover:text-blacks-70" />
         </button>
       </div>
       <input
@@ -263,7 +263,7 @@ export default defineComponent({
 
 <style>
 .ql-container {
-  @apply w-full h-full relative bg-white rounded-xl border-1 border-white hover:border-blacks-100 hover:disabled:border-white focus:text-blacks-100;
+  @apply w-full h-full relative bg-white rounded-xl border-1 border-white sm:hover:border-blacks-100 sm:hover:disabled:border-white focus:text-blacks-100;
 }
 
 .ql-container:not(.single-line) {
@@ -274,7 +274,7 @@ export default defineComponent({
 }
 
 .ql-disabled {
-  @apply text-blacks-40 hover:border-white bg-blacks-5 border-blacks-5;
+  @apply text-blacks-40 sm:hover:border-white bg-blacks-5 border-blacks-5;
 }
 
 .single-line [contenteditable] {
@@ -288,12 +288,13 @@ export default defineComponent({
 .single-line .ql-editor {
   @apply h-[22px] p-0 mr-4;
 }
-
-.btn-clear:hover {
+@media (min-width: 640px) {
+  .btn-clear:hover {
   @apply opacity-100 bg-blacks-70;
-}
-.deletable:hover + .btn-clear {
-  @apply opacity-100;
+  }
+  .deletable:hover + .btn-clear {
+    @apply opacity-100;
+  }
 }
 
 .ql-editor {

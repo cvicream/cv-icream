@@ -58,7 +58,7 @@ const onNext = () => {
     </h1>
     <div class="border-black-70 flex flex-col gap-8 py-8 sm:gap-16 sm:flex-row">
       <button
-        class="p-8 sm:p-10 flex justify-center items-center w-81 h-57 sm:w-101 sm:h-66 rounded-xl flex-col gap-5 border-primary-100 shadow-custom hover:border-1 hover:bg-primary-10"
+        class="p-8 sm:p-10 flex justify-center items-center w-81 h-57 sm:w-101 sm:h-66 rounded-xl flex-col gap-5 border-primary-100 shadow-custom sm:hover:border-1 sm:hover:bg-primary-10"
         @click="onNext"
       >
         <div class="w-12 h-12 flex justify-center items-center p-2 rounded-full border-1 border-transparent shadow-custom">
@@ -72,7 +72,7 @@ const onNext = () => {
         </span>
       </button>
       <button
-        class="p-6 flex justify-center items-center w-81 h-63 sm:w-101 sm:h-66 rounded-xl flex-col gap-5 border-primary-100 shadow-custom hover:border-1 hover:bg-primary-10"
+        class="p-6 flex justify-center items-center w-81 h-63 sm:w-101 sm:h-66 rounded-xl flex-col gap-5 border-primary-100 shadow-custom sm:hover:border-1 sm:hover:bg-primary-10"
         @click="importJsonFile"
       >
         <div class="w-12 h-12 flex justify-center items-center p-2 rounded-full border-1 border-transparent shadow-custom">
