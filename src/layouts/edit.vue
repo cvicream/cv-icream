@@ -4,7 +4,7 @@ import { useElementSize } from '@vueuse/core'
 import { storeToRefs } from 'pinia'
 import { useUserStore } from '~/stores/user'
 import { useToolbarStore } from '~/stores/toolbar'
-import { getColor, getStorage, hasStorage, isMobileDevice, setCssVariable, setStatus } from '~/utils'
+import { disableDefaultZoom, getColor, getStorage, hasStorage, isMobileDevice, setCssVariable, setStatus } from '~/utils'
 import {
   A4_HEIGHT_PX,
   A4_WIDTH_PX,
@@ -102,6 +102,8 @@ onMounted(() => {
 
   if (leftSide.value && resizer.value && rightSide.value)
     resizer.value.addEventListener('mousedown', mouseDownHandler)
+
+  disableDefaultZoom()
 })
 
 onUnmounted(() => {
