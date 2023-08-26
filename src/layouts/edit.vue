@@ -4,7 +4,7 @@ import { useElementSize } from '@vueuse/core'
 import { storeToRefs } from 'pinia'
 import { useUserStore } from '~/stores/user'
 import { useToolbarStore } from '~/stores/toolbar'
-import { disableDefaultZoom, getColor, getStorage, hasStorage, isMobileDevice, setCssVariable, setStatus } from '~/utils'
+import { getColor, getStorage, hasStorage, isMobileDevice, setCssVariable, setStatus } from '~/utils'
 import {
   A4_HEIGHT_PX,
   A4_WIDTH_PX,
@@ -112,6 +112,25 @@ onUnmounted(() => {
 
   window.removeEventListener('resize', resize)
 })
+
+function disableDefaultZoom() {
+  document.addEventListener('keydown', (event) => {
+    if (event.ctrlKey && ['=', '-'].includes(event.key)) {
+      if (event.key === '=') zoomIn()
+      else if (event.key === '-') zoomOut()
+
+      event.preventDefault()
+    }
+  })
+  document.addEventListener('wheel', (event) => {
+    if (event.ctrlKey) {
+      if (event.deltaY < 0) zoomIn()
+      else if (event.deltaY > 0) zoomOut()
+
+      event.preventDefault()
+    }
+  }, { passive: false })
+}
 
 function onBeforeUnload(event) {
   // cancel the event as stated by the standard
