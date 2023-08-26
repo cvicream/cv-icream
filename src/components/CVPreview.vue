@@ -253,11 +253,14 @@ const rightList = computed({
   height: 20px;
   opacity: 0;
 }
-.cv-preview [data-draggable="true"]:hover {
-  @apply bg-primary-10;
-}
-.cv-preview [data-draggable="true"]:hover::before {
-  opacity: 1;
+@media (min-width: 640px)
+{
+  .cv-preview [data-draggable="true"]:hover {
+    @apply bg-primary-10;
+  }
+  .cv-preview [data-draggable="true"]:hover::before {
+    opacity: 1;
+  }
 }
 .cv-preview [draggable="true"] {
   @apply bg-primary-10;
