@@ -4,7 +4,7 @@ import { useElementSize } from '@vueuse/core'
 import { storeToRefs } from 'pinia'
 import { useUserStore } from '~/stores/user'
 import { useToolbarStore } from '~/stores/toolbar'
-import { getColor, getStorage, hasStorage, isMobileDevice, setCssVariable, setStatus } from '~/utils'
+import { getColor, getStorage, hasStorage, isMac, isMobileDevice, setCssVariable, setStatus } from '~/utils'
 import {
   A4_HEIGHT_PX,
   A4_WIDTH_PX,
@@ -103,7 +103,7 @@ onMounted(() => {
   if (leftSide.value && resizer.value && rightSide.value)
     resizer.value.addEventListener('mousedown', mouseDownHandler)
 
-  disableDefaultZoom()
+  overrideDefaultZoom()
 })
 
 onUnmounted(() => {
@@ -113,9 +113,9 @@ onUnmounted(() => {
   window.removeEventListener('resize', resize)
 })
 
-function disableDefaultZoom() {
+function overrideDefaultZoom() {
   document.addEventListener('keydown', (event) => {
-    if (event.ctrlKey && ['=', '-'].includes(event.key)) {
+    if (((isMac() && event.metaKey) || (!isMac() && event.ctrlKey)) && ['=', '-'].includes(event.key)) {
       if (event.key === '=') zoomIn()
       else if (event.key === '-') zoomOut()
 
@@ -123,7 +123,7 @@ function disableDefaultZoom() {
     }
   })
   document.addEventListener('wheel', (event) => {
-    if (event.ctrlKey) {
+    if ((isMac() && event.metaKey) || (!isMac() && event.ctrlKey)) {
       if (event.deltaY < 0) zoomIn()
       else if (event.deltaY > 0) zoomOut()
 
