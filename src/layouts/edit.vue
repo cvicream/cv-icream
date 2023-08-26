@@ -294,7 +294,7 @@ function toggleSidebar(isOpen) {
             height: cvPreviewHeight,
           }"
         >
-          <p class="absolute -top-[26px] note text-blacks-20">
+          <p class="absolute -top-[26px] note text-blacks-20 whitespace-nowrap">
             Layout size: A4 (21x29.7cm)
           </p>
           <div
