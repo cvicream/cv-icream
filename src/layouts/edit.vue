@@ -123,7 +123,7 @@ function overrideDefaultZoom() {
     }
   })
   document.addEventListener('wheel', (event) => {
-    if ((isMac() && event.metaKey) || (!isMac() && event.ctrlKey)) {
+    if ((isMac() && (event.metaKey || event.ctrlKey)) || (!isMac() && event.ctrlKey)) {
       if (event.deltaY < 0) zoomIn()
       else if (event.deltaY > 0) zoomOut()
 
