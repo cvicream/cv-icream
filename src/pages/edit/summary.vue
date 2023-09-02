@@ -31,7 +31,7 @@ function focusOut(index) {
   <div class="flex justify-between items-center">
     <div class="flex items-center gap-2">
       <span class="i-custom:summary icon-32" />
-      <span class="leading text-blacks-100">Summary</span>
+      <span class="leading text-blacks-100">SUMMARY</span>
     </div>
     <ToggleSwitch
       :checked="summary.isShow"
