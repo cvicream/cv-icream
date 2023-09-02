@@ -6,12 +6,13 @@ import { useToolbarStore } from '~/stores/toolbar'
 import { getJsonUpload, isMobileDevice, setStatus, stripHtml } from '~/utils'
 import { DRAFT_FILE_TYPE } from '~/constants'
 
-const props = defineProps<{
+defineProps<{
   isEdit?: boolean
 }>()
 
 const isActionActive = ref(false)
 const feedbackVisible = ref(false)
+const paymentVisible = ref(false)
 const upload = ref(false)
 const feedbackNotificationVisible = ref(false)
 
@@ -36,11 +37,15 @@ const { currentState } = storeToRefs(toolbar)
 const isSafari = () => ('safari' in window)
 
 onMounted(() => {
+  window.addEventListener('click', closeAction, false)
+
   if (isSafari())
     window.addEventListener('click', onWindowClick, false)
 })
 
 onUnmounted(() => {
+  window.removeEventListener('click', closeAction)
+
   if (isSafari())
     window.removeEventListener('click', onWindowClick)
 })
@@ -134,10 +139,6 @@ async function importJsonFile() {
   }
 }
 
-function onFocusOut() {
-  closeAction()
-}
-
 function toggle() {
   isActionActive.value = !isActionActive.value
 }
@@ -146,12 +147,9 @@ function closeAction() {
   isActionActive.value = false
 }
 
-onUnmounted(() => {
-  window.removeEventListener('click', closeAction)
-})
-
-window.addEventListener('click', closeAction, false)
-
+function togglePaymentModal() {
+  paymentVisible.value = !paymentVisible.value
+}
 </script>
 
 <template>
@@ -174,6 +172,14 @@ window.addEventListener('click', closeAction, false)
       >
         <button class="btn-icon-32" @click="toggleFeedbackModal">
           <span class="i-custom:feedback w-6 h-6" />
+        </button>
+      </Tooltip>
+      <Tooltip
+        placement="bottom"
+        text="Support us"
+      >
+        <button class="btn-icon-32" @click="togglePaymentModal">
+          <span class="i-custom:payment w-6 h-6" />
         </button>
       </Tooltip>
     </div>
@@ -225,11 +231,16 @@ window.addEventListener('click', closeAction, false)
   <div class="border-b border-b-blacks-20" />
 
   <FeedbackModal
+    v-if="feedbackVisible"
     title="Have a Problem or Need Help?"
     subtitle="Leave us a message. We will get back to you as soon as possible : )"
-    :visible="feedbackVisible"
     :toggle="toggleFeedbackModal"
     :notify="toggleFeedbackNotification"
+  />
+
+  <PaymentModal
+    v-if="paymentVisible"
+    :toggle="togglePaymentModal"
   />
 
   <Modal

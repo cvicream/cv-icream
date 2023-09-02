@@ -20,9 +20,14 @@ const { currentState } = storeToRefs(toolbar)
 
 const loading = ref(false)
 const feedbackVisible = ref(false)
+const paymentVisible = ref(false)
 
 function toggleFeedbackModal() {
   feedbackVisible.value = !feedbackVisible.value
+}
+
+function togglePaymentModal() {
+  paymentVisible.value = !paymentVisible.value
 }
 
 onMounted(() => {
@@ -230,10 +235,16 @@ function back() {
   </div>
 
   <FeedbackModal
+    v-if="feedbackVisible"
     title="Are you happy with our service?"
     subtitle="Leave a message to let us know if you are happy with our service or anything we can improve : )"
-    :visible="feedbackVisible"
     :toggle="toggleFeedbackModal"
+    :pay="togglePaymentModal"
+  />
+
+  <PaymentModal
+    v-if="paymentVisible"
+    :toggle="togglePaymentModal"
   />
 </template>
 

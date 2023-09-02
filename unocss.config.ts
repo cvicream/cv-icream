@@ -49,7 +49,7 @@ export default defineConfig({
 
     ['form-label', 'font-normal text-sm text-blacks-70 leading-[1.125rem] block'],
     ['form-input', 'w-full h-[46px] bg-white rounded-xl appearance-none outline-none font-normal text-base text-blacks-100 disabled:text-blacks-40 placeholder-blacks-40 focus:placeholder-transparent pl-4 pr-2 py-3 border-1 border-transparent sm:hover:border-blacks-100 sm:hover:disabled:border-white focus:text-blacks-100'],
-    ['form-textarea', 'w-full h-[130px] bg-white rounded-xl outline-none font-normal text-base text-blacks-100 resize-none disabled:text-blacks-40 placeholder-blacks-40 focus:placeholder-transparent mt-1 px-4 py-3 border-1 border-white sm:hover:border-blacks-100 sm:hover:disabled:border-white focus:text-blacks-100'],
+    ['form-textarea', 'w-full h-[130px] bg-white rounded-xl outline-none font-normal text-base text-blacks-100 resize-none disabled:text-blacks-40 placeholder-blacks-40 focus:placeholder-transparent mt-1 px-4 py-3 border-1 border-white transition-all duration-500 sm:hover:border-blacks-100 sm:hover:disabled:border-white focus:text-blacks-100'],
     ['dropdown-menu', 'w-full bg-white border rounded-xl'],
     ['dropdown-item', 'w-full bg-white font-normal font-mark text-blacks-100 text-base leading-[22px] sm:hover:bg-primary-10'],
   ],
@@ -126,8 +126,13 @@ export default defineConfig({
         70: '#656565',
         100: '#222222',
       },
+      greens: {
+        10: '#edf2eb',
+        100: '#507f39',
+      },
       success: '#72b355',
       warning: '#de6d6d',
+      payment: '#ffc43a',
     },
     boxShadow: {
       custom: '2px 2px 10px var(--shadow-color)',
