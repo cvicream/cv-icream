@@ -40,8 +40,10 @@ const tooltipClass = computed(() => {
   position: relative;
 }
 
-.tooltip-container:hover .tooltip {
-  display: block;
+@media (min-width:640px){
+  .tooltip-container:hover .tooltip {
+    display: block;
+  }
 }
 
 .tooltip {

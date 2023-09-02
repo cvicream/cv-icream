@@ -134,7 +134,7 @@ function swap(index1, index2) {
       {{ HIDDEN_INFORMATION }}
     </p>
     <p v-else class="paragraph text-blacks-70">
-      Tell people more about your work experiences. Share more insights to impress you future employers!
+      Tell people more about your work experiences. Share more insights to impress your future employers!
     </p>
 
     <button
@@ -174,7 +174,7 @@ function swap(index1, index2) {
           class="flex items-center gap-3 ml-3"
           :class="{
             'invisible': !isMobileScreen,
-            'group-hover:visible': experience.isShow
+            'sm:group-hover:visible': experience.isShow
           }"
         >
           <Tooltip
@@ -209,7 +209,7 @@ function swap(index1, index2) {
                 class="absolute right-0 mt-2 w-[262px] bg-white border border-blacks-100 rounded-xl shadow-custom z-1 flex flex-col overflow-hidden"
                 @click="toggleMoreAction(null)"
               >
-                <button v-if="experience.list.length > 1" class="flex items-center px-4 py-3 hover:bg-primary-10" @click="toggleShowItem(index)">
+                <button v-if="experience.list.length > 1" class="flex items-center px-4 py-3 sm:hover:bg-primary-10" @click="toggleShowItem(index)">
                   <span
                     class="w-6 h-6 text-blacks-70"
                     :class="item.isShow ? 'i-custom:show' : 'i-custom:hide'"
@@ -220,11 +220,11 @@ function swap(index1, index2) {
                   <span class="i-custom:add w-6 h-6 text-blacks-70" />
                   <span class="paragraph text-blacks-100 ml-2">Add New</span>
                 </button>
-                <button class="flex items-center px-4 py-3 hover:bg-primary-10" @click="duplicateItem(index)">
+                <button class="flex items-center px-4 py-3 sm:hover:bg-primary-10" @click="duplicateItem(index)">
                   <span class="i-custom:variant w-6 h-6 text-blacks-70" />
                   <span class="paragraph text-blacks-100 ml-2">Duplicate</span>
                 </button>
-                <button v-if="experience.list.length > 1" class="flex items-center px-4 py-3 hover:bg-primary-10" @click="showDeleteBlockMessage(index)">
+                <button v-if="experience.list.length > 1" class="flex items-center px-4 py-3 sm:hover:bg-primary-10" @click="showDeleteBlockMessage(index)">
                   <span class="i-custom:delete w-6 h-6 text-blacks-70" />
                   <span class="paragraph text-blacks-100 ml-2">Delete</span>
                 </button>

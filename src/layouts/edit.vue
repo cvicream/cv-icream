@@ -119,6 +119,7 @@ function resize() {
 
   if (window.innerWidth <= MOBILE_BREAKPOINT) {
     toolbar.setIsMobileScreen(true)
+    toolbar.setIsCVPreviewVisible(false)
     isDesignBarOpen.value = true
     rightWidth.value = 0
 
@@ -338,7 +339,7 @@ function toggleSidebar(isOpen) {
             :class="isDesignBarOpen ? 'center' : 'right'"
           >
             <button
-              class="w-5 h-7 pb-2 m-0 hidden sm:inline-block absolute bottom-full right-0 invisible group-hover:visible"
+              class="w-5 h-7 pb-2 m-0 hidden sm:inline-block absolute bottom-full right-0 invisible sm:group-hover:visible"
               @click="onCollapse"
             >
               <span
@@ -449,7 +450,9 @@ function toggleSidebar(isOpen) {
   left: 50%;
   transform: translateX(-50%);
 }
-.resizer::before:hover {
-  @apply cursor-[col-resize];
+@media (min-width: 640px) {
+  .resizer::before:hover {
+    @apply cursor-[col-resize];
+  }
 }
 </style>

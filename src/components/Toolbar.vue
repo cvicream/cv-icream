@@ -111,7 +111,7 @@ function onCollapse() {
 <template>
   <div
     class="w-full h-[80px] text-center bg-white flex justify-center gap-4 px-4 py-4 sm:w-auto sm-h-20 sm:rounded-xl sm:shadow-custom transition touch-manipulation"
-    :class="{ 'hover:cursor-pointer': !open }"
+    :class="{ 'sm:hover:cursor-pointer': !open }"
     @click="onCollapse"
   >
     <div v-if="!open" class="btn-group-toolbar h-12 relative sm:flex">
@@ -227,7 +227,7 @@ function onCollapse() {
           >
             <button
               :class="item.id"
-              class="w-full h-[46px] text-left text-base px-4 py-3 hover:bg-primary-10"
+              class="w-full h-[46px] text-left text-base px-4 py-3 sm:hover:bg-primary-10"
               @click="onFontFamilyChange(item.id)"
             >
               {{ item.label }}
