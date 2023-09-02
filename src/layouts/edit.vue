@@ -119,6 +119,7 @@ function resize() {
 
   if (window.innerWidth <= MOBILE_BREAKPOINT) {
     toolbar.setIsMobileScreen(true)
+    toolbar.setIsCVPreviewVisible(false)
     isDesignBarOpen.value = true
     rightWidth.value = 0
 

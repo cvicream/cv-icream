@@ -42,5 +42,8 @@ export const useToolbarStore = defineStore('toolbar', {
     setIsMobileScreen(val: boolean) {
       this.isMobileScreen = val
     },
+    setIsCVPreviewVisible(val: boolean) {
+      this.isCVPreviewVisible = val
+    },
   },
 })
