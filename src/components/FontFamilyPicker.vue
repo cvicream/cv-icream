@@ -33,7 +33,7 @@ const selectedOption = computed(() => {
   return fontFamilyOptions.find(option => option.value === props.modelValue)
 })
 
-const getOptionClass = (options: Option[], index: number) => {
+const getOptionClass = (option: Option, index: number) => {
   const result: string[] = []
   if (index === 0) {
     if (isSafari() || isMobileDevice())
@@ -41,12 +41,15 @@ const getOptionClass = (options: Option[], index: number) => {
     else
       result.push('rounded-t-xl')
   }
-  else if (options.length && index === options.length - 1) {
+  else if (fontFamilyOptions.length && index === fontFamilyOptions.length - 1) {
     if (isSafari() || isMobileDevice())
       result.push('rounded-b-[11px]')
     else
       result.push('rounded-b-xl')
   }
+
+  if (selectedOption?.value?.value === option.value)
+    result.push('bg-primary-10')
 
   return result.join(' ')
 }
@@ -63,8 +66,14 @@ function handleChange(event, option: Option, index: number) {
 
 <template>
   <div @click="toggle">
-    <div class="h-[46px] pl-4 pr-2 py-[11px] flex justify-between items-center sm:hover:cursor-pointer">
-      <span class="font-normal text-base leading-[1.375rem] text-blacks-100">
+    <div
+      class="h-[46px] pl-4 pr-2 py-[11px] flex justify-between items-center border border-white-100 rounded-xl sm:hover:border-blacks-100 sm:hover:cursor-pointer"
+      :class="{ 'border-blacks-100': menuVisible }"
+    >
+      <span
+        class="font-normal text-base leading-[1.375rem] text-blacks-100"
+        :class="selectedOption ? selectedOption.value : ''"
+      >
         {{ selectedOption ? selectedOption.label : '' }}
       </span>
       <span
@@ -86,7 +95,7 @@ function handleChange(event, option: Option, index: number) {
           v-for="(option, index) in fontFamilyOptions"
           :key="option.value"
           class="w-full h-[45px] flex justify-start items-center px-4 py-3 sm:hover:bg-primary-10 sm:hover:cursor-pointer"
-          :class="getOptionClass(fontFamilyOptions, index)"
+          :class="getOptionClass(option, index)"
           @mousedown="event => handleChange(event, option, index)"
         >
           <span
