@@ -140,7 +140,7 @@ function swap(index1, index2) {
       v-if="skill.isShow"
       class="w-full rounded-xl text-blacks-40 inline-flex justify-center items-center p-3 mt-6 border-transparent border-1 group bg-primary-10 hover:border-primary-100"
       :disabled="!skill.isShow"
-      @click="addItem(null)"
+      @click="addItem(0)"
     >
       <span
         class="i-custom:add w-6 h-6 text-blacks-40 flex-shrink-0"
