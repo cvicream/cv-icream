@@ -410,7 +410,7 @@ function toggleSidebar(isOpen) {
 
             <Tooltip placement="left" text="Double-click to fit the screen">
               <input
-                class="max-w-[42px] note text-center whitespace-nowrap text-blacks-70 outline-none hover:bg-blacks-10 focus:bg-blacks-10 transition-[background] duration-300"
+                class="max-w-[42px] note text-center whitespace-nowrap text-blacks-70 outline-none rounded-none hover:bg-blacks-10 focus:bg-blacks-10 transition-[background] duration-300"
                 :value="scaleText"
                 @change="handleScaleChange"
                 @dblclick="zoomFit"
