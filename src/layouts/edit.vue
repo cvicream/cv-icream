@@ -115,10 +115,13 @@ onUnmounted(() => {
 
 function overrideDefaultZoom() {
   document.addEventListener('keydown', (event) => {
-    if (((isMac() && event.metaKey) || (!isMac() && event.ctrlKey)) && ['=', '-'].includes(event.key)) {
-      if (event.key === '=') zoomIn()
-      else if (event.key === '-') zoomOut()
-
+    // use `event.code` to check if it needs to zoom in/out
+    if (['Equal'].includes(event.code)) {
+      zoomIn()
+      event.preventDefault()
+    }
+    else if (['Minus'].includes(event.code)) {
+      zoomOut()
       event.preventDefault()
     }
   })
@@ -410,7 +413,7 @@ function toggleSidebar(isOpen) {
 
             <Tooltip placement="left" text="Double-click to fit the screen">
               <input
-                class="max-w-[42px] note text-center whitespace-nowrap text-blacks-70 outline-none rounded-none hover:bg-blacks-10 focus:bg-blacks-10 transition-[background] duration-300"
+                class="max-w-[42px] note text-center whitespace-nowrap text-blacks-70 outline-none rounded-none select-none hover:bg-blacks-10 focus:bg-blacks-10 transition-[background] duration-300"
                 :value="scaleText"
                 @change="handleScaleChange"
                 @dblclick="zoomFit"
