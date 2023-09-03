@@ -104,13 +104,28 @@ const rightPanelWidth = computed(() => {
   return currentState.value.rightPanelWidth || DEFAULT_RIGHT_PANEL_WIDTH
 })
 
+const topPanelStyle = computed(() => {
+  if (currentState.value.layout === 'layout-left') {
+    return {
+      width: `${leftPanelWidth.value[1]}%`,
+    }
+  }
+  else if (currentState.value.layout === 'layout-right') {
+    return {
+      width: `${rightPanelWidth.value[0]}%`,
+    }
+  }
+
+  return {}
+})
+
 const handleTopPanelResized = (values) => {
   toolbar.setTopPanelWidth(values.map(val => val.size))
 }
-const handleLeftPanelResized = (values) => {
+const handleLeftPanelResize = (values) => {
   toolbar.setLeftPanelWidth(values.map(val => val.size))
 }
-const handleRightPanelResized = (values) => {
+const handleRightPanelResize = (values) => {
   toolbar.setRightPanelWidth(values.map(val => val.size))
 }
 </script>
@@ -129,14 +144,28 @@ const handleRightPanelResized = (values) => {
       <div
         :class="{
           'w-full flex justify-between': currentState.layout === 'layout-full',
-          'w-3/4 ml-auto': currentState.layout === 'layout-left',
-          'w-3/4 mr-auto': currentState.layout === 'layout-right',
+          'ml-auto': currentState.layout === 'layout-left',
+          'mr-auto': currentState.layout === 'layout-right',
         }"
+        :style="topPanelStyle"
       >
         <Splitpanes @resized="handleTopPanelResized">
-          <Pane v-for="(item, index) in topList" :key="item.key" :size="index === 0 ? topPanelWidth[0] : topPanelWidth[1]">
+          <Pane
+            v-if="topList[0]"
+            :size="topPanelWidth[0]"
+          >
             <CVPreviewSection
-              :element="item"
+              :element="topList[0]"
+              :read-only="readOnly"
+            />
+          </Pane>
+          <Pane
+            v-if="topList[1]"
+            :size="topPanelWidth[1]"
+            min-size="25"
+          >
+            <CVPreviewSection
+              :element="topList[1]"
               :read-only="readOnly"
             />
           </Pane>
@@ -194,7 +223,7 @@ const handleRightPanelResized = (values) => {
 
       <Splitpanes
         v-else-if="currentState.layout === 'layout-right'"
-        @resized="handleRightPanelResized"
+        @resize="handleRightPanelResize"
       >
         <Pane :size="rightPanelWidth[0]">
           <vuedraggable
@@ -246,7 +275,7 @@ const handleRightPanelResized = (values) => {
 
       <Splitpanes
         v-else-if="currentState.layout === 'layout-left'"
-        @resized="handleLeftPanelResized"
+        @resize="handleLeftPanelResize"
       >
         <Pane :size="leftPanelWidth[0]">
           <vuedraggable
@@ -405,6 +434,7 @@ const handleRightPanelResized = (values) => {
   opacity: 0;
   z-index: 1;
 }
+.splitpanes:hover .splitpanes__splitter,
 .splitpanes__splitter:hover,
 .splitpanes__splitter:hover::before {
   opacity: 1;
