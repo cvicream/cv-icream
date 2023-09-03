@@ -1,5 +1,6 @@
 <script lang="ts">
 import { computed, defineComponent, onMounted, ref, watch } from 'vue'
+import { onClickOutside } from '@vueuse/core'
 import type { Quill } from '@vueup/vue-quill'
 import { QuillEditor } from '@vueup/vue-quill'
 import '@vueup/vue-quill/dist/vue-quill.snow.css'
@@ -44,6 +45,7 @@ export default defineComponent({
     const toolbarTop = ref(0)
     const toolbarVisible = ref(false)
     const draftLink = ref('')
+    const linkRef = ref(null)
     const link = ref('')
     const linkEditVisible = ref(false)
     const linkHoverPosition = ref({ x: 0, y: 0 })
@@ -127,6 +129,10 @@ export default defineComponent({
       handleToolbarVisible()
     })
 
+    onClickOutside(linkRef, (event) => {
+      removeLink()
+    })
+
     function handleToolbarVisible() {
       const editorElement = (editor.value as Quill).getEditor()
       if (toolbarVisible.value) {
@@ -170,7 +176,7 @@ export default defineComponent({
         (editor.value as Quill).setHTML('')
     }
 
-    function onLinkBlur() {
+    function onLinkChange() {
       if (editor.value && draftLink.value) {
         const quill = (editor.value as Quill).getQuill()
         quill.format('link', draftLink.value)
@@ -233,6 +239,7 @@ export default defineComponent({
       toolbarTop,
       toolbarVisible,
       draftLink,
+      linkRef,
       link,
       linkEditVisible,
       linkHoverPosition,
@@ -241,7 +248,7 @@ export default defineComponent({
       onFocus,
       onBlur,
       onClear,
-      onLinkBlur,
+      onLinkChange,
       closeLinkEdit,
       openLinkEdit,
       removeLink,
@@ -343,10 +350,17 @@ export default defineComponent({
       >
         Edit
       </button>
+      <button
+        class="note text-blacks-40 sm:hover:text-blacks-70 transition-[color] duration-300"
+        @click="removeLink"
+      >
+        Remove
+      </button>
     </div>
 
     <div
       v-if="linkEditVisible"
+      ref="linkRef"
       class="absolute top-[var(--toolbar-top)] left-0 right-0 z-10 bg-white p-4 rounded-[1.25rem] shadow-custom"
     >
       <div class="flex justify-between">
@@ -366,13 +380,12 @@ export default defineComponent({
           type="text"
           placeholder="http://"
           class="form-input bg-primary-10"
-          @keyup.enter="onLinkBlur"
-          @blur="onLinkBlur"
+          @keyup.enter="onLinkChange"
         >
         <button
           class="w-6 h-6 absolute top-[50%] right-2 -translate-y-1/2 transition-[opacity] duration-300"
           :class="{'opacity-0': !draftLink}"
-          @click="onLinkBlur"
+          @click="onLinkChange"
         >
           <span class="i-custom:ok w-6 h-6 text-blacks-40 sm:hover:text-blacks-70" />
         </button>
@@ -552,16 +565,16 @@ export default defineComponent({
 }
 
 .ql-active {
-  @apply bg-primary-10;
+  @apply bg-primary-10 rounded-full;
 }
 
 .fix-margin-bottom {
   content: '';
   width: 100%;
-  height: 8px;
+  height: 32px;
   background-color: transparent;
   position: absolute;
-  bottom: -64px;
+  bottom: -32px;
   z-index: -1;
 }
 </style>
