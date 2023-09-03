@@ -248,7 +248,7 @@ const handleRightPanelResize = (values) => {
             <CVPreviewSection :element="element" :read-only="readOnly" />
           </div>
         </Pane>
-        <Pane :size="rightPanelWidth[1]">
+        <Pane :size="rightPanelWidth[1]" min-size="25">
           <vuedraggable
             v-if="!readOnly"
             v-model="rightList"
@@ -277,7 +277,7 @@ const handleRightPanelResize = (values) => {
         v-else-if="currentState.layout === 'layout-left'"
         @resize="handleLeftPanelResize"
       >
-        <Pane :size="leftPanelWidth[0]">
+        <Pane :size="leftPanelWidth[0]" min-size="25">
           <vuedraggable
             v-if="!readOnly"
             v-model="rightList"
