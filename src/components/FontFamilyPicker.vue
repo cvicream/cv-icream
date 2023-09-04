@@ -67,8 +67,8 @@ function handleChange(event, option: Option, index: number) {
 <template>
   <div @click="toggle">
     <div
-      class="h-[46px] pl-4 pr-2 py-[11px] flex justify-between items-center border border-white-100 rounded-xl sm:hover:border-blacks-100 sm:hover:cursor-pointer"
-      :class="{ 'border-blacks-100': menuVisible }"
+      class="h-[46px] pl-4 pr-2 py-[11px] flex justify-between items-center border rounded-xl sm:hover:border-blacks-100 sm:hover:cursor-pointer"
+      :class="menuVisible ? 'border-blacks-100' : 'border-white'"
     >
       <span
         class="font-normal text-base leading-[1.375rem] text-blacks-100"
