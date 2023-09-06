@@ -194,6 +194,22 @@ function isMac() {
   return navigator.userAgent.toUpperCase().includes('MAC')
 }
 
+function isOutOfViewport(element: HTMLElement) {
+  const rect = element.getBoundingClientRect()
+  // check if it is out of the viewport on each side
+  const out = {
+    top: rect.top < 0,
+    left: rect.left < 0,
+    bottom: rect.bottom > (window.innerHeight || document.documentElement.clientHeight),
+    right: rect.right > (window.innerWidth || document.documentElement.clientWidth),
+  }
+  return {
+    ...out,
+    any: out.top || out.left || out.bottom || out.right,
+    all: out.top && out.left && out.bottom && out.right,
+  }
+}
+
 export {
   hasStorage,
   getStorage,
@@ -215,4 +231,5 @@ export {
   isMobileDevice,
   isSafari,
   isMac,
+  isOutOfViewport,
 }
