@@ -1,4 +1,5 @@
 <script lang="ts">
+import type { CSSProperties } from 'vue'
 import { computed, defineComponent, onMounted, ref, watch } from 'vue'
 import { onClickOutside } from '@vueuse/core'
 import type { Quill } from '@vueup/vue-quill'
@@ -39,17 +40,16 @@ export default defineComponent({
   setup: (props, { emit }) => {
     const toolbar = useToolbarStore()
     const { isMobileScreen } = storeToRefs(toolbar)
-    const root = ref(null)
-    const editor = ref(null)
+    const root = ref<HTMLDivElement | null>(null)
+    const editor = ref<HTMLDivElement | null>(null)
     const toolbarId = ref(`toolbar-${uuidv4().replaceAll('-', '')}`)
-    const toolbarTop = ref(0)
     const toolbarVisible = ref(false)
+    const linkHover = ref<HTMLDivElement | null>(null)
+    const linkEdit = ref<HTMLDivElement | null>(null)
+    const selectedAnchor = ref<HTMLAnchorElement | null>(null)
     const draftLink = ref('')
-    const linkRef = ref(null)
     const link = ref('')
     const linkEditVisible = ref(false)
-    const linkHoverPosition = ref({ x: 0, y: 0 })
-    const linkHoverVisible = ref(false)
 
     const content = computed({
       get: () => {
@@ -69,6 +69,45 @@ export default defineComponent({
         createAnchorListeners()
         emit('update:modelValue', value)
       },
+    })
+
+    const linkHoverStyle = computed(() => {
+      const style: CSSProperties = {}
+
+      if (linkHover.value && selectedAnchor.value) {
+        const selectedAnchorRect = selectedAnchor.value.getBoundingClientRect()
+        style.top = `${selectedAnchorRect.bottom + 8}px`
+        const rect = (linkHover.value as HTMLElement).getBoundingClientRect()
+        const innerWidth = window.innerWidth || document.documentElement.clientWidth
+        if (selectedAnchorRect.left + rect.width >= innerWidth)
+          style.right = `${innerWidth - selectedAnchorRect.right}px`
+        else
+          style.left = `${selectedAnchorRect.left}px`
+      }
+      return style
+    })
+
+    const linkEditStyle = computed(() => {
+      const innerWidth = window.innerWidth || document.documentElement.clientWidth
+      const style: CSSProperties = {}
+
+      if (root.value) {
+        const rootRect = (root.value as HTMLElement).getBoundingClientRect()
+        style.left = `${rootRect.left}px`
+        style.right = `${innerWidth - rootRect.right}px`
+      }
+
+      if (selectedAnchor.value) {
+        const selectedAnchorRect = selectedAnchor.value.getBoundingClientRect()
+        style.top = `${selectedAnchorRect.bottom + 8}px`
+      }
+      else {
+        const selection = window.getSelection()
+        const rect = selection?.getRangeAt(0).getBoundingClientRect()
+        if (rect)
+          style.top = `${rect.bottom + 8}px`
+      }
+      return style
     })
 
     onMounted(() => {
@@ -129,7 +168,7 @@ export default defineComponent({
       handleToolbarVisible()
     })
 
-    onClickOutside(linkRef, (event) => {
+    onClickOutside(linkEdit, (event) => {
       removeLink()
     })
 
@@ -144,9 +183,6 @@ export default defineComponent({
 
     function onFocus(elementRef) {
       toolbarVisible.value = true
-
-      const obj = elementRef.value.getBoundingClientRect()
-      toolbarTop.value = obj.height + 8
 
       if (root.value) {
         const elEditor = (root.value as HTMLElement).querySelector('.single-line [contenteditable="true"]')
@@ -177,7 +213,10 @@ export default defineComponent({
     }
 
     function onLinkChange() {
-      if (editor.value && draftLink.value) {
+      if (selectedAnchor.value) {
+        selectedAnchor.value.href = draftLink.value
+      }
+      else if (editor.value && draftLink.value) {
         const quill = (editor.value as Quill).getQuill()
         quill.format('link', draftLink.value)
         resetLink()
@@ -192,37 +231,35 @@ export default defineComponent({
     }
 
     function openLinkEdit() {
-      linkHoverVisible.value = false
       linkEditVisible.value = true
     }
 
     function createAnchorListeners() {
       document.querySelectorAll('.ql-editor a').forEach((element) => {
-        element.addEventListener('mouseover', (e) => {
+        element.addEventListener('click', (e) => {
           e.stopPropagation()
           const anchor = (e.target as HTMLAnchorElement)
-          const rect = anchor.getBoundingClientRect()
-          linkHoverPosition.value = { x: rect.left, y: rect.bottom + 8 }
+          selectedAnchor.value = anchor
           link.value = anchor.href
           draftLink.value = link.value
-          linkHoverVisible.value = true
         })
       })
     }
 
     function closeLinkHover() {
-      linkHoverPosition.value = { x: 0, y: 0 }
-      linkHoverVisible.value = false
+      resetLink()
     }
 
     function removeLink() {
-      const quill = (editor.value as Quill).getQuill()
-      quill.format('link', false)
+      if (selectedAnchor.value)
+        selectedAnchor.value.replaceWith(selectedAnchor.value.innerText)
+
       linkEditVisible.value = false
       resetLink()
     }
 
     function resetLink() {
+      selectedAnchor.value = null
       draftLink.value = ''
       link.value = ''
     }
@@ -236,14 +273,15 @@ export default defineComponent({
       root,
       editor,
       toolbarId,
-      toolbarTop,
       toolbarVisible,
+      linkHover,
+      linkEdit,
+      linkHoverStyle,
+      linkEditStyle,
+      selectedAnchor,
       draftLink,
-      linkRef,
       link,
       linkEditVisible,
-      linkHoverPosition,
-      linkHoverVisible,
       content,
       onFocus,
       onBlur,
@@ -267,10 +305,6 @@ export default defineComponent({
       className,
       isSingleLine ? (toolbarVisible ? 'h-[94px] sm:h-[86px]' : 'h-[46px]') : (toolbarVisible ? 'h-[228px] sm:h-[220px]' : 'h-[180px]')
     ]"
-    :style="{
-      // @ts-ignore
-      '--toolbar-top': toolbarTop + 'px'
-    }"
   >
     <QuillEditor
       ref="editor"
@@ -333,9 +367,10 @@ export default defineComponent({
     </div>
 
     <div
-      v-if="linkHoverVisible && toolbarVisible"
-      class="fixed flex justify-between gap-2 px-3 py-2 bg-white border-1 border-black rounded-xl shadow-custom"
-      :style="{top: `${linkHoverPosition.y}px`, left: `${linkHoverPosition.x}px`}"
+      v-if="toolbarVisible && selectedAnchor && !linkEditVisible"
+      ref="linkHover"
+      class="fixed z-1 flex justify-between gap-2 px-3 py-2 bg-white border-1 border-black rounded-xl shadow-custom"
+      :style="linkHoverStyle"
     >
       <a
         class="paragraph text-blacks-100 truncate"
@@ -360,8 +395,9 @@ export default defineComponent({
 
     <div
       v-if="linkEditVisible"
-      ref="linkRef"
-      class="absolute top-[var(--toolbar-top)] left-0 right-0 z-10 bg-white p-4 rounded-[1.25rem] shadow-custom"
+      ref="linkEdit"
+      class="fixed z-1 bg-white p-4 rounded-[1.25rem] shadow-custom"
+      :style="linkEditStyle"
     >
       <div class="flex justify-between">
         <div class="flex gap-2 items-center">
