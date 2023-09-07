@@ -41,6 +41,14 @@ const onFontFamilyChange = (id: string) => {
 
 const onLayoutChange = (id: string) => {
   toolbar.changeLayout(id)
+  if (id === 'layout-left') {
+    const rightPanelWidth = currentState.value.rightPanelWidth
+    toolbar.setLeftPanelWidth([rightPanelWidth[1], rightPanelWidth[0]])
+  }
+  else if (id === 'layout-right') {
+    const leftPanelWidth = currentState.value.leftPanelWidth
+    toolbar.setRightPanelWidth([leftPanelWidth[1], leftPanelWidth[0]])
+  }
 }
 
 function undo() {
