@@ -369,7 +369,7 @@ export default defineComponent({
     <div
       v-if="toolbarVisible && selectedAnchor && !linkEditVisible"
       ref="linkHover"
-      class="fixed z-1 flex justify-between gap-2 px-3 py-2 bg-white border-1 border-black rounded-xl shadow-custom"
+      class="fixed z-1 max-w-[262px] sm:max-w-[400px] flex justify-between gap-2 px-3 py-2 bg-white border-1 border-black rounded-xl shadow-custom"
       :style="linkHoverStyle"
     >
       <a
@@ -415,7 +415,7 @@ export default defineComponent({
           v-model="draftLink"
           type="text"
           placeholder="http://"
-          class="form-input bg-primary-10"
+          class="pr-10 form-input bg-primary-10"
           @keyup.enter="onLinkChange"
         >
         <button
