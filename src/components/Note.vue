@@ -108,7 +108,9 @@ const onDragEnd = (event: DragEvent) => {
         <span class="text-blacks-70">Note</span>
         <div class="flex gap-3">
           <button v-if="value" class="i-custom:delete icon-24 cursor-pointer" @click="onRemove" />
-          <span v-if="value !== props.note.value" class="checkmark cursor-pointer" @click="onSave" />
+          <div v-if="value !== props.note.value" class="cursor-pointer" @click="onSave">
+            <span class="checkmark " />
+          </div>
           <button v-else class="i-custom:cancel icon-24 cursor-pointer" @click="onToggleNote" />
         </div>
       </div>
