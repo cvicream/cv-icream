@@ -212,6 +212,7 @@ function togglePaymentModal() {
             <span class="paragraph text-blacks-100">Export as PDF</span>
           </button>
           <button
+            id="download-as-draft"
             class="w-full h-[46px] flex justify-start items-center px-4 py-3 sm:hover:bg-primary-10"
             @mousedown="exportJsonFile"
           >
