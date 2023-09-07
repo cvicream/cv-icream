@@ -78,6 +78,10 @@ onMounted(() => {
 
   const color = getColor(currentState.value.color)
   setCssVariable('--primary-color', color.primary)
+  setCssVariable('--primary-70-color', color.primary70)
+  setCssVariable('--primary-40-color', color.primary40)
+  setCssVariable('--primary-20-color', color.primary20)
+  setCssVariable('--primary-10-color', color.primary10)
   setCssVariable('--secondary-color', color.secondary)
   setCssVariable('--shadow-color', color.shadow)
   setCssVariable('--border-color', color.border)

@@ -451,7 +451,8 @@ const handleRightPanelResize = (values) => {
   width: 100%;
 }
 .splitpanes--vertical > .splitpanes__splitter {
-  @apply bg-primary-70 my-3;
+  @apply my-3;
+  background-color: var(--primary-70-color);
   min-width: 2px;
 }
 .splitpanes--vertical > .splitpanes__splitter::before {
