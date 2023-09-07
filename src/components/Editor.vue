@@ -44,7 +44,7 @@ export default defineComponent({
     const editor = ref<HTMLDivElement | null>(null)
     const toolbarId = ref(`toolbar-${uuidv4().replaceAll('-', '')}`)
     const toolbarVisible = ref(false)
-    const linkHover = ref<HTMLDivElement | null>(null)
+    const linkTooltip = ref<HTMLDivElement | null>(null)
     const linkEdit = ref<HTMLDivElement | null>(null)
     const selectedAnchor = ref<HTMLAnchorElement | null>(null)
     const draftLink = ref('')
@@ -71,13 +71,13 @@ export default defineComponent({
       },
     })
 
-    const linkHoverStyle = computed(() => {
+    const linkTooltipStyle = computed(() => {
       const style: CSSProperties = {}
 
-      if (linkHover.value && selectedAnchor.value) {
+      if (linkTooltip.value && selectedAnchor.value) {
         const selectedAnchorRect = selectedAnchor.value.getBoundingClientRect()
         style.top = `${selectedAnchorRect.bottom + 8}px`
-        const rect = (linkHover.value as HTMLElement).getBoundingClientRect()
+        const rect = (linkTooltip.value as HTMLElement).getBoundingClientRect()
         const innerWidth = window.innerWidth || document.documentElement.clientWidth
         if (selectedAnchorRect.left + rect.width >= innerWidth)
           style.right = `${innerWidth - selectedAnchorRect.right}px`
@@ -199,7 +199,7 @@ export default defineComponent({
       if (!linkEditVisible.value)
         toolbarVisible.value = false
 
-      closeLinkHover()
+      closeLinkTooltip()
     }
 
     function preventEnter(event) {
@@ -246,7 +246,7 @@ export default defineComponent({
       })
     }
 
-    function closeLinkHover() {
+    function closeLinkTooltip() {
       resetLink()
     }
 
@@ -265,7 +265,7 @@ export default defineComponent({
     }
 
     function onEditorChange(data) {
-      closeLinkHover()
+      closeLinkTooltip()
     }
 
     return {
@@ -274,9 +274,9 @@ export default defineComponent({
       editor,
       toolbarId,
       toolbarVisible,
-      linkHover,
+      linkTooltip,
       linkEdit,
-      linkHoverStyle,
+      linkTooltipStyle,
       linkEditStyle,
       selectedAnchor,
       draftLink,
@@ -368,9 +368,9 @@ export default defineComponent({
 
     <div
       v-if="toolbarVisible && selectedAnchor && !linkEditVisible"
-      ref="linkHover"
+      ref="linkTooltip"
       class="fixed z-1 max-w-[262px] sm:max-w-[400px] flex justify-between gap-2 px-3 py-2 bg-white border-1 border-black rounded-xl shadow-custom"
-      :style="linkHoverStyle"
+      :style="linkTooltipStyle"
     >
       <a
         class="paragraph text-blacks-100 truncate"
