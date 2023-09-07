@@ -173,6 +173,16 @@ export default defineComponent({
       removeLink()
     })
 
+    function createAnchorListeners() {
+      document.querySelectorAll('.ql-editor a').forEach((element) => {
+        element.addEventListener('click', (e) => {
+          e.stopPropagation()
+          const anchor = (e.target as HTMLAnchorElement)
+          openLinkTooltip(anchor)
+        })
+      })
+    }
+
     function handleToolbarVisible() {
       const editorElement = (editor.value as Quill).getEditor()
       if (toolbarVisible.value) {
@@ -226,38 +236,32 @@ export default defineComponent({
       closeLinkEdit()
     }
 
-    function closeLinkEdit() {
-      linkEditVisible.value = false
-      selectedAnchor.value = null
-      resetLink()
-    }
-
-    function openLinkEdit() {
-      linkEditVisible.value = true
-    }
-
-    function createAnchorListeners() {
-      document.querySelectorAll('.ql-editor a').forEach((element) => {
-        element.addEventListener('click', (e) => {
-          e.stopPropagation()
-          const anchor = (e.target as HTMLAnchorElement)
-          linkTooltipVisible.value = true
-          setLink(anchor)
-        })
-      })
+    function openLinkTooltip(anchor: HTMLAnchorElement) {
+      linkTooltipVisible.value = true
+      setLink(anchor)
     }
 
     function closeLinkTooltip() {
       linkTooltipVisible.value = false
     }
 
+    function closeLinkEdit() {
+      linkTooltipVisible.value = false
+      linkEditVisible.value = false
+      selectedAnchor.value = null
+      resetLink()
+    }
+
+    function openLinkEdit() {
+      linkTooltipVisible.value = false
+      linkEditVisible.value = true
+    }
+
     function removeLink() {
       if (selectedAnchor.value)
         selectedAnchor.value.replaceWith(selectedAnchor.value.innerText)
 
-      closeLinkTooltip()
-      linkEditVisible.value = false
-      resetLink()
+      closeLinkEdit()
     }
 
     function setLink(anchor: HTMLAnchorElement) {
