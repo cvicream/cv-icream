@@ -404,8 +404,8 @@ const handleRightPanelResize = (values) => {
   height: 20px;
   opacity: 0;
 }
-@media (min-width: 640px)
-{
+
+@media (min-width: 640px) {
   .cv-preview [data-draggable="true"]:hover {
     @apply bg-primary-10;
   }
@@ -413,6 +413,7 @@ const handleRightPanelResize = (values) => {
     opacity: 1;
   }
 }
+
 .cv-preview [draggable="true"] {
   @apply bg-primary-10;
 }
@@ -423,26 +424,36 @@ const handleRightPanelResize = (values) => {
 .splitpanes {
   background: transparent;
 }
+
 .splitpanes__splitter {
-  position: relative;
-  user-select: none;
-  opacity: 0;
+  display: none;
 }
-.splitpanes__splitter::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 0;
-  opacity: 0;
-  z-index: 1;
+
+@media (min-width: 640px) {
+  .splitpanes__splitter {
+    display: block;
+    position: relative;
+    user-select: none;
+    opacity: 0;
+  }
+  .splitpanes__splitter::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    opacity: 0;
+    z-index: 1;
+  }
+
+  .splitpanes:hover .splitpanes__splitter,
+  .splitpanes__splitter:hover,
+  .splitpanes__splitter:hover::before {
+    opacity: 1;
+  }
 }
-.splitpanes:hover .splitpanes__splitter,
-.splitpanes__splitter:hover,
-.splitpanes__splitter:hover::before {
-  opacity: 1;
-}
+
 .splitpanes--horizontal > .splitpanes__splitter {
-  @apply bg-primary-70;
+  background-color: var(--primary-70-color);
   min-height: 2px;
 }
 .splitpanes--horizontal > .splitpanes__splitter::before {
