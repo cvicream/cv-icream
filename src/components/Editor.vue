@@ -170,7 +170,7 @@ export default defineComponent({
     })
 
     onClickOutside(linkEdit, (event) => {
-      removeLink()
+      closeLinkEdit()
     })
 
     function createAnchorListeners() {
