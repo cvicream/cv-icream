@@ -73,6 +73,7 @@ const onNext = () => {
         </span>
       </button>
       <button
+        id="create-new-cv"
         class="p-6 flex justify-center items-center w-81 h-63 sm:w-101 sm:h-66 rounded-xl flex-col gap-5 border-primary-100 shadow-custom sm:hover:border-1 sm:hover:bg-primary-10"
         @click="importJsonFile"
       >
@@ -97,6 +98,7 @@ const onNext = () => {
   >
     <div class="flex justify-between gap-6 mt-6 sm:flex-row">
       <button
+        id="upload-cv-draft"
         class="btn-secondary px-12 flex-shrink-0"
         @click="uploadFiletype = false"
       >
