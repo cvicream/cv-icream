@@ -46,10 +46,11 @@ export default defineComponent({
     const toolbarVisible = ref(false)
     const linkTooltip = ref<HTMLDivElement | null>(null)
     const linkEdit = ref<HTMLDivElement | null>(null)
+    const linkTooltipVisible = ref(false)
+    const linkEditVisible = ref(false)
     const selectedAnchor = ref<HTMLAnchorElement | null>(null)
     const draftLink = ref('')
     const link = ref('')
-    const linkEditVisible = ref(false)
 
     const content = computed({
       get: () => {
@@ -227,6 +228,7 @@ export default defineComponent({
 
     function closeLinkEdit() {
       linkEditVisible.value = false
+      selectedAnchor.value = null
       resetLink()
     }
 
@@ -239,23 +241,29 @@ export default defineComponent({
         element.addEventListener('click', (e) => {
           e.stopPropagation()
           const anchor = (e.target as HTMLAnchorElement)
-          selectedAnchor.value = anchor
-          link.value = anchor.href
-          draftLink.value = link.value
+          linkTooltipVisible.value = true
+          setLink(anchor)
         })
       })
     }
 
     function closeLinkTooltip() {
-      resetLink()
+      linkTooltipVisible.value = false
     }
 
     function removeLink() {
       if (selectedAnchor.value)
         selectedAnchor.value.replaceWith(selectedAnchor.value.innerText)
 
+      closeLinkTooltip()
       linkEditVisible.value = false
       resetLink()
+    }
+
+    function setLink(anchor: HTMLAnchorElement) {
+      selectedAnchor.value = anchor
+      link.value = anchor.href
+      draftLink.value = link.value
     }
 
     function resetLink() {
@@ -276,12 +284,13 @@ export default defineComponent({
       toolbarVisible,
       linkTooltip,
       linkEdit,
+      linkTooltipVisible,
+      linkEditVisible,
       linkTooltipStyle,
       linkEditStyle,
       selectedAnchor,
       draftLink,
       link,
-      linkEditVisible,
       content,
       onFocus,
       onBlur,
@@ -367,7 +376,7 @@ export default defineComponent({
     </div>
 
     <div
-      v-if="toolbarVisible && selectedAnchor && !linkEditVisible"
+      v-if="toolbarVisible && linkTooltipVisible && !linkEditVisible"
       ref="linkTooltip"
       class="fixed z-1 max-w-[262px] sm:max-w-[400px] flex justify-between gap-2 px-3 py-2 bg-white border-1 border-black rounded-xl shadow-custom"
       :style="linkTooltipStyle"
