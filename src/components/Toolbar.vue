@@ -81,39 +81,43 @@ function redo() {
 }
 
 const createNote = (event: MouseEvent) => {
-  const boundingBox = document.getElementById('cv-preview')?.getBoundingClientRect()!
+  const boundingBox = document.getElementById('left-side-container')?.getBoundingClientRect()!
+  const scrollTop = document.getElementById('left-side-container')?.scrollTop!
+  const scrollLeft = document.getElementById('left-side-container')?.scrollLeft!
 
   toolbar.addNote({
     id: Date.now(),
     value: '<p><br></p>',
     location: {
-      left: event.clientX - boundingBox.x,
-      top: event.clientY - boundingBox.y,
+      left: event.clientX - boundingBox.x + scrollLeft,
+      top: event.clientY - boundingBox.y + scrollTop,
     },
   })
 }
 
 const removeClickListener = (event: KeyboardEvent) => {
   if (event.key === 'Escape') {
-    document.getElementById('cv-preview')?.removeEventListener('click', createNote)
+    document.getElementById('left-side-container')?.removeEventListener('click', createNote)
     document.removeEventListener('keydown', removeClickListener)
-    document.getElementById('cv-preview')?.classList.remove('adding-note-mode')
+    document.getElementById('left-side-container')?.classList.remove('adding-note-mode')
     noteBtnRef.value!.classList.remove('adding-note-mode')
   }
 }
 
 function onNoteClick(event: MouseEvent) {
-  if (document.getElementById('cv-preview')?.classList.contains('adding-note-mode')) {
-    document.getElementById('cv-preview')?.removeEventListener('click', createNote)
+  if (document.getElementById('left-side-container')?.classList.contains('adding-note-mode')) {
+    document.getElementById('left-side-container')?.removeEventListener('click', createNote)
     document.removeEventListener('keydown', removeClickListener)
-    document.getElementById('cv-preview')?.classList.remove('adding-note-mode')
+    document.getElementById('left-side-container')?.classList.remove('adding-note-mode')
     noteBtnRef.value!.classList.remove('adding-note-mode')
     return
   }
 
   noteBtnRef.value!.classList.add('adding-note-mode')
-  document.getElementById('cv-preview')?.classList.add('adding-note-mode')
-  document.getElementById('cv-preview')?.addEventListener('click', createNote)
+  document.getElementById('left-side-container')?.classList.add('adding-note-mode')
+  setTimeout(() => {
+    document.getElementById('left-side-container')?.addEventListener('click', createNote)
+  }, 0)
   document.addEventListener('keydown', removeClickListener)
 }
 

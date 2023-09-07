@@ -59,20 +59,20 @@ const onClickOutside = () => {
 }
 
 const onDragStart = (event: DragEvent) => {
-  document.querySelectorAll('#cv-preview [data-draggable="true"]').forEach(el => el.classList.add('temp-static'))
-  document.getElementById('cv-preview')?.addEventListener('dragover', (event) => {
+  document.getElementById('left-side-container')?.addEventListener('dragover', (event) => {
     event.preventDefault()
   }, false)
-  event.target?.classList.add('dragging')
 }
 
 const onDragEnd = (event: DragEvent) => {
   document.querySelectorAll('#cv-preview [data-draggable="true"]').forEach(el => el.classList.remove('temp-static'))
-  event.target?.classList.remove('dragging')
 
-  const boundingBox = document.getElementById('cv-preview')?.getBoundingClientRect()!
-  const left = event.clientX - boundingBox.x
-  const top = event.clientY - boundingBox.y
+  const boundingBox = document.getElementById('left-side-container')?.getBoundingClientRect()!
+  const scrollTop = document.getElementById('left-side-container')?.scrollTop!
+  const scrollLeft = document.getElementById('left-side-container')?.scrollLeft!
+  const left = event.clientX - boundingBox.x + scrollLeft
+  const top = event.clientY - boundingBox.y + scrollTop
+
   if (left < 0 || top < 0 || left > boundingBox?.width || top > boundingBox?.height)
     return
 
@@ -143,8 +143,5 @@ const onDragEnd = (event: DragEvent) => {
   border-bottom: 2px solid #72B255;
   border-right: 2px solid #72B255;
   margin: 4px 10px 0 7px;
-}
-.dragging {
-  opacity: 0.1;
 }
 </style>

@@ -20,14 +20,7 @@ const props = defineProps({
 const user = useUserStore()
 const { splitIndex, about, summary, experience, project, skill, education, certificate, contact, social } = storeToRefs(user)
 const toolbar = useToolbarStore()
-const { currentState, noteList } = storeToRefs(toolbar)
-const newNoteId = ref(0)
-const isNoteEditing = ref(false)
-
-toolbar.$onAction(({ name, args }) => {
-  if (name === 'addNote')
-    newNoteId.value = args[0].id
-})
+const { currentState } = storeToRefs(toolbar)
 
 const content = computed(() => {
   return [
@@ -96,15 +89,6 @@ const rightList = computed({
 </script>
 
 <template>
-  <div v-if="!readOnly">
-    <Note
-      v-for="note in noteList"
-      :key="note.id"
-      v-model:is-note-editing="isNoteEditing"
-      :note="note"
-      :is-open="newNoteId === note.id"
-    />
-  </div>
   <div class="heading-default title-default subtitle-default paragraph-default heading-large title-large subtitle-large paragraph-large" />
   <div
     :id="id"
