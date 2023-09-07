@@ -120,7 +120,8 @@ const topPanelStyle = computed(() => {
 })
 
 const handleTopPanelResized = (values) => {
-  toolbar.setTopPanelWidth(values.map(val => val.size))
+  if (values.length === 2)
+    toolbar.setTopPanelWidth(values.map(val => val.size))
 }
 const handleLeftPanelResize = (values) => {
   toolbar.setLeftPanelWidth(values.map(val => val.size))
@@ -162,6 +163,7 @@ const handleRightPanelResize = (values) => {
           <Pane
             v-if="topList[1]"
             :size="topPanelWidth[1]"
+            max-size="35"
             min-size="25"
           >
             <CVPreviewSection
