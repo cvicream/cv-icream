@@ -153,19 +153,7 @@ function getFontSizeClassName(id: string) {
  */
 function getColor(id: string) {
   const color = COLORS.find(item => item.id === id)
-  return color
-    ? {
-      primary: color.primary,
-      secondary: color.secondary,
-      shadow: color.shadow,
-      border: color.border,
-    }
-    : {
-      primary: '#F18B6B',
-      secondary: '#FEF4F1',
-      shadow: '#FCE8E1',
-      border: '#FAD1C4',
-    }
+  return color || COLORS[0]
 }
 
 /**
