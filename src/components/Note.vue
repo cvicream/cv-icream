@@ -85,6 +85,32 @@ const onDragEnd = (event: DragEvent) => {
   })
 }
 
+const onTouchEnd = (event: TouchEvent) => {
+  const touch = event.touches[0] || event.changedTouches[0]
+  document.querySelectorAll('#cv-preview [data-draggable="true"]').forEach(el => el.classList.remove('temp-static'))
+
+  const boundingBox = document.getElementById('left-side-container')?.getBoundingClientRect()!
+  const scrollTop = document.getElementById('left-side-container')?.scrollTop!
+  const scrollLeft = document.getElementById('left-side-container')?.scrollLeft!
+  const left = touch.pageX - boundingBox.x + scrollLeft
+  const top = touch.pageY - boundingBox.y + scrollTop
+
+  if (left < 0
+  || top < 0
+  || left > boundingBox?.width
+  || top > boundingBox?.height
+  )
+    return
+
+  toolbar.modifyNote({
+    ...props.note,
+    location: {
+      left,
+      top,
+    },
+  })
+}
+
 </script>
 
 <template>
@@ -94,6 +120,7 @@ const onDragEnd = (event: DragEvent) => {
     draggable="true"
     @dragstart="onDragStart"
     @dragend="onDragEnd"
+    @touchend="onTouchEnd"
   >
     <button
       class="note-icon bg-yellow"
