@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { stat } from 'fs'
-import { onUnmounted } from 'vue'
 import { storeToRefs } from 'pinia'
 import _ from 'lodash'
 import { useUserStore } from '~/stores/user'
@@ -22,17 +20,12 @@ const router = useRouter()
 const undoStore = useUndoStore()
 const redoStore = useRedoStore()
 const { path } = storeToRefs(user)
-const { isCVPreviewVisible, dropdownMenu, currentState } = storeToRefs(toolbar)
+const { isCVPreviewVisible, currentState } = storeToRefs(toolbar)
 
 watch(path, () => {
   if (path.value !== router.currentRoute.value.path)
     router.push(path.value)
 })
-
-const onClick = () => {
-  if (Object.values(dropdownMenu.value).some(item => item))
-    toolbar.toggle('')
-}
 
 const onColorChange = (id: string) => {
   toolbar.changeColor(id)
@@ -49,12 +42,6 @@ const onFontFamilyChange = (id: string) => {
 const onLayoutChange = (id: string) => {
   toolbar.changeLayout(id)
 }
-
-onUnmounted(() => {
-  window.removeEventListener('click', onClick)
-})
-
-window.addEventListener('click', onClick, false)
 
 function undo() {
   const list = undoStore.list
