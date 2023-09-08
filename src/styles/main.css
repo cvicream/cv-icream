@@ -84,6 +84,7 @@ html.dark {
 }
 
 .custom-scrollbar {
+  scrollbar-gutter: stable;
   /* For Firefox */
   scrollbar-color: rgba(34, 34, 34, 0.1) transparent;
   scrollbar-width: thin;
