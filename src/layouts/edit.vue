@@ -127,8 +127,8 @@ function overrideDefaultZoom() {
   })
   document.addEventListener('wheel', (event) => {
     if ((isMac() && (event.metaKey || event.ctrlKey)) || (!isMac() && event.ctrlKey)) {
-      if (event.deltaY < 0) zoomIn()
-      else if (event.deltaY > 0) zoomOut()
+      if (event.deltaY < 0) zoomIn(5)
+      else if (event.deltaY > 0) zoomOut(5)
 
       event.preventDefault()
     }
@@ -251,13 +251,13 @@ function handleScaleChange(event) {
   }
 }
 
-function zoomIn() {
-  const value = Math.round(scale.value * 2)
+function zoomIn(step?: number) {
+  const value = step ? scale.value + step : Math.round(scale.value * 2)
   scale.value = value < MAX_SCALE ? value : MAX_SCALE
 }
 
-function zoomOut() {
-  const value = Math.round(scale.value / 2)
+function zoomOut(step?: number) {
+  const value = step ? scale.value - step : Math.round(scale.value / 2)
   scale.value = value > MIN_SCALE ? value : MIN_SCALE
 }
 
@@ -398,7 +398,7 @@ function toggleSidebar(isOpen) {
         >
           <div class="w-12 h-32 p-2 rounded-[69px] bg-white shadow-custom flex flex-col justify-between items-center absolute bottom-0 right transition group">
             <Tooltip placement="left">
-              <button class="btn-icon-32 transition-[background] duration-300" @click="zoomIn">
+              <button class="btn-icon-32 transition-[background] duration-300" @click="() => zoomIn()">
                 <span class="i-custom:zoom-in w-6 h-6" />
               </button>
               <template #content>
@@ -421,7 +421,7 @@ function toggleSidebar(isOpen) {
             </Tooltip>
 
             <Tooltip placement="left">
-              <button class="btn-icon-32 transition-[background] duration-300" @click="zoomOut">
+              <button class="btn-icon-32 transition-[background] duration-300" @click="() => zoomOut()">
                 <span class="i-custom:zoom-out w-6 h-6" />
               </button>
               <template #content>
