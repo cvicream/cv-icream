@@ -3,6 +3,7 @@ import type { CSSProperties } from 'vue'
 import { computed, defineComponent, onMounted, ref, watch } from 'vue'
 import { onClickOutside } from '@vueuse/core'
 import type { Quill } from '@vueup/vue-quill'
+import type { RangeStatic } from 'quill'
 import { QuillEditor } from '@vueup/vue-quill'
 import '@vueup/vue-quill/dist/vue-quill.snow.css'
 import '@vueup/vue-quill/dist/vue-quill.bubble.css'
@@ -44,6 +45,7 @@ export default defineComponent({
     const editor = ref<HTMLDivElement | null>(null)
     const toolbarId = ref(`toolbar-${uuidv4().replaceAll('-', '')}`)
     const toolbarVisible = ref(false)
+    const selectionRange = ref<RangeStatic | null>(null)
     const linkTooltip = ref<HTMLDivElement | null>(null)
     const linkEdit = ref<HTMLDivElement | null>(null)
     const linkTooltipVisible = ref(false)
@@ -76,37 +78,35 @@ export default defineComponent({
       const style: CSSProperties = {}
 
       if (linkTooltip.value && selectedAnchor.value) {
-        const selectedAnchorRect = selectedAnchor.value.getBoundingClientRect()
-        style.top = `${selectedAnchorRect.bottom + 8}px`
-        const rect = (linkTooltip.value as HTMLElement).getBoundingClientRect()
-        const innerWidth = window.innerWidth || document.documentElement.clientWidth
-        if (selectedAnchorRect.left + rect.width >= innerWidth)
-          style.right = `${innerWidth - selectedAnchorRect.right}px`
-        else
-          style.left = `${selectedAnchorRect.left}px`
+        const linkTooltipWidth = (linkTooltip.value as HTMLElement).offsetWidth
+        const anchor = selectedAnchor.value
+        const parentWidth = root.value?.clientWidth
+        if (parentWidth) {
+          style.top = `${anchor.offsetTop + anchor.offsetHeight + 8}px`
+          if (anchor.offsetLeft + linkTooltipWidth < parentWidth)
+            style.left = `${anchor.offsetLeft}px`
+          else
+            style.right = `${parentWidth - anchor.offsetLeft - anchor.offsetWidth}px`
+        }
       }
       return style
     })
 
     const linkEditStyle = computed(() => {
-      const innerWidth = window.innerWidth || document.documentElement.clientWidth
-      const style: CSSProperties = {}
-
-      if (root.value) {
-        const rootRect = (root.value as HTMLElement).getBoundingClientRect()
-        style.left = `${rootRect.left}px`
-        style.right = `${innerWidth - rootRect.right}px`
+      const style: CSSProperties = {
+        left: 0,
+        right: 0,
       }
 
       if (selectedAnchor.value) {
-        const selectedAnchorRect = selectedAnchor.value.getBoundingClientRect()
-        style.top = `${selectedAnchorRect.bottom + 8}px`
+        const anchor = selectedAnchor.value
+        style.top = `${anchor.offsetTop + anchor.offsetHeight + 8}px`
       }
-      else {
-        const selection = window.getSelection()
-        const rect = selection?.getRangeAt(0).getBoundingClientRect()
-        if (rect)
-          style.top = `${rect.bottom + 8}px`
+      else if (editor.value && selectionRange.value) {
+        const { index, length } = selectionRange.value
+        const quill = (editor.value as Quill).getQuill()
+        const bounds = quill.getBounds(index, length)
+        style.top = `${bounds.bottom + 8}px`
       }
       return style
     })
@@ -119,10 +119,13 @@ export default defineComponent({
 
         // customize link handler
         toolbar.addHandler('link', (value) => {
-          if (value)
+          if (value) {
             linkEditVisible.value = true
-          else
+            resetLink()
+          }
+          else {
             quill.format('link', false)
+          }
         })
 
         // customize background handler
@@ -277,6 +280,9 @@ export default defineComponent({
     }
 
     function onEditorChange(data) {
+      if (data.name === 'selection-change' && data.range)
+        selectionRange.value = data.range
+
       closeLinkTooltip()
     }
 
@@ -382,7 +388,7 @@ export default defineComponent({
     <div
       v-if="toolbarVisible && linkTooltipVisible && !linkEditVisible"
       ref="linkTooltip"
-      class="fixed z-1 max-w-[262px] sm:max-w-[400px] flex justify-between gap-2 px-3 py-2 bg-white border-1 border-black rounded-xl shadow-custom"
+      class="absolute z-1 max-w-[262px] sm:max-w-[400px] flex justify-between gap-2 px-3 py-2 bg-white border-1 border-black rounded-xl shadow-custom"
       :style="linkTooltipStyle"
     >
       <a
@@ -409,7 +415,7 @@ export default defineComponent({
     <div
       v-if="linkEditVisible"
       ref="linkEdit"
-      class="fixed z-1 bg-white p-4 rounded-[1.25rem] shadow-custom"
+      class="absolute z-1 bg-white p-4 rounded-[1.25rem] shadow-custom"
       :style="linkEditStyle"
     >
       <div class="flex justify-between">
