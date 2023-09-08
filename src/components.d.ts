@@ -11,6 +11,7 @@ declare module 'vue' {
     DropdownMenu: typeof import('./components/DropdownMenu.vue')['default']
     Editor: typeof import('./components/Editor.vue')['default']
     FeedbackModal: typeof import('./components/FeedbackModal.vue')['default']
+    FontFamilyPicker: typeof import('./components/FontFamilyPicker.vue')['default']
     Footer: typeof import('./components/Footer.vue')['default']
     Header: typeof import('./components/Header.vue')['default']
     Loading: typeof import('./components/Loading.vue')['default']

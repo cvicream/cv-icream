@@ -5,7 +5,7 @@ import { useUserStore } from '~/stores/user'
 import { useToolbarStore } from '~/stores/toolbar'
 import { useUndoStore } from '~/stores/undo'
 import { useRedoStore } from '~/stores/redo'
-import { COLORS, FONT_FAMILIES, FONT_SIZES, LAYOUTS } from '~/constants'
+import { COLORS, FONT_SIZES, LAYOUTS } from '~/constants'
 import { getColor } from '~/utils'
 
 const props = defineProps<{
@@ -207,19 +207,11 @@ function onCollapse() {
       </DropdownMenu>
       <DropdownMenu id="fontFamily" label="Font Family" icon="i-custom:font-family text-blacks-70" tooltip="Font Family">
         <div class="w-full h-22 overflow-auto custom-scrollbar">
-          <div
-            v-for="item in FONT_FAMILIES"
-            :key="item.id"
-            :class="{ 'bg-primary-10': currentState.fontFamily === item.id }"
-          >
-            <button
-              :class="item.id"
-              class="w-full h-[46px] text-left text-base px-4 py-3 sm:hover:bg-primary-10"
-              @click="onFontFamilyChange(item.id)"
-            >
-              {{ item.label }}
-            </button>
-          </div>
+          <FontFamilyPicker
+            placement="top"
+            :model-value="currentState.fontFamily"
+            @update:model-value="onFontFamilyChange"
+          />
         </div>
       </DropdownMenu>
     </div>
