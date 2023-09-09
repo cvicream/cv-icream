@@ -76,8 +76,8 @@ export default defineComponent({
 
     const linkTooltipStyle = computed(() => {
       const style: CSSProperties = {
-        left: '8px',
-        right: '8px',
+        left: 0,
+        right: 0,
       }
 
       if (linkTooltip.value && selectedAnchor.value) {
