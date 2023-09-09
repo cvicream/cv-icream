@@ -1,7 +1,10 @@
 <script setup lang="ts">
-defineProps<{
-  open: boolean
-}>()
+defineProps({
+  open: {
+    type: Boolean,
+    default: false,
+  },
+})
 
 </script>
 

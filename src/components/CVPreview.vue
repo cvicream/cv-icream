@@ -2,11 +2,18 @@
 import { computed } from 'vue'
 import { storeToRefs } from 'pinia'
 import vuedraggable from 'vuedraggable'
+import { Pane, Splitpanes } from 'splitpanes'
+import 'splitpanes/dist/splitpanes.css'
 import { useUserStore } from '~/stores/user'
 import { useToolbarStore } from '~/stores/toolbar'
 import { isMobileDevice } from '~/utils'
+import {
+  DEFAULT_LEFT_PANEL_WIDTH,
+  DEFAULT_RIGHT_PANEL_WIDTH,
+  DEFAULT_TOP_PANEL_WIDTH,
+} from '~/constants'
 
-const props = defineProps({
+defineProps({
   id: {
     type: String,
     default: 'cv-preview',
@@ -93,6 +100,42 @@ const rightList = computed({
     })
   },
 })
+
+const topPanelWidth = computed(() => {
+  return currentState.value.topPanelWidth || DEFAULT_TOP_PANEL_WIDTH
+})
+const leftPanelWidth = computed(() => {
+  return currentState.value.leftPanelWidth || DEFAULT_LEFT_PANEL_WIDTH
+})
+const rightPanelWidth = computed(() => {
+  return currentState.value.rightPanelWidth || DEFAULT_RIGHT_PANEL_WIDTH
+})
+
+const topPanelStyle = computed(() => {
+  if (currentState.value.layout === 'layout-left') {
+    return {
+      width: `${leftPanelWidth.value[1]}%`,
+    }
+  }
+  else if (currentState.value.layout === 'layout-right') {
+    return {
+      width: `${rightPanelWidth.value[0]}%`,
+    }
+  }
+
+  return {}
+})
+
+const handleTopPanelResized = (values) => {
+  if (values.length === 2)
+    toolbar.setTopPanelWidth(values.map(val => val.size))
+}
+const handleLeftPanelResize = (values) => {
+  toolbar.setLeftPanelWidth(values.map(val => val.size))
+}
+const handleRightPanelResize = (values) => {
+  toolbar.setRightPanelWidth(values.map(val => val.size))
+}
 </script>
 
 <template>
@@ -114,30 +157,41 @@ const rightList = computed({
     <div
       class="w-full h-full"
       :class="currentState.fontFamily"
-      style=""
     >
       <div
         :class="{
           'w-full flex justify-between': currentState.layout === 'layout-full',
-          'w-3/4 ml-auto': currentState.layout === 'layout-left',
-          'w-3/4 mr-auto': currentState.layout === 'layout-right',
+          'ml-auto': currentState.layout === 'layout-left',
+          'mr-auto': currentState.layout === 'layout-right',
         }"
+        :style="topPanelStyle"
       >
-        <CVPreviewSection
-          v-for="item in topList"
-          :key="item.key"
-          :element="item"
-          :read-only="readOnly"
-        />
+        <Splitpanes @resized="handleTopPanelResized">
+          <Pane
+            v-if="topList[0]"
+            :size="topPanelWidth[0]"
+          >
+            <CVPreviewSection
+              :element="topList[0]"
+              :read-only="readOnly"
+            />
+          </Pane>
+          <Pane
+            v-if="topList[1]"
+            :size="topPanelWidth[1]"
+            max-size="35"
+            min-size="25"
+          >
+            <CVPreviewSection
+              :element="topList[1]"
+              :read-only="readOnly"
+            />
+          </Pane>
+        </Splitpanes>
       </div>
-      <div class="flex flex-wrap gap-y-3">
-        <div
-          :class="{
-            'w-full': currentState.layout === 'layout-full',
-            'w-3/4 order-2': currentState.layout === 'layout-left',
-            'w-3/4 order-1': currentState.layout === 'layout-right',
-          }"
-        >
+
+      <div v-if="currentState.layout === 'layout-full'">
+        <div>
           <vuedraggable
             v-if="!readOnly"
             v-model="leftList"
@@ -160,14 +214,7 @@ const rightList = computed({
             <CVPreviewSection :element="element" :read-only="readOnly" />
           </div>
         </div>
-        <!-- add padding between left part and right part -->
-        <div
-          :class="{
-            'w-full': currentState.layout === 'layout-full',
-            'w-1/4 order-1 pr-4': currentState.layout === 'layout-left',
-            'w-1/4 order-2 pl-4': currentState.layout === 'layout-right',
-          }"
-        >
+        <div class="mt-3">
           <vuedraggable
             v-if="!readOnly"
             v-model="rightList"
@@ -191,6 +238,110 @@ const rightList = computed({
           </div>
         </div>
       </div>
+
+      <Splitpanes
+        v-else-if="currentState.layout === 'layout-right'"
+        @resize="handleRightPanelResize"
+      >
+        <Pane :size="rightPanelWidth[0]">
+          <vuedraggable
+            v-if="!readOnly"
+            v-model="leftList"
+            group="section"
+            item-key="key"
+            class="h-full flex flex-col gap-3"
+            delay-on-touch-only
+            :delay="isMobileDevice() ? 250 : 0"
+          >
+            <template #item="{element}">
+              <CVPreviewSection :element="element" />
+            </template>
+          </vuedraggable>
+
+          <div
+            v-for="(element, index) in leftList"
+            v-else
+            :key="index"
+          >
+            <CVPreviewSection :element="element" :read-only="readOnly" />
+          </div>
+        </Pane>
+        <Pane :size="rightPanelWidth[1]" max-size="35" min-size="25">
+          <vuedraggable
+            v-if="!readOnly"
+            v-model="rightList"
+            group="section"
+            item-key="key"
+            class="h-full flex flex-col gap-3"
+            delay-on-touch-only
+            :delay="isMobileDevice() ? 250 : 0"
+          >
+            <template #item="{element}">
+              <CVPreviewSection :element="element" />
+            </template>
+          </vuedraggable>
+
+          <div
+            v-for="(element, index) in rightList"
+            v-else
+            :key="index"
+          >
+            <CVPreviewSection :element="element" :read-only="readOnly" />
+          </div>
+        </Pane>
+      </Splitpanes>
+
+      <Splitpanes
+        v-else-if="currentState.layout === 'layout-left'"
+        @resize="handleLeftPanelResize"
+      >
+        <Pane :size="leftPanelWidth[0]" max-size="35" min-size="25">
+          <vuedraggable
+            v-if="!readOnly"
+            v-model="rightList"
+            group="section"
+            item-key="key"
+            class="h-full flex flex-col gap-3"
+            delay-on-touch-only
+            :delay="isMobileDevice() ? 250 : 0"
+          >
+            <template #item="{element}">
+              <CVPreviewSection :element="element" />
+            </template>
+          </vuedraggable>
+
+          <div
+            v-for="(element, index) in rightList"
+            v-else
+            :key="index"
+          >
+            <CVPreviewSection :element="element" :read-only="readOnly" />
+          </div>
+        </Pane>
+        <Pane :size="leftPanelWidth[1]">
+          <vuedraggable
+            v-if="!readOnly"
+            v-model="leftList"
+            group="section"
+            item-key="key"
+            class="h-full flex flex-col gap-3"
+            delay-on-touch-only
+            :delay="isMobileDevice() ? 250 : 0"
+          >
+            <template #item="{element}">
+              <CVPreviewSection :element="element" />
+            </template>
+          </vuedraggable>
+
+          <div
+            v-for="(element, index) in leftList"
+            v-else
+            :key="index"
+          >
+            <CVPreviewSection :element="element" :read-only="readOnly" />
+          </div>
+        </Pane>
+      </Splitpanes>
     </div>
   </div>
 </template>
@@ -269,12 +420,16 @@ const rightList = computed({
   height: 20px;
   opacity: 0;
 }
-.cv-preview [data-draggable="true"]:hover {
-  @apply bg-primary-10;
+
+@media (min-width: 640px) {
+  .cv-preview [data-draggable="true"]:hover {
+    @apply bg-primary-10;
+  }
+  .cv-preview [data-draggable="true"]:hover::before {
+    opacity: 1;
+  }
 }
-.cv-preview [data-draggable="true"]:hover::before {
-  opacity: 1;
-}
+
 .cv-preview [draggable="true"] {
   @apply bg-primary-10;
 }
@@ -286,5 +441,56 @@ const rightList = computed({
 }
 .temp-static {
   position: static !important;
+}
+
+.splitpanes {
+  background: transparent;
+}
+
+.splitpanes__splitter {
+  display: none;
+}
+
+@media (min-width: 640px) {
+  .splitpanes__splitter {
+    display: block;
+    position: relative;
+    user-select: none;
+    opacity: 0;
+  }
+  .splitpanes__splitter::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    opacity: 0;
+    z-index: 1;
+  }
+
+  .splitpanes:hover .splitpanes__splitter,
+  .splitpanes__splitter:hover,
+  .splitpanes__splitter:hover::before {
+    opacity: 1;
+  }
+}
+
+.splitpanes--horizontal > .splitpanes__splitter {
+  background-color: var(--primary-70-color);
+  min-height: 2px;
+}
+.splitpanes--horizontal > .splitpanes__splitter::before {
+  top: -10px;
+  bottom: -10px;
+  width: 100%;
+}
+.splitpanes--vertical > .splitpanes__splitter {
+  @apply my-3;
+  background-color: var(--primary-70-color);
+  min-width: 2px;
+}
+.splitpanes--vertical > .splitpanes__splitter::before {
+  left: -10px;
+  right: -10px;
+  height: 100%;
 }
 </style>

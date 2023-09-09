@@ -1,6 +1,11 @@
 import { defineStore } from 'pinia'
 import type { Note } from '~/types'
-import { MOBILE_BREAKPOINT } from '~/constants'
+import {
+  DEFAULT_LEFT_PANEL_WIDTH,
+  DEFAULT_RIGHT_PANEL_WIDTH,
+  DEFAULT_TOP_PANEL_WIDTH,
+  MOBILE_BREAKPOINT,
+} from '~/constants'
 
 interface State {
   dropdownMenu: {
@@ -15,6 +20,9 @@ interface State {
     layout: string
     color: string
     fontSize: string
+    topPanelWidth: number[]
+    leftPanelWidth: number[]
+    rightPanelWidth: number[]
   }
   noteList: Note[]
   isMobileScreen: boolean
@@ -29,11 +37,14 @@ export const useToolbarStore = defineStore('toolbar', {
       fontFamily: false,
     },
     isCVPreviewVisible: false,
-    currentState: {
+    currentState: { // will be exported in the draft file
       fontFamily: 'font-gill-sans',
       layout: 'layout-right',
       color: 'default',
       fontSize: 'default',
+      topPanelWidth: DEFAULT_TOP_PANEL_WIDTH,
+      leftPanelWidth: DEFAULT_LEFT_PANEL_WIDTH,
+      rightPanelWidth: DEFAULT_RIGHT_PANEL_WIDTH,
     },
     noteList: [],
     isMobileScreen: window.innerWidth <= MOBILE_BREAKPOINT,
@@ -85,6 +96,18 @@ export const useToolbarStore = defineStore('toolbar', {
     },
     setIsMobileScreen(val: boolean) {
       this.isMobileScreen = val
+    },
+    setIsCVPreviewVisible(val: boolean) {
+      this.isCVPreviewVisible = val
+    },
+    setTopPanelWidth(val: number[]) {
+      this.currentState.topPanelWidth = val
+    },
+    setLeftPanelWidth(val: number[]) {
+      this.currentState.leftPanelWidth = val
+    },
+    setRightPanelWidth(val: number[]) {
+      this.currentState.rightPanelWidth = val
     },
   },
 })

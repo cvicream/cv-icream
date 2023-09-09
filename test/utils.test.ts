@@ -20,7 +20,12 @@ describe('Utils', () => {
 
   it('getColor', () => {
     expect(getColor('default')).toEqual({
+      id: 'default',
       primary: '#F18B6B',
+      primary70: '#F6AF98',
+      primary40: '#FAD1C4',
+      primary20: '#FCE8E1',
+      primary10: '#FEF4F1',
       secondary: '#FEF4F1',
       shadow: '#FCE8E1',
       border: '#FAD1C4',

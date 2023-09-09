@@ -44,14 +44,14 @@ function toggleShowAll() {
         ref="nameInput"
         v-model="item.name"
         type="text"
-        class="w-full h-full leading text-blacks-100 outline-none bg-blacks-10"
+        class="w-full h-full leading text-blacks-100 outline-none rounded-none bg-blacks-10"
         :title="item.name"
         @keyup.enter="onChangeToDisplay"
         @focusout="onChangeToDisplay"
       >
       <div
         v-else
-        class="hover:bg-blacks-10 hover:cursor-text w-full h-full flex items-center leading leading-6 text-blacks-100 text-ellipsis whitespace-nowrap overflow-hidden bg-transparent"
+        class="sm:hover:bg-blacks-10 sm:hover:cursor-text w-full h-full flex items-center leading leading-6 text-blacks-100 text-ellipsis whitespace-nowrap overflow-hidden bg-transparent"
         :title="item.name"
         @click="onChangToEdit"
       >
