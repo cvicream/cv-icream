@@ -13,13 +13,13 @@ const toggleShow = () => {
   })
 }
 
-function focusIn(index) {
+function focusIn() {
   user.$patch((state) => {
     state.summary.isEditing = true
   })
 }
 
-function focusOut(index) {
+function focusOut() {
   user.$patch((state) => {
     state.summary.isEditing = false
   })
@@ -46,8 +46,8 @@ function focusOut(index) {
       Let people get to know you quickly by giving them a brief description of yourself and what your characteristics are.
     </p>
     <div
-      @focusin="() =>focusIn(index)"
-      @focusout="() => focusOut(index)"
+      @focusin="focusIn"
+      @focusout="focusOut"
     >
       <h3 class="subleading text-blacks-100 invisible">
         Summary
