@@ -385,7 +385,7 @@ export default defineComponent({
     <div
       v-if="toolbarVisible && linkTooltipVisible && !linkEditVisible"
       ref="linkTooltip"
-      class="absolute z-1 flex justify-between px-3 py-2 bg-white border-1 border-black rounded-xl shadow-custom"
+      class="absolute z-10 flex justify-between px-3 py-2 bg-white border-1 border-black rounded-xl shadow-custom"
       :style="linkTooltipStyle"
     >
       <a
@@ -395,7 +395,7 @@ export default defineComponent({
       >
         {{ link }}
       </a>
-      <div>
+      <div class="whitespace-nowrap">
         <button
           class="note pl-2 border-l border-blacks-20 text-blacks-40 sm:hover:text-blacks-70 transition-[color] duration-300"
           @click="openLinkEdit"
@@ -414,7 +414,7 @@ export default defineComponent({
     <div
       v-if="linkEditVisible"
       ref="linkEdit"
-      class="absolute z-1 bg-white p-4 rounded-[1.25rem] shadow-custom"
+      class="absolute z-10 bg-white p-4 rounded-[1.25rem] shadow-custom"
       :style="linkEditStyle"
     >
       <div class="flex justify-between">
