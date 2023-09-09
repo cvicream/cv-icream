@@ -59,20 +59,20 @@ const onClickOutside = () => {
 }
 
 const onDragStart = (event: DragEvent) => {
-  document.getElementById('left-side-container')?.addEventListener('dragover', (event) => {
+  document.querySelectorAll('#cv-preview [data-draggable="true"]').forEach(el => el.classList.add('temp-static'))
+  document.getElementById('cv-preview')?.addEventListener('dragover', (event) => {
     event.preventDefault()
   }, false)
+  event.target?.classList.add('dragging')
 }
 
 const onDragEnd = (event: DragEvent) => {
   document.querySelectorAll('#cv-preview [data-draggable="true"]').forEach(el => el.classList.remove('temp-static'))
+  event.target?.classList.remove('dragging')
 
-  const boundingBox = document.getElementById('left-side-container')?.getBoundingClientRect()!
-  const scrollTop = document.getElementById('left-side-container')?.scrollTop!
-  const scrollLeft = document.getElementById('left-side-container')?.scrollLeft!
-  const left = event.clientX - boundingBox.x + scrollLeft
-  const top = event.clientY - boundingBox.y + scrollTop
-
+  const boundingBox = document.getElementById('cv-preview')?.getBoundingClientRect()!
+  const left = event.clientX - boundingBox.x
+  const top = event.clientY - boundingBox.y
   if (left < 0 || top < 0 || left > boundingBox?.width || top > boundingBox?.height)
     return
 
@@ -89,11 +89,9 @@ const onTouchEnd = (event: TouchEvent) => {
   const touch = event.touches[0] || event.changedTouches[0]
   document.querySelectorAll('#cv-preview [data-draggable="true"]').forEach(el => el.classList.remove('temp-static'))
 
-  const boundingBox = document.getElementById('left-side-container')?.getBoundingClientRect()!
-  const scrollTop = document.getElementById('left-side-container')?.scrollTop!
-  const scrollLeft = document.getElementById('left-side-container')?.scrollLeft!
-  const left = touch.pageX - boundingBox.x + scrollLeft
-  const top = touch.pageY - boundingBox.y + scrollTop
+  const boundingBox = document.getElementById('cv-preview')?.getBoundingClientRect()!
+  const left = touch.pageX - boundingBox.x
+  const top = touch.pageY - boundingBox.y
 
   if (left < 0
   || top < 0
@@ -172,5 +170,8 @@ const onTouchEnd = (event: TouchEvent) => {
   border-bottom: 2px solid #72B255;
   border-right: 2px solid #72B255;
   margin: 4px 10px 0 7px;
+}
+.dragging {
+  opacity: 0.1;
 }
 </style>

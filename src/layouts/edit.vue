@@ -9,18 +9,11 @@ import { A4_HEIGHT_PX, A4_WIDTH_PX, MAX_SIDEBAR_WIDTH, MIN_SIDEBAR_WIDTH, MOBILE
 
 const user = useUserStore()
 const toolbar = useToolbarStore()
-const { isCVPreviewVisible, currentState, isMobileScreen, noteList } = storeToRefs(toolbar)
+const { isCVPreviewVisible, currentState, isMobileScreen } = storeToRefs(toolbar)
 
 const isDesignBarOpen = ref(true)
 const scale = ref(100)
 const isFitEnable = ref(false)
-const newNoteId = ref(0)
-const isNoteEditing = ref(false)
-
-toolbar.$onAction(({ name, args }) => {
-  if (name === 'addNote')
-    newNoteId.value = args[0].id
-})
 
 const cvPreviewWidth = computed(() => {
   const width = 210 * scale.value / 100
@@ -276,18 +269,10 @@ function toggleSidebar(isOpen) {
     <Header :is-edit="true" />
     <div class="w-full h-[calc(100%-137px)] border-b-1 border-blacks-20 sm:flex sm:flex-row sm:h-[calc(100%-57px)] sm:border-0 overflow-hidden">
       <div
-        id="left-side-container"
         ref="leftSide"
         class="h-[calc(100%-8px)] bg-white px-3 pt-[52px] pb-7 overflow-auto custom-scrollbar flex-grow flex-shrink sm:px-7 sm:py-15 m-1 transition-all duration-200 relative"
         :class="{ 'absolute hidden': isMobileScreen && !isCVPreviewVisible }"
       >
-        <Note
-          v-for="note in noteList"
-          :key="note.id"
-          v-model:is-note-editing="isNoteEditing"
-          :note="note"
-          :is-open="newNoteId === note.id"
-        />
         <div
           class="mx-auto"
           :style="{
@@ -466,8 +451,5 @@ function toggleSidebar(isOpen) {
 }
 .resizer::before:hover {
   @apply cursor-[col-resize];
-}
-#left-side-container.adding-note-mode {
-  cursor: url('../assets/icons/note.svg'), auto;
 }
 </style>
