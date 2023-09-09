@@ -1,5 +1,6 @@
 <script lang="ts">
 import { computed, defineComponent, onMounted, ref } from 'vue'
+import type { Quill } from '@vueup/vue-quill'
 import { QuillEditor } from '@vueup/vue-quill'
 import '@vueup/vue-quill/dist/vue-quill.snow.css'
 import '@vueup/vue-quill/dist/vue-quill.bubble.css'
@@ -62,7 +63,8 @@ export default defineComponent({
 
     onMounted(() => {
       if (editor.value) {
-        const quill = editor.value.getQuill()
+        const editorElement = (editor.value as Quill).getEditor()
+        const quill = (editor.value as Quill).getQuill()
         const toolbar = quill.getModule('toolbar')
 
         // customize link handler
@@ -98,6 +100,14 @@ export default defineComponent({
           })
           delta.ops = ops
           return delta
+        })
+
+        editorElement.addEventListener('keydown', (event) => {
+          const keyboardEvent = event as KeyboardEvent
+          if (['Equal', 'Minus'].includes(keyboardEvent.code)) {
+            // prevent zoom in/out
+            keyboardEvent.stopPropagation()
+          }
         })
       }
     })

@@ -25,7 +25,7 @@ export default defineConfig({
     ['btn-secondary', 'h-12 px-10 rounded-xl text-blacks-100 bg-white border-1 border-primary-100 transition duration-300 ease-out sm:hover:bg-primary-10'],
     ['btn-icon-48', 'w-12 h-12 p-2 rounded-full text-blacks-70 bg-white shadow-custom sm:hover:bg-primary-10'],
     ['btn-icon-48-fill', 'w-12 h-12 p-[calc(0.5rem-1px)] rounded-full text-white bg-primary-100 shadow-custom border-1 border-transparent sm:hover:border-primary-20'],
-    ['btn-icon-32', 'w-8 h-8 flex justify-center items-center text-blacks-70 rounded-full sm:hover:bg-primary-10'],
+    ['btn-icon-32', 'w-8 h-8 flex justify-center items-center text-blacks-70 rounded-full outline-none sm:hover:bg-primary-10'],
     ['btn-icon-24', 'w-6 h-6 text-blacks-40 sm:hover:text-blacks-70'],
     ['icon-32', 'w-8 h-8 p-1 block text-blacks-70'],
     ['icon-32-fill', 'w-8 h-8 block text-block'],

@@ -190,6 +190,10 @@ function isSafari() {
   return 'safari' in window
 }
 
+function isMac() {
+  return navigator.userAgent.toUpperCase().includes('MAC')
+}
+
 export {
   hasStorage,
   getStorage,
@@ -210,4 +214,5 @@ export {
   validateEmail,
   isMobileDevice,
   isSafari,
+  isMac,
 }
