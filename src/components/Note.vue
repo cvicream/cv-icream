@@ -78,9 +78,9 @@ const onDragEnd = (event: DragEvent) => {
   event.target?.classList.remove('dragging')
 
   const boundingBox = document.getElementById('cv-preview')?.getBoundingClientRect()!
-  const left = event.clientX - boundingBox.x
-  const top = event.clientY - boundingBox.y
-  if (left < 0 || top < 0 || left > boundingBox?.width || top > boundingBox?.height)
+  const left = (event.clientX - boundingBox.x) / boundingBox.width
+  const top = (event.clientY - boundingBox.y) / boundingBox.height
+  if (left < 0 || top < 0 || left > 1 || top > 1)
     return
 
   toolbar.modifyNote({
@@ -156,8 +156,8 @@ const onTouchEnd = (event: TouchEvent) => {
   border-radius: 50%;
   position: absolute;
   z-index: 1;
-  top: calc(v-bind('props.note.location.top') * 1px);
-  left: calc(v-bind('props.note.location.left') * 1px);
+  top: calc(v-bind('props.note.location.top') * 100%);
+  left: calc(v-bind('props.note.location.left') * 100%);
 }
 .note {
   width: 300px;
@@ -166,8 +166,8 @@ const onTouchEnd = (event: TouchEvent) => {
   border-radius: 12px;
   padding: 16px;
   z-index: 2;
-  top: calc(v-bind('props.note.location.top') * 1px);
-  left: calc((v-bind('props.note.location.left') + 40) * 1px);
+  top: calc(v-bind('props.note.location.top') * 100%);
+  left: calc((v-bind('props.note.location.left')) * 100% + 40px);
 }
 .checkmark {
   display: inline-block;

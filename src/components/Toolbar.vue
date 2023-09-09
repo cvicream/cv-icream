@@ -96,8 +96,8 @@ const createNote = (event: MouseEvent) => {
     id: Date.now(),
     value: '<p><br></p>',
     location: {
-      left: event.clientX - boundingBox.x,
-      top: event.clientY - boundingBox.y,
+      left: (event.clientX - boundingBox.x) / boundingBox.width,
+      top: (event.clientY - boundingBox.y) / boundingBox.height,
     },
   })
 
