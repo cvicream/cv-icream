@@ -75,19 +75,16 @@ export default defineComponent({
     })
 
     const linkTooltipStyle = computed(() => {
-      const style: CSSProperties = {}
+      const style: CSSProperties = {
+        left: 0,
+        right: 0,
+      }
 
       if (linkTooltip.value && selectedAnchor.value) {
-        const linkTooltipWidth = (linkTooltip.value as HTMLElement).offsetWidth
         const anchor = selectedAnchor.value
         const parentWidth = root.value?.clientWidth
-        if (parentWidth) {
+        if (parentWidth)
           style.top = `${anchor.offsetTop + anchor.offsetHeight + 8}px`
-          if (anchor.offsetLeft + linkTooltipWidth < parentWidth)
-            style.left = `${anchor.offsetLeft}px`
-          else
-            style.right = `${parentWidth - anchor.offsetLeft - anchor.offsetWidth}px`
-        }
       }
       return style
     })
@@ -388,7 +385,7 @@ export default defineComponent({
     <div
       v-if="toolbarVisible && linkTooltipVisible && !linkEditVisible"
       ref="linkTooltip"
-      class="absolute z-1 max-w-[262px] sm:max-w-[400px] flex justify-between gap-2 px-3 py-2 bg-white border-1 border-black rounded-xl shadow-custom"
+      class="absolute z-1 flex justify-between px-3 py-2 bg-white border-1 border-black rounded-xl shadow-custom"
       :style="linkTooltipStyle"
     >
       <a
@@ -398,18 +395,20 @@ export default defineComponent({
       >
         {{ link }}
       </a>
-      <button
-        class="note pl-2 border-l border-blacks-20 text-blacks-40 sm:hover:text-blacks-70 transition-[color] duration-300"
-        @click="openLinkEdit"
-      >
-        Edit
-      </button>
-      <button
-        class="note text-blacks-40 sm:hover:text-blacks-70 transition-[color] duration-300"
-        @click="removeLink"
-      >
-        Remove
-      </button>
+      <div>
+        <button
+          class="note pl-2 border-l border-blacks-20 text-blacks-40 sm:hover:text-blacks-70 transition-[color] duration-300"
+          @click="openLinkEdit"
+        >
+          Edit
+        </button>
+        <button
+          class="note text-blacks-40 ml-2 sm:hover:text-blacks-70 transition-[color] duration-300"
+          @click="removeLink"
+        >
+          Remove
+        </button>
+      </div>
     </div>
 
     <div
@@ -425,7 +424,7 @@ export default defineComponent({
           </div>
           <span class="leading text-blacks-100">Link</span>
         </div>
-        <button @click="onLinkClose">
+        <button @click="closeLinkEdit">
           <span class="i-custom:cancel w-5 h-5 text-blacks-40 sm:hover:text-blacks-70" />
         </button>
       </div>
