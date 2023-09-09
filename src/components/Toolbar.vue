@@ -80,6 +80,15 @@ function redo() {
   }
 }
 
+const removeClickListener = (event: KeyboardEvent) => {
+  if (event.key === 'Escape') {
+    document.getElementById('cv-preview')?.removeEventListener('click', createNote)
+    document.removeEventListener('keydown', removeClickListener)
+    document.getElementById('cv-preview')?.classList.remove('adding-note-mode')
+    noteBtnRef.value!.classList.remove('adding-note-mode')
+  }
+}
+
 const createNote = (event: MouseEvent) => {
   const boundingBox = document.getElementById('cv-preview')?.getBoundingClientRect()!
 
@@ -91,15 +100,11 @@ const createNote = (event: MouseEvent) => {
       top: event.clientY - boundingBox.y,
     },
   })
-}
 
-const removeClickListener = (event: KeyboardEvent) => {
-  if (event.key === 'Escape') {
-    document.getElementById('cv-preview')?.removeEventListener('click', createNote)
-    document.removeEventListener('keydown', removeClickListener)
-    document.getElementById('cv-preview')?.classList.remove('adding-note-mode')
-    noteBtnRef.value!.classList.remove('adding-note-mode')
-  }
+  document.getElementById('cv-preview')?.removeEventListener('click', createNote)
+  document.removeEventListener('keydown', removeClickListener)
+  document.getElementById('cv-preview')?.classList.remove('adding-note-mode')
+  noteBtnRef.value!.classList.remove('adding-note-mode')
 }
 
 function onNoteClick(event: MouseEvent) {

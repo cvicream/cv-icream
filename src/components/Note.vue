@@ -21,6 +21,13 @@ watch(() => value.value !== props.note.value, (isEditing) => {
   emit('update:isNoteEditing', isEditing)
 })
 
+watch(() => Boolean(editorRef.value), (hasEditor) => {
+  if (hasEditor) {
+    const quill = editorRef.value?.getQuill()
+    quill.focus()
+  }
+})
+
 const onToggleNote = () => {
   if (value.value !== props.note.value) {
     value.value = props.note.value
