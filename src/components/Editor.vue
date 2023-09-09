@@ -76,8 +76,8 @@ export default defineComponent({
 
     const linkTooltipStyle = computed(() => {
       const style: CSSProperties = {
-        left: 0,
-        right: 0,
+        left: '8px',
+        right: '8px',
       }
 
       if (linkTooltip.value && selectedAnchor.value) {
@@ -266,7 +266,7 @@ export default defineComponent({
 
     function setLink(anchor: HTMLAnchorElement) {
       selectedAnchor.value = anchor
-      link.value = anchor.href
+      link.value = anchor.getAttribute('href') || ''
       draftLink.value = link.value
     }
 
