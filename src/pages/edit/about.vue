@@ -41,7 +41,7 @@ function focusOut() {
         <label class="block note text-blacks-70">Name</label>
         <Editor
           v-model="about.name"
-          class-name="h-[46px] mt-1"
+          class-name="mt-1"
           :placeholder="stripHtml(DEFAULT_TEMPLATE.about.name)"
           :is-single-line="true"
         />
@@ -50,7 +50,7 @@ function focusOut() {
         <label class="block note text-blacks-70">Job Title</label>
         <Editor
           v-model="about.jobTitle"
-          class-name="h-[46px] mt-1"
+          class-name="mt-1"
           :placeholder="stripHtml(DEFAULT_TEMPLATE.about.jobTitle)"
           :is-single-line="true"
         />

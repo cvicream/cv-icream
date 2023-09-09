@@ -259,9 +259,10 @@ function swap(index1, index2) {
           <label class="block note text-blacks-70">Title</label>
           <Editor
             v-model="item.title"
-            class-name="h-[46px] mt-1"
+            class-name="mt-1"
             :enable="item.isShow"
             :placeholder="DEFAULT_TEMPLATE.skill.list[0].title"
+            :is-single-line="true"
           />
         </div>
         <div
@@ -272,16 +273,17 @@ function swap(index1, index2) {
             <label class="block note text-blacks-70">Subtitle</label>
             <Editor
               v-model="item.subtitle"
-              class-name="h-[46px] mt-1"
+              class-name="mt-1"
               :enable="item.isShow"
               :placeholder="DEFAULT_TEMPLATE.skill.list[0].subtitle"
+              :is-single-line="true"
             />
           </div>
           <div>
             <label class="block note text-blacks-70">Description</label>
             <Editor
               v-model="item.paragraph"
-              class-name="h-[130px] mt-1"
+              class-name="mt-1"
               :enable="item.isShow"
               :placeholder="DEFAULT_TEMPLATE.skill.list[0].paragraph"
             />

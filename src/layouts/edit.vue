@@ -83,6 +83,8 @@ onBeforeMount(() => {
 
   window.addEventListener('beforeunload', onBeforeUnload)
   resize()
+
+  initializeWidth()
 })
 
 onMounted(() => {
@@ -133,6 +135,12 @@ function overrideDefaultZoom() {
       event.preventDefault()
     }
   }, { passive: false })
+}
+
+function initializeWidth() {
+  const width = (window.innerWidth - 1) / 2 // resizer width is 1px
+  leftWidth.value = width
+  rightWidth.value = width
 }
 
 function onBeforeUnload(event) {
@@ -310,6 +318,7 @@ function toggleSidebar(isOpen) {
         ref="leftSide"
         class="h-[calc(100%-8px)] bg-white px-3 pt-[52px] pb-7 overflow-auto custom-scrollbar flex-grow flex-shrink sm:px-7 sm:py-15 m-1 transition-all duration-200"
         :class="{ 'absolute hidden': isMobileScreen && !isCVPreviewVisible }"
+        :style="isMobileScreen ? 'width: 100%' : `width: ${leftWidth}px`"
       >
         <div
           class="mx-auto relative"
@@ -449,13 +458,14 @@ function toggleSidebar(isOpen) {
 
       <div
         ref="resizer"
-        class="resizer h-full sm:border-l border-blacks-20 cursor-[col-resize]"
+        class="resizer h-full sm:w-[1px] bg-blacks-20 cursor-[col-resize] select-none"
         :class="{ 'hidden': isMobileScreen }"
       />
 
       <div
         ref="rightSide"
-        class="w-full h-full sm:w-[390px] sm:min-w-[390px] transition-all duration-200"
+        class="w-full h-full sm:min-w-[390px] transition-all duration-200"
+        :style="isMobileScreen ? 'width: 100%' : `width: ${rightWidth}px`"
       >
         <Sidebar
           :is-mobile="isMobileScreen"
