@@ -76,48 +76,59 @@ function redo() {
   }
 }
 
+// get root element that can put notes in
+function getRootElement() {
+  return document.getElementById('cv-preview')
+}
+
 const removeClickListener = (event: KeyboardEvent) => {
-  if (event.key === 'Escape') {
-    document.getElementById('cv-preview')?.removeEventListener('click', createNote)
+  const rootElement = getRootElement()
+  if (rootElement && event.key === 'Escape') {
+    rootElement.removeEventListener('click', createNote)
     document.removeEventListener('keydown', removeClickListener)
-    document.getElementById('cv-preview')?.classList.remove('adding-note-mode')
+    rootElement.classList.remove('adding-note-mode')
     noteBtnRef.value!.classList.remove('adding-note-mode')
   }
 }
 
-const createNote = (event: MouseEvent) => {
-  const boundingBox = document.getElementById('cv-preview')?.getBoundingClientRect()!
+function createNote(event: MouseEvent) {
+  const rootElement = getRootElement()
+  if (rootElement) {
+    const boundingBox = rootElement.getBoundingClientRect()!
+    toolbar.addNote({
+      id: Date.now(),
+      value: '',
+      location: {
+        left: (event.clientX - boundingBox.x) / boundingBox.width,
+        top: (event.clientY - boundingBox.y) / boundingBox.height,
+      },
+    })
 
-  toolbar.addNote({
-    id: Date.now(),
-    value: '',
-    location: {
-      left: (event.clientX - boundingBox.x) / boundingBox.width,
-      top: (event.clientY - boundingBox.y) / boundingBox.height,
-    },
-  })
-
-  document.getElementById('cv-preview')?.removeEventListener('click', createNote)
-  document.removeEventListener('keydown', removeClickListener)
-  document.getElementById('cv-preview')?.classList.remove('adding-note-mode')
-  noteBtnRef.value!.classList.remove('adding-note-mode')
+    rootElement.removeEventListener('click', createNote)
+    document.removeEventListener('keydown', removeClickListener)
+    rootElement.classList.remove('adding-note-mode')
+    noteBtnRef.value!.classList.remove('adding-note-mode')
+  }
 }
 
 function onNoteClick(event: MouseEvent) {
-  if (document.getElementById('cv-preview')?.classList.contains('adding-note-mode')) {
-    document.getElementById('cv-preview')?.removeEventListener('click', createNote)
-    document.removeEventListener('keydown', removeClickListener)
-    document.getElementById('cv-preview')?.classList.remove('adding-note-mode')
-    noteBtnRef.value!.classList.remove('adding-note-mode')
-    return
-  }
+  const rootElement = getRootElement()
+  if (rootElement) {
+    if (rootElement.classList.contains('adding-note-mode')) {
+      rootElement.removeEventListener('click', createNote)
+      document.removeEventListener('keydown', removeClickListener)
+      rootElement.classList.remove('adding-note-mode')
+      noteBtnRef.value!.classList.remove('adding-note-mode')
+      return
+    }
 
-  noteBtnRef.value!.classList.add('adding-note-mode')
-  document.getElementById('cv-preview')?.classList.add('adding-note-mode')
-  setTimeout(() => {
-    document.getElementById('cv-preview')?.addEventListener('click', createNote)
-  }, 0)
-  document.addEventListener('keydown', removeClickListener)
+    noteBtnRef.value!.classList.add('adding-note-mode')
+    rootElement.classList.add('adding-note-mode')
+    setTimeout(() => {
+      rootElement.addEventListener('click', createNote)
+    }, 0)
+    document.addEventListener('keydown', removeClickListener)
+  }
 }
 
 function updateStore(obj) {
