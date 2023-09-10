@@ -160,6 +160,7 @@ function togglePaymentModal() {
           </span>
         </button>
         <button
+          id="send-feedback"
           class="sm:flex-1 btn-primary px-8 flex-grow flex-shrink-0"
           :class="{ 'text-blacks-40 bg-blacks-10': !enable}"
           :disabled="!enable"
