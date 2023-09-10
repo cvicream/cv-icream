@@ -1,5 +1,4 @@
 <script setup lang="ts">
-
 import { onClickOutside } from '@vueuse/core'
 import { useToolbarStore } from '~/stores/toolbar'
 import type { Note } from '~/types'

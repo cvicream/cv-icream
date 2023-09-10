@@ -27,7 +27,7 @@ defineProps({
 const user = useUserStore()
 const { splitIndex, about, summary, experience, project, skill, education, certificate, contact, social } = storeToRefs(user)
 const toolbar = useToolbarStore()
-const { currentState, noteList } = storeToRefs(toolbar)
+const { currentState, isMobileScreen, noteList } = storeToRefs(toolbar)
 const newNoteId = ref(0)
 const isNoteEditing = ref(false)
 
@@ -145,7 +145,7 @@ const handleRightPanelResize = (values) => {
     class="w-full h-full bg-white flex-shrink-0 p-6 shadow-custom cv-preview"
     style="min-height: inherit;"
   >
-    <div v-if="!readOnly">
+    <div v-if="!readOnly && !isMobileScreen">
       <Note
         v-for="note in noteList"
         :key="note.id"
