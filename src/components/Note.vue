@@ -1,6 +1,6 @@
 <script setup lang="ts">
 
-import { vOnClickOutside } from '@vueuse/components'
+import { onClickOutside } from '@vueuse/core'
 import { useToolbarStore } from '~/stores/toolbar'
 import type { Note } from '~/types'
 
@@ -13,9 +13,10 @@ const props = defineProps<{
 }>()
 
 const toolbar = useToolbarStore()
+const noteRef = ref(null)
+const editorRef = ref(null)
 const show = ref(props.isOpen)
 const value = ref(props.note.value)
-const editorRef = ref(null)
 
 watch(() => value.value !== props.note.value, (isEditing) => {
   emit('update:isNoteEditing', isEditing)
@@ -63,14 +64,14 @@ const onRemove = () => {
   toolbar.removeNote(props.note.id)
 }
 
-const onClickOutside = () => {
+onClickOutside(noteRef, (event) => {
   if (!value.value)
     toolbar.removeNote(props.note.id)
   else if (value.value === props.note.value)
     show.value = false
   else if (editorRef.value)
     (editorRef.value as HTMLTextAreaElement).focus()
-}
+})
 
 const onDragStart = (event: DragEvent) => {
   document.querySelectorAll('#cv-preview [data-draggable="true"]').forEach(el => el.classList.add('temp-static'))
@@ -127,7 +128,7 @@ const onTouchEnd = (event: TouchEvent) => {
 
 <template>
   <div
-    v-on-click-outside="onClickOutside"
+    ref="noteRef"
     class="note-container"
     draggable="true"
     @dragstart="onDragStart"
