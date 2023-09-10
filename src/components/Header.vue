@@ -74,14 +74,13 @@ function redirectToDownload() {
 
 function exportJsonFile() {
   closeAction()
+  const currentStateData = Object.keys(currentState.value).reduce((acc, cur) => {
+    acc[cur] = currentState.value[cur]
+    return acc
+  }, {})
   const jsonData = {
     toolbar: {
-      currentState: {
-        layout: currentState.value.layout,
-        fontSize: currentState.value.fontSize,
-        color: currentState.value.color,
-        fontFamily: currentState.value.fontFamily,
-      },
+      currentState: currentStateData,
       noteList: noteList.value,
     },
     user: {
