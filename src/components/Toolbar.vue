@@ -21,7 +21,7 @@ const undoStore = useUndoStore()
 const redoStore = useRedoStore()
 const noteBtnRef = ref<HTMLDivElement | null>(null)
 const { path } = storeToRefs(user)
-const { isCVPreviewVisible, currentState } = storeToRefs(toolbar)
+const { isCVPreviewVisible, currentState, isMobileScreen } = storeToRefs(toolbar)
 
 watch(path, () => {
   if (path.value !== router.currentRoute.value.path)
@@ -272,6 +272,7 @@ function onCollapse() {
     <div
       v-if="open"
       class="btn-group-toolbar h-12"
+      :class="{ 'hidden': isMobileScreen && !isCVPreviewVisible }"
     >
       <Tooltip
         placement="top"
@@ -282,17 +283,10 @@ function onCollapse() {
           class="btn-toolbar"
           @click="onNoteClick"
         >
-          <span
-            class="i-custom:note w-8 h-8"
-          />
+          <span class="i-custom:note w-8 h-8" />
         </button>
       </Tooltip>
     </div>
-    <!-- <div v-if="open" class="btn-group-toolbar w-12 h-12">
-      <div class="btn-toolbar">
-        <button class="i-custom:note w-8 h-8" />
-      </div>
-    </div> -->
   </div>
 </template>
 
