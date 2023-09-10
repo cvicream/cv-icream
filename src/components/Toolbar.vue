@@ -90,7 +90,7 @@ const createNote = (event: MouseEvent) => {
 
   toolbar.addNote({
     id: Date.now(),
-    value: '<p><br></p>',
+    value: '',
     location: {
       left: (event.clientX - boundingBox.x) / boundingBox.width,
       top: (event.clientY - boundingBox.y) / boundingBox.height,

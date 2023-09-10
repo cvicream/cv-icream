@@ -21,11 +21,9 @@ watch(() => value.value !== props.note.value, (isEditing) => {
   emit('update:isNoteEditing', isEditing)
 })
 
-watch(() => Boolean(editorRef.value), (hasEditor) => {
-  if (hasEditor) {
-    const quill = editorRef.value?.getQuill()
-    quill.focus()
-  }
+watch(editorRef, () => {
+  if (editorRef.value)
+    (editorRef.value as HTMLTextAreaElement).focus()
 })
 
 const noteClasses = computed(() => {
@@ -68,16 +66,12 @@ const onRemove = () => {
 const onClickOutside = () => {
   const parser = new DOMParser()
   const doc = parser.parseFromString(value.value, 'text/html')
-  if (!doc?.body?.firstChild?.textContent) {
+  if (!doc?.body?.firstChild?.textContent)
     toolbar.removeNote(props.note.id)
-  }
-  else if (value.value === props.note.value) {
+  else if (value.value === props.note.value)
     show.value = false
-  }
-  else {
-    const quill = editorRef.value?.getQuill()
-    quill.focus()
-  }
+  else if (editorRef.value)
+    (editorRef.value as HTMLTextAreaElement).focus()
 }
 
 const onDragStart = (event: DragEvent) => {
@@ -151,7 +145,7 @@ const onTouchEnd = (event: TouchEvent) => {
       />
     </button>
     <div v-if="show" :class="noteClasses">
-      <div class="flex justify-between items-center mb-1">
+      <div class="flex justify-between items-center">
         <span class="text-blacks-70">Note</span>
         <div class="flex gap-3">
           <button v-if="value" class="i-custom:delete icon-24 cursor-pointer" @click="onRemove" />
@@ -161,7 +155,12 @@ const onTouchEnd = (event: TouchEvent) => {
           <button v-else class="i-custom:cancel icon-24 cursor-pointer" @click="onToggleNote" />
         </div>
       </div>
-      <Editor v-model="value" v-model:editor-ref="editorRef" class="h-[130px]" placeholder="Note down here..." />
+      <textarea
+        ref="editorRef"
+        v-model="value"
+        placeholder="Note down here..."
+        class="form-textarea h-[130px] custom-scrollbar"
+      />
     </div>
   </div>
 </template>
