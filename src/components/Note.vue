@@ -28,6 +28,21 @@ watch(() => Boolean(editorRef.value), (hasEditor) => {
   }
 })
 
+const noteClasses = computed(() => {
+  let classes = 'note bg-yellow'
+  if (props.note.location.left > 0.6)
+    classes += ' note-left'
+  else
+    classes += ' note-right'
+
+  if (props.note.location.top > 0.8)
+    classes += ' note-bottom'
+  else
+    classes += ' note-top'
+
+  return classes
+})
+
 const onToggleNote = () => {
   if (value.value !== props.note.value) {
     value.value = props.note.value
@@ -135,7 +150,7 @@ const onTouchEnd = (event: TouchEvent) => {
         class="i-custom:note w-8 h-8"
       />
     </button>
-    <div v-if="show" class="note bg-yellow">
+    <div v-if="show" :class="noteClasses">
       <div class="flex justify-between items-center mb-1">
         <span class="text-blacks-70">Note</span>
         <div class="flex gap-3">
@@ -151,7 +166,7 @@ const onTouchEnd = (event: TouchEvent) => {
   </div>
 </template>
 
-<style scoped>
+<style lang="scss" scoped>
 .note-icon {
   border-radius: 50%;
   position: absolute;
@@ -167,7 +182,18 @@ const onTouchEnd = (event: TouchEvent) => {
   padding: 16px;
   z-index: 2;
   top: calc(v-bind('props.note.location.top') * 100%);
-  left: calc((v-bind('props.note.location.left')) * 100% + 40px);
+  &.note-right {
+    left: calc((v-bind('props.note.location.left')) * 100% + 40px);
+  }
+  &.note-left {
+    left: calc((v-bind('props.note.location.left')) * 100% - 320px);
+  }
+  &.note-bottom {
+    top: calc(v-bind('props.note.location.top') * 100% - 170px);
+  }
+  &.note-top {
+    top: calc(v-bind('props.note.location.top') * 100%);
+  }
 }
 .checkmark {
   display: inline-block;
