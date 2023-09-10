@@ -280,7 +280,7 @@ function onCollapse() {
       >
         <button
           ref="noteBtnRef"
-          class="btn-toolbar"
+          class="btn-toolbar outline-none"
           @click="onNoteClick"
         >
           <span class="i-custom:note w-8 h-8" />
