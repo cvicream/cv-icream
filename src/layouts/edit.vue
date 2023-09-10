@@ -62,7 +62,7 @@ const rightWidth = ref(MIN_SIDEBAR_WIDTH)
 
 const rightWidthStyle = computed(() => {
   return {
-    right: `${rightWidth.value}px`,
+    right: `${isMobileScreen.value ? 0 : rightWidth.value}px`,
   }
 })
 
