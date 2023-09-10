@@ -147,7 +147,7 @@ const onTouchEnd = (event: TouchEvent) => {
     <div v-if="show" :class="noteClasses">
       <div class="flex justify-between items-center">
         <span class="text-blacks-70">Note</span>
-        <div class="flex gap-3">
+        <div class="flex items-center gap-3">
           <button v-if="value" class="i-custom:delete icon-24 cursor-pointer" @click="onRemove" />
           <div v-if="value !== props.note.value" class="cursor-pointer" @click="onSave">
             <span class="checkmark " />
