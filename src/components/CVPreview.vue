@@ -346,13 +346,12 @@ const handleRightPanelResize = (values) => {
   </div>
 </template>
 
-<style scoped>
+<style>
 .cv-preview ol {
   @apply pl-4;
   list-style: none;
 }
-.cv-preview ol li {
-}
+
 .cv-preview ol li::before {
   display: inline-block;
   width: 1rem;
