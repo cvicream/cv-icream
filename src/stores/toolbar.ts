@@ -87,9 +87,7 @@ export const useToolbarStore = defineStore('toolbar', {
     },
     removeEmptyNotes() {
       this.noteList = this.noteList.reduce<Note[]>((acc, curr) => {
-        const parser = new DOMParser()
-        const doc = parser.parseFromString(curr.value, 'text/html')
-        if (doc?.body?.firstChild?.textContent)
+        if (curr.value)
           return [...acc, curr]
         return acc
       }, [])

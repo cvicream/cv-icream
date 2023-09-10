@@ -64,9 +64,7 @@ const onRemove = () => {
 }
 
 const onClickOutside = () => {
-  const parser = new DOMParser()
-  const doc = parser.parseFromString(value.value, 'text/html')
-  if (!doc?.body?.firstChild?.textContent)
+  if (!value.value)
     toolbar.removeNote(props.note.id)
   else if (value.value === props.note.value)
     show.value = false
