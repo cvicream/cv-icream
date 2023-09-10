@@ -36,14 +36,13 @@ export default defineComponent({
       type: Boolean,
       default: false,
     },
-    editorRef: {
-    },
   },
-  emits: ['update:modelValue', 'update:editorRef'],
+  emits: ['update:modelValue'],
   setup: (props, { emit }) => {
     const toolbar = useToolbarStore()
     const { isMobileScreen } = storeToRefs(toolbar)
     const root = ref<HTMLDivElement | null>(null)
+    const editor = ref<HTMLDivElement | null>(null)
     const toolbarId = ref(`toolbar-${uuidv4().replaceAll('-', '')}`)
     const toolbarVisible = ref(false)
     const selectionRange = ref<RangeStatic | null>(null)
@@ -75,12 +74,6 @@ export default defineComponent({
       },
     })
 
-    const editor = computed({
-      get: () => props.editorRef,
-      set: (value) => {
-        emit('update:editorRef', value)
-      },
-    })
     const linkTooltipStyle = computed(() => {
       const style: CSSProperties = {
         left: 0,
@@ -293,6 +286,7 @@ export default defineComponent({
     return {
       isMobileScreen,
       root,
+      editor,
       toolbarId,
       toolbarVisible,
       linkTooltip,
@@ -305,7 +299,6 @@ export default defineComponent({
       draftLink,
       link,
       content,
-      editor,
       onFocus,
       onBlur,
       onClear,
