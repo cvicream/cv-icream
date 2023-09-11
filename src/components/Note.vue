@@ -27,7 +27,7 @@ watch(editorRef, () => {
 })
 
 const noteClasses = computed(() => {
-  let classes = 'note bg-yellow'
+  let classes = 'note-container bg-yellow'
   if (props.note.location.left > 0.6)
     classes += ' note-left'
   else
@@ -143,7 +143,7 @@ const onTouchEnd = (event: TouchEvent) => {
     </button>
     <div v-if="show" :class="noteClasses">
       <div class="flex justify-between items-center">
-        <span class="text-blacks-70">Note</span>
+        <span class="note text-blacks-70">Note</span>
         <div class="flex items-center gap-3">
           <button v-if="value" class="i-custom:delete icon-24 cursor-pointer" @click="onRemove" />
           <div v-if="value !== props.note.value" class="cursor-pointer" @click="onSave">
@@ -170,7 +170,7 @@ const onTouchEnd = (event: TouchEvent) => {
   top: calc(v-bind('props.note.location.top') * 100%);
   left: calc(v-bind('props.note.location.left') * 100%);
 }
-.note {
+.note-container {
   width: 300px;
   height: 200px;
   position: absolute;
