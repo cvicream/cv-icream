@@ -105,6 +105,7 @@ export default defineConfig({
     fontSize: {
       10: '10px',
       11: '11px',
+      14: '14px',
       20: '20px',
       32: '32px',
       40: '40px',
@@ -126,6 +127,7 @@ export default defineConfig({
         70: '#656565',
         100: '#222222',
       },
+      yellow: '#FFF6BC',
       greens: {
         10: '#EDF2EB',
         100: '#507F39',

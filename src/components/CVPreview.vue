@@ -27,7 +27,14 @@ defineProps({
 const user = useUserStore()
 const { splitIndex, about, summary, experience, project, skill, education, certificate, contact, social } = storeToRefs(user)
 const toolbar = useToolbarStore()
-const { currentState } = storeToRefs(toolbar)
+const { currentState, isMobileScreen, noteList } = storeToRefs(toolbar)
+const newNoteId = ref(0)
+const isNoteEditing = ref(false)
+
+toolbar.$onAction(({ name, args }) => {
+  if (name === 'addNote')
+    newNoteId.value = args[0].id
+})
 
 const content = computed(() => {
   return [
@@ -138,6 +145,15 @@ const handleRightPanelResize = (values) => {
     class="w-full h-full bg-white flex-shrink-0 p-6 shadow-custom cv-preview"
     style="min-height: inherit;"
   >
+    <div v-if="!readOnly && !isMobileScreen && !isMobileDevice()">
+      <Note
+        v-for="note in noteList"
+        :key="note.id"
+        v-model:is-note-editing="isNoteEditing"
+        :note="note"
+        :is-open="newNoteId === note.id"
+      />
+    </div>
     <div
       class="w-full h-full"
       :class="currentState.fontFamily"
@@ -335,8 +351,7 @@ const handleRightPanelResize = (values) => {
   @apply pl-4;
   list-style: none;
 }
-.cv-preview ol li {
-}
+
 .cv-preview ol li::before {
   display: inline-block;
   width: 1rem;
@@ -419,6 +434,12 @@ const handleRightPanelResize = (values) => {
 }
 .sortable-chosen.sortable-ghost {
   @apply h-1 bg-primary-10 my-1;
+}
+.cv-preview.adding-note-mode, .cv-preview.adding-note-mode [data-draggable="true"] {
+  cursor: url('../assets/icons/note.svg'), auto;
+}
+.temp-static {
+  position: static !important;
 }
 
 .splitpanes {

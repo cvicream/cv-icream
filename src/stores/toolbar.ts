@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia'
+import type { Note } from '~/types'
 import {
   DEFAULT_LEFT_PANEL_WIDTH,
   DEFAULT_RIGHT_PANEL_WIDTH,
@@ -6,8 +7,29 @@ import {
   MOBILE_BREAKPOINT,
 } from '~/constants'
 
+interface State {
+  dropdownMenu: {
+    layout: boolean
+    color: boolean
+    fontSize: boolean
+    fontFamily: boolean
+  }
+  isCVPreviewVisible: boolean
+  currentState: {
+    fontFamily: string
+    layout: string
+    color: string
+    fontSize: string
+    topPanelWidth: number[]
+    leftPanelWidth: number[]
+    rightPanelWidth: number[]
+  }
+  noteList: Note[]
+  isMobileScreen: boolean
+}
+
 export const useToolbarStore = defineStore('toolbar', {
-  state: () => ({
+  state: (): State => ({
     dropdownMenu: {
       layout: false,
       color: false,
@@ -24,6 +46,7 @@ export const useToolbarStore = defineStore('toolbar', {
       leftPanelWidth: DEFAULT_LEFT_PANEL_WIDTH,
       rightPanelWidth: DEFAULT_RIGHT_PANEL_WIDTH,
     },
+    noteList: [],
     isMobileScreen: window.innerWidth <= MOBILE_BREAKPOINT,
   }),
   actions: {
@@ -46,6 +69,28 @@ export const useToolbarStore = defineStore('toolbar', {
     },
     changeLayout(id: string) {
       this.currentState.layout = id
+    },
+    addNote(note: Note) {
+      if (this.noteList === undefined)
+        this.noteList = []
+      this.noteList.push(note)
+    },
+    modifyNote(note: Note) {
+      this.noteList = this.noteList.map((el) => {
+        if (el.id === note.id)
+          return note
+        return el
+      })
+    },
+    removeNote(id: number) {
+      this.noteList = this.noteList.filter(note => note.id !== id)
+    },
+    removeEmptyNotes() {
+      this.noteList = this.noteList.reduce<Note[]>((acc, curr) => {
+        if (curr.value)
+          return [...acc, curr]
+        return acc
+      }, [])
     },
     setIsMobileScreen(val: boolean) {
       this.isMobileScreen = val

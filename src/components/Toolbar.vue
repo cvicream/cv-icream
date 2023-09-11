@@ -6,7 +6,7 @@ import { useToolbarStore } from '~/stores/toolbar'
 import { useUndoStore } from '~/stores/undo'
 import { useRedoStore } from '~/stores/redo'
 import { COLORS, FONT_SIZES, LAYOUTS } from '~/constants'
-import { getColor } from '~/utils'
+import { getColor, isMobileDevice } from '~/utils'
 
 const props = defineProps<{
   open: Boolean
@@ -19,8 +19,9 @@ const toolbar = useToolbarStore()
 const router = useRouter()
 const undoStore = useUndoStore()
 const redoStore = useRedoStore()
+const noteBtnRef = ref<HTMLDivElement | null>(null)
 const { path } = storeToRefs(user)
-const { isCVPreviewVisible, currentState } = storeToRefs(toolbar)
+const { isCVPreviewVisible, currentState, isMobileScreen } = storeToRefs(toolbar)
 
 watch(path, () => {
   if (path.value !== router.currentRoute.value.path)
@@ -72,6 +73,61 @@ function redo() {
       newState.user.action = 'redo'
       updateStore(newState)
     }
+  }
+}
+
+// get root element that can put notes in
+function getRootElement() {
+  return document.getElementById('cv-preview')
+}
+
+const removeClickListener = (event: KeyboardEvent) => {
+  const rootElement = getRootElement()
+  if (rootElement && event.key === 'Escape') {
+    rootElement.removeEventListener('click', createNote)
+    document.removeEventListener('keydown', removeClickListener)
+    rootElement.classList.remove('adding-note-mode')
+    noteBtnRef.value!.classList.remove('adding-note-mode')
+  }
+}
+
+function createNote(event: MouseEvent) {
+  const rootElement = getRootElement()
+  if (rootElement) {
+    const boundingBox = rootElement.getBoundingClientRect()!
+    toolbar.addNote({
+      id: Date.now(),
+      value: '',
+      location: {
+        left: (event.clientX - boundingBox.x) / boundingBox.width,
+        top: (event.clientY - boundingBox.y) / boundingBox.height,
+      },
+    })
+
+    rootElement.removeEventListener('click', createNote)
+    document.removeEventListener('keydown', removeClickListener)
+    rootElement.classList.remove('adding-note-mode')
+    noteBtnRef.value!.classList.remove('adding-note-mode')
+  }
+}
+
+function onNoteClick(event: MouseEvent) {
+  const rootElement = getRootElement()
+  if (rootElement) {
+    if (rootElement.classList.contains('adding-note-mode')) {
+      rootElement.removeEventListener('click', createNote)
+      document.removeEventListener('keydown', removeClickListener)
+      rootElement.classList.remove('adding-note-mode')
+      noteBtnRef.value!.classList.remove('adding-note-mode')
+      return
+    }
+
+    noteBtnRef.value!.classList.add('adding-note-mode')
+    rootElement.classList.add('adding-note-mode')
+    setTimeout(() => {
+      rootElement.addEventListener('click', createNote)
+    }, 0)
+    document.addEventListener('keydown', removeClickListener)
   }
 }
 
@@ -159,7 +215,7 @@ function onCollapse() {
 
     <div
       v-if="open"
-      class="btn-group-toolbar w-42 h-12 relative sm:flex"
+      class="btn-group-toolbar h-12 relative sm:flex"
       :class="{ 'hidden': !isCVPreviewVisible }"
     >
       <DropdownMenu id="layout" label="Layout" icon="i-custom:layout text-blacks-70" tooltip="Layout">
@@ -223,10 +279,31 @@ function onCollapse() {
         </div>
       </DropdownMenu>
     </div>
-    <!-- <div v-if="open" class="btn-group-toolbar w-12 h-12">
-      <div class="btn-toolbar">
-        <button class="i-custom:note w-8 h-8" />
-      </div>
-    </div> -->
+
+    <div
+      v-if="open"
+      class="btn-group-toolbar h-12"
+      :class="{ 'hidden': isMobileScreen || isMobileDevice() }"
+    >
+      <Tooltip
+        placement="top"
+        text="Note"
+      >
+        <button
+          ref="noteBtnRef"
+          class="btn-toolbar outline-none"
+          @click="onNoteClick"
+        >
+          <span class="i-custom:note w-8 h-8" />
+        </button>
+      </Tooltip>
+    </div>
   </div>
 </template>
+
+<style scoped>
+.adding-note-mode.btn-toolbar {
+  background: var(--secondary-color);
+  border-radius: 50%;
+}
+</style>

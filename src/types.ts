@@ -10,3 +10,12 @@ interface AppContext<HasRouter extends boolean = true> {
 }
 
 export type UserModule = (ctx: AppContext) => void
+
+export interface Note {
+  id: number
+  location: {
+    left: number
+    top: number
+  }
+  value: string
+}

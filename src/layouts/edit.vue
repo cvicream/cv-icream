@@ -62,7 +62,7 @@ const rightWidth = ref(MIN_SIDEBAR_WIDTH)
 
 const rightWidthStyle = computed(() => {
   return {
-    right: `${rightWidth.value}px`,
+    right: `${isMobileScreen.value ? 0 : rightWidth.value}px`,
   }
 })
 
@@ -316,12 +316,12 @@ function toggleSidebar(isOpen) {
     <div class="w-full h-[calc(100%-137px)] border-b-1 border-blacks-20 sm:flex sm:flex-row sm:h-[calc(100%-57px)] sm:border-0 overflow-hidden">
       <div
         ref="leftSide"
-        class="h-[calc(100%-8px)] bg-white px-3 pt-[52px] pb-7 overflow-auto custom-scrollbar flex-grow flex-shrink sm:px-7 sm:py-15 m-1 transition-all duration-200"
+        class="h-[calc(100%-8px)] bg-white px-3 pt-[52px] pb-7 overflow-auto custom-scrollbar flex-grow flex-shrink sm:px-7 sm:py-15 m-1 transition-all duration-200 relative"
         :class="{ 'absolute hidden': isMobileScreen && !isCVPreviewVisible }"
         :style="isMobileScreen ? 'width: 100%' : `width: ${leftWidth}px`"
       >
         <div
-          class="mx-auto relative"
+          class="mx-auto"
           :style="{
             width: cvPreviewWidth,
             height: cvPreviewHeight,

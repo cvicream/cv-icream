@@ -32,7 +32,7 @@ const {
   contact,
   social,
 } = storeToRefs(user)
-const { currentState } = storeToRefs(toolbar)
+const { currentState, noteList } = storeToRefs(toolbar)
 
 const isSafari = () => ('safari' in window)
 
@@ -74,12 +74,15 @@ function redirectToDownload() {
 
 function exportJsonFile() {
   closeAction()
-  const toolbarData = Object.keys(currentState.value).reduce((acc, cur) => {
+  const currentStateData = Object.keys(currentState.value).reduce((acc, cur) => {
     acc[cur] = currentState.value[cur]
     return acc
   }, {})
   const jsonData = {
-    toolbar: toolbarData,
+    toolbar: {
+      currentState: currentStateData,
+      noteList: noteList.value,
+    },
     user: {
       template: template.value,
       about: about.value,
@@ -127,7 +130,7 @@ async function importJsonFile() {
         const subObj = obj[key]
         Object.keys(subObj).forEach((subKey) => {
           toolbar.$patch((state) => {
-            state.currentState[subKey] = subObj[subKey]
+            state[subKey] = subObj[subKey]
           })
         })
       }
