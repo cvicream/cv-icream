@@ -283,7 +283,7 @@ function onCollapse() {
     <div
       v-if="open"
       class="btn-group-toolbar h-12"
-      :class="{ 'hidden': isMobileScreen && isMobileDevice() }"
+      :class="{ 'hidden': isMobileScreen || isMobileDevice() }"
     >
       <Tooltip
         placement="top"
