@@ -27,7 +27,7 @@ watch(editorRef, () => {
 })
 
 const noteClasses = computed(() => {
-  let classes = 'note-container bg-yellow'
+  let classes = 'note-form bg-yellow'
   if (props.note.location.left > 0.6)
     classes += ' note-left'
   else
@@ -170,7 +170,7 @@ const onTouchEnd = (event: TouchEvent) => {
   top: calc(v-bind('props.note.location.top') * 100%);
   left: calc(v-bind('props.note.location.left') * 100%);
 }
-.note-container {
+.note-form {
   width: 300px;
   height: 200px;
   position: absolute;
