@@ -145,7 +145,7 @@ const handleRightPanelResize = (values) => {
     class="w-full h-full bg-white flex-shrink-0 p-6 shadow-custom cv-preview"
     style="min-height: inherit;"
   >
-    <div v-if="!readOnly && !isMobileScreen">
+    <div v-if="!readOnly && !isMobileScreen && !isMobileDevice()">
       <Note
         v-for="note in noteList"
         :key="note.id"

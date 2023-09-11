@@ -6,7 +6,7 @@ import { useToolbarStore } from '~/stores/toolbar'
 import { useUndoStore } from '~/stores/undo'
 import { useRedoStore } from '~/stores/redo'
 import { COLORS, FONT_SIZES, LAYOUTS } from '~/constants'
-import { getColor } from '~/utils'
+import { getColor, isMobileDevice } from '~/utils'
 
 const props = defineProps<{
   open: Boolean
@@ -283,7 +283,7 @@ function onCollapse() {
     <div
       v-if="open"
       class="btn-group-toolbar h-12"
-      :class="{ 'hidden': isMobileScreen }"
+      :class="{ 'hidden': isMobileScreen && isMobileDevice() }"
     >
       <Tooltip
         placement="top"
