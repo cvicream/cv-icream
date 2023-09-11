@@ -144,6 +144,13 @@ async function generatePdf() {
     }
   }
 
+  window.dataLayer.push(
+    {
+      event: 'doc-style',
+      currentState: currentState.value,
+    },
+  )
+
   loading.value = false
 }
 
