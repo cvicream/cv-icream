@@ -13,7 +13,7 @@ const props = defineProps<{
 
 const toolbar = useToolbarStore()
 const noteRef = ref(null)
-const editorRef = ref(null)
+const editorRef = ref<HTMLTextAreaElement | null>(null)
 const show = ref(props.isOpen)
 const value = ref(props.note.value)
 
@@ -64,12 +64,12 @@ const onRemove = () => {
 }
 
 onClickOutside(noteRef, (event) => {
-  if (!value.value)
-    toolbar.removeNote(props.note.id)
-  else if (value.value === props.note.value)
-    show.value = false
-  else if (editorRef.value)
+  if (!value.value && !props.isNoteEditing) { toolbar.removeNote(props.note.id) }
+  else if (!props.isNoteEditing) { show.value = false }
+  else if (props.isNoteEditing) {
+    show.value = true;
     (editorRef.value as HTMLTextAreaElement).focus()
+  }
 })
 
 const onDragStart = (event: DragEvent) => {
@@ -129,13 +129,13 @@ const onTouchEnd = (event: TouchEvent) => {
   <div
     ref="noteRef"
     class="note-container"
-    draggable="true"
     @dragstart="onDragStart"
     @dragend="onDragEnd"
     @touchend="onTouchEnd"
   >
     <button
       class="note-icon bg-yellow"
+      draggable="true"
       @click="onToggleNote"
     >
       <span
