@@ -479,18 +479,16 @@ export default defineComponent({
 }
 
 .ql-editor {
-  @apply pl-0 pr-5 py-0;
+  @apply pl-0 pr-6 py-0;
 }
 .single-line .ql-editor {
   @apply h-[22px] p-0 mr-4;
 }
-@media (min-width: 640px) {
-  .btn-clear:hover {
-  @apply opacity-100 bg-blacks-70;
-  }
-  .deletable:hover + .btn-clear {
-    @apply opacity-100;
-  }
+.btn-clear:hover {
+@apply opacity-100 bg-blacks-70;
+}
+.deletable:hover + .btn-clear {
+  @apply opacity-100;
 }
 
 .ql-editor {
