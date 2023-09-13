@@ -266,7 +266,7 @@ export default defineComponent({
 
     function setLink(anchor: HTMLAnchorElement) {
       selectedAnchor.value = anchor
-      link.value = anchor.getAttribute('href') || ''
+      link.value = anchor.href || ''
       draftLink.value = link.value
     }
 
@@ -391,7 +391,7 @@ export default defineComponent({
       <a
         class="paragraph text-blacks-100 truncate"
         target="_blank"
-        :href="`//${link}`"
+        :href="link"
       >
         {{ link }}
       </a>
