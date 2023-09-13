@@ -153,19 +153,7 @@ function getFontSizeClassName(id: string) {
  */
 function getColor(id: string) {
   const color = COLORS.find(item => item.id === id)
-  return color
-    ? {
-      primary: color.primary,
-      secondary: color.secondary,
-      shadow: color.shadow,
-      border: color.border,
-    }
-    : {
-      primary: '#F18B6B',
-      secondary: '#FEF4F1',
-      shadow: '#FCE8E1',
-      border: '#FAD1C4',
-    }
+  return color || COLORS[0]
 }
 
 /**
@@ -198,6 +186,30 @@ function isMobileDevice() {
   return (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i).test(navigator.userAgent)
 }
 
+function isSafari() {
+  return 'safari' in window
+}
+
+function isMac() {
+  return navigator.userAgent.toUpperCase().includes('MAC')
+}
+
+function isOutOfViewport(element: HTMLElement) {
+  const rect = element.getBoundingClientRect()
+  // check if it is out of the viewport on each side
+  const out = {
+    top: rect.top < 0,
+    left: rect.left < 0,
+    bottom: rect.bottom > (window.innerHeight || document.documentElement.clientHeight),
+    right: rect.right > (window.innerWidth || document.documentElement.clientWidth),
+  }
+  return {
+    ...out,
+    any: out.top || out.left || out.bottom || out.right,
+    all: out.top && out.left && out.bottom && out.right,
+  }
+}
+
 export {
   hasStorage,
   getStorage,
@@ -217,4 +229,7 @@ export {
   stripHtml,
   validateEmail,
   isMobileDevice,
+  isSafari,
+  isMac,
+  isOutOfViewport,
 }

@@ -30,7 +30,8 @@ const tooltipClass = computed(() => {
   <div class="tooltip-container">
     <slot />
     <div v-if="!isMobileDevice()" class="tooltip" :class="tooltipClass" :style="style">
-      <span class="note text-blacks-100"> {{ text }}</span>
+      <span v-if="text" class="note text-blacks-100">{{ text }}</span>
+      <slot v-else name="content" />
     </div>
   </div>
 </template>

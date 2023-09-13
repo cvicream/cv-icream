@@ -62,7 +62,7 @@ function resize() {
       <p class="px-4 py-4 paragraph text-center md:px-8 lg:px-12">
         {{ isSmallWindow
           ? 'The template you choose will add relevant text for the job type selected, and we suggest a layout, but everything is editable.'
-          : 'The template you choose will add relevant text for the job type selected, and we suggest a layout, but everything is editable. If you don’t see your job position, don’t worry. You can easily choose which layout you prefer or Build from scratch, and they all work perfectly fine with all jobs.'
+          : 'The template you choose will add relevant text for the job type selected, and we suggest a layout, but everything is editable. If you don’t see your job position, don’t worry. You can easily choose which layout you prefer or build from scratch, and they all work perfectly fine with all jobs.'
         }}
       </p>
     </div>

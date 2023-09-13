@@ -27,7 +27,7 @@ layout:
   button:
     next_step: Next Step
     upload_cv: Upload my CV
-  title: Choose the layout you like.
+  title: Choose a layout you like.
 not-found: Not found
 template:
   button:
@@ -40,4 +40,4 @@ template:
     developer: Developer
     manager: Product Manager
     others: Build from Scratch
-  title: Choose the template you like.
+  title: Choose a template you like.

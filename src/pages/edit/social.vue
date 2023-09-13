@@ -135,6 +135,22 @@ function swap(index1, index2) {
     <p v-else class="paragraph text-blacks-70">
       Share your social media platforms, such as LinkedIn profile, the portfolio of your work, or your own website.
     </p>
+
+    <button
+      v-if="social.isShow"
+      class="w-full rounded-xl text-blacks-40 inline-flex justify-center items-center p-3 mt-6 border-transparent border-1 group bg-primary-10 hover:border-primary-100"
+      :disabled="!social.isShow"
+      @click="addItem(0)"
+    >
+      <span
+        class="i-custom:add w-6 h-6 text-blacks-40 flex-shrink-0"
+        :class="social.isShow && 'group-hover:text-blacks-70'"
+      />
+      <span class="subleading text-ellipsis whitespace-nowrap overflow-hidden" :class="social.isShow && 'group-hover:text-blacks-100'">
+        Add
+      </span>
+    </button>
+
     <div
       v-for="(item, index) in social.list"
       :key="componentKey + '-' + index"
@@ -199,7 +215,7 @@ function swap(index1, index2) {
                   />
                   <span class="paragraph text-blacks-100 ml-2">{{ item.isShow ? 'Hide on CV' : 'Show on CV' }}</span>
                 </button>
-                <button class="flex items-center px-4 py-3 sm:hover:bg-primary-10" @click="addItem(index + 1)">
+                <button class="flex items-center px-4 py-3 hover:bg-primary-10" @click="addItem(index)">
                   <span class="i-custom:add w-6 h-6 text-blacks-70" />
                   <span class="paragraph text-blacks-100 ml-2">Add New</span>
                 </button>
@@ -243,7 +259,7 @@ function swap(index1, index2) {
           <label class="block note text-blacks-70">Type</label>
           <Editor
             v-model="item.type"
-            class-name="h-[46px] mt-1"
+            class-name="mt-1"
             :enable="item.isShow"
             :placeholder="DEFAULT_TEMPLATE.social.list[0].type"
             :is-single-line="true"
@@ -268,20 +284,6 @@ function swap(index1, index2) {
         </div>
       </div>
     </div>
-    <button
-      v-if="social.isShow"
-      class="w-full rounded-xl text-blacks-40 inline-flex justify-center items-center p-3 mt-6 border-transparent border-1 group bg-primary-10 sm:hover:border-primary-100"
-      :disabled="!social.isShow"
-      @click="addItem(null)"
-    >
-      <span
-        class="i-custom:add w-6 h-6 text-blacks-40 flex-shrink-0"
-        :class="social.isShow && 'sm:group-hover:text-blacks-70'"
-      />
-      <span class="subleading text-ellipsis whitespace-nowrap overflow-hidden" :class="social.isShow && 'sm:group-hover:text-blacks-100'">
-        Add
-      </span>
-    </button>
   </div>
   <DeleteBlockModal
     :visible="deleteBlockVisible"
