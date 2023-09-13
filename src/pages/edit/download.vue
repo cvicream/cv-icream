@@ -147,7 +147,7 @@ async function generatePdf() {
   // push data to gtm
   window.dataLayer.push(
     {
-      event: 'doc-style',
+      event: 'export-pdf',
       layout: currentState.value.layout,
       colour: currentState.value.color,
       fontFamily: currentState.value.fontFamily,

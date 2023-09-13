@@ -106,6 +106,17 @@ function exportJsonFile() {
   linkElement.setAttribute('href', dataUri)
   linkElement.setAttribute('download', exportFileDefaultName)
   linkElement.click()
+
+  // push data to gtm
+  window.dataLayer.push(
+    {
+      event: 'download-as-draft',
+      layout: currentState.value.layout,
+      colour: currentState.value.color,
+      fontFamily: currentState.value.fontFamily,
+      fontSize: currentState.value.fontSize,
+    },
+  )
 }
 
 async function importJsonFile() {
