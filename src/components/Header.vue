@@ -150,6 +150,11 @@ async function importJsonFile() {
   catch (error) {
     upload.value = true
   }
+
+  // push data to gtm
+  window.dataLayer.push({
+    event: 'open-cv-draft',
+  })
 }
 
 function toggle() {
