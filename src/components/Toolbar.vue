@@ -290,7 +290,6 @@ function onCollapse() {
         text="Note"
       >
         <button
-          id="note-click"
           ref="noteBtnRef"
           class="btn-toolbar outline-none"
           @click="onNoteClick"
