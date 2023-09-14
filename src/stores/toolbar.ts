@@ -58,6 +58,12 @@ export const useToolbarStore = defineStore('toolbar', {
           this.dropdownMenu[key as keyof typeof this.dropdownMenu] = false
       })
     },
+    setStyle(style) {
+      this.changeColor(style.color)
+      this.changeFontSize(style.fontSize)
+      this.changeFontFamily(style.fontFamily)
+      this.changeLayout(style.layout)
+    },
     changeColor(id: string) {
       this.currentState.color = id
     },
