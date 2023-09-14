@@ -177,7 +177,7 @@ export default defineComponent({
       document.querySelectorAll('.ql-editor a').forEach((element) => {
         element.addEventListener('click', (e) => {
           e.stopPropagation()
-          const anchor = (e.target as HTMLAnchorElement)
+          const anchor = (e.currentTarget as HTMLAnchorElement)
           openLinkTooltip(anchor)
         })
       })
@@ -259,7 +259,7 @@ export default defineComponent({
 
     function removeLink() {
       if (selectedAnchor.value)
-        selectedAnchor.value.replaceWith(selectedAnchor.value.innerText)
+        selectedAnchor.value.outerHTML = selectedAnchor.value.innerHTML
 
       closeLinkEdit()
     }
