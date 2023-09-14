@@ -73,13 +73,13 @@ function toggleCVPreview() {
 }
 
 onBeforeMount(() => {
-  let style = user.style
-  if (hasStorage()) {
+  if (hasStorage() && window.history.state.back.includes('/template')) {
     const storage = getStorage()
-    if (user.template === storage.user.template)
-      style = storage.toolbar.currentState
+    if (user.template === storage.user.template) {
+      const style = storage.toolbar.currentState
+      toolbar.setStyle(style)
+    }
   }
-  setStyle(style)
 
   window.addEventListener('beforeunload', onBeforeUnload)
   resize()
@@ -149,13 +149,6 @@ function onBeforeUnload(event) {
   // chrome requires returnValue to be set
   event.returnValue = ''
   return false
-}
-
-function setStyle(style) {
-  toolbar.changeColor(style.color)
-  toolbar.changeFontSize(style.fontSize)
-  toolbar.changeFontFamily(style.fontFamily)
-  toolbar.changeLayout(style.layout)
 }
 
 function onCollapse() {
