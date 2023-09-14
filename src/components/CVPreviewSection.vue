@@ -54,7 +54,7 @@ function isObjectEmpty(obj) {
   let isEmpty = true
   const keys = ['title', 'subtitle', 'subtitle1', 'subtitle2', 'paragraph', 'type']
   for (const [key, value] of Object.entries(obj)) {
-    if (keys.includes(key) && !isEditorEmpty(value)) {
+    if (keys.includes(key) && !isEditorEmpty(value as string)) {
       isEmpty = false
       break
     }
@@ -110,7 +110,7 @@ function redirect(path) {
             return !!(isEditorEmpty(tag) ? getHintText(summary.isEditing, DEFAULT_TEMPLATE.summary.hashtags[index]) : tag)
           })"
           :key="item"
-          class="hashtag bg-primary-10"
+          class="hashtag bg-primary-10 hashtag-print"
           :class="[
             summary.isEditing || isHover ? 'sm:bg-white' : '',
             getFontSizeClassName(currentState.fontSize).subtitle,
