@@ -143,6 +143,7 @@ const handleRightPanelResize = (values) => {
   <div
     :id="id"
     class="w-full h-full bg-white flex-shrink-0 p-6 shadow-custom cv-preview"
+    :class="{ 'cv-preview-read-only': readOnly }"
     style="min-height: inherit;"
   >
     <div v-if="!readOnly && !isMobileScreen && !isMobileDevice()">
@@ -446,6 +447,7 @@ const handleRightPanelResize = (values) => {
   background: transparent;
 }
 
+.cv-preview-read-only .splitpanes__splitter,
 .splitpanes__splitter {
   display: none;
 }

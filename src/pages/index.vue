@@ -1,14 +1,20 @@
 <script setup lang="ts">
+import { onBeforeMount } from 'vue'
 import { useUserStore } from '~/stores/user'
 import { useToolbarStore } from '~/stores/toolbar'
 import { getJsonUpload } from '~/utils'
-import { DRAFT_FILE_TYPE } from '~/constants'
+import { DEFAULT_TEMPLATE, DRAFT_FILE_TYPE } from '~/constants'
 
 const user = useUserStore()
 const toolbar = useToolbarStore()
 const { t } = useI18n()
 const uploadFiletype = ref(false)
 const router = useRouter()
+
+onBeforeMount(() => {
+  // make sure style change back
+  toolbar.setStyle(DEFAULT_TEMPLATE.style)
+})
 
 async function importJsonFile() {
   uploadFiletype.value = false
@@ -29,7 +35,7 @@ async function importJsonFile() {
         const subObj = obj[key]
         Object.keys(subObj).forEach((subKey) => {
           toolbar.$patch((state) => {
-            state.currentState[subKey] = subObj[subKey]
+            state[subKey] = subObj[subKey]
           })
         })
       }

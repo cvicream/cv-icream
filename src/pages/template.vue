@@ -17,7 +17,7 @@ const isSmallWindow = ref(false)
 
 onBeforeMount(() => {
   // make sure style change back
-  setStyle(DEFAULT_TEMPLATE.style)
+  toolbar.setStyle(DEFAULT_TEMPLATE.style)
 })
 
 onMounted(() => {
@@ -28,13 +28,6 @@ onUnmounted(() => {
   window.removeEventListener('resize', resize)
 })
 
-function setStyle(style) {
-  toolbar.changeColor(style.color)
-  toolbar.changeFontSize(style.fontSize)
-  toolbar.changeFontFamily(style.fontFamily)
-  toolbar.changeLayout(style.layout)
-}
-
 function onNext() {
   // if the selected template is different from the previous template
   if (selectedTemplate.value !== template.value) {
@@ -42,6 +35,11 @@ function onNext() {
     if (defaultTemplate) {
       user.$patch((state) => {
         Object.assign(state, defaultTemplate)
+      })
+      Object.keys(defaultTemplate.style).forEach((key) => {
+        toolbar.$patch((state) => {
+          state.currentState[key] = defaultTemplate.style[key]
+        })
       })
     }
   }
