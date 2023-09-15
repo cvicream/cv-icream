@@ -108,6 +108,17 @@ function exportJsonFile() {
   linkElement.setAttribute('href', dataUri)
   linkElement.setAttribute('download', exportFileDefaultName)
   linkElement.click()
+
+  // push data to gtm
+  window.dataLayer.push(
+    {
+      event: 'download-as-draft',
+      layout: currentState.value.layout,
+      colour: currentState.value.color,
+      fontFamily: currentState.value.fontFamily,
+      fontSize: currentState.value.fontSize,
+    },
+  )
 }
 
 async function importJsonFile() {
@@ -139,6 +150,11 @@ async function importJsonFile() {
   catch (error) {
     upload.value = true
   }
+
+  // push data to gtm
+  window.dataLayer.push({
+    event: 'open-cv-draft',
+  })
 }
 
 function toggle() {
@@ -214,6 +230,7 @@ function togglePaymentModal() {
             <span class="paragraph text-blacks-100">Export as PDF</span>
           </button>
           <button
+            id="download-as-draft"
             class="w-full h-[46px] flex justify-start items-center px-4 py-3 sm:hover:bg-primary-10"
             @mousedown="exportJsonFile"
           >

@@ -144,6 +144,17 @@ async function generatePdf() {
     }
   }
 
+  // push data to gtm
+  window.dataLayer.push(
+    {
+      event: 'export-pdf',
+      layout: currentState.value.layout,
+      colour: currentState.value.color,
+      fontFamily: currentState.value.fontFamily,
+      fontSize: currentState.value.fontSize,
+    },
+  )
+
   loading.value = false
 }
 
@@ -222,6 +233,7 @@ function back() {
     </div>
 
     <button
+      id="download-pdf"
       class="w-full h-[46px] text-white bg-primary-100 rounded-xl inline-flex justify-center items-center gap-2 py-3 mt-6 border-1 border-transparent transition sm:hover:border-primary-20"
       :disabled="loading"
       @click="generatePdf"

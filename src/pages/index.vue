@@ -64,6 +64,7 @@ const onNext = () => {
     </h1>
     <div class="border-black-70 flex flex-col gap-8 py-8 sm:gap-16 sm:flex-row">
       <button
+        id="create-new-cv"
         class="p-8 sm:p-10 flex justify-center items-center w-81 h-57 sm:w-101 sm:h-66 rounded-xl flex-col gap-5 border-primary-100 shadow-custom sm:hover:border-1 sm:hover:bg-primary-10"
         @click="onNext"
       >
@@ -78,6 +79,7 @@ const onNext = () => {
         </span>
       </button>
       <button
+        id="upload-cv-draft"
         class="p-6 flex justify-center items-center w-81 h-63 sm:w-101 sm:h-66 rounded-xl flex-col gap-5 border-primary-100 shadow-custom sm:hover:border-1 sm:hover:bg-primary-10"
         @click="importJsonFile"
       >
