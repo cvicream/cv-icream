@@ -84,6 +84,7 @@ html.dark {
 }
 
 .custom-scrollbar {
+  scrollbar-gutter: stable;
   /* For Firefox */
   scrollbar-color: rgba(34, 34, 34, 0.1) transparent;
   scrollbar-width: thin;
@@ -160,6 +161,7 @@ input[type="search"]:hover::-webkit-search-cancel-button {
   pointer-events: all;
 }
 
+
 /* reference: https://css-tricks.com/snippets/css/prevent-long-urls-from-breaking-out-of-container/ */
 .not-break-out {
   /* These are technically the same, but use both */
@@ -212,6 +214,10 @@ input[type="search"]:hover::-webkit-search-cancel-button {
   #cv-preview-print section > div {
     page-break-inside: avoid;
     page-break-after: always;
+  }
+
+  .hashtag-print {
+    background: none !important;
   }
 }
 

@@ -263,7 +263,7 @@ function onMenuClick(id, path) {
       class="h-full bg-white flex flex-col gap-6 px-4 transition-all duration-200"
       :class="[
         !isActivePath('/edit/download') ? 'pt-8' : 'pt-4',
-        isOpen ? 'w-[calc(100%-236px)]' : 'w-[calc(100%-64px)]'
+        isOpen && !isMobile ? 'w-[calc(100%-236px)]' : 'w-[calc(100%-64px)]'
       ]"
       :style="`margin-left: ${menuOpenWidth}px`"
     >

@@ -54,7 +54,7 @@ function isObjectEmpty(obj) {
   let isEmpty = true
   const keys = ['title', 'subtitle', 'subtitle1', 'subtitle2', 'paragraph', 'type']
   for (const [key, value] of Object.entries(obj)) {
-    if (keys.includes(key) && !isEditorEmpty(value)) {
+    if (keys.includes(key) && !isEditorEmpty(value as string)) {
       isEmpty = false
       break
     }
@@ -76,7 +76,7 @@ function redirect(path) {
     <div
       v-if="element.key === 'about'"
       id="about"
-      class="p-2 flex items-baseline flex-wrap gap-6 not-break-out hover:bg-primary-10"
+      class="p-2 flex items-baseline flex-wrap gap-6 not-break-out sm:hover:bg-primary-10"
       :class="getEditingStyle(about.isEditing)"
     >
       <div
@@ -110,9 +110,9 @@ function redirect(path) {
             return !!(isEditorEmpty(tag) ? getHintText(summary.isEditing, DEFAULT_TEMPLATE.summary.hashtags[index]) : tag)
           })"
           :key="item"
-          class="hashtag bg-primary-10"
+          class="hashtag bg-primary-10 hashtag-print"
           :class="[
-            summary.isEditing || isHover ? 'bg-white' : '',
+            summary.isEditing || isHover ? 'sm:bg-white' : '',
             getFontSizeClassName(currentState.fontSize).subtitle,
             isEditorEmpty(item) ? 'text-blacks-40' : 'text-blacks-100'
           ]"
@@ -277,7 +277,7 @@ function redirect(path) {
     <section
       v-else-if="element.key === 'contact'"
       id="contact"
-      class="pt-1 not-break-out hover:bg-primary-10"
+      class="pt-1 not-break-out sm:hover:bg-primary-10"
       :class="getEditingStyle(contact.isEditing)"
     >
       <div

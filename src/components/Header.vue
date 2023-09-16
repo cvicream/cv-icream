@@ -6,12 +6,13 @@ import { useToolbarStore } from '~/stores/toolbar'
 import { getJsonUpload, isMobileDevice, setStatus, stripHtml } from '~/utils'
 import { DRAFT_FILE_TYPE } from '~/constants'
 
-const props = defineProps<{
+defineProps<{
   isEdit?: boolean
 }>()
 
 const isActionActive = ref(false)
 const feedbackVisible = ref(false)
+const paymentVisible = ref(false)
 const upload = ref(false)
 const feedbackNotificationVisible = ref(false)
 
@@ -31,16 +32,20 @@ const {
   contact,
   social,
 } = storeToRefs(user)
-const { currentState } = storeToRefs(toolbar)
+const { currentState, noteList } = storeToRefs(toolbar)
 
 const isSafari = () => ('safari' in window)
 
 onMounted(() => {
+  window.addEventListener('click', closeAction, false)
+
   if (isSafari())
     window.addEventListener('click', onWindowClick, false)
 })
 
 onUnmounted(() => {
+  window.removeEventListener('click', closeAction)
+
   if (isSafari())
     window.removeEventListener('click', onWindowClick)
 })
@@ -69,12 +74,14 @@ function redirectToDownload() {
 
 function exportJsonFile() {
   closeAction()
+  const currentStateData = Object.keys(currentState.value).reduce((acc, cur) => {
+    acc[cur] = currentState.value[cur]
+    return acc
+  }, {})
   const jsonData = {
     toolbar: {
-      layout: currentState.value.layout,
-      fontSize: currentState.value.fontSize,
-      color: currentState.value.color,
-      fontFamily: currentState.value.fontFamily,
+      currentState: currentStateData,
+      noteList: noteList.value,
     },
     user: {
       template: template.value,
@@ -101,6 +108,17 @@ function exportJsonFile() {
   linkElement.setAttribute('href', dataUri)
   linkElement.setAttribute('download', exportFileDefaultName)
   linkElement.click()
+
+  // push data to gtm
+  window.dataLayer.push(
+    {
+      event: 'download-as-draft',
+      layout: currentState.value.layout,
+      colour: currentState.value.color,
+      fontFamily: currentState.value.fontFamily,
+      fontSize: currentState.value.fontSize,
+    },
+  )
 }
 
 async function importJsonFile() {
@@ -123,7 +141,7 @@ async function importJsonFile() {
         const subObj = obj[key]
         Object.keys(subObj).forEach((subKey) => {
           toolbar.$patch((state) => {
-            state.currentState[subKey] = subObj[subKey]
+            state[subKey] = subObj[subKey]
           })
         })
       }
@@ -132,10 +150,11 @@ async function importJsonFile() {
   catch (error) {
     upload.value = true
   }
-}
 
-function onFocusOut() {
-  closeAction()
+  // push data to gtm
+  window.dataLayer.push({
+    event: 'open-cv-draft',
+  })
 }
 
 function toggle() {
@@ -146,12 +165,9 @@ function closeAction() {
   isActionActive.value = false
 }
 
-onUnmounted(() => {
-  window.removeEventListener('click', closeAction)
-})
-
-window.addEventListener('click', closeAction, false)
-
+function togglePaymentModal() {
+  paymentVisible.value = !paymentVisible.value
+}
 </script>
 
 <template>
@@ -176,10 +192,18 @@ window.addEventListener('click', closeAction, false)
           <span class="i-custom:feedback w-6 h-6" />
         </button>
       </Tooltip>
+      <Tooltip
+        placement="bottom"
+        text="Support us"
+      >
+        <button class="btn-icon-32" @click="togglePaymentModal">
+          <span class="i-custom:payment w-6 h-6" />
+        </button>
+      </Tooltip>
     </div>
     <div v-if="isEdit" class="leading-56px" @click="toggle">
       <button
-        class="w-14 h-8 rounded flex justify-center items-center gap-1 hover:bg-primary-10"
+        class="w-14 h-8 rounded flex justify-center items-center gap-1 sm:hover:bg-primary-10"
         @click.stop="toggle"
       >
         <span class="i-custom:download w-6 h-6 text-blacks-70" />
@@ -199,20 +223,21 @@ window.addEventListener('click', closeAction, false)
           :class="isSafari() || isMobileDevice() ? 'w-[262px] border-1 border-blacks-100' : 'w-[260px] outline outline-1 outline-blacks-100'"
         >
           <button
-            class="w-full h-[45px] flex justify-start items-center px-4 py-3 hover:bg-primary-10"
+            class="w-full h-[45px] flex justify-start items-center px-4 py-3 sm:hover:bg-primary-10"
             :class="isSafari() || isMobileDevice() ? 'rounded-t-[11px]' : 'rounded-t-xl'"
             @mousedown="redirectToDownload"
           >
             <span class="paragraph text-blacks-100">Export as PDF</span>
           </button>
           <button
-            class="w-full h-[46px] flex justify-start items-center px-4 py-3 hover:bg-primary-10"
+            id="download-as-draft"
+            class="w-full h-[46px] flex justify-start items-center px-4 py-3 sm:hover:bg-primary-10"
             @mousedown="exportJsonFile"
           >
             <span class="paragraph text-blacks-100">Download as Draft</span>
           </button>
           <button
-            class="w-full h-[45px] flex justify-start items-center px-4 py-3 hover:bg-primary-10"
+            class="w-full h-[45px] flex justify-start items-center px-4 py-3 sm:hover:bg-primary-10"
             :class="isSafari() || isMobileDevice() ? 'rounded-b-[11px]' : 'rounded-b-xl'"
             @mousedown="importJsonFile"
           >
@@ -225,11 +250,16 @@ window.addEventListener('click', closeAction, false)
   <div class="border-b border-b-blacks-20" />
 
   <FeedbackModal
+    v-if="feedbackVisible"
     title="Have a Problem or Need Help?"
     subtitle="Leave us a message. We will get back to you as soon as possible : )"
-    :visible="feedbackVisible"
     :toggle="toggleFeedbackModal"
     :notify="toggleFeedbackNotification"
+  />
+
+  <PaymentModal
+    v-if="paymentVisible"
+    :toggle="togglePaymentModal"
   />
 
   <Modal

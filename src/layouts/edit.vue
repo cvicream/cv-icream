@@ -4,8 +4,17 @@ import { useElementSize } from '@vueuse/core'
 import { storeToRefs } from 'pinia'
 import { useUserStore } from '~/stores/user'
 import { useToolbarStore } from '~/stores/toolbar'
-import { getColor, getStorage, hasStorage, isMobileDevice, setCssVariable, setStatus } from '~/utils'
-import { A4_HEIGHT_PX, A4_WIDTH_PX, MAX_SIDEBAR_WIDTH, MIN_SIDEBAR_WIDTH, MOBILE_BREAKPOINT, PAGE_BREAKPOINT, SCALES } from '~/constants'
+import { getColor, getStorage, hasStorage, isMac, isMobileDevice, setCssVariable, setStatus } from '~/utils'
+import {
+  A4_HEIGHT_PX,
+  A4_WIDTH_PX,
+  MAX_SCALE,
+  MAX_SIDEBAR_WIDTH,
+  MIN_SCALE,
+  MIN_SIDEBAR_WIDTH,
+  MOBILE_BREAKPOINT,
+  PAGE_BREAKPOINT,
+} from '~/constants'
 
 const user = useUserStore()
 const toolbar = useToolbarStore()
@@ -13,7 +22,10 @@ const { isCVPreviewVisible, currentState, isMobileScreen } = storeToRefs(toolbar
 
 const isDesignBarOpen = ref(true)
 const scale = ref(100)
-const isFitEnable = ref(false)
+
+const scaleText = computed(() => {
+  return `${scale.value.toString().replace(/[^0-9]/g, '')}%`
+})
 
 const cvPreviewWidth = computed(() => {
   const width = 210 * scale.value / 100
@@ -50,7 +62,7 @@ const rightWidth = ref(MIN_SIDEBAR_WIDTH)
 
 const rightWidthStyle = computed(() => {
   return {
-    right: `${rightWidth.value}px`,
+    right: `${isMobileScreen.value ? 0 : rightWidth.value}px`,
   }
 })
 
@@ -61,16 +73,18 @@ function toggleCVPreview() {
 }
 
 onBeforeMount(() => {
-  let style = user.style
-  if (hasStorage()) {
+  if (hasStorage() && window.history.state.back.includes('/template')) {
     const storage = getStorage()
-    if (user.template === storage.user.template)
-      style = storage.toolbar.currentState
+    if (user.template === storage.user.template) {
+      const style = storage.toolbar.currentState
+      toolbar.setStyle(style)
+    }
   }
-  setStyle(style)
 
   window.addEventListener('beforeunload', onBeforeUnload)
   resize()
+
+  initializeWidth()
 })
 
 onMounted(() => {
@@ -78,6 +92,10 @@ onMounted(() => {
 
   const color = getColor(currentState.value.color)
   setCssVariable('--primary-color', color.primary)
+  setCssVariable('--primary-70-color', color.primary70)
+  setCssVariable('--primary-40-color', color.primary40)
+  setCssVariable('--primary-20-color', color.primary20)
+  setCssVariable('--primary-10-color', color.primary10)
   setCssVariable('--secondary-color', color.secondary)
   setCssVariable('--shadow-color', color.shadow)
   setCssVariable('--border-color', color.border)
@@ -86,6 +104,8 @@ onMounted(() => {
 
   if (leftSide.value && resizer.value && rightSide.value)
     resizer.value.addEventListener('mousedown', mouseDownHandler)
+
+  overrideDefaultZoom()
 })
 
 onUnmounted(() => {
@@ -95,19 +115,40 @@ onUnmounted(() => {
   window.removeEventListener('resize', resize)
 })
 
+function overrideDefaultZoom() {
+  document.addEventListener('keydown', (event) => {
+    // use `event.code` to check if it needs to zoom in/out
+    if (['Equal'].includes(event.code)) {
+      zoomIn()
+      event.preventDefault()
+    }
+    else if (['Minus'].includes(event.code)) {
+      zoomOut()
+      event.preventDefault()
+    }
+  })
+  document.addEventListener('wheel', (event) => {
+    if ((isMac() && (event.metaKey || event.ctrlKey)) || (!isMac() && event.ctrlKey)) {
+      if (event.deltaY < 0) zoomIn(5)
+      else if (event.deltaY > 0) zoomOut(5)
+
+      event.preventDefault()
+    }
+  }, { passive: false })
+}
+
+function initializeWidth() {
+  const width = (window.innerWidth - 1) / 2 // resizer width is 1px
+  leftWidth.value = width
+  rightWidth.value = width
+}
+
 function onBeforeUnload(event) {
   // cancel the event as stated by the standard
   event.preventDefault()
   // chrome requires returnValue to be set
   event.returnValue = ''
   return false
-}
-
-function setStyle(style) {
-  toolbar.changeColor(style.color)
-  toolbar.changeFontSize(style.fontSize)
-  toolbar.changeFontFamily(style.fontFamily)
-  toolbar.changeLayout(style.layout)
 }
 
 function onCollapse() {
@@ -119,6 +160,7 @@ function resize() {
 
   if (window.innerWidth <= MOBILE_BREAKPOINT) {
     toolbar.setIsMobileScreen(true)
+    toolbar.setIsCVPreviewVisible(false)
     isDesignBarOpen.value = true
     rightWidth.value = 0
 
@@ -201,26 +243,23 @@ function getElementMarginX(element) {
   return marginLeft + marginRight
 }
 
-function zoomIn() {
-  const max = SCALES[SCALES.length - 1]
-  if (scale.value < max) {
-    if (SCALES.includes(scale.value)) { scale.value = scale.value * 2 }
-    else {
-      const filter = SCALES.filter(n => n >= scale.value)
-      scale.value = filter.length ? filter[0] : max
-    }
+function handleScaleChange(event) {
+  const value = parseInt(event.target.value.replace(/[^0-9]/g, ''))
+  if (value) {
+    if (value >= MAX_SCALE) scale.value = MAX_SCALE
+    else if (value <= MIN_SCALE) scale.value = MIN_SCALE
+    else scale.value = value
   }
 }
 
-function zoomOut() {
-  const min = SCALES[0]
-  if (scale.value > min) {
-    if (SCALES.includes(scale.value)) { scale.value = scale.value / 2 }
-    else {
-      const filter = SCALES.filter(n => n < scale.value)
-      scale.value = filter.length ? filter[filter.length - 1] : min
-    }
-  }
+function zoomIn(step?: number) {
+  const value = step ? scale.value + step : Math.round(scale.value * 2)
+  scale.value = value < MAX_SCALE ? value : MAX_SCALE
+}
+
+function zoomOut(step?: number) {
+  const value = step ? scale.value - step : Math.round(scale.value / 2)
+  scale.value = value > MIN_SCALE ? value : MIN_SCALE
 }
 
 function zoomFit() {
@@ -270,17 +309,18 @@ function toggleSidebar(isOpen) {
     <div class="w-full h-[calc(100%-137px)] border-b-1 border-blacks-20 sm:flex sm:flex-row sm:h-[calc(100%-57px)] sm:border-0 overflow-hidden">
       <div
         ref="leftSide"
-        class="h-[calc(100%-8px)] bg-white px-3 pt-[52px] pb-7 overflow-auto custom-scrollbar flex-grow flex-shrink sm:px-7 sm:py-15 m-1 transition-all duration-200"
+        class="h-[calc(100%-8px)] bg-white px-3 pt-[52px] pb-7 overflow-auto custom-scrollbar flex-grow flex-shrink sm:px-7 sm:py-15 m-1 transition-all duration-200 relative"
         :class="{ 'absolute hidden': isMobileScreen && !isCVPreviewVisible }"
+        :style="isMobileScreen ? 'width: 100%' : `width: ${leftWidth}px`"
       >
         <div
-          class="mx-auto relative"
+          class="mx-auto"
           :style="{
             width: cvPreviewWidth,
             height: cvPreviewHeight,
           }"
         >
-          <p class="absolute -top-[26px] note text-blacks-20">
+          <p class="absolute -top-[26px] note text-blacks-20 whitespace-nowrap">
             Layout size: A4 (21x29.7cm)
           </p>
           <div
@@ -338,7 +378,7 @@ function toggleSidebar(isOpen) {
             :class="isDesignBarOpen ? 'center' : 'right'"
           >
             <button
-              class="w-5 h-7 pb-2 m-0 hidden sm:inline-block absolute bottom-full right-0 invisible group-hover:visible"
+              class="w-5 h-7 pb-2 m-0 hidden sm:inline-block absolute bottom-full right-0 invisible sm:group-hover:visible"
               @click="onCollapse"
             >
               <span
@@ -358,32 +398,42 @@ function toggleSidebar(isOpen) {
           class="fixed bottom-0 left-0 right-0 z-2 bottom-48 sm:bottom-8 sm:z-0"
           :style="rightWidthStyle"
         >
-          <div class="w-12 h-32 p-2 rounded-[69px] bg-white shadow-custom flex flex-col justify-between absolute bottom-0 right transition group">
-            <Tooltip
-              placement="left"
-              text="Zoom in"
-            >
-              <button class="btn-icon-32" @click="zoomIn">
+          <div class="w-12 h-32 p-2 rounded-[69px] bg-white shadow-custom flex flex-col justify-between items-center absolute bottom-0 right transition group">
+            <Tooltip placement="left">
+              <button class="btn-icon-32 transition-[background] duration-300" @click="() => zoomIn()">
                 <span class="i-custom:zoom-in w-6 h-6" />
               </button>
+              <template #content>
+                <div class="flex justify-center items-center gap-4">
+                  <span class="note text-blacks-100">Zoom in</span>
+                  <div class="w-4 h-4 flex justify-center items-center p-[2px] border border-blacks-40 rounded">
+                    <span class="i-custom:plus w-3 h-3 text-blacks-40" />
+                  </div>
+                </div>
+              </template>
             </Tooltip>
 
-            <button
-              class="note text-center whitespace-nowrap -mx-2"
-              :class="isFitEnable ? 'text-blacks-40' : 'text-blacks-70'"
-              @mouseover="isFitEnable = true"
-              @mouseout="isFitEnable = false"
-              @click="zoomFit"
-            >
-              {{ isFitEnable ? 'Fit' : `${scale}%` }}
-            </button>
-            <Tooltip
-              placement="left"
-              text="Zoom out"
-            >
-              <button class="btn-icon-32" @click="zoomOut">
+            <Tooltip placement="left" text="Double-click to fit the screen">
+              <input
+                class="max-w-[42px] note text-center whitespace-nowrap text-blacks-70 outline-none rounded-none select-none hover:bg-blacks-10 focus:bg-blacks-10 transition-[background] duration-300"
+                :value="scaleText"
+                @change="handleScaleChange"
+                @dblclick="zoomFit"
+              >
+            </Tooltip>
+
+            <Tooltip placement="left">
+              <button class="btn-icon-32 transition-[background] duration-300" @click="() => zoomOut()">
                 <span class="i-custom:zoom-out w-6 h-6" />
               </button>
+              <template #content>
+                <div class="flex justify-center items-center gap-4">
+                  <span class="note text-blacks-100">Zoom out</span>
+                  <div class="w-4 h-4 flex justify-center items-center p-[2px] border border-blacks-40 rounded">
+                    <span class="i-custom:minus w-3 h-3 text-blacks-40" />
+                  </div>
+                </div>
+              </template>
             </Tooltip>
           </div>
         </div>
@@ -401,13 +451,14 @@ function toggleSidebar(isOpen) {
 
       <div
         ref="resizer"
-        class="resizer h-full sm:border-l border-blacks-20 cursor-[col-resize]"
+        class="resizer h-full sm:w-[1px] bg-blacks-20 cursor-[col-resize] select-none"
         :class="{ 'hidden': isMobileScreen }"
       />
 
       <div
         ref="rightSide"
-        class="w-full h-full sm:w-[390px] sm:min-w-[390px] transition-all duration-200"
+        class="w-full h-full sm:min-w-[390px] transition-all duration-200"
+        :style="isMobileScreen ? 'width: 100%' : `width: ${rightWidth}px`"
       >
         <Sidebar
           :is-mobile="isMobileScreen"
@@ -449,7 +500,9 @@ function toggleSidebar(isOpen) {
   left: 50%;
   transform: translateX(-50%);
 }
-.resizer::before:hover {
-  @apply cursor-[col-resize];
+@media (min-width: 640px) {
+  .resizer::before:hover {
+    @apply cursor-[col-resize];
+  }
 }
 </style>
