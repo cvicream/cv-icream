@@ -205,7 +205,7 @@ function swap(index1, index2) {
               />
               <div
                 v-show="isMoreActionOpen.includes(index)"
-                class="absolute right-0 mt-2 w-[262px] bg-white border border-blacks-100 rounded-xl shadow-custom z-1 flex flex-col overflow-hidden"
+                class="absolute right-0 mt-2 w-[262px] bg-white border border-blacks-100 rounded-xl shadow-custom z-10 flex flex-col overflow-hidden"
                 @click="toggleMoreAction(null)"
               >
                 <button v-if="social.list.length > 1" class="flex items-center px-4 py-3 sm:hover:bg-primary-10" @click="toggleShowItem(index)">

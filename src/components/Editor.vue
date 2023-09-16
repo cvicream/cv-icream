@@ -177,7 +177,7 @@ export default defineComponent({
       document.querySelectorAll('.ql-editor a').forEach((element) => {
         element.addEventListener('click', (e) => {
           e.stopPropagation()
-          const anchor = (e.target as HTMLAnchorElement)
+          const anchor = (e.currentTarget as HTMLAnchorElement)
           openLinkTooltip(anchor)
         })
       })
@@ -258,15 +258,32 @@ export default defineComponent({
     }
 
     function removeLink() {
-      if (selectedAnchor.value)
-        selectedAnchor.value.replaceWith(selectedAnchor.value.innerText)
+      if (selectedAnchor.value) {
+        const style = selectedAnchor.value.getAttribute('style')
+        if (selectedAnchor.value.firstElementChild) {
+          if (style) selectedAnchor.value.firstElementChild.setAttribute('style', style)
+          selectedAnchor.value.outerHTML = selectedAnchor.value.innerHTML
+        }
+        else {
+          if (style) {
+            // text node
+            const span = document.createElement('span')
+            span.innerHTML = selectedAnchor.value.innerHTML
+            span.setAttribute('style', style)
+            selectedAnchor.value.outerHTML = span.outerHTML
+          }
+          else {
+            selectedAnchor.value.outerHTML = selectedAnchor.value.innerHTML
+          }
+        }
+      }
 
       closeLinkEdit()
     }
 
     function setLink(anchor: HTMLAnchorElement) {
       selectedAnchor.value = anchor
-      link.value = anchor.getAttribute('href') || ''
+      link.value = anchor.href || ''
       draftLink.value = link.value
     }
 
@@ -391,7 +408,7 @@ export default defineComponent({
       <a
         class="paragraph text-blacks-100 truncate"
         target="_blank"
-        :href="`//${link}`"
+        :href="link"
       >
         {{ link }}
       </a>
@@ -479,18 +496,16 @@ export default defineComponent({
 }
 
 .ql-editor {
-  @apply pl-0 pr-5 py-0;
+  @apply pl-0 pr-6 py-0;
 }
 .single-line .ql-editor {
   @apply h-[22px] p-0 mr-4;
 }
-@media (min-width: 640px) {
-  .btn-clear:hover {
-  @apply opacity-100 bg-blacks-70;
-  }
-  .deletable:hover + .btn-clear {
-    @apply opacity-100;
-  }
+.btn-clear:hover {
+@apply opacity-100 bg-blacks-70;
+}
+.deletable:hover + .btn-clear {
+  @apply opacity-100;
 }
 
 .ql-editor {
