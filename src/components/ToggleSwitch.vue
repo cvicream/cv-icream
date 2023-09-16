@@ -1,9 +1,5 @@
-<script setup lang="ts">
-import { storeToRefs } from 'pinia'
-import { useToolbarStore } from '~/stores/toolbar'
-const toolbar = useToolbarStore()
-const { currentState } = storeToRefs(toolbar)
-</script>
+<script setup lang="ts"></script>
+
 <template>
   <Tooltip
     placement="left"

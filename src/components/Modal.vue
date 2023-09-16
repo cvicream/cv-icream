@@ -1,7 +1,7 @@
 <script setup lang="ts">
 const emit = defineEmits(['close'])
 
-const props = defineProps<{
+defineProps<{
   title?: string
   subtitle?: string
   titleStyle?: string

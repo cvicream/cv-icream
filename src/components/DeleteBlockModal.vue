@@ -1,6 +1,6 @@
 <script setup lang="ts">
 
-const props = defineProps<{
+defineProps<{
   visible: boolean
   deleteIdx: number
   toggle: () => void
@@ -26,7 +26,7 @@ const props = defineProps<{
       </button>
       <button
         class="btn-primary px-6 flex-grow flex-shrink-0 text-white bg-primary-100"
-        @click="deleteItem(deleteIdx)"
+        @click="() => deleteItem(deleteIdx)"
       >
         <span class="subleading">Yes, delete it</span>
       </button>

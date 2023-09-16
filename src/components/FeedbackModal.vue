@@ -8,8 +8,8 @@ const props = defineProps<{
   title: string
   subtitle: string
   toggle: () => void
-  notify: () => void
-  pay: () => void
+  notify?: () => void
+  pay?: () => void
 }>()
 
 const star = ref(0)
