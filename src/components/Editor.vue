@@ -258,8 +258,25 @@ export default defineComponent({
     }
 
     function removeLink() {
-      if (selectedAnchor.value)
-        selectedAnchor.value.outerHTML = selectedAnchor.value.innerHTML
+      if (selectedAnchor.value) {
+        const style = selectedAnchor.value.getAttribute('style')
+        if (selectedAnchor.value.firstElementChild) {
+          if (style) selectedAnchor.value.firstElementChild.setAttribute('style', style)
+          selectedAnchor.value.outerHTML = selectedAnchor.value.innerHTML
+        }
+        else {
+          if (style) {
+            // text node
+            const span = document.createElement('span')
+            span.innerHTML = selectedAnchor.value.innerHTML
+            span.setAttribute('style', style)
+            selectedAnchor.value.outerHTML = span.outerHTML
+          }
+          else {
+            selectedAnchor.value.outerHTML = selectedAnchor.value.innerHTML
+          }
+        }
+      }
 
       closeLinkEdit()
     }
