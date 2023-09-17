@@ -13,12 +13,21 @@ const props = defineProps<{
 
 const toolbar = useToolbarStore()
 const noteRef = ref(null)
+const noteIconRef = ref<HTMLTextAreaElement | null>(null)
 const editorRef = ref<HTMLTextAreaElement | null>(null)
 const show = ref(props.isOpen)
 const value = ref(props.note.value)
+const isDragging = ref(false)
+const left = ref(props.note.location.left)
+const top = ref(props.note.location.top)
 
 watch(() => value.value !== props.note.value, (isEditing) => {
   emit('update:isNoteEditing', isEditing)
+})
+
+watch(() => props.note.location, () => {
+  left.value = props.note.location.left
+  top.value = props.note.location.top
 })
 
 watch(editorRef, () => {
@@ -42,6 +51,10 @@ const noteClasses = computed(() => {
 })
 
 const onToggleNote = () => {
+  if (isDragging.value) {
+    isDragging.value = false
+    return
+  }
   if (value.value !== props.note.value) {
     value.value = props.note.value
     show.value = false
@@ -71,31 +84,15 @@ onClickOutside(noteRef, (event) => {
     (editorRef.value as HTMLTextAreaElement).focus()
 })
 
-const onDragStart = (event: DragEvent) => {
+const onDragStart = () => {
   document.querySelectorAll('#cv-preview [data-draggable="true"]').forEach(el => el.classList.add('temp-static'))
   document.getElementById('cv-preview')?.addEventListener('dragover', (event) => {
     event.preventDefault()
   }, false)
-  event.target?.classList.add('dragging')
 }
 
-const onDragEnd = (event: DragEvent) => {
+const onDragEnd = () => {
   document.querySelectorAll('#cv-preview [data-draggable="true"]').forEach(el => el.classList.remove('temp-static'))
-  event.target?.classList.remove('dragging')
-
-  const boundingBox = document.getElementById('cv-preview')?.getBoundingClientRect()!
-  const left = (event.clientX - boundingBox.x) / boundingBox.width
-  const top = (event.clientY - boundingBox.y) / boundingBox.height
-  if (left < 0 || top < 0 || left > 1 || top > 1)
-    return
-
-  toolbar.modifyNote({
-    ...props.note,
-    location: {
-      left,
-      top,
-    },
-  })
 }
 
 const onTouchEnd = (event: TouchEvent) => {
@@ -122,20 +119,62 @@ const onTouchEnd = (event: TouchEvent) => {
   })
 }
 
+function onMouseDown(event: MouseEvent) {
+  event.stopPropagation()
+  document.addEventListener('mousemove', onMouseMove)
+  document.addEventListener('mouseup', onMouseUp)
+
+  if (noteIconRef.value) {
+    console.log('mouseDown', left.value, top.value)
+    onDragStart()
+  }
+}
+
+function onMouseMove(event: MouseEvent) {
+  const parentContainerElement = document.getElementById('left-side')
+  const parentElement = document.getElementById('cv-preview')
+  if (noteIconRef.value && parentContainerElement && parentElement) {
+    if (!isDragging.value) isDragging.value = true
+    const parentRect = parentElement.getBoundingClientRect()
+    const rect = noteIconRef.value.getBoundingClientRect()
+    const offsetLeft = event.clientX - parentRect.x
+    const offsetTop = event.clientY - parentRect.y
+    console.log(parentRect, offsetTop)
+    if (offsetLeft < 0
+      || (offsetLeft + rect.width > parentRect.width)
+      || offsetTop < 0
+      || (parentRect.top >= 0 && offsetTop + parentRect.top + rect.width > parentRect.bottom)
+      || (parentRect.top < 0 && offsetTop + rect.height > parentRect.height)
+    ) return
+    left.value = offsetLeft / parentRect.width
+    top.value = offsetTop / parentRect.height
+  }
+}
+
+function onMouseUp(event: MouseEvent) {
+  console.log('mouseUp')
+  toolbar.modifyNote({
+    ...props.note,
+    location: {
+      left: left.value,
+      top: top.value,
+    },
+  })
+  document.removeEventListener('mousemove', onMouseMove)
+  document.removeEventListener('mouseup', onMouseUp)
+  onDragEnd()
+}
 </script>
 
 <template>
   <div
     ref="noteRef"
-    class="note-container"
-    @dragstart="onDragStart"
-    @dragend="onDragEnd"
-    @touchend="onTouchEnd"
   >
     <button
+      ref="noteIconRef"
       class="note-icon bg-yellow"
-      draggable="true"
       @click="onToggleNote"
+      @mousedown="onMouseDown"
     >
       <span
         class="i-custom:note w-8 h-8"
@@ -167,8 +206,8 @@ const onTouchEnd = (event: TouchEvent) => {
   border-radius: 50%;
   position: absolute;
   z-index: 1;
-  top: calc(v-bind('props.note.location.top') * 100%);
-  left: calc(v-bind('props.note.location.left') * 100%);
+  top: calc(v-bind('top') * 100%);
+  left: calc(v-bind('left') * 100%);
 }
 .note-form {
   width: 300px;
@@ -177,18 +216,18 @@ const onTouchEnd = (event: TouchEvent) => {
   border-radius: 12px;
   padding: 16px;
   z-index: 2;
-  top: calc(v-bind('props.note.location.top') * 100%);
+  top: calc(v-bind('top') * 100%);
   &.note-right {
-    left: calc((v-bind('props.note.location.left')) * 100% + 40px);
+    left: calc((v-bind('left')) * 100% + 40px);
   }
   &.note-left {
-    left: calc((v-bind('props.note.location.left')) * 100% - 320px);
+    left: calc((v-bind('left')) * 100% - 320px);
   }
   &.note-bottom {
-    top: calc(v-bind('props.note.location.top') * 100% - 170px);
+    top: calc(v-bind('top') * 100% - 170px);
   }
   &.note-top {
-    top: calc(v-bind('props.note.location.top') * 100%);
+    top: calc(v-bind('top') * 100%);
   }
 }
 .checkmark {
