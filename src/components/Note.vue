@@ -95,39 +95,37 @@ const onDragEnd = () => {
   document.querySelectorAll('#cv-preview [data-draggable="true"]').forEach(el => el.classList.remove('temp-static'))
 }
 
-const onTouchEnd = (event: TouchEvent) => {
-  const touch = event.touches[0] || event.changedTouches[0]
-  document.querySelectorAll('#cv-preview [data-draggable="true"]').forEach(el => el.classList.remove('temp-static'))
+// const onTouchEnd = (event: TouchEvent) => {
+//   const touch = event.touches[0] || event.changedTouches[0]
+//   document.querySelectorAll('#cv-preview [data-draggable="true"]').forEach(el => el.classList.remove('temp-static'))
 
-  const boundingBox = document.getElementById('cv-preview')?.getBoundingClientRect()!
-  const left = touch.pageX - boundingBox.x
-  const top = touch.pageY - boundingBox.y
+//   const boundingBox = document.getElementById('cv-preview')?.getBoundingClientRect()!
+//   const left = touch.pageX - boundingBox.x
+//   const top = touch.pageY - boundingBox.y
 
-  if (left < 0
-  || top < 0
-  || left > boundingBox?.width
-  || top > boundingBox?.height
-  )
-    return
+//   if (left < 0
+//   || top < 0
+//   || left > boundingBox?.width
+//   || top > boundingBox?.height
+//   )
+//     return
 
-  toolbar.modifyNote({
-    ...props.note,
-    location: {
-      left,
-      top,
-    },
-  })
-}
+//   toolbar.modifyNote({
+//     ...props.note,
+//     location: {
+//       left,
+//       top,
+//     },
+//   })
+// }
 
 function onMouseDown(event: MouseEvent) {
   event.stopPropagation()
   document.addEventListener('mousemove', onMouseMove)
   document.addEventListener('mouseup', onMouseUp)
 
-  if (noteIconRef.value) {
-    console.log('mouseDown', left.value, top.value)
+  if (noteIconRef.value)
     onDragStart()
-  }
 }
 
 function onMouseMove(event: MouseEvent) {
@@ -139,7 +137,6 @@ function onMouseMove(event: MouseEvent) {
     const rect = noteIconRef.value.getBoundingClientRect()
     const offsetLeft = event.clientX - parentRect.x
     const offsetTop = event.clientY - parentRect.y
-    console.log(parentRect, offsetTop)
     if (offsetLeft < 0
       || (offsetLeft + rect.width > parentRect.width)
       || offsetTop < 0
@@ -152,7 +149,6 @@ function onMouseMove(event: MouseEvent) {
 }
 
 function onMouseUp(event: MouseEvent) {
-  console.log('mouseUp')
   toolbar.modifyNote({
     ...props.note,
     location: {
@@ -238,8 +234,5 @@ function onMouseUp(event: MouseEvent) {
   border-bottom: 2px solid #72B255;
   border-right: 2px solid #72B255;
   margin: 4px 10px 0 7px;
-}
-.dragging {
-  opacity: 0.1;
 }
 </style>
