@@ -308,6 +308,7 @@ function toggleSidebar(isOpen) {
     <Header :is-edit="true" />
     <div class="w-full h-[calc(100%-137px)] border-b-1 border-blacks-20 sm:flex sm:flex-row sm:h-[calc(100%-57px)] sm:border-0 overflow-hidden">
       <div
+        id="left-side"
         ref="leftSide"
         class="h-[calc(100%-8px)] bg-white px-3 pt-[52px] pb-7 overflow-auto custom-scrollbar flex-grow flex-shrink sm:px-7 sm:py-15 m-1 transition-all duration-200 relative"
         :class="{ 'absolute hidden': isMobileScreen && !isCVPreviewVisible }"
