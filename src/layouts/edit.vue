@@ -73,11 +73,33 @@ function toggleCVPreview() {
 }
 
 onBeforeMount(() => {
-  if (hasStorage() && window.history.state.back.includes('/template')) {
+  if (hasStorage()) {
     const storage = getStorage()
     if (user.template === storage.user.template) {
-      const style = storage.toolbar.currentState
-      toolbar.setStyle(style)
+      Object.keys(storage).forEach((key) => {
+        if (key === 'user') {
+          const subObj = storage[key]
+          Object.keys(subObj).forEach((subKey) => {
+            user.$patch((state) => {
+              state[subKey] = subObj[subKey]
+            })
+          })
+          user.updateTimestamp()
+        }
+        else if (key === 'toolbar') {
+          const subObj = storage[key]
+          Object.keys(subObj).forEach((subKey) => {
+            if (subKey === 'currentState') {
+              toolbar.setStyle(subObj[subKey])
+            }
+            else {
+              toolbar.$patch((state) => {
+                state[subKey] = subObj[subKey]
+              })
+            }
+          })
+        }
+      })
     }
   }
 
