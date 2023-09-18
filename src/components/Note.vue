@@ -25,6 +25,10 @@ watch(() => value.value !== props.note.value, (isEditing) => {
   emit('update:isNoteEditing', isEditing)
 })
 
+watch(() => props.isOpen, () => {
+  show.value = props.isOpen
+})
+
 watch(() => props.note.location, () => {
   left.value = props.note.location.left
   top.value = props.note.location.top
