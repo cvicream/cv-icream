@@ -1,13 +1,12 @@
 <script setup lang="ts">
 import { onBeforeMount } from 'vue'
-import { storeToRefs } from 'pinia'
 import { useUserStore } from '~/stores/user'
 import { useToolbarStore } from '~/stores/toolbar'
 import { DEFAULT_TEMPLATE, MOBILE_BREAKPOINT, TEMPLATES } from '~/constants'
+import { getStorage, hasStorage, setStatus } from '~/utils'
 
 const user = useUserStore()
 const toolbar = useToolbarStore()
-const { template } = storeToRefs(user)
 
 const { t } = useI18n()
 const router = useRouter()
@@ -29,20 +28,51 @@ onUnmounted(() => {
 })
 
 function onNext() {
-  // if the selected template is different from the previous template
-  if (selectedTemplate.value !== template.value) {
+  let isNewTemplate = true
+
+  if (hasStorage()) {
+    const storage = getStorage()
+    if (selectedTemplate.value === storage.user.template) {
+      // load previous state from storage
+      isNewTemplate = false
+      Object.keys(storage).forEach((key) => {
+        if (key === 'user') {
+          const subObj = storage[key]
+          Object.keys(subObj).forEach((subKey) => {
+            user.$patch((state) => {
+              state[subKey] = subObj[subKey]
+            })
+          })
+          user.updateTimestamp()
+        }
+        else if (key === 'toolbar') {
+          const subObj = storage[key]
+          Object.keys(subObj).forEach((subKey) => {
+            if (subKey === 'currentState') {
+              toolbar.setCurrentState(subObj[subKey])
+            }
+            else {
+              toolbar.$patch((state) => {
+                state[subKey] = subObj[subKey]
+              })
+            }
+          })
+        }
+      })
+    }
+  }
+
+  if (isNewTemplate) {
     const defaultTemplate = TEMPLATES.find(t => t.template === selectedTemplate.value)
     if (defaultTemplate) {
       user.$patch((state) => {
         Object.assign(state, defaultTemplate)
       })
-      Object.keys(defaultTemplate.style).forEach((key) => {
-        toolbar.$patch((state) => {
-          state.currentState[key] = defaultTemplate.style[key]
-        })
-      })
+      toolbar.setCurrentState(defaultTemplate.style)
     }
   }
+
+  setStatus({ isEditing: true })
   router.push('/edit/about')
 }
 

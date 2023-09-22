@@ -73,39 +73,36 @@ function toggleCVPreview() {
 }
 
 onBeforeMount(() => {
-  if (hasStorage()) {
+  if (!isEditing() && hasStorage()) {
     const storage = getStorage()
-    if (isEditing() || user.template === storage.user.template) {
-      Object.keys(storage).forEach((key) => {
-        if (key === 'user') {
-          const subObj = storage[key]
-          Object.keys(subObj).forEach((subKey) => {
-            user.$patch((state) => {
+    Object.keys(storage).forEach((key) => {
+      if (key === 'user') {
+        const subObj = storage[key]
+        Object.keys(subObj).forEach((subKey) => {
+          user.$patch((state) => {
+            state[subKey] = subObj[subKey]
+          })
+        })
+        user.updateTimestamp()
+      }
+      else if (key === 'toolbar') {
+        const subObj = storage[key]
+        Object.keys(subObj).forEach((subKey) => {
+          if (subKey === 'currentState') {
+            toolbar.setCurrentState(subObj[subKey])
+          }
+          else {
+            toolbar.$patch((state) => {
               state[subKey] = subObj[subKey]
             })
-          })
-          user.updateTimestamp()
-        }
-        else if (key === 'toolbar') {
-          const subObj = storage[key]
-          Object.keys(subObj).forEach((subKey) => {
-            if (subKey === 'currentState') {
-              toolbar.setCurrentState(subObj[subKey])
-            }
-            else {
-              toolbar.$patch((state) => {
-                state[subKey] = subObj[subKey]
-              })
-            }
-          })
-        }
-      })
-    }
+          }
+        })
+      }
+    })
   }
 
   window.addEventListener('beforeunload', onBeforeUnload)
   resize()
-
   initializeWidth()
 })
 
@@ -133,7 +130,6 @@ onMounted(() => {
 onUnmounted(() => {
   setStatus({ isEditing: false })
   window.removeEventListener('beforeunload', onBeforeUnload)
-
   window.removeEventListener('resize', resize)
 })
 
