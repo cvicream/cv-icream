@@ -2,7 +2,7 @@
 import { onBeforeMount } from 'vue'
 import { useUserStore } from '~/stores/user'
 import { useToolbarStore } from '~/stores/toolbar'
-import { getJsonUpload } from '~/utils'
+import { getJsonUpload, setStatus } from '~/utils'
 import { DEFAULT_TEMPLATE, DRAFT_FILE_TYPE } from '~/constants'
 
 const user = useUserStore()
@@ -13,7 +13,7 @@ const router = useRouter()
 
 onBeforeMount(() => {
   // make sure style change back
-  toolbar.setStyle(DEFAULT_TEMPLATE.style)
+  toolbar.setCurrentState(DEFAULT_TEMPLATE.style)
 })
 
 async function importJsonFile() {
@@ -40,6 +40,8 @@ async function importJsonFile() {
         })
       }
     })
+
+    setStatus({ isEditing: true })
     redirectToEdit()
   }
   catch (error) {
