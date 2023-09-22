@@ -445,6 +445,7 @@ const handleRightPanelResize = (values) => {
 
 .splitpanes {
   background: transparent;
+  height: unset;
 }
 
 .cv-preview-read-only .splitpanes__splitter,
