@@ -13,7 +13,7 @@ const router = useRouter()
 
 onBeforeMount(() => {
   // make sure style change back
-  toolbar.setStyle(DEFAULT_TEMPLATE.style)
+  toolbar.setCurrentState(DEFAULT_TEMPLATE.style)
 })
 
 async function importJsonFile() {

@@ -4,7 +4,7 @@ import { useElementSize } from '@vueuse/core'
 import { storeToRefs } from 'pinia'
 import { useUserStore } from '~/stores/user'
 import { useToolbarStore } from '~/stores/toolbar'
-import { getColor, getStorage, hasStorage, isMac, isMobileDevice, setCssVariable, setStatus } from '~/utils'
+import { getColor, getStorage, hasStorage, isEditing, isMac, isMobileDevice, setCssVariable, setStatus } from '~/utils'
 import {
   A4_HEIGHT_PX,
   A4_WIDTH_PX,
@@ -75,7 +75,7 @@ function toggleCVPreview() {
 onBeforeMount(() => {
   if (hasStorage()) {
     const storage = getStorage()
-    if (user.template === storage.user.template) {
+    if (isEditing() || user.template === storage.user.template) {
       Object.keys(storage).forEach((key) => {
         if (key === 'user') {
           const subObj = storage[key]
@@ -90,7 +90,7 @@ onBeforeMount(() => {
           const subObj = storage[key]
           Object.keys(subObj).forEach((subKey) => {
             if (subKey === 'currentState') {
-              toolbar.setStyle(subObj[subKey])
+              toolbar.setCurrentState(subObj[subKey])
             }
             else {
               toolbar.$patch((state) => {
