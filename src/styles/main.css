@@ -207,7 +207,6 @@ input[type="search"]:hover::-webkit-search-cancel-button {
     margin: 0;
     box-shadow: none;
     letter-spacing: normal;
-    overflow: hidden;
   }
   #cv-preview-print * {
     overflow: visible !important;
