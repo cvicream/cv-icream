@@ -4,7 +4,7 @@ import { useElementSize } from '@vueuse/core'
 import { storeToRefs } from 'pinia'
 import { useUserStore } from '~/stores/user'
 import { useToolbarStore } from '~/stores/toolbar'
-import { getColor, getStorage, hasStorage, isMac, isMobileDevice, setCssVariable, setStatus } from '~/utils'
+import { getColor, getStorage, hasStorage, isEditing, isMac, isMobileDevice, setCssVariable, setStatus } from '~/utils'
 import {
   A4_HEIGHT_PX,
   A4_WIDTH_PX,
@@ -73,17 +73,36 @@ function toggleCVPreview() {
 }
 
 onBeforeMount(() => {
-  if (hasStorage() && window.history.state.back.includes('/template')) {
+  if (!isEditing() && hasStorage()) {
     const storage = getStorage()
-    if (user.template === storage.user.template) {
-      const style = storage.toolbar.currentState
-      toolbar.setStyle(style)
-    }
+    Object.keys(storage).forEach((key) => {
+      if (key === 'user') {
+        const subObj = storage[key]
+        Object.keys(subObj).forEach((subKey) => {
+          user.$patch((state) => {
+            state[subKey] = subObj[subKey]
+          })
+        })
+        user.updateTimestamp()
+      }
+      else if (key === 'toolbar') {
+        const subObj = storage[key]
+        Object.keys(subObj).forEach((subKey) => {
+          if (subKey === 'currentState') {
+            toolbar.setCurrentState(subObj[subKey])
+          }
+          else {
+            toolbar.$patch((state) => {
+              state[subKey] = subObj[subKey]
+            })
+          }
+        })
+      }
+    })
   }
 
   window.addEventListener('beforeunload', onBeforeUnload)
   resize()
-
   initializeWidth()
 })
 
@@ -111,7 +130,6 @@ onMounted(() => {
 onUnmounted(() => {
   setStatus({ isEditing: false })
   window.removeEventListener('beforeunload', onBeforeUnload)
-
   window.removeEventListener('resize', resize)
 })
 

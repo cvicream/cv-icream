@@ -1,7 +1,7 @@
 import { createPinia } from 'pinia'
 import _ from 'lodash'
 import type { UserModule } from '~/types'
-import { getStorage, hasStorage, isEditing, setStorage } from '~/utils'
+import { isEditing, setStorage } from '~/utils'
 import { useUndoStore } from '~/stores/undo'
 import { useRedoStore } from '~/stores/redo'
 
@@ -9,9 +9,6 @@ import { useRedoStore } from '~/stores/redo'
 // https://pinia.esm.dev/
 export const install: UserModule = ({ app }) => {
   const pinia = createPinia()
-
-  if (hasStorage())
-    pinia.state.value = getStorage()
 
   watch(
     pinia.state,
