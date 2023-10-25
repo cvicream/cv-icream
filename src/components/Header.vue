@@ -22,6 +22,7 @@ const user = useUserStore()
 const toolbar = useToolbarStore()
 const {
   template,
+  splitIndex,
   about,
   summary,
   experience,
@@ -85,6 +86,7 @@ function exportJsonFile() {
     },
     user: {
       template: template.value,
+      splitIndex: splitIndex.value,
       about: about.value,
       summary: summary.value,
       experience: experience.value,
