@@ -1,7 +1,7 @@
 <script lang="ts">
 import { computed, defineComponent, onMounted, ref, watch } from 'vue'
-import type { Quill } from '@vueup/vue-quill'
-import { QuillEditor } from '@vueup/vue-quill'
+import { Quill, QuillEditor } from '@vueup/vue-quill'
+
 import '@vueup/vue-quill/dist/vue-quill.snow.css'
 import '@vueup/vue-quill/dist/vue-quill.bubble.css'
 import { v4 as uuidv4 } from 'uuid'
@@ -48,6 +48,7 @@ export default defineComponent({
     const linkEditVisible = ref(false)
     const linkHoverPosition = ref({ x: 0, y: 0 })
     const linkHoverVisible = ref(false)
+    const showIconPopover = ref(false)
 
     const content = computed({
       get: () => {
@@ -105,6 +106,27 @@ export default defineComponent({
           delta.ops = ops
           return delta
         })
+
+        const BlockEmbed = Quill.import('blots/block/embed')
+        class IconBlot extends BlockEmbed {
+          static create(data) {
+            const node = super.create(data) as HTMLElement
+            const child = document.createElement('span')
+            child.className = `i-custom:${data} custom-icon w-[10px] h-[10px] text-white`
+
+            node.setAttribute('class', 'icon-mask')
+            node.appendChild(child)
+            return node
+          }
+
+          static value(domNode) {
+            const { src, custom } = domNode.dataset
+            return { src, custom }
+          }
+        }
+        IconBlot.blotName = 'iconBlot'
+        IconBlot.tagName = 'div'
+        Quill.register({ 'formats/iconBlot': IconBlot })
       }
 
       createAnchorListeners()
@@ -145,7 +167,7 @@ export default defineComponent({
     }
 
     function onBlur() {
-      if (!linkEditVisible.value)
+      if (!linkEditVisible.value && !showIconPopover.value)
         toolbarVisible.value = false
 
       closeLinkHover()
@@ -216,6 +238,14 @@ export default defineComponent({
       closeLinkHover()
     }
 
+    function onClickIcon() {
+      showIconPopover.value = !showIconPopover.value
+    }
+
+    function closeIconPopover() {
+      showIconPopover.value = false
+    }
+
     return {
       isMobileScreen,
       root,
@@ -229,6 +259,7 @@ export default defineComponent({
       linkHoverPosition,
       linkHoverVisible,
       content,
+      showIconPopover,
       onFocus,
       onBlur,
       onClear,
@@ -238,6 +269,8 @@ export default defineComponent({
       removeLink,
       resetLink,
       onEditorChange,
+      onClickIcon,
+      closeIconPopover,
     }
   },
 })
@@ -313,12 +346,15 @@ export default defineComponent({
         <button class="ql-link" :class="isMobileScreen ? 'btn-icon-32' : 'btn-icon-24'">
           <span class="i-custom:link" :class="isMobileScreen ? 'w-6 h-6' : 'w-4.5 h-4.5'" />
         </button>
+        <button :onclick="onClickIcon" :class="isMobileScreen ? 'btn-icon-32 p-1' : 'btn-icon-24 p-0'">
+          <span class="i-custom:icon" :class="isMobileScreen ? 'w-7 h-7' : 'w-5.5 h-5.5'" />
+        </button>
       </div>
     </div>
 
     <div
       v-if="linkHoverVisible && toolbarVisible"
-      class="fixed flex justify-between gap-2 px-3 py-2 bg-white border-1 border-black rounded-xl shadow-custom"
+      class="fixed flex justify-between gap-2 px-3 py-2 bg-white border-1 border-black rounded-xl shadow-custom  z-11"
       :style="{top: `${linkHoverPosition.y}px`, left: `${linkHoverPosition.x}px`}"
     >
       <a
@@ -378,6 +414,8 @@ export default defineComponent({
       </div>
       <div class="fix-margin-bottom" style="top: 126px; bottom: 0; left: 0;" />
     </div>
+
+    <IconPopover v-if="showIconPopover" :close-icon-popover="closeIconPopover" :editor="editor" />
   </div>
 </template>
 
@@ -406,7 +444,7 @@ export default defineComponent({
   @apply pl-0 pr-5 py-0;
 }
 .single-line .ql-editor {
-  @apply h-[22px] p-0 mr-4;
+  @apply h-[24px] p-0 mr-4;
 }
 
 .btn-clear:hover {
@@ -553,5 +591,24 @@ export default defineComponent({
   position: absolute;
   bottom: -64px;
   z-index: -1;
+}
+
+.icon-mask {
+  background-color: var(--primary-color);
+  border-radius: 50%;
+  opacity: 70%;
+  cursor: pointer;
+  height: 16px;
+  width: 16px;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 5px;
+}
+
+.custom-icon {
+  width: 10px;
+  height: 10px;
+  color: white;
 }
 </style>
