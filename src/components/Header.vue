@@ -3,7 +3,7 @@ import { onMounted, onUnmounted, ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useUserStore } from '~/stores/user'
 import { useToolbarStore } from '~/stores/toolbar'
-import { getJsonUpload, isMobileDevice, setStatus, stripHtml } from '~/utils'
+import { getJsonUpload, isMobileDevice, isSafari, setStatus, stripHtml } from '~/utils'
 import { DRAFT_FILE_TYPE } from '~/constants'
 
 defineProps<{
@@ -34,8 +34,6 @@ const {
   social,
 } = storeToRefs(user)
 const { currentState, noteList } = storeToRefs(toolbar)
-
-const isSafari = () => ('safari' in window)
 
 onMounted(() => {
   window.addEventListener('click', closeAction, false)

@@ -1,0 +1,216 @@
+<script setup lang="ts">
+import { ref } from 'vue'
+import { useClipboard } from '@vueuse/core'
+import axios from 'axios'
+import { isMobileDevice, isSafari } from '~/utils'
+
+const emit = defineEmits(['close'])
+
+const props = defineProps<{
+  visible?: boolean
+  text?: string
+}>()
+
+const defaultQuestions = [
+  {
+    value: 'improve-writing',
+    label: 'Improve writing',
+  },
+  {
+    value: 'fix-spelling-grammar',
+    label: 'Fix spelling & grammar',
+  },
+  {
+    value: 'make-shorter',
+    label: 'Make shorter',
+  },
+  {
+    value: 'make-longer',
+    label: 'Make longer',
+  },
+  {
+    value: 'translate-into-english',
+    label: 'Translate into English',
+  },
+]
+
+const { isSupported, copy } = useClipboard()
+const question = ref('')
+const open = ref(false)
+const loading = ref(false)
+const resultVisible = ref(false)
+const result = ref('')
+
+function closeModal() {
+  emit('close')
+}
+
+function getOptionClass(index: number) {
+  if (index === 0)
+    return isSafari() || isMobileDevice() ? 'rounded-t-[11px]' : 'rounded-t-xl'
+  else if (index === defaultQuestions.length - 1)
+    return isSafari() || isMobileDevice() ? 'rounded-b-[11px]' : 'rounded-b-xl'
+  return ''
+}
+
+function onInput(event) {
+  question.value = event.target.value
+}
+
+function onFocus() {
+  open.value = true
+}
+
+function onBlur() {
+  // open.value = false
+}
+
+function onDelete() {
+  question.value = ''
+  result.value = ''
+  resultVisible.value = false
+}
+
+function setQuestion(text: string) {
+  question.value = text
+  open.value = false
+}
+
+async function sendRequest() {
+  loading.value = true
+
+  const data = {
+    model: import.meta.env.VITE_CHATGPT_MODEL,
+    messages: [
+      {
+        role: 'user',
+        content: `Here is a paragraph: ${props.text}. Please ${question.value}.`,
+      },
+    ],
+  }
+
+  try {
+    const res = await axios({
+      method: 'POST',
+      url: import.meta.env.VITE_CHATGPT_URL as string,
+      headers: {
+        Authorization: `Bearer ${import.meta.env.VITE_CHATGPT_API_KEY}`,
+      },
+      data,
+    })
+    if (res.data?.choices?.length) {
+      result.value = res.data.choices[0].message?.content
+      resultVisible.value = true
+    }
+  }
+  catch (error) {
+    console.error(error)
+  }
+
+  loading.value = false
+}
+</script>
+
+<template>
+  <div
+    v-if="visible"
+    class="bg-white p-4 rounded-[1.25rem] shadow-custom"
+  >
+    <div class="flex justify-between">
+      <div class="flex gap-2 items-center">
+        <div class="w-8 h-8 flex justify-center items-center">
+          <span class="i-custom:chatgpt w-6 h-6 text-blacks-70" />
+        </div>
+        <span class="leading text-blacks-100">Write with AI</span>
+      </div>
+      <button @click="closeModal">
+        <span class="i-custom:cancel w-5 h-5 text-blacks-40 sm:hover:text-blacks-70" />
+      </button>
+    </div>
+
+    <div class="relative mt-4">
+      <input
+        type="text"
+        placeholder="Ask AI anything..."
+        class="pr-10 form-input bg-primary-10"
+        :class="loading ? '!text-blacks-70' : '!text-blacks-100'"
+        :style="{
+          'border-bottom-left-radius': result ? 0 : '12px',
+          'border-bottom-right-radius': result ? 0 : '12px',
+        }"
+        :value="loading ? 'AI is writing...' : question"
+        :disabled="loading || !!result"
+        @input="onInput"
+        @focus="onFocus"
+        @blur="onBlur"
+      >
+      <button
+        class="w-6 h-6 absolute top-[50%] right-2 -translate-y-1/2 transition-[opacity] duration-300"
+        :disabled="!text || !question || loading || !!result"
+        @click="sendRequest"
+      >
+        <span
+          class="i-custom:arrow-up-circle w-6 h-6 text-blacks-40"
+          :class="{ 'sm:hover:text-blacks-70': !loading && !result }"
+        />
+      </button>
+
+      <div v-if="open && !result" class="absolute left-[2px] right-[2px] top-[54px]">
+        <div
+          class="bg-white rounded-xl overflow-hidden"
+          :class="isSafari() || isMobileDevice() ? 'border-1 border-blacks-100' : 'outline outline-1 outline-blacks-100'"
+        >
+          <button
+            v-for="(item, index) in defaultQuestions"
+            :key="item.value"
+            class="w-full h-[45px] flex justify-start items-center px-4 py-3 sm:hover:bg-primary-10"
+            :class="getOptionClass(index)"
+            @click="() => setQuestion(item.label)"
+          >
+            <span class="paragraph text-blacks-100">{{ item.label }}</span>
+          </button>
+        </div>
+        <div class="fix-margin-bottom" style="top: 100%; left: 0;" />
+      </div>
+    </div>
+
+    <div
+      v-if="resultVisible"
+      class="bg-primary-10 rounded-bl-xl rounded-br-xl"
+    >
+      <div class="border-t border-blacks-10 mx-2" />
+      <div class="px-3 py-4">
+        <p class="note text-blacks-70">
+          Here are the result from AI
+        </p>
+        <p class="paragraph text-blacks-70 bg-white rounded-xl p-3 mt-1">
+          {{ result }}
+        </p>
+        <div class="flex justify-end gap-2 mt-3">
+          <button @click="sendRequest">
+            <span class="note icon-24">Regenerate</span>
+          </button>
+          <button @click="onDelete">
+            <span class="i-custom:delete icon-24" />
+          </button>
+          <button v-if="isSupported" @click="copy(text as string)">
+            <span class="i-custom:variant icon-24" />
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="fix-margin-bottom" style="top: 100%; left: 0;" />
+  </div>
+</template>
+
+<style scope>
+.fix-margin-bottom {
+  content: '';
+  width: 100%;
+  height: 32px;
+  background-color: transparent;
+  position: absolute;
+  z-index: -1;
+}
+</style>

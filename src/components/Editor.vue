@@ -50,6 +50,8 @@ export default defineComponent({
     const linkEdit = ref<HTMLDivElement | null>(null)
     const linkTooltipVisible = ref(false)
     const linkEditVisible = ref(false)
+    const chatGPTEdit = ref<HTMLDivElement | null>(null)
+    const chatGPTEditVisible = ref(false)
     const selectedAnchor = ref<HTMLAnchorElement | null>(null)
     const draftLink = ref('')
     const link = ref('')
@@ -106,6 +108,18 @@ export default defineComponent({
         style.top = `${bounds.bottom + 8}px`
       }
       return style
+    })
+
+    const selectedText = computed(() => {
+      if (selectionRange.value) {
+        const { index, length } = selectionRange.value
+        if (length) {
+          const quill = (editor.value as Quill).getQuill()
+          const text = quill.getText(index, length)
+          return text
+        }
+      }
+      return ''
     })
 
     onMounted(() => {
@@ -167,6 +181,10 @@ export default defineComponent({
 
     watch(toolbarVisible, () => {
       handleToolbarVisible()
+    })
+
+    onClickOutside(chatGPTEdit, (event) => {
+      chatGPTEditVisible.value = false
     })
 
     onClickOutside(linkEdit, (event) => {
@@ -300,6 +318,11 @@ export default defineComponent({
       closeLinkTooltip()
     }
 
+    function onChatGPTClick() {
+      if (selectedText.value)
+        chatGPTEditVisible.value = true
+    }
+
     return {
       isMobileScreen,
       root,
@@ -312,6 +335,9 @@ export default defineComponent({
       linkEditVisible,
       linkTooltipStyle,
       linkEditStyle,
+      selectedText,
+      chatGPTEdit,
+      chatGPTEditVisible,
       selectedAnchor,
       draftLink,
       link,
@@ -325,6 +351,7 @@ export default defineComponent({
       removeLink,
       resetLink,
       onEditorChange,
+      onChatGPTClick,
     }
   },
 })
@@ -372,32 +399,49 @@ export default defineComponent({
       }"
     >
       <div class="toolbar-button-group">
-        <button class="ql-list" :class="isMobileScreen ? 'btn-icon-32' : 'btn-icon-24'" value="bullet">
-          <span class="i-custom:list-bullet" :class="isMobileScreen ? 'w-6 h-6' : 'w-4.5 h-4.5'" />
+        <button
+          :class="isMobileScreen ? 'btn-icon-32' : 'btn-icon-24'"
+          value="chatgpt"
+          @click="onChatGPTClick"
+        >
+          <span class="i-custom:chatgpt" :class="isMobileScreen ? 'w-6 h-6' : 'w-4.5 h-4.5'" />
         </button>
-        <button class="ql-list" :class="isMobileScreen ? 'btn-icon-32' : 'btn-icon-24'" value="ordered">
-          <span class="i-custom:list-number" :class="isMobileScreen ? 'w-6 h-6' : 'w-4.5 h-4.5'" />
-        </button>
-        <button class="ql-indent" :class="isMobileScreen ? 'btn-icon-32' : 'btn-icon-24'" value="+1">
-          <span class="i-custom:indent" :class="isMobileScreen ? 'w-6 h-6' : 'w-4.5 h-4.5'" />
-        </button>
-        <button class="ql-indent" :class="isMobileScreen ? 'btn-icon-32' : 'btn-icon-24'" value="-1">
-          <span class="i-custom:unindent" :class="isMobileScreen ? 'w-6 h-6' : 'w-4.5 h-4.5'" />
-        </button>
-        <button class="ql-bold" :class="isMobileScreen ? 'btn-icon-32' : 'btn-icon-24'">
-          <span class="i-custom:bold" :class="isMobileScreen ? 'w-6 h-6' : 'w-4.5 h-4.5'" />
-        </button>
-        <button class="ql-italic" :class="isMobileScreen ? 'btn-icon-32' : 'btn-icon-24'">
-          <span class="i-custom:italic" :class="isMobileScreen ? 'w-6 h-6' : 'w-4.5 h-4.5'" />
-        </button>
-        <button class="ql-background" :class="isMobileScreen ? 'btn-icon-32' : 'btn-icon-24'">
-          <span class="i-origin:highlight" :class="isMobileScreen ? 'w-6 h-6' : 'w-4.5 h-4.5'" />
-        </button>
-        <button class="ql-link" :class="isMobileScreen ? 'btn-icon-32' : 'btn-icon-24'">
-          <span class="i-custom:link" :class="isMobileScreen ? 'w-6 h-6' : 'w-4.5 h-4.5'" />
-        </button>
+        <div class="h-5 mx-2 border-l border-blacks-20" />
+        <div class="flex justify-center gap-3">
+          <button class="ql-list" :class="isMobileScreen ? 'btn-icon-32' : 'btn-icon-24'" value="bullet">
+            <span class="i-custom:list-bullet" :class="isMobileScreen ? 'w-6 h-6' : 'w-4.5 h-4.5'" />
+          </button>
+          <button class="ql-list" :class="isMobileScreen ? 'btn-icon-32' : 'btn-icon-24'" value="ordered">
+            <span class="i-custom:list-number" :class="isMobileScreen ? 'w-6 h-6' : 'w-4.5 h-4.5'" />
+          </button>
+          <button class="ql-indent" :class="isMobileScreen ? 'btn-icon-32' : 'btn-icon-24'" value="+1">
+            <span class="i-custom:indent" :class="isMobileScreen ? 'w-6 h-6' : 'w-4.5 h-4.5'" />
+          </button>
+          <button class="ql-indent" :class="isMobileScreen ? 'btn-icon-32' : 'btn-icon-24'" value="-1">
+            <span class="i-custom:unindent" :class="isMobileScreen ? 'w-6 h-6' : 'w-4.5 h-4.5'" />
+          </button>
+          <button class="ql-bold" :class="isMobileScreen ? 'btn-icon-32' : 'btn-icon-24'">
+            <span class="i-custom:bold" :class="isMobileScreen ? 'w-6 h-6' : 'w-4.5 h-4.5'" />
+          </button>
+          <button class="ql-italic" :class="isMobileScreen ? 'btn-icon-32' : 'btn-icon-24'">
+            <span class="i-custom:italic" :class="isMobileScreen ? 'w-6 h-6' : 'w-4.5 h-4.5'" />
+          </button>
+          <button class="ql-background" :class="isMobileScreen ? 'btn-icon-32' : 'btn-icon-24'">
+            <span class="i-origin:highlight" :class="isMobileScreen ? 'w-6 h-6' : 'w-4.5 h-4.5'" />
+          </button>
+          <button class="ql-link" :class="isMobileScreen ? 'btn-icon-32' : 'btn-icon-24'">
+            <span class="i-custom:link" :class="isMobileScreen ? 'w-6 h-6' : 'w-4.5 h-4.5'" />
+          </button>
+        </div>
       </div>
     </div>
+
+    <ChatGPTModal
+      ref="chatGPTEdit"
+      :visible="chatGPTEditVisible"
+      :text="selectedText"
+      class="absolute left-0 right-0 z-20"
+    />
 
     <div
       v-if="toolbarVisible && linkTooltipVisible && !linkEditVisible"
@@ -618,7 +662,7 @@ export default defineComponent({
   transition: visibility 0.15s linear, opacity 0.15s linear;
 }
 .toolbar-button-group {
-  @apply flex justify-center gap-2;
+  @apply flex justify-center items-center;
   overflow-x: scroll;
   scrollbar-width: none;    /* Firefox */
   -ms-overflow-style: none; /* IE 10+ */
