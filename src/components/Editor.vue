@@ -441,6 +441,7 @@ export default defineComponent({
       :visible="chatGPTEditVisible"
       :text="selectedText"
       class="absolute left-0 right-0 mt-2 z-20"
+      @close="chatGPTEditVisible = false"
     />
 
     <div
