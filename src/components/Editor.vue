@@ -440,7 +440,7 @@ export default defineComponent({
       ref="chatGPTEdit"
       :visible="chatGPTEditVisible"
       :text="selectedText"
-      class="absolute left-0 right-0 z-20"
+      class="absolute left-0 right-0 mt-2 z-20"
     />
 
     <div

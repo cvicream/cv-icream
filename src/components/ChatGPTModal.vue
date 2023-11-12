@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import { useClipboard } from '@vueuse/core'
 import axios from 'axios'
 import { isMobileDevice, isSafari } from '~/utils'
@@ -41,6 +41,11 @@ const loading = ref(false)
 const resultVisible = ref(false)
 const result = ref('')
 
+watch(() => props.visible, (newValue) => {
+  if (!newValue)
+    reset()
+})
+
 function closeModal() {
   emit('close')
 }
@@ -53,19 +58,11 @@ function getOptionClass(index: number) {
   return ''
 }
 
-function onInput(event) {
-  question.value = event.target.value
+function toggle() {
+  open.value = !open.value
 }
 
-function onFocus() {
-  open.value = true
-}
-
-function onBlur() {
-  // open.value = false
-}
-
-function onDelete() {
+function reset() {
   question.value = ''
   result.value = ''
   resultVisible.value = false
@@ -129,31 +126,36 @@ async function sendRequest() {
     </div>
 
     <div class="relative mt-4">
-      <input
-        type="text"
-        placeholder="Ask AI anything..."
-        class="pr-10 form-input bg-primary-10"
-        :class="loading ? '!text-blacks-70' : '!text-blacks-100'"
+      <div
+        class="px-4 py-3 bg-primary-10 flex justify-between items-center rounded-xl cursor-pointer select-none"
+        :class="[
+          {
+            'border-blacks-100': open,
+          },
+          loading ? '!text-blacks-70' : '!text-blacks-100'
+        ]"
         :style="{
           'border-bottom-left-radius': result ? 0 : '12px',
           'border-bottom-right-radius': result ? 0 : '12px',
         }"
-        :value="loading ? 'AI is writing...' : question"
-        :disabled="loading || !!result"
-        @input="onInput"
-        @focus="onFocus"
-        @blur="onBlur"
+        @click="toggle"
       >
-      <button
-        class="w-6 h-6 absolute top-[50%] right-2 -translate-y-1/2 transition-[opacity] duration-300"
-        :disabled="!text || !question || loading || !!result"
-        @click="sendRequest"
-      >
-        <span
-          class="i-custom:arrow-up-circle w-6 h-6 text-blacks-40"
-          :class="{ 'sm:hover:text-blacks-70': !loading && !result }"
-        />
-      </button>
+        <span v-if="question && !loading" class="paragraph text-blacks-100">{{ question }}</span>
+        <span v-else-if="loading" class="paragraph text-blacks-40">AI is writing...</span>
+        <span v-else class="paragraph text-blacks-40">Ask AI anything...</span>
+
+        <button
+          v-if="!result"
+          class="w-6 h-6"
+          :disabled="!text || !question || loading || !!result"
+          @click.stop="sendRequest"
+        >
+          <span
+            class="i-custom:arrow-up-circle w-6 h-6 text-blacks-40"
+            :class="{ 'sm:hover:text-blacks-70': !loading && !result }"
+          />
+        </button>
+      </div>
 
       <div v-if="open && !result" class="absolute left-[2px] right-[2px] top-[54px]">
         <div
@@ -190,10 +192,10 @@ async function sendRequest() {
           <button @click="sendRequest">
             <span class="note icon-24">Regenerate</span>
           </button>
-          <button @click="onDelete">
+          <button @click="reset">
             <span class="i-custom:delete icon-24" />
           </button>
-          <button v-if="isSupported" @click="copy(text as string)">
+          <button v-if="isSupported" @click="copy(result)">
             <span class="i-custom:variant icon-24" />
           </button>
         </div>
