@@ -75,6 +75,8 @@ function setQuestion(text: string) {
 
 async function sendRequest() {
   loading.value = true
+  resultVisible.value = false
+  result.value = ''
 
   const data = {
     model: import.meta.env.VITE_CHATGPT_MODEL,
@@ -141,7 +143,7 @@ async function sendRequest() {
         @click="toggle"
       >
         <span v-if="question && !loading" class="paragraph text-blacks-100">{{ question }}</span>
-        <span v-else-if="loading" class="paragraph text-blacks-40">AI is writing...</span>
+        <span v-else-if="loading" class="paragraph text-blacks-40 loading">AI is writing</span>
         <span v-else class="paragraph text-blacks-40">Ask AI anything...</span>
 
         <button
@@ -207,6 +209,20 @@ async function sendRequest() {
 </template>
 
 <style scope>
+.loading::after {
+  content: '';
+  display: inline-block;
+  animation: dotty steps(1, end) 2s infinite;
+}
+
+@keyframes dotty {
+  0%   { content: ''; }
+  25%  { content: '.'; }
+  50%  { content: '..'; }
+  75%  { content: '...'; }
+  100% { content: ''; }
+}
+
 .fix-margin-bottom {
   content: '';
   width: 100%;
