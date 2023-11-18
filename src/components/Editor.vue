@@ -400,6 +400,7 @@ export default defineComponent({
     >
       <div class="toolbar-button-group">
         <button
+          class="ml-auto"
           :class="isMobileScreen ? 'btn-icon-32' : 'btn-icon-24'"
           value="chatgpt"
           @click="onChatGPTClick"
@@ -407,7 +408,7 @@ export default defineComponent({
           <span class="i-custom:chatgpt" :class="isMobileScreen ? 'w-6 h-6' : 'w-4.5 h-4.5'" />
         </button>
         <div class="h-5 mx-2 border-l border-blacks-20" />
-        <div class="flex justify-center gap-3">
+        <div class="flex justify-center gap-3 mr-auto">
           <button class="ql-list" :class="isMobileScreen ? 'btn-icon-32' : 'btn-icon-24'" value="bullet">
             <span class="i-custom:list-bullet" :class="isMobileScreen ? 'w-6 h-6' : 'w-4.5 h-4.5'" />
           </button>
@@ -663,7 +664,7 @@ export default defineComponent({
   transition: visibility 0.15s linear, opacity 0.15s linear;
 }
 .toolbar-button-group {
-  @apply flex justify-center items-center;
+  @apply flex items-center;
   overflow-x: scroll;
   scrollbar-width: none;    /* Firefox */
   -ms-overflow-style: none; /* IE 10+ */
