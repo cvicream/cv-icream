@@ -144,12 +144,11 @@ async function sendRequest() {
       >
         <span v-if="question && !loading" class="paragraph text-blacks-100">{{ question }}</span>
         <span v-else-if="loading" class="paragraph text-blacks-40 loading">AI is writing</span>
-        <span v-else class="paragraph text-blacks-40">Ask AI anything...</span>
+        <span v-else class="paragraph text-blacks-40">Ask AI...</span>
 
         <button
-          v-if="!result"
+          v-if="text && question && !loading"
           class="w-6 h-6"
-          :disabled="!text || !question || loading || !!result"
           @click.stop="sendRequest"
         >
           <span
