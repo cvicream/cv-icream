@@ -129,10 +129,11 @@ async function sendRequest() {
 
     <div class="relative mt-4">
       <div
-        class="px-4 py-3 bg-primary-10 flex justify-between items-center rounded-xl cursor-pointer select-none"
+        class="px-4 py-3 bg-primary-10 flex justify-between items-center rounded-xl select-none"
         :class="[
           {
             'border-blacks-100': open,
+            'cursor-pointer': !result,
           },
           loading ? '!text-blacks-70' : '!text-blacks-100'
         ]"
@@ -147,7 +148,7 @@ async function sendRequest() {
         <span v-else class="paragraph text-blacks-40">Ask AI...</span>
 
         <button
-          v-if="text && question && !loading"
+          v-if="text && question && !loading && !result"
           class="w-6 h-6"
           @click.stop="sendRequest"
         >
