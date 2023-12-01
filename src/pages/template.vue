@@ -1,13 +1,12 @@
 <script setup lang="ts">
 import { onBeforeMount } from 'vue'
-import { storeToRefs } from 'pinia'
 import { useUserStore } from '~/stores/user'
 import { useToolbarStore } from '~/stores/toolbar'
 import { DEFAULT_TEMPLATE, MOBILE_BREAKPOINT, TEMPLATES } from '~/constants'
+import { getStorage, hasStorage, setStatus } from '~/utils'
 
 const user = useUserStore()
 const toolbar = useToolbarStore()
-const { template } = storeToRefs(user)
 
 const { t } = useI18n()
 const router = useRouter()
@@ -17,7 +16,7 @@ const isSmallWindow = ref(false)
 
 onBeforeMount(() => {
   // make sure style change back
-  setStyle(DEFAULT_TEMPLATE.style)
+  toolbar.setCurrentState(DEFAULT_TEMPLATE.style)
 })
 
 onMounted(() => {
@@ -28,23 +27,52 @@ onUnmounted(() => {
   window.removeEventListener('resize', resize)
 })
 
-function setStyle(style) {
-  toolbar.changeColor(style.color)
-  toolbar.changeFontSize(style.fontSize)
-  toolbar.changeFontFamily(style.fontFamily)
-  toolbar.changeLayout(style.layout)
-}
-
 function onNext() {
-  // if the selected template is different from the previous template
-  if (selectedTemplate.value !== template.value) {
+  let isNewTemplate = true
+
+  if (hasStorage()) {
+    const storage = getStorage()
+    if (selectedTemplate.value === storage.user.template) {
+      // load previous state from storage
+      isNewTemplate = false
+      Object.keys(storage).forEach((key) => {
+        if (key === 'user') {
+          const subObj = storage[key]
+          Object.keys(subObj).forEach((subKey) => {
+            user.$patch((state) => {
+              state[subKey] = subObj[subKey]
+            })
+          })
+          user.updateTimestamp()
+        }
+        else if (key === 'toolbar') {
+          const subObj = storage[key]
+          Object.keys(subObj).forEach((subKey) => {
+            if (subKey === 'currentState') {
+              toolbar.setCurrentState(subObj[subKey])
+            }
+            else {
+              toolbar.$patch((state) => {
+                state[subKey] = subObj[subKey]
+              })
+            }
+          })
+        }
+      })
+    }
+  }
+
+  if (isNewTemplate) {
     const defaultTemplate = TEMPLATES.find(t => t.template === selectedTemplate.value)
     if (defaultTemplate) {
       user.$patch((state) => {
         Object.assign(state, defaultTemplate)
       })
+      toolbar.setCurrentState(defaultTemplate.style)
     }
   }
+
+  setStatus({ isEditing: true })
   router.push('/edit/about')
 }
 
@@ -62,20 +90,20 @@ function resize() {
       <p class="px-4 py-4 paragraph text-center md:px-8 lg:px-12">
         {{ isSmallWindow
           ? 'The template you choose will add relevant text for the job type selected, and we suggest a layout, but everything is editable.'
-          : 'The template you choose will add relevant text for the job type selected, and we suggest a layout, but everything is editable. If you don’t see your job position, don’t worry. You can easily choose which layout you prefer or Build from scratch, and they all work perfectly fine with all jobs.'
+          : 'The template you choose will add relevant text for the job type selected, and we suggest a layout, but everything is editable. If you don’t see your job position, don’t worry. You can easily choose which layout you prefer or build from scratch, and they all work perfectly fine with all jobs.'
         }}
       </p>
     </div>
     <div class="flex flex-col gap-16 sm:flex-row">
       <div class="flex flex-col justify-between items-center">
-        <label for="template-1" class="flex flex-col gap-5 cursor-pointer">
+        <label for="template-ui-designer" class="flex flex-col gap-5 cursor-pointer">
           <img class="w-[210px] sm:w-auto" src="../assets/images/template-ui-designer.png">
           <span class="leading text-blacks-100 text-center">
             {{ t('template.job.uidesigner') }}
           </span>
         </label>
         <input
-          id="template-1"
+          id="template-ui-designer"
           v-model="selectedTemplate"
           class="btn-radio mt-8"
           type="radio"
@@ -84,14 +112,14 @@ function resize() {
         >
       </div>
       <div class="flex flex-col justify-between items-center">
-        <label for="template-2" class="flex flex-col gap-5 cursor-pointer">
+        <label for="template-ux-designer" class="flex flex-col gap-5 cursor-pointer">
           <img class="w-[210px] sm:w-auto" src="../assets/images/template-ux-designer.png">
           <span class="leading text-blacks-100 text-center">
             {{ t('template.job.uxdesigner') }}
           </span>
         </label>
         <input
-          id="template-2"
+          id="template-ux-designer"
           v-model="selectedTemplate"
           class="btn-radio mt-8"
           type="radio"
@@ -100,14 +128,14 @@ function resize() {
         >
       </div>
       <div class="flex flex-col justify-between items-center">
-        <label for="template-3" class="flex flex-col gap-5 cursor-pointer">
+        <label for="template-developer" class="flex flex-col gap-5 cursor-pointer">
           <img class="w-[210px] sm:w-auto" src="../assets/images/template-developer.png">
           <span class="leading text-blacks-100 text-center">
             {{ t('template.job.developer') }}
           </span>
         </label>
         <input
-          id="template-3"
+          id="template-developer"
           v-model="selectedTemplate"
           class="btn-radio mt-8"
           type="radio"
@@ -116,14 +144,14 @@ function resize() {
         >
       </div>
       <div class="flex flex-col justify-between items-center">
-        <label for="template-4" class="flex flex-col gap-5 cursor-pointer">
+        <label for="template-product-manager" class="flex flex-col gap-5 cursor-pointer">
           <img class="w-[210px] sm:w-auto" src="../assets/images/template-product-manager.png">
           <span class="leading text-blacks-100 text-center">
             {{ t('template.job.manager') }}
           </span>
         </label>
         <input
-          id="template-4"
+          id="template-product-manager"
           v-model="selectedTemplate"
           class="btn-radio mt-8"
           type="radio"
@@ -132,14 +160,14 @@ function resize() {
         >
       </div>
       <div class="flex flex-col justify-between items-center">
-        <label for="template-0" class="flex flex-col gap-5 cursor-pointer">
+        <label for="template-build-from-scratch" class="flex flex-col gap-5 cursor-pointer">
           <img class="w-[210px] sm:w-auto" src="../assets/images/template-scratch.png">
           <span class="leading text-blacks-100 text-center">
             {{ t('template.job.others') }}
           </span>
         </label>
         <input
-          id="template-0"
+          id="template-build-from-scratch"
           v-model="selectedTemplate"
           class="btn-radio mt-8"
           type="radio"

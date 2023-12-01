@@ -1,14 +1,20 @@
 <script setup lang="ts">
+import { onBeforeMount } from 'vue'
 import { useUserStore } from '~/stores/user'
 import { useToolbarStore } from '~/stores/toolbar'
-import { getJsonUpload } from '~/utils'
-import { DRAFT_FILE_TYPE } from '~/constants'
+import { getJsonUpload, setStatus } from '~/utils'
+import { DEFAULT_TEMPLATE, DRAFT_FILE_TYPE } from '~/constants'
 
 const user = useUserStore()
 const toolbar = useToolbarStore()
 const { t } = useI18n()
 const uploadFiletype = ref(false)
 const router = useRouter()
+
+onBeforeMount(() => {
+  // make sure style change back
+  toolbar.setCurrentState(DEFAULT_TEMPLATE.style)
+})
 
 async function importJsonFile() {
   uploadFiletype.value = false
@@ -29,11 +35,13 @@ async function importJsonFile() {
         const subObj = obj[key]
         Object.keys(subObj).forEach((subKey) => {
           toolbar.$patch((state) => {
-            state.currentState[subKey] = subObj[subKey]
+            state[subKey] = subObj[subKey]
           })
         })
       }
     })
+
+    setStatus({ isEditing: true })
     redirectToEdit()
   }
   catch (error) {
@@ -58,7 +66,8 @@ const onNext = () => {
     </h1>
     <div class="border-black-70 flex flex-col gap-8 py-8 sm:gap-16 sm:flex-row">
       <button
-        class="p-8 sm:p-10 flex justify-center items-center w-81 h-57 sm:w-101 sm:h-66 rounded-xl flex-col gap-5 border-primary-100 shadow-custom hover:border-1 hover:bg-primary-10"
+        id="create-new-cv"
+        class="p-8 sm:p-10 flex justify-center items-center w-81 h-57 sm:w-101 sm:h-66 rounded-xl flex-col gap-5 border-primary-100 shadow-custom sm:hover:border-1 sm:hover:bg-primary-10"
         @click="onNext"
       >
         <div class="w-12 h-12 flex justify-center items-center p-2 rounded-full border-1 border-transparent shadow-custom">
@@ -72,7 +81,8 @@ const onNext = () => {
         </span>
       </button>
       <button
-        class="p-6 flex justify-center items-center w-81 h-63 sm:w-101 sm:h-66 rounded-xl flex-col gap-5 border-primary-100 shadow-custom hover:border-1 hover:bg-primary-10"
+        id="upload-cv-draft"
+        class="p-6 flex justify-center items-center w-81 h-63 sm:w-101 sm:h-66 rounded-xl flex-col gap-5 border-primary-100 shadow-custom sm:hover:border-1 sm:hover:bg-primary-10"
         @click="importJsonFile"
       >
         <div class="w-12 h-12 flex justify-center items-center p-2 rounded-full border-1 border-transparent shadow-custom">

@@ -141,6 +141,22 @@ function changeIcon(icon: string, index: number) {
     <p v-else class="paragraph text-blacks-70">
       Share your social media platforms, such as LinkedIn profile, the portfolio of your work, or your own website.
     </p>
+
+    <button
+      v-if="social.isShow"
+      class="w-full rounded-xl text-blacks-40 inline-flex justify-center items-center p-3 mt-6 border-transparent border-1 group bg-primary-10 hover:border-primary-100"
+      :disabled="!social.isShow"
+      @click="addItem(0)"
+    >
+      <span
+        class="i-custom:add w-6 h-6 text-blacks-40 flex-shrink-0"
+        :class="social.isShow && 'group-hover:text-blacks-70'"
+      />
+      <span class="subleading text-ellipsis whitespace-nowrap overflow-hidden" :class="social.isShow && 'group-hover:text-blacks-100'">
+        Add
+      </span>
+    </button>
+
     <div
       v-for="(item, index) in social.list"
       :key="componentKey + '-' + index"
@@ -163,7 +179,7 @@ function changeIcon(icon: string, index: number) {
           class="flex items-center gap-3 ml-3"
           :class="{
             'invisible': !isMobileScreen,
-            'group-hover:visible': social.isShow
+            'sm:group-hover:visible': social.isShow
           }"
         >
           <Tooltip
@@ -195,25 +211,25 @@ function changeIcon(icon: string, index: number) {
               />
               <div
                 v-show="isMoreActionOpen.includes(index)"
-                class="absolute right-0 mt-2 w-[262px] bg-white border border-blacks-100 rounded-xl shadow-custom z-1 flex flex-col overflow-hidden"
+                class="absolute right-0 mt-2 w-[262px] bg-white border border-blacks-100 rounded-xl shadow-custom z-10 flex flex-col overflow-hidden"
                 @click="toggleMoreAction(null)"
               >
-                <button v-if="social.list.length > 1" class="flex items-center px-4 py-3 hover:bg-primary-10" @click="toggleShowItem(index)">
+                <button v-if="social.list.length > 1" class="flex items-center px-4 py-3 sm:hover:bg-primary-10" @click="toggleShowItem(index)">
                   <span
                     class="w-6 h-6 text-blacks-70"
                     :class="item.isShow ? 'i-custom:show' : 'i-custom:hide'"
                   />
                   <span class="paragraph text-blacks-100 ml-2">{{ item.isShow ? 'Hide on CV' : 'Show on CV' }}</span>
                 </button>
-                <button class="flex items-center px-4 py-3 hover:bg-primary-10" @click="addItem(index + 1)">
+                <button class="flex items-center px-4 py-3 hover:bg-primary-10" @click="addItem(index)">
                   <span class="i-custom:add w-6 h-6 text-blacks-70" />
                   <span class="paragraph text-blacks-100 ml-2">Add New</span>
                 </button>
-                <button class="flex items-center px-4 py-3 hover:bg-primary-10" @click="duplicateItem(index)">
+                <button class="flex items-center px-4 py-3 sm:hover:bg-primary-10" @click="duplicateItem(index)">
                   <span class="i-custom:variant w-6 h-6 text-blacks-70" />
                   <span class="paragraph text-blacks-100 ml-2">Duplicate</span>
                 </button>
-                <button v-if="social.list.length > 1" class="flex items-center px-4 py-3 hover:bg-primary-10" @click="showDeleteBlockMessage(index)">
+                <button v-if="social.list.length > 1" class="flex items-center px-4 py-3 sm:hover:bg-primary-10" @click="showDeleteBlockMessage(index)">
                   <span class="i-custom:delete w-6 h-6 text-blacks-70" />
                   <span class="paragraph text-blacks-100 ml-2">Delete</span>
                 </button>
@@ -280,20 +296,6 @@ function changeIcon(icon: string, index: number) {
         </div>
       </div>
     </div>
-    <button
-      v-if="social.isShow"
-      class="w-full rounded-xl text-blacks-40 inline-flex justify-center items-center p-3 mt-6 border-transparent border-1 group bg-primary-10 hover:border-primary-100"
-      :disabled="!social.isShow"
-      @click="addItem(null)"
-    >
-      <span
-        class="i-custom:add w-6 h-6 text-blacks-40 flex-shrink-0"
-        :class="social.isShow && 'group-hover:text-blacks-70'"
-      />
-      <span class="subleading text-ellipsis whitespace-nowrap overflow-hidden" :class="social.isShow && 'group-hover:text-blacks-100'">
-        Add
-      </span>
-    </button>
   </div>
   <DeleteBlockModal
     :visible="deleteBlockVisible"

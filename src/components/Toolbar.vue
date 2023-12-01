@@ -1,14 +1,12 @@
 <script setup lang="ts">
-import { stat } from 'fs'
-import { onUnmounted } from 'vue'
 import { storeToRefs } from 'pinia'
 import _ from 'lodash'
 import { useUserStore } from '~/stores/user'
 import { useToolbarStore } from '~/stores/toolbar'
 import { useUndoStore } from '~/stores/undo'
 import { useRedoStore } from '~/stores/redo'
-import { COLORS, FONT_FAMILIES, FONT_SIZES, LAYOUTS } from '~/constants'
-import { getColor } from '~/utils'
+import { COLORS, FONT_SIZES, LAYOUTS } from '~/constants'
+import { getColor, isMobileDevice } from '~/utils'
 
 const props = defineProps<{
   open: Boolean
@@ -21,18 +19,14 @@ const toolbar = useToolbarStore()
 const router = useRouter()
 const undoStore = useUndoStore()
 const redoStore = useRedoStore()
+const noteBtnRef = ref<HTMLDivElement | null>(null)
 const { path } = storeToRefs(user)
-const { isCVPreviewVisible, dropdownMenu, currentState } = storeToRefs(toolbar)
+const { isCVPreviewVisible, currentState, isMobileScreen } = storeToRefs(toolbar)
 
 watch(path, () => {
   if (path.value !== router.currentRoute.value.path)
     router.push(path.value)
 })
-
-const onClick = () => {
-  if (Object.values(dropdownMenu.value).some(item => item))
-    toolbar.toggle('')
-}
 
 const onColorChange = (id: string) => {
   toolbar.changeColor(id)
@@ -48,13 +42,15 @@ const onFontFamilyChange = (id: string) => {
 
 const onLayoutChange = (id: string) => {
   toolbar.changeLayout(id)
+  if (id === 'layout-left') {
+    const rightPanelWidth = currentState.value.rightPanelWidth
+    toolbar.setLeftPanelWidth([rightPanelWidth[1], rightPanelWidth[0]])
+  }
+  else if (id === 'layout-right') {
+    const leftPanelWidth = currentState.value.leftPanelWidth
+    toolbar.setRightPanelWidth([leftPanelWidth[1], leftPanelWidth[0]])
+  }
 }
-
-onUnmounted(() => {
-  window.removeEventListener('click', onClick)
-})
-
-window.addEventListener('click', onClick, false)
 
 function undo() {
   const list = undoStore.list
@@ -77,6 +73,61 @@ function redo() {
       newState.user.action = 'redo'
       updateStore(newState)
     }
+  }
+}
+
+// get root element that can put notes in
+function getRootElement() {
+  return document.getElementById('cv-preview')
+}
+
+const removeClickListener = (event: KeyboardEvent) => {
+  const rootElement = getRootElement()
+  if (rootElement && event.key === 'Escape') {
+    rootElement.removeEventListener('click', createNote)
+    document.removeEventListener('keydown', removeClickListener)
+    rootElement.classList.remove('adding-note-mode')
+    noteBtnRef.value!.classList.remove('adding-note-mode')
+  }
+}
+
+function createNote(event: MouseEvent) {
+  const rootElement = getRootElement()
+  if (rootElement) {
+    const boundingBox = rootElement.getBoundingClientRect()!
+    toolbar.addNote({
+      id: Date.now(),
+      value: '',
+      location: {
+        left: (event.clientX - boundingBox.x) / boundingBox.width,
+        top: (event.clientY - boundingBox.y) / boundingBox.height,
+      },
+    })
+
+    rootElement.removeEventListener('click', createNote)
+    document.removeEventListener('keydown', removeClickListener)
+    rootElement.classList.remove('adding-note-mode')
+    noteBtnRef.value!.classList.remove('adding-note-mode')
+  }
+}
+
+function onNoteClick(event: MouseEvent) {
+  const rootElement = getRootElement()
+  if (rootElement) {
+    if (rootElement.classList.contains('adding-note-mode')) {
+      rootElement.removeEventListener('click', createNote)
+      document.removeEventListener('keydown', removeClickListener)
+      rootElement.classList.remove('adding-note-mode')
+      noteBtnRef.value!.classList.remove('adding-note-mode')
+      return
+    }
+
+    noteBtnRef.value!.classList.add('adding-note-mode')
+    rootElement.classList.add('adding-note-mode')
+    setTimeout(() => {
+      rootElement.addEventListener('click', createNote)
+    }, 0)
+    document.addEventListener('keydown', removeClickListener)
   }
 }
 
@@ -111,7 +162,7 @@ function onCollapse() {
 <template>
   <div
     class="w-full h-[80px] text-center bg-white flex justify-center gap-4 px-4 py-4 sm:w-auto sm-h-20 sm:rounded-xl sm:shadow-custom transition touch-manipulation"
-    :class="{ 'hover:cursor-pointer': !open }"
+    :class="{ 'sm:hover:cursor-pointer': !open }"
     @click="onCollapse"
   >
     <div v-if="!open" class="btn-group-toolbar h-12 relative sm:flex">
@@ -164,7 +215,7 @@ function onCollapse() {
 
     <div
       v-if="open"
-      class="btn-group-toolbar w-42 h-12 relative sm:flex"
+      class="btn-group-toolbar h-12 relative sm:flex"
       :class="{ 'hidden': !isCVPreviewVisible }"
     >
       <DropdownMenu id="layout" label="Layout" icon="i-custom:layout text-blacks-70" tooltip="Layout">
@@ -220,26 +271,39 @@ function onCollapse() {
       </DropdownMenu>
       <DropdownMenu id="fontFamily" label="Font Family" icon="i-custom:font-family text-blacks-70" tooltip="Font Family">
         <div class="w-full h-22 overflow-auto custom-scrollbar">
-          <div
-            v-for="item in FONT_FAMILIES"
-            :key="item.id"
-            :class="{ 'bg-primary-10': currentState.fontFamily === item.id }"
-          >
-            <button
-              :class="item.id"
-              class="w-full h-[46px] text-left text-base px-4 py-3 hover:bg-primary-10"
-              @click="onFontFamilyChange(item.id)"
-            >
-              {{ item.label }}
-            </button>
-          </div>
+          <FontFamilyPicker
+            placement="top"
+            :model-value="currentState.fontFamily"
+            @update:model-value="onFontFamilyChange"
+          />
         </div>
       </DropdownMenu>
     </div>
-    <!-- <div v-if="open" class="btn-group-toolbar w-12 h-12">
-      <div class="btn-toolbar">
-        <button class="i-custom:note w-8 h-8" />
-      </div>
-    </div> -->
+
+    <div
+      v-if="open"
+      class="btn-group-toolbar h-12"
+      :class="{ 'hidden': isMobileScreen || isMobileDevice() }"
+    >
+      <Tooltip
+        placement="top"
+        text="Note"
+      >
+        <button
+          ref="noteBtnRef"
+          class="btn-toolbar outline-none"
+          @click="onNoteClick"
+        >
+          <span class="i-custom:note w-8 h-8" />
+        </button>
+      </Tooltip>
+    </div>
   </div>
 </template>
+
+<style scoped>
+.adding-note-mode.btn-toolbar {
+  background: var(--secondary-color);
+  border-radius: 50%;
+}
+</style>

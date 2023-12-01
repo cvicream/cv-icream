@@ -13,13 +13,13 @@ const toggleShow = () => {
   })
 }
 
-function focusIn(index) {
+function focusIn() {
   user.$patch((state) => {
     state.summary.isEditing = true
   })
 }
 
-function focusOut(index) {
+function focusOut() {
   user.$patch((state) => {
     state.summary.isEditing = false
   })
@@ -31,7 +31,7 @@ function focusOut(index) {
   <div class="flex justify-between items-center">
     <div class="flex items-center gap-2">
       <span class="i-custom:summary icon-32" />
-      <span class="leading text-blacks-100">Summary</span>
+      <span class="leading text-blacks-100">SUMMARY</span>
     </div>
     <ToggleSwitch
       :checked="summary.isShow"
@@ -46,8 +46,8 @@ function focusOut(index) {
       Let people get to know you quickly by giving them a brief description of yourself and what your characteristics are.
     </p>
     <div
-      @focusin="() =>focusIn(index)"
-      @focusout="() => focusOut(index)"
+      @focusin="focusIn"
+      @focusout="focusOut"
     >
       <h3 class="subleading text-blacks-100 invisible">
         Summary

@@ -4,10 +4,14 @@ export const HIDDEN_INFORMATION = 'This section is currently hidden on CV. Click
 export const MAX_SIDEBAR_WIDTH = 834
 export const MIN_SIDEBAR_WIDTH = 390
 export const MOBILE_BREAKPOINT = 640
-export const SCALES = [25, 50, 100, 200]
+export const MAX_SCALE = 300
+export const MIN_SCALE = 25
 export const A4_WIDTH_PX = 794
 export const A4_HEIGHT_PX = 1122.5
 export const PAGE_BREAKPOINT = 1340
+export const DEFAULT_TOP_PANEL_WIDTH = [75, 25] // value in percent
+export const DEFAULT_LEFT_PANEL_WIDTH = [25, 75] // value in percent
+export const DEFAULT_RIGHT_PANEL_WIDTH = [75, 25] // value in percent
 
 export const LAYOUTS = [
   {
@@ -822,6 +826,10 @@ export const COLORS = [
   {
     id: 'default',
     primary: '#F18B6B',
+    primary70: '#F6AF98',
+    primary40: '#FAD1C4',
+    primary20: '#FCE8E1',
+    primary10: '#FEF4F1',
     secondary: '#FEF4F1',
     shadow: '#FCE8E1',
     border: '#FAD1C4',
@@ -829,6 +837,10 @@ export const COLORS = [
   {
     id: 'yellow',
     primary: '#FAAA1E',
+    primary70: '#FCC462',
+    primary40: '#FDDDA5',
+    primary20: '#FEEED2',
+    primary10: '#FFF7E9',
     secondary: '#FFF7E8',
     shadow: '#FEEED2',
     border: '#FDDDA5',
@@ -836,6 +848,10 @@ export const COLORS = [
   {
     id: 'green',
     primary: '#507F39',
+    primary70: '#85A675',
+    primary40: '#B9CCB0',
+    primary20: '#DCE5D7',
+    primary10: '#EEF3EC',
     secondary: '#EDF2EB',
     shadow: '#DCE5D7',
     border: '#B9CCB0',
@@ -843,6 +859,10 @@ export const COLORS = [
   {
     id: 'blue',
     primary: '#4BA1B4',
+    primary70: '#81BECB',
+    primary40: '#B7D9E1',
+    primary20: '#DBECF0',
+    primary10: '#EDF6F8',
     secondary: '#EDF6F7',
     shadow: '#DBECF0',
     border: '#B7D9E1',
@@ -850,6 +870,10 @@ export const COLORS = [
   {
     id: 'indigo',
     primary: '#005B84',
+    primary70: '#4D8DA9',
+    primary40: '#99BDCE',
+    primary20: '#CCDEE6',
+    primary10: '#E6EFF3',
     secondary: '#E5EFF3',
     shadow: '#CCDEE6',
     border: '#99BDCE',
@@ -857,6 +881,10 @@ export const COLORS = [
   {
     id: 'purple',
     primary: '#766E8E',
+    primary70: '#A09AB0',
+    primary40: '#C8C5D2',
+    primary20: '#E4E2E8',
+    primary10: '#F2F1F4',
     secondary: '#F1F0F4',
     shadow: '#E4E2E8',
     border: '#C8C5D2',
@@ -864,6 +892,10 @@ export const COLORS = [
   {
     id: 'black',
     primary: '#222222',
+    primary70: '#656565',
+    primary40: '#A7A7A7',
+    primary20: '#D3D3D3',
+    primary10: '#E9E9E9',
     secondary: '#E9E9E9',
     shadow: '#D3D3D3',
     border: '#A7A7A7',

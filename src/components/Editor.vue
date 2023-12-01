@@ -1,7 +1,10 @@
 <script lang="ts">
+import type { CSSProperties } from 'vue'
 import { computed, defineComponent, onMounted, ref, watch } from 'vue'
-import { Quill, QuillEditor } from '@vueup/vue-quill'
-
+import { onClickOutside } from '@vueuse/core'
+import type { Quill } from '@vueup/vue-quill'
+import type { RangeStatic } from 'quill'
+import { QuillEditor } from '@vueup/vue-quill'
 import '@vueup/vue-quill/dist/vue-quill.snow.css'
 import '@vueup/vue-quill/dist/vue-quill.bubble.css'
 import { v4 as uuidv4 } from 'uuid'
@@ -38,17 +41,19 @@ export default defineComponent({
   setup: (props, { emit }) => {
     const toolbar = useToolbarStore()
     const { isMobileScreen } = storeToRefs(toolbar)
-    const root = ref(null)
-    const editor = ref(null)
+    const root = ref<HTMLDivElement | null>(null)
+    const editor = ref<HTMLDivElement | null>(null)
     const toolbarId = ref(`toolbar-${uuidv4().replaceAll('-', '')}`)
-    const toolbarTop = ref(0)
     const toolbarVisible = ref(false)
+    const showIconPopover = ref(false)
+    const selectionRange = ref<RangeStatic | null>(null)
+    const linkTooltip = ref<HTMLDivElement | null>(null)
+    const linkEdit = ref<HTMLDivElement | null>(null)
+    const linkTooltipVisible = ref(false)
+    const linkEditVisible = ref(false)
+    const selectedAnchor = ref<HTMLAnchorElement | null>(null)
     const draftLink = ref('')
     const link = ref('')
-    const linkEditVisible = ref(false)
-    const linkHoverPosition = ref({ x: 0, y: 0 })
-    const linkHoverVisible = ref(false)
-    const showIconPopover = ref(false)
 
     const content = computed({
       get: () => {
@@ -70,17 +75,55 @@ export default defineComponent({
       },
     })
 
+    const linkTooltipStyle = computed(() => {
+      const style: CSSProperties = {
+        left: 0,
+        right: 0,
+      }
+
+      if (linkTooltip.value && selectedAnchor.value) {
+        const anchor = selectedAnchor.value
+        const parentWidth = root.value?.clientWidth
+        if (parentWidth)
+          style.top = `${anchor.offsetTop + anchor.offsetHeight + 8}px`
+      }
+      return style
+    })
+
+    const linkEditStyle = computed(() => {
+      const style: CSSProperties = {
+        left: 0,
+        right: 0,
+      }
+
+      if (selectedAnchor.value) {
+        const anchor = selectedAnchor.value
+        style.top = `${anchor.offsetTop + anchor.offsetHeight + 8}px`
+      }
+      else if (editor.value && selectionRange.value) {
+        const { index, length } = selectionRange.value
+        const quill = (editor.value as Quill).getQuill()
+        const bounds = quill.getBounds(index, length)
+        style.top = `${bounds.bottom + 8}px`
+      }
+      return style
+    })
+
     onMounted(() => {
       if (editor.value) {
+        const editorElement = (editor.value as Quill).getEditor()
         const quill = (editor.value as Quill).getQuill()
         const toolbar = quill.getModule('toolbar')
 
         // customize link handler
         toolbar.addHandler('link', (value) => {
-          if (value)
+          if (value) {
             linkEditVisible.value = true
-          else
+            resetLink()
+          }
+          else {
             quill.format('link', false)
+          }
         })
 
         // customize background handler
@@ -107,26 +150,13 @@ export default defineComponent({
           return delta
         })
 
-        const BlockEmbed = Quill.import('blots/block/embed')
-        class IconBlot extends BlockEmbed {
-          static create(data) {
-            const node = super.create(data) as HTMLElement
-            const child = document.createElement('span')
-            child.className = `i-custom:${data} custom-icon w-[10px] h-[10px] text-white`
-
-            node.setAttribute('class', 'icon-mask')
-            node.appendChild(child)
-            return node
+        editorElement.addEventListener('keydown', (event) => {
+          const keyboardEvent = event as KeyboardEvent
+          if (['Equal', 'Minus'].includes(keyboardEvent.code)) {
+            // prevent zoom in/out
+            keyboardEvent.stopPropagation()
           }
-
-          static value(domNode) {
-            const { src, custom } = domNode.dataset
-            return { src, custom }
-          }
-        }
-        IconBlot.blotName = 'iconBlot'
-        IconBlot.tagName = 'div'
-        Quill.register({ 'formats/iconBlot': IconBlot })
+        })
       }
 
       createAnchorListeners()
@@ -140,6 +170,20 @@ export default defineComponent({
       handleToolbarVisible()
     })
 
+    onClickOutside(linkEdit, (event) => {
+      closeLinkEdit()
+    })
+
+    function createAnchorListeners() {
+      document.querySelectorAll('.ql-editor a').forEach((element) => {
+        element.addEventListener('click', (e) => {
+          e.stopPropagation()
+          const anchor = (e.currentTarget as HTMLAnchorElement)
+          openLinkTooltip(anchor)
+        })
+      })
+    }
+
     function handleToolbarVisible() {
       const editorElement = (editor.value as Quill).getEditor()
       if (toolbarVisible.value) {
@@ -151,9 +195,6 @@ export default defineComponent({
 
     function onFocus(elementRef) {
       toolbarVisible.value = true
-
-      const obj = elementRef.value.getBoundingClientRect()
-      toolbarTop.value = obj.height + 8
 
       if (root.value) {
         const elEditor = (root.value as HTMLElement).querySelector('.single-line [contenteditable="true"]')
@@ -167,10 +208,10 @@ export default defineComponent({
     }
 
     function onBlur() {
-      if (!linkEditVisible.value && !showIconPopover.value)
+      if (!linkEditVisible.value)
         toolbarVisible.value = false
 
-      closeLinkHover()
+      closeLinkTooltip()
     }
 
     function preventEnter(event) {
@@ -183,8 +224,11 @@ export default defineComponent({
         (editor.value as Quill).setHTML('')
     }
 
-    function onLinkBlur() {
-      if (editor.value && draftLink.value) {
+    function onLinkChange() {
+      if (selectedAnchor.value) {
+        selectedAnchor.value.href = draftLink.value
+      }
+      else if (editor.value && draftLink.value) {
         const quill = (editor.value as Quill).getQuill()
         quill.format('link', draftLink.value)
         resetLink()
@@ -193,57 +237,68 @@ export default defineComponent({
       closeLinkEdit()
     }
 
+    function openLinkTooltip(anchor: HTMLAnchorElement) {
+      linkTooltipVisible.value = true
+      setLink(anchor)
+    }
+
+    function closeLinkTooltip() {
+      linkTooltipVisible.value = false
+    }
+
     function closeLinkEdit() {
+      linkTooltipVisible.value = false
       linkEditVisible.value = false
+      selectedAnchor.value = null
       resetLink()
     }
 
     function openLinkEdit() {
-      linkHoverVisible.value = false
+      linkTooltipVisible.value = false
       linkEditVisible.value = true
     }
 
-    function createAnchorListeners() {
-      document.querySelectorAll('.ql-editor a').forEach((element) => {
-        element.addEventListener('mouseover', (e) => {
-          e.stopPropagation()
-          const anchor = (e.target as HTMLAnchorElement)
-          const rect = anchor.getBoundingClientRect()
-          linkHoverPosition.value = { x: rect.left, y: rect.bottom + 8 }
-          link.value = anchor.href
-          draftLink.value = link.value
-          linkHoverVisible.value = true
-        })
-      })
-    }
-
-    function closeLinkHover() {
-      linkHoverPosition.value = { x: 0, y: 0 }
-      linkHoverVisible.value = false
-    }
-
     function removeLink() {
-      const quill = (editor.value as Quill).getQuill()
-      quill.format('link', false)
-      linkEditVisible.value = false
-      resetLink()
+      if (selectedAnchor.value) {
+        const style = selectedAnchor.value.getAttribute('style')
+        if (selectedAnchor.value.firstElementChild) {
+          if (style) selectedAnchor.value.firstElementChild.setAttribute('style', style)
+          selectedAnchor.value.outerHTML = selectedAnchor.value.innerHTML
+        }
+        else {
+          if (style) {
+            // text node
+            const span = document.createElement('span')
+            span.innerHTML = selectedAnchor.value.innerHTML
+            span.setAttribute('style', style)
+            selectedAnchor.value.outerHTML = span.outerHTML
+          }
+          else {
+            selectedAnchor.value.outerHTML = selectedAnchor.value.innerHTML
+          }
+        }
+      }
+
+      closeLinkEdit()
+    }
+
+    function setLink(anchor: HTMLAnchorElement) {
+      selectedAnchor.value = anchor
+      link.value = anchor.href || ''
+      draftLink.value = link.value
     }
 
     function resetLink() {
+      selectedAnchor.value = null
       draftLink.value = ''
       link.value = ''
     }
 
     function onEditorChange(data) {
-      closeLinkHover()
-    }
+      if (data.name === 'selection-change' && data.range)
+        selectionRange.value = data.range
 
-    function onClickIcon() {
-      showIconPopover.value = !showIconPopover.value
-    }
-
-    function closeIconPopover() {
-      showIconPopover.value = false
+      closeLinkTooltip()
     }
 
     return {
@@ -251,26 +306,27 @@ export default defineComponent({
       root,
       editor,
       toolbarId,
-      toolbarTop,
       toolbarVisible,
+      linkTooltip,
+      linkEdit,
+      linkTooltipVisible,
+      linkEditVisible,
+      linkTooltipStyle,
+      linkEditStyle,
+      selectedAnchor,
       draftLink,
       link,
-      linkEditVisible,
-      linkHoverPosition,
-      linkHoverVisible,
       content,
       showIconPopover,
       onFocus,
       onBlur,
       onClear,
-      onLinkBlur,
+      onLinkChange,
       closeLinkEdit,
       openLinkEdit,
       removeLink,
       resetLink,
       onEditorChange,
-      onClickIcon,
-      closeIconPopover,
     }
   },
 })
@@ -284,10 +340,6 @@ export default defineComponent({
       className,
       isSingleLine ? (toolbarVisible ? 'h-[94px] sm:h-[86px]' : 'h-[46px]') : (toolbarVisible ? 'h-[228px] sm:h-[220px]' : 'h-[180px]')
     ]"
-    :style="{
-      // @ts-ignore
-      '--toolbar-top': toolbarTop + 'px'
-    }"
   >
     <QuillEditor
       ref="editor"
@@ -346,16 +398,14 @@ export default defineComponent({
         <button class="ql-link" :class="isMobileScreen ? 'btn-icon-32' : 'btn-icon-24'">
           <span class="i-custom:link" :class="isMobileScreen ? 'w-6 h-6' : 'w-4.5 h-4.5'" />
         </button>
-        <button :onclick="onClickIcon" :class="isMobileScreen ? 'btn-icon-32 p-1' : 'btn-icon-24 p-0'">
-          <span class="i-custom:icon" :class="isMobileScreen ? 'w-7 h-7' : 'w-5.5 h-5.5'" />
-        </button>
       </div>
     </div>
 
     <div
-      v-if="linkHoverVisible && toolbarVisible"
-      class="fixed flex justify-between gap-2 px-3 py-2 bg-white border-1 border-black rounded-xl shadow-custom  z-11"
-      :style="{top: `${linkHoverPosition.y}px`, left: `${linkHoverPosition.x}px`}"
+      v-if="toolbarVisible && linkTooltipVisible && !linkEditVisible"
+      ref="linkTooltip"
+      class="absolute z-20 flex justify-between px-3 py-2 bg-white border-1 border-black rounded-xl shadow-custom"
+      :style="linkTooltipStyle"
     >
       <a
         class="paragraph text-blacks-100 truncate"
@@ -364,17 +414,27 @@ export default defineComponent({
       >
         {{ link }}
       </a>
-      <button
-        class="note pl-2 border-l border-blacks-20 text-blacks-40 hover:text-blacks-70 transition-[color] duration-300"
-        @click="openLinkEdit"
-      >
-        Edit
-      </button>
+      <div class="whitespace-nowrap">
+        <button
+          class="note pl-2 border-l border-blacks-20 text-blacks-40 sm:hover:text-blacks-70 transition-[color] duration-300"
+          @click="openLinkEdit"
+        >
+          Edit
+        </button>
+        <button
+          class="note text-blacks-40 ml-2 sm:hover:text-blacks-70 transition-[color] duration-300"
+          @click="removeLink"
+        >
+          Remove
+        </button>
+      </div>
     </div>
 
     <div
       v-if="linkEditVisible"
-      class="absolute top-[var(--toolbar-top)] left-0 right-0 z-10 bg-white p-4 rounded-[1.25rem] shadow-custom"
+      ref="linkEdit"
+      class="absolute z-20 bg-white p-4 rounded-[1.25rem] shadow-custom"
+      :style="linkEditStyle"
     >
       <div class="flex justify-between">
         <div class="flex gap-2 items-center">
@@ -384,7 +444,7 @@ export default defineComponent({
           <span class="leading text-blacks-100">Link</span>
         </div>
         <button @click="closeLinkEdit">
-          <span class="i-custom:cancel w-5 h-5 text-blacks-40 hover:text-blacks-70 transition-[color] duration-300" />
+          <span class="i-custom:cancel w-5 h-5 text-blacks-40 sm:hover:text-blacks-70" />
         </button>
       </div>
       <div class="relative mt-4">
@@ -392,21 +452,20 @@ export default defineComponent({
           v-model="draftLink"
           type="text"
           placeholder="http://"
-          class="form-input bg-primary-10"
-          @keyup.enter="onLinkBlur"
-          @blur="onLinkBlur"
+          class="pr-10 form-input bg-primary-10"
+          @keyup.enter="onLinkChange"
         >
         <button
           class="w-6 h-6 absolute top-[50%] right-2 -translate-y-1/2 transition-[opacity] duration-300"
           :class="{'opacity-0': !draftLink}"
-          @click="onLinkBlur"
+          @click="onLinkChange"
         >
-          <span class="i-custom:ok w-6 h-6 text-blacks-40 hover:text-blacks-70" />
+          <span class="i-custom:ok w-6 h-6 text-blacks-40 sm:hover:text-blacks-70" />
         </button>
       </div>
       <div v-if="link" class="text-right mt-3">
         <button
-          class="note text-blacks-40 hover:text-blacks-70 transition-[color] duration-300"
+          class="note text-blacks-40 sm:hover:text-blacks-70 transition-[color] duration-300"
           @click="removeLink"
         >
           Remove Link
@@ -414,14 +473,12 @@ export default defineComponent({
       </div>
       <div class="fix-margin-bottom" style="top: 126px; bottom: 0; left: 0;" />
     </div>
-
-    <IconPopover v-if="showIconPopover" :close-icon-popover="closeIconPopover" :editor="editor" />
   </div>
 </template>
 
 <style>
 .ql-container {
-  @apply w-full h-full relative bg-white rounded-xl border-1 border-white hover:border-blacks-100 hover:disabled:border-white focus:text-blacks-100;
+  @apply w-full h-full relative bg-white rounded-xl border-1 border-white sm:hover:border-blacks-100 sm:hover:disabled:border-white focus:text-blacks-100;
 }
 
 .ql-container:not(.single-line) {
@@ -432,7 +489,7 @@ export default defineComponent({
 }
 
 .ql-disabled {
-  @apply text-blacks-40 hover:border-white bg-blacks-5 border-blacks-5;
+  @apply text-blacks-40 sm:hover:border-white bg-blacks-5 border-blacks-5;
 }
 
 .single-line [contenteditable] {
@@ -441,14 +498,13 @@ export default defineComponent({
 }
 
 .ql-editor {
-  @apply pl-0 pr-5 py-0;
+  @apply pl-0 pr-6 py-0;
 }
 .single-line .ql-editor {
   @apply h-[24px] p-0 mr-4;
 }
-
 .btn-clear:hover {
-  @apply opacity-100 bg-blacks-70;
+@apply opacity-100 bg-blacks-70;
 }
 .deletable:hover + .btn-clear {
   @apply opacity-100;
@@ -580,16 +636,16 @@ export default defineComponent({
 }
 
 .ql-active {
-  @apply bg-primary-10;
+  @apply bg-primary-10 rounded-full;
 }
 
 .fix-margin-bottom {
   content: '';
   width: 100%;
-  height: 8px;
+  height: 32px;
   background-color: transparent;
   position: absolute;
-  bottom: -64px;
+  bottom: -32px;
   z-index: -1;
 }
 
