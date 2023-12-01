@@ -1,10 +1,12 @@
 <script setup lang="ts">
 const props = defineProps <{
   icon: string
-  onClick: () => void
+  isSelected?: boolean
+  onClick?: () => void
 }>()
 
-const className = `i-custom:${props.icon} w-[20px] h-[20px] text-white`
+const className = computed(() => `i-custom:${props.icon} w-[20px] h-[20px] text-white`)
+const backgroundColor = computed(() => props.isSelected ? 'var(--secondary-color)' : '')
 </script>
 
 <template>
@@ -20,6 +22,7 @@ const className = `i-custom:${props.icon} w-[20px] h-[20px] text-white`
 <style scoped>
 .icon-container {
   box-shadow: none;
+  background: v-bind('backgroundColor')
 }
 .icon-mask {
   background-color: var(--primary-color);

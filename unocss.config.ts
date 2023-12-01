@@ -103,9 +103,11 @@ export default defineConfig({
     'i-custom:behance',
     'i-custom:instagram',
     'i-custom:facebook',
-    'i-custom:linkedln',
+    'i-custom:linkedin',
     'i-custom:whatsapp',
     'i-custom:youtube',
+    'i-custom:mail',
+    'i-custom:twitter',
   ],
   theme: {
     fontSize: {

@@ -124,6 +124,12 @@ function swap(index1, index2) {
   })
   forceRerender()
 }
+
+function changeIcon(icon: string, index: number) {
+  user.$patch((state) => {
+    state.social.list[index].icon = icon
+  })
+}
 </script>
 
 <template>
@@ -253,6 +259,12 @@ function swap(index1, index2) {
           class="mt-6"
           :class="item.isCollapsed ? 'hidden' : 'flex flex-col gap-6'"
         >
+          <IconEditor :index="index" :icon="social.list[index].icon" :change-icon="changeIcon" />
+        </div>
+        <div
+          class="mt-6"
+          :class="item.isCollapsed ? 'hidden' : 'flex flex-col gap-6'"
+        >
           <div>
             <label class="block note text-blacks-70">Link</label>
             <input
@@ -295,3 +307,9 @@ function swap(index1, index2) {
 meta:
   layout: edit
 </route>
+
+<style scope>
+  .icons {
+    margin-top: 6px !important;
+  }
+</style>

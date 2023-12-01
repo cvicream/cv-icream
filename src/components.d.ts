@@ -12,6 +12,7 @@ declare module 'vue' {
     FeedbackModal: typeof import('./components/FeedbackModal.vue')['default']
     Footer: typeof import('./components/Footer.vue')['default']
     Header: typeof import('./components/Header.vue')['default']
+    IconEditor: typeof import('./components/IconEditor.vue')['default']
     IconElement: typeof import('./components/IconElement.vue')['default']
     IconPopover: typeof import('./components/IconPopover.vue')['default']
     Loading: typeof import('./components/Loading.vue')['default']
