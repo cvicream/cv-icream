@@ -31,12 +31,15 @@ const onClick = async(name: string) => {
     </div>
     <div class="flex justify-between">
       <div class="flex justify-start items-start ">
-        <IconElement icon="behance" :on-click="() => onClick('behance')" />
-        <IconElement icon="instagram" :on-click="() => onClick('instagram')" />
-        <IconElement icon="facebook" :on-click="() => onClick('instagram')" />
-        <IconElement icon="linkedln" :on-click="() => onClick('instagram')" />
+        <IconElement icon="mail" :on-click="() => onClick('behance')" />
+        <IconElement icon="linkedin" :on-click="() => onClick('instagram')" />
         <IconElement icon="whatsapp" :on-click="() => onClick('instagram')" />
+        <IconElement icon="facebook" :on-click="() => onClick('instagram')" />
+        <IconElement icon="instagram" :on-click="() => onClick('instagram')" />
+        <IconElement icon="twitter" :on-click="() => onClick('instagram')" />
         <IconElement icon="youtube" :on-click="() => onClick('instagram')" />
+        <IconElement icon="behance" :on-click="() => onClick('behance')" />
+        <IconElement icon="link" :on-click="() => onClick('instagram')" />
       </div>
     </div>
   </div>
