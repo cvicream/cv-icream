@@ -50,6 +50,7 @@ export default defineComponent({
     const linkEdit = ref<HTMLDivElement | null>(null)
     const linkTooltipVisible = ref(false)
     const linkEditVisible = ref(false)
+    const chatGPTId = ref(`chatgpt-${uuidv4().replaceAll('-', '')}`)
     const chatGPTEdit = ref<HTMLDivElement | null>(null)
     const chatGPTEditVisible = ref(false)
     const selectedAnchor = ref<HTMLAnchorElement | null>(null)
@@ -319,8 +320,12 @@ export default defineComponent({
     }
 
     function onChatGPTClick() {
-      if (selectedText.value)
+      if (selectedText.value) {
         chatGPTEditVisible.value = true
+        setTimeout(() => {
+          document.querySelector(`#${chatGPTId.value}`)?.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
+        })
+      }
     }
 
     return {
@@ -336,6 +341,7 @@ export default defineComponent({
       linkTooltipStyle,
       linkEditStyle,
       selectedText,
+      chatGPTId,
       chatGPTEdit,
       chatGPTEditVisible,
       selectedAnchor,
@@ -438,6 +444,7 @@ export default defineComponent({
     </div>
 
     <ChatGPTModal
+      :id="chatGPTId"
       ref="chatGPTEdit"
       :visible="chatGPTEditVisible"
       :text="selectedText"

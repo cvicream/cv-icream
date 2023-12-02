@@ -7,6 +7,7 @@ import { isMobileDevice, isSafari } from '~/utils'
 const emit = defineEmits(['close'])
 
 const props = defineProps<{
+  id?: string
   visible?: boolean
   text?: string
 }>()
@@ -131,6 +132,7 @@ function copyToClipboard(val) {
 <template>
   <div
     v-if="visible"
+    :id="id"
     class="bg-white p-4 rounded-[1.25rem] shadow-custom"
   >
     <div class="flex justify-between">
