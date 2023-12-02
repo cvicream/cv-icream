@@ -45,7 +45,6 @@ export default defineConfig({
         'vue/macros',
         '@vueuse/head',
         '@vueuse/core',
-        '@vueuse/components',
       ],
       dts: 'src/auto-imports.d.ts',
     }),
