@@ -156,7 +156,7 @@ function cancelRequest() {
       @click="toggle"
     >
       <span v-if="question && !loading" class="paragraph text-blacks-100">{{ question }}</span>
-      <span v-else-if="loading" class="paragraph text-blacks-40 loading">AI is writing</span>
+      <span v-else-if="loading" class="paragraph text-blacks-40 typewriter" />
       <span v-else class="paragraph text-blacks-40">Ask AI...</span>
 
       <button
@@ -230,17 +230,30 @@ function cancelRequest() {
 </template>
 
 <style scope>
-.loading::after {
+.typewriter::after {
   content: '';
   display: inline-block;
-  animation: dotty steps(1, end) 2s infinite;
+  animation: typing steps(1, end) 3s infinite;
 }
 
-@keyframes dotty {
+@keyframes typing {
   0%   { content: ''; }
-  25%  { content: '.'; }
-  50%  { content: '..'; }
-  75%  { content: '...'; }
+  5%   { content: 'A'; }
+  10%  { content: 'AI'; }
+  15%  { content: 'AI '; }
+  20%  { content: 'AI i'; }
+  25%  { content: 'AI is'; }
+  30%  { content: 'AI is '; }
+  35%  { content: 'AI is w'; }
+  40%  { content: 'AI is wr'; }
+  45%  { content: 'AI is wri'; }
+  50%  { content: 'AI is writ'; }
+  55%  { content: 'AI is writi'; }
+  60%  { content: 'AI is writin'; }
+  65%  { content: 'AI is writing'; }
+  70%  { content: 'AI is writing.'; }
+  75%  { content: 'AI is writing..'; }
+  85%  { content: 'AI is writing...'; }
   100% { content: ''; }
 }
 
