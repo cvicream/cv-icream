@@ -56,6 +56,7 @@ export default defineComponent({
     const selectedAnchor = ref<HTMLAnchorElement | null>(null)
     const draftLink = ref('')
     const link = ref('')
+    const tooltipText = ref('')
 
     const content = computed({
       get: () => {
@@ -328,6 +329,18 @@ export default defineComponent({
       }
     }
 
+    function onMouseOver(event: MouseEvent, val: string) {
+      switch (val) {
+        case 'chatgpt':
+          tooltipText.value = !selectedText.value ? 'Select any text to get started with AI' : ''
+          break
+      }
+    }
+
+    function onMouseOut() {
+      tooltipText.value = ''
+    }
+
     return {
       isMobileScreen,
       root,
@@ -348,6 +361,7 @@ export default defineComponent({
       draftLink,
       link,
       content,
+      tooltipText,
       onFocus,
       onBlur,
       onClear,
@@ -358,6 +372,8 @@ export default defineComponent({
       resetLink,
       onEditorChange,
       onChatGPTClick,
+      onMouseOver,
+      onMouseOut,
     }
   },
 })
@@ -404,43 +420,51 @@ export default defineComponent({
         'opacity': enable && toolbarVisible ? 1 : 0
       }"
     >
-      <div class="toolbar-button-group">
-        <button
-          class="ml-auto"
-          :class="isMobileScreen ? 'btn-icon-32' : 'btn-icon-24'"
-          value="chatgpt"
-          @click="onChatGPTClick"
-        >
-          <span class="i-custom:chatgpt" :class="isMobileScreen ? 'w-6 h-6' : 'w-4.5 h-4.5'" />
-        </button>
-        <div class="h-5 mx-2 border-l border-blacks-20" />
-        <div class="flex justify-center gap-3 mr-auto">
-          <button class="ql-list" :class="isMobileScreen ? 'btn-icon-32' : 'btn-icon-24'" value="bullet">
-            <span class="i-custom:list-bullet" :class="isMobileScreen ? 'w-6 h-6' : 'w-4.5 h-4.5'" />
+      <Tooltip
+        placement="bottom"
+        :text="tooltipText"
+      >
+        <div class="toolbar-button-group">
+          <button
+            class="ml-auto disabled:text-blacks-40"
+            :class="isMobileScreen ? 'btn-icon-32' : 'btn-icon-24'"
+            value="chatgpt"
+            :disabled="!selectedText"
+            @mouseover="(e) => onMouseOver(e, 'chatgpt')"
+            @mouseout="onMouseOut"
+            @click="onChatGPTClick"
+          >
+            <span class="i-custom:chatgpt" :class="isMobileScreen ? 'w-6 h-6' : 'w-4.5 h-4.5'" />
           </button>
-          <button class="ql-list" :class="isMobileScreen ? 'btn-icon-32' : 'btn-icon-24'" value="ordered">
-            <span class="i-custom:list-number" :class="isMobileScreen ? 'w-6 h-6' : 'w-4.5 h-4.5'" />
-          </button>
-          <button class="ql-indent" :class="isMobileScreen ? 'btn-icon-32' : 'btn-icon-24'" value="+1">
-            <span class="i-custom:indent" :class="isMobileScreen ? 'w-6 h-6' : 'w-4.5 h-4.5'" />
-          </button>
-          <button class="ql-indent" :class="isMobileScreen ? 'btn-icon-32' : 'btn-icon-24'" value="-1">
-            <span class="i-custom:unindent" :class="isMobileScreen ? 'w-6 h-6' : 'w-4.5 h-4.5'" />
-          </button>
-          <button class="ql-bold" :class="isMobileScreen ? 'btn-icon-32' : 'btn-icon-24'">
-            <span class="i-custom:bold" :class="isMobileScreen ? 'w-6 h-6' : 'w-4.5 h-4.5'" />
-          </button>
-          <button class="ql-italic" :class="isMobileScreen ? 'btn-icon-32' : 'btn-icon-24'">
-            <span class="i-custom:italic" :class="isMobileScreen ? 'w-6 h-6' : 'w-4.5 h-4.5'" />
-          </button>
-          <button class="ql-background" :class="isMobileScreen ? 'btn-icon-32' : 'btn-icon-24'">
-            <span class="i-origin:highlight" :class="isMobileScreen ? 'w-6 h-6' : 'w-4.5 h-4.5'" />
-          </button>
-          <button class="ql-link" :class="isMobileScreen ? 'btn-icon-32' : 'btn-icon-24'">
-            <span class="i-custom:link" :class="isMobileScreen ? 'w-6 h-6' : 'w-4.5 h-4.5'" />
-          </button>
+          <div class="h-5 mx-2 border-l border-blacks-20" />
+          <div class="flex justify-center gap-3 mr-auto">
+            <button class="ql-list" :class="isMobileScreen ? 'btn-icon-32' : 'btn-icon-24'" value="bullet">
+              <span class="i-custom:list-bullet" :class="isMobileScreen ? 'w-6 h-6' : 'w-4.5 h-4.5'" />
+            </button>
+            <button class="ql-list" :class="isMobileScreen ? 'btn-icon-32' : 'btn-icon-24'" value="ordered">
+              <span class="i-custom:list-number" :class="isMobileScreen ? 'w-6 h-6' : 'w-4.5 h-4.5'" />
+            </button>
+            <button class="ql-indent" :class="isMobileScreen ? 'btn-icon-32' : 'btn-icon-24'" value="+1">
+              <span class="i-custom:indent" :class="isMobileScreen ? 'w-6 h-6' : 'w-4.5 h-4.5'" />
+            </button>
+            <button class="ql-indent" :class="isMobileScreen ? 'btn-icon-32' : 'btn-icon-24'" value="-1">
+              <span class="i-custom:unindent" :class="isMobileScreen ? 'w-6 h-6' : 'w-4.5 h-4.5'" />
+            </button>
+            <button class="ql-bold" :class="isMobileScreen ? 'btn-icon-32' : 'btn-icon-24'">
+              <span class="i-custom:bold" :class="isMobileScreen ? 'w-6 h-6' : 'w-4.5 h-4.5'" />
+            </button>
+            <button class="ql-italic" :class="isMobileScreen ? 'btn-icon-32' : 'btn-icon-24'">
+              <span class="i-custom:italic" :class="isMobileScreen ? 'w-6 h-6' : 'w-4.5 h-4.5'" />
+            </button>
+            <button class="ql-background" :class="isMobileScreen ? 'btn-icon-32' : 'btn-icon-24'">
+              <span class="i-origin:highlight" :class="isMobileScreen ? 'w-6 h-6' : 'w-4.5 h-4.5'" />
+            </button>
+            <button class="ql-link" :class="isMobileScreen ? 'btn-icon-32' : 'btn-icon-24'">
+              <span class="i-custom:link" :class="isMobileScreen ? 'w-6 h-6' : 'w-4.5 h-4.5'" />
+            </button>
+          </div>
         </div>
-      </div>
+      </Tooltip>
     </div>
 
     <ChatGPTModal
