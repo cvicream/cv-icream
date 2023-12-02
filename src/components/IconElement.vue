@@ -34,5 +34,6 @@ const backgroundColor = computed(() => props.isSelected ? 'var(--secondary-color
   display: inline-flex;
   justify-content: center;
   align-items: center;
+  margin: 0;
 }
 </style>
