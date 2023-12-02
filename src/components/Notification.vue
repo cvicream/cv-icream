@@ -28,8 +28,8 @@ function close() {
     class="fixed bottom-8 left-0 right-0 flex justify-center items-center z-99"
   >
     <div class="bg-primary-100 w-112 h-16 rounded-xl">
-      <div class="flex justify-between px-5 mt-4">
-        <div class=" text-white paragraph px-1 mt-1">
+      <div class="flex justify-between items-center px-5 mt-4">
+        <div class=" text-white paragraph">
           {{ message }}
         </div>
         <button
