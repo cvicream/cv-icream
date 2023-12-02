@@ -41,6 +41,7 @@ const loading = ref(false)
 const abortController = ref<AbortController>()
 const resultVisible = ref(false)
 const result = ref('')
+const notificationVisible = ref(false)
 
 watch(() => props.visible, (newValue) => {
   if (!newValue)
@@ -119,6 +120,11 @@ function cancelRequest() {
     abortController.value.abort()
 
   loading.value = false
+}
+
+function copyToClipboard(val) {
+  copy(val)
+  notificationVisible.value = true
 }
 </script>
 
@@ -218,12 +224,20 @@ function cancelRequest() {
           <button @click="reset">
             <span class="i-custom:delete icon-24" />
           </button>
-          <button v-if="isSupported" @click="copy(result)">
+          <button v-if="isSupported" @click="copyToClipboard(result)">
             <span class="i-custom:variant icon-24" />
           </button>
         </div>
       </div>
     </div>
+
+    <Notification
+      v-if="notificationVisible"
+      message="The result has been copied!"
+      :visible="notificationVisible"
+      :duration="2000"
+      @close="notificationVisible = false"
+    />
 
     <div class="fix-margin-bottom" style="top: 100%; left: 0;" />
   </div>
