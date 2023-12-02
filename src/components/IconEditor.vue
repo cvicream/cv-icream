@@ -1,8 +1,7 @@
 
 <script setup lang="ts">
-import { vOnClickOutside } from '@vueuse/components'
 import type { OnClickOutsideOptions } from '@vueuse/core'
-import { SOCIAL_MEDIA_ICONS } from '~/constants'
+import { DEFAULT_TEMPLATE, SOCIAL_MEDIA_ICONS } from '~/constants'
 
 const props = defineProps <{
   icon: string
@@ -31,7 +30,7 @@ const onClickOutsideHandler: [(evt: any) => void, OnClickOutsideOptions] = [
     <label class="block note text-blacks-70">Icon</label>
     <div ref="ignoreElRef" class="ql-container single-line icon-container" :onclick="() => toggleIcons()">
       <IconElement
-        :icon="icon"
+        :icon="icon || DEFAULT_TEMPLATE.social.list[0].icon"
       />
     </div>
     <div v-if="showIcons" v-on-click-outside="onClickOutsideHandler" class="flex justify-between items-star ql-container single-line icons overflow-auto icon-container">
