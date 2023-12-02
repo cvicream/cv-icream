@@ -59,6 +59,7 @@ function getOptionClass(index: number) {
 }
 
 function toggle() {
+  if (loading.value) return
   open.value = !open.value
 }
 
@@ -127,55 +128,57 @@ async function sendRequest() {
       </button>
     </div>
 
-    <div class="relative mt-4">
-      <div
-        class="px-4 py-3 bg-primary-10 flex justify-between items-center rounded-xl select-none"
-        :class="[
-          {
-            'border-blacks-100': open,
-            'cursor-pointer': !result,
-          },
-          loading ? '!text-blacks-70' : '!text-blacks-100'
-        ]"
-        :style="{
-          'border-bottom-left-radius': result ? 0 : '12px',
-          'border-bottom-right-radius': result ? 0 : '12px',
-        }"
-        @click="toggle"
-      >
-        <span v-if="question && !loading" class="paragraph text-blacks-100">{{ question }}</span>
-        <span v-else-if="loading" class="paragraph text-blacks-40 loading">AI is writing</span>
-        <span v-else class="paragraph text-blacks-40">Ask AI...</span>
+    <div
+      class="px-4 py-3 mt-4 bg-primary-10 border-1 flex justify-between items-center rounded-xl select-none"
+      :class="[
+        open ? 'border-blacks-100' : 'border-transparent',
+        loading ? '!text-blacks-70' : '!text-blacks-100',
+        {
+          'hover:border-blacks-100 cursor-pointer': !loading && !result,
+          '!border-transparent': result,
+        },
+      ]"
+      :style="{
+        'border-bottom-left-radius': result ? 0 : '12px',
+        'border-bottom-right-radius': result ? 0 : '12px',
+      }"
+      @click="toggle"
+    >
+      <span v-if="question && !loading" class="paragraph text-blacks-100">{{ question }}</span>
+      <span v-else-if="loading" class="paragraph text-blacks-40 loading">AI is writing</span>
+      <span v-else class="paragraph text-blacks-40">Ask AI...</span>
 
+      <button
+        v-if="text && question && !loading && !result"
+        class="w-6 h-6"
+        @click.stop="sendRequest"
+      >
+        <span
+          class="i-custom:arrow-up-circle w-6 h-6 text-blacks-40"
+          :class="{ 'sm:hover:text-blacks-70': !loading && !result }"
+        />
+      </button>
+    </div>
+
+    <div
+      v-if="open && !result"
+      class="mt-2"
+    >
+      <div
+        class="bg-white rounded-xl overflow-hidden"
+        :class="isSafari() || isMobileDevice() ? 'border-1 border-blacks-100' : 'outline outline-1 outline-blacks-100'"
+      >
         <button
-          v-if="text && question && !loading && !result"
-          class="w-6 h-6"
-          @click.stop="sendRequest"
+          v-for="(item, index) in defaultQuestions"
+          :key="item.value"
+          class="w-full h-[45px] flex justify-start items-center px-4 py-3 sm:hover:bg-primary-10"
+          :class="getOptionClass(index)"
+          @click="() => setQuestion(item.label)"
         >
-          <span
-            class="i-custom:arrow-up-circle w-6 h-6 text-blacks-40"
-            :class="{ 'sm:hover:text-blacks-70': !loading && !result }"
-          />
+          <span class="paragraph text-blacks-100">{{ item.label }}</span>
         </button>
       </div>
-
-      <div v-if="open && !result" class="absolute left-[2px] right-[2px] top-[54px]">
-        <div
-          class="bg-white rounded-xl overflow-hidden"
-          :class="isSafari() || isMobileDevice() ? 'border-1 border-blacks-100' : 'outline outline-1 outline-blacks-100'"
-        >
-          <button
-            v-for="(item, index) in defaultQuestions"
-            :key="item.value"
-            class="w-full h-[45px] flex justify-start items-center px-4 py-3 sm:hover:bg-primary-10"
-            :class="getOptionClass(index)"
-            @click="() => setQuestion(item.label)"
-          >
-            <span class="paragraph text-blacks-100">{{ item.label }}</span>
-          </button>
-        </div>
-        <div class="fix-margin-bottom" style="top: 100%; left: 0;" />
-      </div>
+      <div class="fix-margin-bottom" style="top: 100%; left: 0;" />
     </div>
 
     <div
