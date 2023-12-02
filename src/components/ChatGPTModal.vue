@@ -38,6 +38,7 @@ const { isSupported, copy } = useClipboard()
 const question = ref('')
 const open = ref(false)
 const loading = ref(false)
+const abortController = ref<AbortController>()
 const resultVisible = ref(false)
 const result = ref('')
 
@@ -90,6 +91,8 @@ async function sendRequest() {
   }
 
   try {
+    abortController.value = new AbortController()
+    const signal = abortController.value.signal
     const res = await axios({
       method: 'POST',
       url: import.meta.env.VITE_CHATGPT_URL as string,
@@ -97,6 +100,7 @@ async function sendRequest() {
         Authorization: `Bearer ${import.meta.env.VITE_CHATGPT_API_KEY}`,
       },
       data,
+      signal,
     })
     if (res.data?.choices?.length) {
       result.value = res.data.choices[0].message?.content
@@ -106,6 +110,13 @@ async function sendRequest() {
   catch (error) {
     console.error(error)
   }
+
+  loading.value = false
+}
+
+function cancelRequest() {
+  if (abortController.value)
+    abortController.value.abort()
 
   loading.value = false
 }
@@ -157,6 +168,13 @@ async function sendRequest() {
           class="i-custom:arrow-up-circle w-6 h-6 text-blacks-40"
           :class="{ 'sm:hover:text-blacks-70': !loading && !result }"
         />
+      </button>
+      <button
+        v-if="loading"
+        class="w-6 h-6"
+        @click.stop="cancelRequest"
+      >
+        <span class="i-custom:pause w-6 h-6 text-blacks-40 sm:hover:text-blacks-70" />
       </button>
     </div>
 
