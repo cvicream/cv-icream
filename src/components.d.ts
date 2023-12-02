@@ -15,7 +15,6 @@ declare module 'vue' {
     Header: typeof import('./components/Header.vue')['default']
     IconEditor: typeof import('./components/IconEditor.vue')['default']
     IconElement: typeof import('./components/IconElement.vue')['default']
-    IconPopover: typeof import('./components/IconPopover.vue')['default']
     Loading: typeof import('./components/Loading.vue')['default']
     Modal: typeof import('./components/Modal.vue')['default']
     MoreActions: typeof import('./components/MoreActions.vue')['default']

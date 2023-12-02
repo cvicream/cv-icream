@@ -1,5 +1,6 @@
 
 <script setup lang="ts">
+import { vOnClickOutside } from '@vueuse/components'
 import type { OnClickOutsideOptions } from '@vueuse/core'
 import { DEFAULT_TEMPLATE, SOCIAL_MEDIA_ICONS } from '~/constants'
 

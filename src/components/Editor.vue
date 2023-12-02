@@ -45,7 +45,6 @@ export default defineComponent({
     const editor = ref<HTMLDivElement | null>(null)
     const toolbarId = ref(`toolbar-${uuidv4().replaceAll('-', '')}`)
     const toolbarVisible = ref(false)
-    const showIconPopover = ref(false)
     const selectionRange = ref<RangeStatic | null>(null)
     const linkTooltip = ref<HTMLDivElement | null>(null)
     const linkEdit = ref<HTMLDivElement | null>(null)
@@ -317,7 +316,6 @@ export default defineComponent({
       draftLink,
       link,
       content,
-      showIconPopover,
       onFocus,
       onBlur,
       onClear,
@@ -649,22 +647,4 @@ export default defineComponent({
   z-index: -1;
 }
 
-.icon-mask {
-  background-color: var(--primary-color);
-  border-radius: 50%;
-  opacity: 70%;
-  cursor: pointer;
-  height: 16px;
-  width: 16px;
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
-  margin-right: 5px;
-}
-
-.custom-icon {
-  width: 10px;
-  height: 10px;
-  color: white;
-}
 </style>
