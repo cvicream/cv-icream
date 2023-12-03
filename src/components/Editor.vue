@@ -332,7 +332,7 @@ export default defineComponent({
     function onMouseOver(event: MouseEvent, val: string) {
       switch (val) {
         case 'chatgpt':
-          tooltipText.value = !selectedText.value ? 'Select any text to get started with AI' : ''
+          tooltipText.value = !selectedText.value ? 'Select any text to get started with AI' : 'Write with AI'
           break
       }
     }
@@ -427,7 +427,12 @@ export default defineComponent({
         <div class="toolbar-button-group">
           <button
             class="ml-auto disabled:text-blacks-40"
-            :class="isMobileScreen ? 'btn-icon-32' : 'btn-icon-24'"
+            :class="[
+              isMobileScreen ? 'btn-icon-32' : 'btn-icon-24',
+              {
+                '!hover:bg-transparent': !selectedText
+              }
+            ]"
             value="chatgpt"
             :disabled="!selectedText"
             @mouseover="(e) => onMouseOver(e, 'chatgpt')"
