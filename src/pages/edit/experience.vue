@@ -91,7 +91,7 @@ function duplicateItem(index: number) {
     state.experience.list.splice(index, 0, currentItem)
   })
   forceRerender()
-  scrollIntoView(index + 1)
+  scrollIntoView(index)
 }
 
 function deleteItem(index: number) {
