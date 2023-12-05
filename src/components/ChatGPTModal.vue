@@ -167,16 +167,21 @@ function copyToClipboard(val) {
       <span v-else-if="loading" class="paragraph text-blacks-40 typewriter" />
       <span v-else class="paragraph text-blacks-40">Ask AI...</span>
 
-      <button
+      <Tooltip
         v-if="text && question && !loading && !result"
-        class="w-6 h-6"
-        @click.stop="sendRequest"
+        placement="left"
+        text="Start generating results"
       >
-        <span
-          class="i-custom:arrow-up-circle w-6 h-6 text-blacks-40"
-          :class="{ 'sm:hover:text-blacks-70': !loading && !result }"
-        />
-      </button>
+        <button
+          class="w-6 h-6"
+          @click.stop="sendRequest"
+        >
+          <span
+            class="i-custom:arrow-up-circle w-6 h-6 text-blacks-40"
+            :class="{ 'sm:hover:text-blacks-70': !loading && !result }"
+          />
+        </button>
+      </Tooltip>
       <button
         v-if="loading"
         class="w-6 h-6"
