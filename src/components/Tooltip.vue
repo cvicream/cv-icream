@@ -44,7 +44,12 @@ const tooltipClass = computed(() => {
       :class="tooltipClass"
       :style="style"
     >
-      <span v-if="text" class="note text-blacks-100">{{ text }}</span>
+      <span
+        v-if="text"
+        class="note text-blacks-100"
+      >
+        {{ text }}
+      </span>
       <slot v-else name="content" />
     </div>
   </div>
