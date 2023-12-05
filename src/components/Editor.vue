@@ -420,13 +420,15 @@ export default defineComponent({
         'opacity': enable && toolbarVisible ? 1 : 0
       }"
     >
-      <Tooltip
-        placement="bottom"
-        :text="tooltipText"
-      >
-        <div class="toolbar-button-group">
+      <div class="toolbar-button-group">
+        <Tooltip
+          placement="right"
+          class="ml-auto"
+          small
+          :text="tooltipText"
+        >
           <button
-            class="ml-auto disabled:text-blacks-40"
+            class="disabled:text-blacks-40"
             :class="[
               isMobileScreen ? 'btn-icon-32' : 'btn-icon-24',
               {
@@ -441,35 +443,35 @@ export default defineComponent({
           >
             <span class="i-custom:chatgpt" :class="isMobileScreen ? 'w-6 h-6' : 'w-4.5 h-4.5'" />
           </button>
-          <div class="h-5 mx-2 border-l border-blacks-20" />
-          <div class="flex justify-center gap-3 mr-auto">
-            <button class="ql-list" :class="isMobileScreen ? 'btn-icon-32' : 'btn-icon-24'" value="bullet">
-              <span class="i-custom:list-bullet" :class="isMobileScreen ? 'w-6 h-6' : 'w-4.5 h-4.5'" />
-            </button>
-            <button class="ql-list" :class="isMobileScreen ? 'btn-icon-32' : 'btn-icon-24'" value="ordered">
-              <span class="i-custom:list-number" :class="isMobileScreen ? 'w-6 h-6' : 'w-4.5 h-4.5'" />
-            </button>
-            <button class="ql-indent" :class="isMobileScreen ? 'btn-icon-32' : 'btn-icon-24'" value="+1">
-              <span class="i-custom:indent" :class="isMobileScreen ? 'w-6 h-6' : 'w-4.5 h-4.5'" />
-            </button>
-            <button class="ql-indent" :class="isMobileScreen ? 'btn-icon-32' : 'btn-icon-24'" value="-1">
-              <span class="i-custom:unindent" :class="isMobileScreen ? 'w-6 h-6' : 'w-4.5 h-4.5'" />
-            </button>
-            <button class="ql-bold" :class="isMobileScreen ? 'btn-icon-32' : 'btn-icon-24'">
-              <span class="i-custom:bold" :class="isMobileScreen ? 'w-6 h-6' : 'w-4.5 h-4.5'" />
-            </button>
-            <button class="ql-italic" :class="isMobileScreen ? 'btn-icon-32' : 'btn-icon-24'">
-              <span class="i-custom:italic" :class="isMobileScreen ? 'w-6 h-6' : 'w-4.5 h-4.5'" />
-            </button>
-            <button class="ql-background" :class="isMobileScreen ? 'btn-icon-32' : 'btn-icon-24'">
-              <span class="i-origin:highlight" :class="isMobileScreen ? 'w-6 h-6' : 'w-4.5 h-4.5'" />
-            </button>
-            <button class="ql-link" :class="isMobileScreen ? 'btn-icon-32' : 'btn-icon-24'">
-              <span class="i-custom:link" :class="isMobileScreen ? 'w-6 h-6' : 'w-4.5 h-4.5'" />
-            </button>
-          </div>
+        </Tooltip>
+        <div class="h-5 mx-2 border-l border-blacks-20" />
+        <div class="flex justify-center gap-3 mr-auto">
+          <button class="ql-list" :class="isMobileScreen ? 'btn-icon-32' : 'btn-icon-24'" value="bullet">
+            <span class="i-custom:list-bullet" :class="isMobileScreen ? 'w-6 h-6' : 'w-4.5 h-4.5'" />
+          </button>
+          <button class="ql-list" :class="isMobileScreen ? 'btn-icon-32' : 'btn-icon-24'" value="ordered">
+            <span class="i-custom:list-number" :class="isMobileScreen ? 'w-6 h-6' : 'w-4.5 h-4.5'" />
+          </button>
+          <button class="ql-indent" :class="isMobileScreen ? 'btn-icon-32' : 'btn-icon-24'" value="+1">
+            <span class="i-custom:indent" :class="isMobileScreen ? 'w-6 h-6' : 'w-4.5 h-4.5'" />
+          </button>
+          <button class="ql-indent" :class="isMobileScreen ? 'btn-icon-32' : 'btn-icon-24'" value="-1">
+            <span class="i-custom:unindent" :class="isMobileScreen ? 'w-6 h-6' : 'w-4.5 h-4.5'" />
+          </button>
+          <button class="ql-bold" :class="isMobileScreen ? 'btn-icon-32' : 'btn-icon-24'">
+            <span class="i-custom:bold" :class="isMobileScreen ? 'w-6 h-6' : 'w-4.5 h-4.5'" />
+          </button>
+          <button class="ql-italic" :class="isMobileScreen ? 'btn-icon-32' : 'btn-icon-24'">
+            <span class="i-custom:italic" :class="isMobileScreen ? 'w-6 h-6' : 'w-4.5 h-4.5'" />
+          </button>
+          <button class="ql-background" :class="isMobileScreen ? 'btn-icon-32' : 'btn-icon-24'">
+            <span class="i-origin:highlight" :class="isMobileScreen ? 'w-6 h-6' : 'w-4.5 h-4.5'" />
+          </button>
+          <button class="ql-link" :class="isMobileScreen ? 'btn-icon-32' : 'btn-icon-24'">
+            <span class="i-custom:link" :class="isMobileScreen ? 'w-6 h-6' : 'w-4.5 h-4.5'" />
+          </button>
         </div>
-      </Tooltip>
+      </div>
     </div>
 
     <ChatGPTModal
@@ -702,6 +704,7 @@ export default defineComponent({
 .toolbar-button-group {
   @apply flex items-center;
   overflow-x: scroll;
+  overflow-y: hidden;
   scrollbar-width: none;    /* Firefox */
   -ms-overflow-style: none; /* IE 10+ */
 }
