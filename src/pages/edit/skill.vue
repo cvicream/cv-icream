@@ -68,6 +68,7 @@ function addItem(index: number | null) {
       forceRerender()
     }
   })
+  scrollIntoView(index)
 }
 
 function toggleCollapseItem(index: number) {
@@ -89,6 +90,7 @@ function duplicateItem(index: number) {
     state.skill.list.splice(index, 0, currentItem)
   })
   forceRerender()
+  scrollIntoView(index)
 }
 
 function deleteItem(index: number) {
@@ -98,6 +100,7 @@ function deleteItem(index: number) {
     state.skill.list.splice(index, 1)
   })
   forceRerender()
+  scrollIntoView(index - 1)
 }
 
 function toggleDeleteBlockModal() {
@@ -123,6 +126,10 @@ function swap(index1, index2) {
     state.skill.list[index1] = tmp
   })
   forceRerender()
+}
+
+function scrollIntoView(index) {
+  document.querySelector(`#skill-form-${index}`)?.scrollIntoView({ behavior: 'smooth' })
 }
 </script>
 
@@ -153,6 +160,7 @@ function swap(index1, index2) {
 
     <div
       v-for="(item, index) in skill.list"
+      :id="`skill-form-${index}`"
       :key="componentKey + '-' + index"
       class="transition ease-in-out"
       :class="[
