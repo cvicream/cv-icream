@@ -87,7 +87,7 @@ async function sendRequest() {
     messages: [
       {
         role: 'user',
-        content: `Here is a paragraph: ${props.text}. Please ${question.value}.`,
+        content: `${question.value}: ${props.text}`,
       },
     ],
   }
