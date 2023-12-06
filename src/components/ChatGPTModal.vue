@@ -242,7 +242,7 @@ function copyToClipboard(val) {
       v-if="notificationVisible"
       message="The result has been copied!"
       :visible="notificationVisible"
-      :duration="2000"
+      :duration="4000"
       @close="notificationVisible = false"
     />
 
