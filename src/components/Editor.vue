@@ -332,7 +332,7 @@ export default defineComponent({
     function onMouseOver(event: MouseEvent, val: string) {
       switch (val) {
         case 'chatgpt':
-          tooltipText.value = !selectedText.value ? 'Select any text to get started with AI' : 'Write with AI'
+          tooltipText.value = !selectedText.value ? 'Select text to start with AI' : 'Write with AI'
           break
       }
     }
