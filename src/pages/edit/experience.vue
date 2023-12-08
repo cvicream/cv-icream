@@ -4,6 +4,7 @@ import { storeToRefs } from 'pinia'
 import { useUserStore } from '~/stores/user'
 import { useToolbarStore } from '~/stores/toolbar'
 import { DEFAULT_TEMPLATE, HIDDEN_INFORMATION, TEMPLATE_LIST_ITEM } from '~/constants'
+import { addSuffixToParagraph } from '~/utils'
 
 const user = useUserStore()
 const { experience } = storeToRefs(user)
@@ -88,6 +89,7 @@ function duplicateItem(index: number) {
   user.$patch((state) => {
     state.experience.list[index].isEditing = false
     const currentItem = JSON.parse(JSON.stringify(state.experience.list[index]))
+    currentItem.title = addSuffixToParagraph(currentItem.title, '(Copy)')
     state.experience.list.splice(index, 0, currentItem)
   })
   forceRerender()
