@@ -125,6 +125,8 @@ function swap(index1, index2) {
   })
   forceRerender()
 }
+
+const date = ref([new Date(), new Date()])
 </script>
 
 <template>
@@ -272,13 +274,24 @@ function swap(index1, index2) {
         >
           <div>
             <label class="block note text-blacks-70">Subtitle (align left)</label>
-            <Editor
+            <VueDatePicker
+              v-model="date"
+              range
+              :enable-time-picker="false"
+            />
+            <!-- <Input
+              v-model="item.subtitle1"
+              class-name="mt-1"
+              :enable="item.isShow"
+              :placeholder="DEFAULT_TEMPLATE.experience.list[0].subtitle1"
+            /> -->
+            <!-- <Editor
               v-model="item.subtitle1"
               class-name="mt-1"
               :enable="item.isShow"
               :placeholder="DEFAULT_TEMPLATE.experience.list[0].subtitle1"
               :is-single-line="true"
-            />
+            /> -->
           </div>
           <div>
             <label class="block note text-blacks-70">Subtitle (align right)</label>
