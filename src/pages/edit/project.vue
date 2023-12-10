@@ -263,6 +263,7 @@ function swap(index1, index2) {
             :enable="item.isShow"
             :placeholder="DEFAULT_TEMPLATE.project.list[0].title"
             :is-single-line="true"
+            :chatgpt-enable="false"
           />
         </div>
         <div
@@ -277,6 +278,7 @@ function swap(index1, index2) {
               :enable="item.isShow"
               :placeholder="DEFAULT_TEMPLATE.project.list[0].subtitle1"
               :is-single-line="true"
+              :chatgpt-enable="false"
             />
           </div>
           <div>
@@ -287,6 +289,7 @@ function swap(index1, index2) {
               :enable="item.isShow"
               :placeholder="DEFAULT_TEMPLATE.project.list[0].subtitle2"
               :is-single-line="true"
+              :chatgpt-enable="false"
             />
           </div>
           <div>

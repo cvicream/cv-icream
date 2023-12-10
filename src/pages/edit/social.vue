@@ -263,6 +263,7 @@ function swap(index1, index2) {
             :enable="item.isShow"
             :placeholder="DEFAULT_TEMPLATE.social.list[0].type"
             :is-single-line="true"
+            :chatgpt-enable="false"
           />
         </div>
         <div
@@ -279,6 +280,7 @@ function swap(index1, index2) {
               :enable="item.isShow"
               :placeholder="DEFAULT_TEMPLATE.social.list[0].link"
               :is-single-line="true"
+              :chatgpt-enable="false"
             >
           </div>
         </div>

@@ -1,39 +1,31 @@
 <script setup lang="ts">
+import type { PropType } from 'vue'
 import { ref, watch } from 'vue'
 import { useClipboard } from '@vueuse/core'
 import axios from 'axios'
+import type { Option } from '~/types'
 import { isMobileDevice, isSafari } from '~/utils'
 
 const emit = defineEmits(['close'])
 
-const props = defineProps<{
-  id?: string
-  visible?: boolean
-  text?: string
-}>()
-
-const defaultQuestions = [
-  {
-    value: 'improve-writing',
-    label: 'Improve writing',
+const props = defineProps({
+  id: {
+    type: String,
+    default: '',
   },
-  {
-    value: 'fix-spelling-grammar',
-    label: 'Fix spelling & grammar',
+  visible: {
+    type: Boolean,
+    default: false,
   },
-  {
-    value: 'make-shorter',
-    label: 'Make shorter',
+  text: {
+    type: String,
+    default: '',
   },
-  {
-    value: 'make-longer',
-    label: 'Make longer',
+  questionOptions: {
+    type: Array as PropType<Array<Option>>,
+    default: () => [],
   },
-  {
-    value: 'translate-into-english',
-    label: 'Translate into English',
-  },
-]
+})
 
 const { isSupported, copy } = useClipboard()
 const question = ref('')
@@ -56,7 +48,7 @@ function closeModal() {
 function getOptionClass(index: number) {
   if (index === 0)
     return isSafari() || isMobileDevice() ? 'rounded-t-[11px]' : 'rounded-t-xl'
-  else if (index === defaultQuestions.length - 1)
+  else if (Array.isArray(props.questionOptions) && index === props.questionOptions.length - 1)
     return isSafari() || isMobileDevice() ? 'rounded-b-[11px]' : 'rounded-b-xl'
   return ''
 }
@@ -200,7 +192,7 @@ function copyToClipboard(val) {
         :class="isSafari() || isMobileDevice() ? 'border-1 border-blacks-100' : 'outline outline-1 outline-blacks-100'"
       >
         <button
-          v-for="(item, index) in defaultQuestions"
+          v-for="(item, index) in questionOptions"
           :key="item.value"
           class="w-full h-[45px] flex justify-start items-center px-4 py-3 sm:hover:bg-primary-10"
           :class="getOptionClass(index)"

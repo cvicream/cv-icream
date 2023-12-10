@@ -1,5 +1,5 @@
 <script lang="ts">
-import type { CSSProperties } from 'vue'
+import type { CSSProperties, PropType } from 'vue'
 import { computed, defineComponent, onMounted, ref, watch } from 'vue'
 import { onClickOutside } from '@vueuse/core'
 import type { Quill } from '@vueup/vue-quill'
@@ -9,7 +9,10 @@ import '@vueup/vue-quill/dist/vue-quill.snow.css'
 import '@vueup/vue-quill/dist/vue-quill.bubble.css'
 import { v4 as uuidv4 } from 'uuid'
 import { storeToRefs } from 'pinia'
+import { cloneDeep } from 'lodash'
 import { useToolbarStore } from '~/stores/toolbar'
+import type { Option } from '~/types'
+import { defaultChatGPTQuestionOptions, defaultEditorToolOptions } from '~/constants'
 
 export default defineComponent({
   components: {
@@ -35,6 +38,18 @@ export default defineComponent({
     isSingleLine: {
       type: Boolean,
       default: false,
+    },
+    chatgptEnable: {
+      type: Boolean,
+      default: true,
+    },
+    toolOptions: {
+      type: Array as PropType<Array<Option>>,
+      default: cloneDeep(defaultEditorToolOptions),
+    },
+    chatgptQuestionOptions: {
+      type: Array as PropType<Array<Option>>,
+      default: cloneDeep(defaultChatGPTQuestionOptions),
     },
   },
   emits: ['update:modelValue'],
@@ -193,6 +208,10 @@ export default defineComponent({
       closeLinkEdit()
     })
 
+    function isToolEnabled(value: string) {
+      return props.toolOptions && props.toolOptions.find(option => option.value === value)
+    }
+
     function createAnchorListeners() {
       document.querySelectorAll('.ql-editor a').forEach((element) => {
         element.addEventListener('click', (e) => {
@@ -342,6 +361,7 @@ export default defineComponent({
     }
 
     return {
+      isToolEnabled,
       isMobileScreen,
       root,
       editor,
@@ -421,53 +441,56 @@ export default defineComponent({
       }"
     >
       <div class="toolbar-button-group">
-        <Tooltip
-          placement="right"
-          class="ml-auto"
-          small
-          :text="tooltipText"
-        >
-          <button
-            class="disabled:text-blacks-40"
-            :class="[
-              isMobileScreen ? 'btn-icon-32' : 'btn-icon-24',
-              {
-                '!hover:bg-transparent': !selectedText
-              }
-            ]"
-            value="chatgpt"
-            :disabled="!selectedText"
-            @mouseover="(e) => onMouseOver(e, 'chatgpt')"
-            @mouseout="onMouseOut"
-            @click="onChatGPTClick"
-          >
-            <span class="i-custom:chatgpt" :class="isMobileScreen ? 'w-6 h-6' : 'w-4.5 h-4.5'" />
-          </button>
-        </Tooltip>
-        <div class="h-5 mx-2 border-l border-blacks-20" />
+        <div class="ml-auto">
+          <div v-if="chatgptEnable && isToolEnabled('chatgpt')" class="flex items-center">
+            <Tooltip
+              placement="right"
+              small
+              :text="tooltipText"
+            >
+              <button
+                class="disabled:text-blacks-40"
+                :class="[
+                  isMobileScreen ? 'btn-icon-32' : 'btn-icon-24',
+                  {
+                    '!hover:bg-transparent': !selectedText
+                  }
+                ]"
+                value="chatgpt"
+                :disabled="!selectedText"
+                @mouseover="(e) => onMouseOver(e, 'chatgpt')"
+                @mouseout="onMouseOut"
+                @click="onChatGPTClick"
+              >
+                <span class="i-custom:chatgpt" :class="isMobileScreen ? 'w-6 h-6' : 'w-4.5 h-4.5'" />
+              </button>
+            </Tooltip>
+            <div class="h-5 mx-2 border-l border-blacks-20" />
+          </div>
+        </div>
         <div class="flex justify-center gap-3 mr-auto">
-          <button class="ql-list" :class="isMobileScreen ? 'btn-icon-32' : 'btn-icon-24'" value="bullet">
+          <button v-if="isToolEnabled('list-bullet')" class="ql-list" :class="isMobileScreen ? 'btn-icon-32' : 'btn-icon-24'" value="bullet">
             <span class="i-custom:list-bullet" :class="isMobileScreen ? 'w-6 h-6' : 'w-4.5 h-4.5'" />
           </button>
-          <button class="ql-list" :class="isMobileScreen ? 'btn-icon-32' : 'btn-icon-24'" value="ordered">
+          <button v-if="isToolEnabled('list-number')" class="ql-list" :class="isMobileScreen ? 'btn-icon-32' : 'btn-icon-24'" value="ordered">
             <span class="i-custom:list-number" :class="isMobileScreen ? 'w-6 h-6' : 'w-4.5 h-4.5'" />
           </button>
-          <button class="ql-indent" :class="isMobileScreen ? 'btn-icon-32' : 'btn-icon-24'" value="+1">
+          <button v-if="isToolEnabled('indent')" class="ql-indent" :class="isMobileScreen ? 'btn-icon-32' : 'btn-icon-24'" value="+1">
             <span class="i-custom:indent" :class="isMobileScreen ? 'w-6 h-6' : 'w-4.5 h-4.5'" />
           </button>
-          <button class="ql-indent" :class="isMobileScreen ? 'btn-icon-32' : 'btn-icon-24'" value="-1">
+          <button v-if="isToolEnabled('unindent')" class="ql-indent" :class="isMobileScreen ? 'btn-icon-32' : 'btn-icon-24'" value="-1">
             <span class="i-custom:unindent" :class="isMobileScreen ? 'w-6 h-6' : 'w-4.5 h-4.5'" />
           </button>
-          <button class="ql-bold" :class="isMobileScreen ? 'btn-icon-32' : 'btn-icon-24'">
+          <button v-if="isToolEnabled('bold')" class="ql-bold" :class="isMobileScreen ? 'btn-icon-32' : 'btn-icon-24'">
             <span class="i-custom:bold" :class="isMobileScreen ? 'w-6 h-6' : 'w-4.5 h-4.5'" />
           </button>
-          <button class="ql-italic" :class="isMobileScreen ? 'btn-icon-32' : 'btn-icon-24'">
+          <button v-if="isToolEnabled('italic')" class="ql-italic" :class="isMobileScreen ? 'btn-icon-32' : 'btn-icon-24'">
             <span class="i-custom:italic" :class="isMobileScreen ? 'w-6 h-6' : 'w-4.5 h-4.5'" />
           </button>
-          <button class="ql-background" :class="isMobileScreen ? 'btn-icon-32' : 'btn-icon-24'">
+          <button v-if="isToolEnabled('highlight')" class="ql-background" :class="isMobileScreen ? 'btn-icon-32' : 'btn-icon-24'">
             <span class="i-origin:highlight" :class="isMobileScreen ? 'w-6 h-6' : 'w-4.5 h-4.5'" />
           </button>
-          <button class="ql-link" :class="isMobileScreen ? 'btn-icon-32' : 'btn-icon-24'">
+          <button v-if="isToolEnabled('link')" class="ql-link" :class="isMobileScreen ? 'btn-icon-32' : 'btn-icon-24'">
             <span class="i-custom:link" :class="isMobileScreen ? 'w-6 h-6' : 'w-4.5 h-4.5'" />
           </button>
         </div>
@@ -479,6 +502,7 @@ export default defineComponent({
       ref="chatGPTEdit"
       :visible="chatGPTEditVisible"
       :text="selectedText"
+      :question-options="chatgptQuestionOptions"
       class="absolute left-0 right-0 mt-2 z-20"
       @close="chatGPTEditVisible = false"
     />
