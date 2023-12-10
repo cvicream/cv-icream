@@ -1,9 +1,12 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted, ref } from 'vue'
 import { storeToRefs } from 'pinia'
+import VueDatePicker from '@vuepic/vue-datepicker'
 import { useUserStore } from '~/stores/user'
 import { useToolbarStore } from '~/stores/toolbar'
 import { DEFAULT_TEMPLATE, HIDDEN_INFORMATION, TEMPLATE_LIST_ITEM } from '~/constants'
+
+import '@vuepic/vue-datepicker/dist/main.css'
 
 const user = useUserStore()
 const { experience } = storeToRefs(user)
@@ -126,7 +129,22 @@ function swap(index1, index2) {
   forceRerender()
 }
 
-const date = ref([new Date(), new Date()])
+const startDate = ref(new Date())
+const endDate = ref(new Date())
+const dateRange = ref([new Date(), new Date()])
+const format = (value) => {
+  if (Array.isArray(value)) {
+    const [startDate, endDate] = value
+    const res: string[] = []
+    if (startDate) res.push(startDate.toLocaleString('default', { year: 'numeric', month: 'long' }))
+    if (endDate) res.push(endDate.toLocaleString('default', { year: 'numeric', month: 'long' }))
+    return res.join(' - ')
+  }
+  else {
+    return value.toLocaleString('default', { year: 'numeric', month: 'long' })
+  }
+}
+const flow = ref<('time' | 'calendar' | 'month' | 'year' | 'minutes' | 'hours' | 'seconds')[]>(['year', 'month'])
 </script>
 
 <template>
@@ -275,10 +293,28 @@ const date = ref([new Date(), new Date()])
           <div>
             <label class="block note text-blacks-70">Subtitle (align left)</label>
             <VueDatePicker
-              v-model="date"
+              v-model="dateRange"
               range
+              :format="format"
               :enable-time-picker="false"
+              class="mt-2"
             />
+            <div class="flex gap-2 mt-2">
+              <VueDatePicker
+                v-model="startDate"
+                placeholder="Start Date"
+                :format="format"
+                :enable-time-picker="false"
+                :flow="flow"
+              />
+              <VueDatePicker
+                v-model="endDate"
+                placeholder="End Date"
+                :format="format"
+                :enable-time-picker="false"
+                :flow="flow"
+              />
+            </div>
             <!-- <Input
               v-model="item.subtitle1"
               class-name="mt-1"
