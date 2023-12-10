@@ -4,9 +4,12 @@ import { computed, defineComponent, onMounted, ref, watch } from 'vue'
 import { onClickOutside } from '@vueuse/core'
 import type { Quill } from '@vueup/vue-quill'
 import type { RangeStatic } from 'quill'
+import VueDatePicker from '@vuepic/vue-datepicker'
+import type { DatePickerInstance } from '@vuepic/vue-datepicker'
 import { QuillEditor } from '@vueup/vue-quill'
 import '@vueup/vue-quill/dist/vue-quill.snow.css'
 import '@vueup/vue-quill/dist/vue-quill.bubble.css'
+import '@vuepic/vue-datepicker/dist/main.css'
 import { v4 as uuidv4 } from 'uuid'
 import { storeToRefs } from 'pinia'
 import { useToolbarStore } from '~/stores/toolbar'
@@ -14,6 +17,7 @@ import { useToolbarStore } from '~/stores/toolbar'
 export default defineComponent({
   components: {
     QuillEditor,
+    VueDatePicker,
   },
   props: {
     modelValue: {
@@ -53,6 +57,7 @@ export default defineComponent({
     const selectedAnchor = ref<HTMLAnchorElement | null>(null)
     const draftLink = ref('')
     const link = ref('')
+    const datepicker = ref<DatePickerInstance>(null)
 
     const content = computed({
       get: () => {
@@ -300,6 +305,37 @@ export default defineComponent({
       closeLinkTooltip()
     }
 
+    function formatDate(value) {
+      if (Array.isArray(value)) {
+        const [startDate, endDate] = value
+        const res: string[] = []
+        if (startDate) res.push(startDate.toLocaleString('default', { year: 'numeric', month: 'long' }))
+        if (endDate) res.push(endDate.toLocaleString('default', { year: 'numeric', month: 'long' }))
+        return res.join(' - ')
+      }
+      else {
+        return value.toLocaleString('default', { year: 'numeric', month: 'long' })
+      }
+    }
+
+    function toggleDatePicker() {
+      if (datepicker.value)
+        datepicker.value.toggleMenu()
+    }
+
+    function onDateChange(modelData) {
+      const [startData, endData] = modelData
+      const res: string[] = []
+      if (startData) res.push(new Date(startData.year, startData.month).toLocaleString('default', { year: 'numeric', month: 'long' }))
+      if (endData) res.push(new Date(endData.year, endData.month).toLocaleString('default', { year: 'numeric', month: 'long' }))
+      const text = res.join(' - ')
+      if (editor.value) {
+        const quill = (editor.value as Quill).getQuill()
+        const selection = quill.getSelection()
+        quill.insertText(selection.index, text)
+      }
+    }
+
     return {
       isMobileScreen,
       root,
@@ -315,6 +351,7 @@ export default defineComponent({
       selectedAnchor,
       draftLink,
       link,
+      datepicker,
       content,
       onFocus,
       onBlur,
@@ -325,6 +362,9 @@ export default defineComponent({
       removeLink,
       resetLink,
       onEditorChange,
+      formatDate,
+      toggleDatePicker,
+      onDateChange,
     }
   },
 })
@@ -396,8 +436,30 @@ export default defineComponent({
         <button class="ql-link" :class="isMobileScreen ? 'btn-icon-32' : 'btn-icon-24'">
           <span class="i-custom:link" :class="isMobileScreen ? 'w-6 h-6' : 'w-4.5 h-4.5'" />
         </button>
+        <button
+          :class="isMobileScreen ? 'btn-icon-32' : 'btn-icon-24'"
+          @click="toggleDatePicker"
+        >
+          <span class="i-custom:datepicker" :class="isMobileScreen ? 'w-6 h-6' : 'w-4.5 h-4.5'" />
+        </button>
       </div>
     </div>
+
+    <VueDatePicker
+      ref="datepicker"
+      range
+      month-picker
+      multi-calendars
+      hide-input-icon
+      input-class-name="!h-0 !overflow-hidden"
+      :clearable="false"
+      :format="formatDate"
+      :preview-format="formatDate"
+      :enable-time-picker="false"
+      @update:model-value="onDateChange"
+    >
+      <template #trigger />
+    </VueDatePicker>
 
     <div
       v-if="toolbarVisible && linkTooltipVisible && !linkEditVisible"
