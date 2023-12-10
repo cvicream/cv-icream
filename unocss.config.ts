@@ -107,7 +107,8 @@ export default defineConfig({
     'i-custom:whatsapp',
     'i-custom:youtube',
     'i-custom:mail',
-    'i-custom:twitter',
+    'i-custom:twitter-old',
+    'i-custom:twitter-new',
   ],
   theme: {
     fontSize: {
