@@ -295,6 +295,7 @@ const flow = ref<('time' | 'calendar' | 'month' | 'year' | 'minutes' | 'hours' |
             <VueDatePicker
               v-model="dateRange"
               range
+              month-picker
               :format="format"
               :enable-time-picker="false"
               class="mt-2"
@@ -302,6 +303,7 @@ const flow = ref<('time' | 'calendar' | 'month' | 'year' | 'minutes' | 'hours' |
             <div class="flex gap-2 mt-2">
               <VueDatePicker
                 v-model="startDate"
+                month-picker
                 placeholder="Start Date"
                 :format="format"
                 :enable-time-picker="false"
@@ -309,6 +311,7 @@ const flow = ref<('time' | 'calendar' | 'month' | 'year' | 'minutes' | 'hours' |
               />
               <VueDatePicker
                 v-model="endDate"
+                month-picker
                 placeholder="End Date"
                 :format="format"
                 :enable-time-picker="false"
