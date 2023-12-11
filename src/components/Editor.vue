@@ -1,7 +1,7 @@
 <script lang="ts">
 import type { CSSProperties } from 'vue'
 import { computed, defineComponent, onMounted, ref, watch } from 'vue'
-import { onClickOutside } from '@vueuse/core'
+import { onClickOutside, useElementSize } from '@vueuse/core'
 import type { Quill } from '@vueup/vue-quill'
 import type { RangeStatic } from 'quill'
 import VueDatePicker from '@vuepic/vue-datepicker'
@@ -46,6 +46,7 @@ export default defineComponent({
     const toolbar = useToolbarStore()
     const { isMobileScreen } = storeToRefs(toolbar)
     const root = ref<HTMLDivElement | null>(null)
+    const { width } = useElementSize(root)
     const editor = ref<HTMLDivElement | null>(null)
     const toolbarId = ref(`toolbar-${uuidv4().replaceAll('-', '')}`)
     const toolbarVisible = ref(false)
@@ -339,6 +340,7 @@ export default defineComponent({
     return {
       isMobileScreen,
       root,
+      width,
       editor,
       toolbarId,
       toolbarVisible,
@@ -452,6 +454,7 @@ export default defineComponent({
       multi-calendars
       hide-input-icon
       input-class-name="!h-0 !overflow-hidden"
+      :menu-class-name="width < 500 ? 'dp-custom-menu' : ''"
       :clearable="false"
       :format="formatDate"
       :preview-format="formatDate"
@@ -711,5 +714,10 @@ export default defineComponent({
 
 .dp__theme_light {
   --dp-primary-color: var(--primary-color);
+}
+
+.dp-custom-menu .dp__flex_display {
+  display: flex;
+  flex-direction: column;
 }
 </style>
