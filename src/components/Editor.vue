@@ -708,4 +708,8 @@ export default defineComponent({
   bottom: -32px;
   z-index: -1;
 }
+
+.dp__theme_light {
+  --dp-primary-color: var(--primary-color);
+}
 </style>
