@@ -86,6 +86,9 @@ const onClickOutsideHandler: [(evt: any) => void, OnClickOutsideOptions] = [
     color: var(--black-70, #656565);
     font-family: Mark Pro;
     align-self: end;
+    &:hover {
+      color: var(--black-70);
+    }
   }
 }
 .toggle-triangle {
