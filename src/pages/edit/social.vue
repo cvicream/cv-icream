@@ -130,6 +130,12 @@ function changeIcon(icon: string, index: number) {
     state.social.list[index].icon = icon
   })
 }
+
+function clearIcon(index: number) {
+  user.$patch((state) => {
+    state.social.list[index].icon = ''
+  })
+}
 </script>
 
 <template>
@@ -266,7 +272,7 @@ function changeIcon(icon: string, index: number) {
             class="mt-6"
             :class="item.isCollapsed ? 'hidden' : 'flex flex-col gap-6'"
           >
-            <IconEditor :index="index" :icon="social.list[index].icon" :change-icon="changeIcon" />
+            <IconEditor :index="index" :icon="social.list[index].icon" :change-icon="changeIcon" :clear-icon="clearIcon" />
           </div>
           <div class="-mt-2">
             <Editor

@@ -9,6 +9,7 @@ const props = defineProps <{
   onClick?: () => void
   index: number
   changeIcon: (item: string, index: number) => void
+  clearIcon: (index: number) => void
 }>()
 
 const showIcons = ref(false)
@@ -32,33 +33,60 @@ const onClickOutsideHandler: [(evt: any) => void, OnClickOutsideOptions] = [
     <label class="block note text-blacks-70">Link Type</label>
     <div ref="ignoreElRef" class="ql-container single-line icon-container" :onclick="() => toggleIcons()">
       <IconElement
-        :icon="icon || DEFAULT_TEMPLATE.social.list[0].icon"
+        v-if="icon"
+        :icon="icon"
       />
+      <input v-else class="icon-input" placeholder="Icon">
       <div :class="className" />
     </div>
-    <div v-if="showIcons" v-on-click-outside="onClickOutsideHandler" class="icon-list flex justify-between items-start ql-container single-line icons overflow-auto icon-container">
-      <IconElement
-        v-for="(item) in SOCIAL_MEDIA_ICONS"
-        :key="item"
-        :icon="item"
-        :on-click="() => changeIcon(item, index)"
-        :is-selected="item === icon"
-      />
+    <div v-if="showIcons" v-on-click-outside="onClickOutsideHandler" class="icon-popover ql-container single-line ">
+      <div class="icon-list flex justify-between">
+        <IconElement
+          v-for="(item) in SOCIAL_MEDIA_ICONS"
+          :key="item"
+          :icon="item"
+          :on-click="() => changeIcon(item, index)"
+          :is-selected="item === icon"
+        />
+      </div>
+      <span class="remove" :onclick="() => clearIcon(index)">Remove Icon</span>
     </div>
   </div>
 </template>
 
 <style lang="scss" scoped>
-.icon-container {
-  padding-top: 0px !important;
-  padding-bottom: 0px !important;
+.icon-input {
+  width: 35px;
+  font-family: "Mark Pro";
+  font-size: 1rem;
+  line-height: 1.5rem;
+  margin-right: -19px;
 }
-.icon-list {
+.icon-popover {
+  display: flex;
+  flex-direction: column;
+  max-width: 584px;
+  height: 110px;
+  overflow-x: auto;
+  overflow-y: hidden;
   position: absolute;
-  max-width: 568px;
-  height: 80px;
-  align-items: center;
-  padding: 0px 8px 0px 8px;
+  padding: 16px;
+  gap: 12px;
+  box-shadow: 2px 2px 10px 0px rgba(241, 139, 107, 0.20);
+  margin-top: 8px;
+  .icon-list {
+    gap: 8px;
+    .icon-container {
+      min-width: 48px;
+    }
+  }
+  .remove {
+    font-size: 14px;
+    line-height: 18px;
+    color: var(--black-70, #656565);
+    font-family: Mark Pro;
+    align-self: end;
+  }
 }
 .toggle-triangle {
   border: 1px solid black;

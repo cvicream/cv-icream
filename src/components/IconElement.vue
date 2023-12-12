@@ -22,13 +22,15 @@ const backgroundColor = computed(() => props.isSelected ? 'var(--secondary-color
 <style scoped>
 .icon-container {
   box-shadow: none;
-  background: v-bind('backgroundColor')
+  background: v-bind('backgroundColor');
+  padding: 0;
+  cursor: url(/src/assets/icons/mouse.svg), auto;
 }
+
 .icon-mask {
   background-color: var(--primary-color);
   border-radius: 50%;
   opacity: 70%;
-  cursor: pointer;
   height: 32px;
   width: 32px;
   display: inline-flex;

@@ -497,7 +497,7 @@ function redirect(path) {
               v-if="item.isShow"
               :class="getFontSizeClassName(currentState.fontSize).paragraph"
             >
-              <IconElement :icon="social.list[index].icon || DEFAULT_TEMPLATE.social.list[0].icon" />
+              <IconElement v-if="social.list[index].icon" :icon="social.list[index].icon" />
               <a
                 v-if="showSection(item.isEditing, DEFAULT_TEMPLATE.social.list[0].type, item.type)"
                 class="text-blacks-100"
