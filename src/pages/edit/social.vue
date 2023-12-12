@@ -4,6 +4,7 @@ import { storeToRefs } from 'pinia'
 import { useUserStore } from '~/stores/user'
 import { useToolbarStore } from '~/stores/toolbar'
 import { DEFAULT_TEMPLATE, HIDDEN_INFORMATION, TEMPLATE_LIST_ITEM } from '~/constants'
+import { addSuffixToParagraph } from '~/utils'
 
 const user = useUserStore()
 const { social } = storeToRefs(user)
@@ -59,6 +60,10 @@ function closeAction() {
   isMoreActionOpen.value = []
 }
 
+function scrollIntoView(index) {
+  document.querySelector(`#social-form-${index}`)?.scrollIntoView({ behavior: 'smooth' })
+}
+
 function addItem(index: number | null) {
   user.$patch((state) => {
     const newItem = JSON.parse(JSON.stringify(TEMPLATE_LIST_ITEM))
@@ -68,6 +73,7 @@ function addItem(index: number | null) {
       forceRerender()
     }
   })
+  scrollIntoView(index)
 }
 
 function toggleCollapseItem(index: number) {
@@ -86,9 +92,11 @@ function duplicateItem(index: number) {
   user.$patch((state) => {
     state.social.list[index].isEditing = false
     const currentItem = JSON.parse(JSON.stringify(state.social.list[index]))
+    currentItem.type = addSuffixToParagraph(currentItem.type, '(Copy)')
     state.social.list.splice(index, 0, currentItem)
   })
   forceRerender()
+  scrollIntoView(index)
 }
 
 function deleteItem(index: number) {
@@ -98,6 +106,7 @@ function deleteItem(index: number) {
     state.social.list.splice(index, 1)
   })
   forceRerender()
+  scrollIntoView(index - 1)
 }
 
 function toggleDeleteBlockModal() {
@@ -165,6 +174,7 @@ function clearIcon(index: number) {
 
     <div
       v-for="(item, index) in social.list"
+      :id="`social-form-${index}`"
       :key="componentKey + '-' + index"
       class="transition ease-in-out"
       :class="[

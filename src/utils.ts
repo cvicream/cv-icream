@@ -210,6 +210,17 @@ function isOutOfViewport(element: HTMLElement) {
   }
 }
 
+function addSuffixToParagraph(htmlString, suffix) {
+  if (!suffix) return htmlString
+
+  const parser = new DOMParser()
+  const html = parser.parseFromString(htmlString, 'text/html')
+  const res: string[] = []
+  if (html.body.textContent) res.push(html.body.textContent)
+  if (suffix) res.push(suffix)
+  return `<p>${res.join(' ')}</p>`
+}
+
 export {
   hasStorage,
   getStorage,
@@ -232,4 +243,5 @@ export {
   isSafari,
   isMac,
   isOutOfViewport,
+  addSuffixToParagraph,
 }

@@ -4,6 +4,7 @@ import { storeToRefs } from 'pinia'
 import { useUserStore } from '~/stores/user'
 import { useToolbarStore } from '~/stores/toolbar'
 import { DEFAULT_TEMPLATE, HIDDEN_INFORMATION, TEMPLATE_LIST_ITEM } from '~/constants'
+import { addSuffixToParagraph } from '~/utils'
 
 const user = useUserStore()
 const { certificate } = storeToRefs(user)
@@ -68,6 +69,7 @@ function addItem(index: number | null) {
       forceRerender()
     }
   })
+  scrollIntoView(index)
 }
 
 function toggleCollapseItem(index: number) {
@@ -86,9 +88,11 @@ function duplicateItem(index: number) {
   user.$patch((state) => {
     state.certificate.list[index].isEditing = false
     const currentItem = JSON.parse(JSON.stringify(state.certificate.list[index]))
+    currentItem.title = addSuffixToParagraph(currentItem.title, '(Copy)')
     state.certificate.list.splice(index, 0, currentItem)
   })
   forceRerender()
+  scrollIntoView(index)
 }
 
 function deleteItem(index: number) {
@@ -98,6 +102,7 @@ function deleteItem(index: number) {
     state.certificate.list.splice(index, 1)
   })
   forceRerender()
+  scrollIntoView(index - 1)
 }
 
 function toggleDeleteBlockModal() {
@@ -123,6 +128,10 @@ function swap(index1, index2) {
     state.certificate.list[index1] = tmp
   })
   forceRerender()
+}
+
+function scrollIntoView(index) {
+  document.querySelector(`#certificate-form-${index}`)?.scrollIntoView({ behavior: 'smooth' })
 }
 </script>
 
@@ -153,6 +162,7 @@ function swap(index1, index2) {
 
     <div
       v-for="(item, index) in certificate.list"
+      :id="`certificate-form-${index}`"
       :key="componentKey + '-' + index"
       class="transition ease-in-out"
       :class="[
