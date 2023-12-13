@@ -63,7 +63,7 @@ const tooltipClass = computed(() => {
 @media (min-width:640px){
   .tooltip-container:hover .tooltip,
   .tooltip-container:hover .tooltip-small {
-    display: block;
+    visibility: visible;
   }
 }
 
@@ -71,7 +71,7 @@ const tooltipClass = computed(() => {
   @apply flex justify-center items-center absolute px-3 py-2 bg-white rounded-lg border border-blacks-20 transition duration-500 ease-in-out;
   width: max-content;
   z-index: 999;
-  display: none;
+  visibility: hidden;
 }
 
 .tooltip::after {
@@ -127,7 +127,7 @@ const tooltipClass = computed(() => {
   @apply h-[24px] flex justify-center items-center absolute px-2 bg-white rounded-md border border-blacks-20 transition duration-500 ease-in-out;
   width: max-content;
   z-index: 999;
-  display: none;
+  visibility: hidden;
 }
 
 .tooltip-small::after {
