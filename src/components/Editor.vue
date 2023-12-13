@@ -438,6 +438,7 @@ export default defineComponent({
         <button class="ql-link" :class="isMobileScreen ? 'btn-icon-32' : 'btn-icon-24'">
           <span class="i-custom:link" :class="isMobileScreen ? 'w-6 h-6' : 'w-4.5 h-4.5'" />
         </button>
+        <div class="h-5 border-l border-blacks-20" />
         <button
           :class="isMobileScreen ? 'btn-icon-32' : 'btn-icon-24'"
           @click="toggleDatePicker"
@@ -683,7 +684,7 @@ export default defineComponent({
   transition: visibility 0.15s linear, opacity 0.15s linear;
 }
 .toolbar-button-group {
-  @apply flex justify-center gap-2;
+  @apply flex justify-center items-center gap-2;
   overflow-x: scroll;
   scrollbar-width: none;    /* Firefox */
   -ms-overflow-style: none; /* IE 10+ */
