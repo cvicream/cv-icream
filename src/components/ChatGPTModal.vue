@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { PropType } from 'vue'
-import { ref, watch } from 'vue'
+import { ref } from 'vue'
 import { useClipboard } from '@vueuse/core'
 import axios from 'axios'
 import type { Option } from '~/types'
@@ -36,11 +36,6 @@ const resultVisible = ref(false)
 const result = ref('')
 const notificationVisible = ref(false)
 
-watch(() => props.visible, (newValue) => {
-  if (!newValue)
-    reset()
-})
-
 function closeModal() {
   emit('close')
 }
@@ -56,6 +51,12 @@ function getOptionClass(index: number) {
 function toggle() {
   if (loading.value) return
   open.value = !open.value
+
+  if (open.value) {
+    setTimeout(() => {
+      document.querySelector('#chatgpt-menu')?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+    }, 100)
+  }
 }
 
 function reset() {
@@ -163,6 +164,9 @@ function copyToClipboard(val) {
         v-if="text && question && !loading && !result"
         placement="left"
         text="Start generating results"
+        :style="{
+          'visibility': 'visible',
+        }"
       >
         <button
           class="w-6 h-6"
@@ -188,6 +192,7 @@ function copyToClipboard(val) {
       class="mt-2"
     >
       <div
+        id="chatgpt-menu"
         class="bg-white rounded-xl overflow-hidden"
         :class="isSafari() || isMobileDevice() ? 'border-1 border-blacks-100' : 'outline outline-1 outline-blacks-100'"
       >

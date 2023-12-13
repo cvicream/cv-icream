@@ -344,7 +344,7 @@ export default defineComponent({
         chatGPTEditVisible.value = true
         setTimeout(() => {
           document.querySelector(`#${chatGPTId.value}`)?.scrollIntoView({ behavior: 'smooth', block: 'center' })
-        })
+        }, 100)
       }
     }
 
