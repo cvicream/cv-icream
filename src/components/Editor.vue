@@ -441,34 +441,32 @@ export default defineComponent({
       }"
     >
       <div class="toolbar-button-group">
-        <div class="ml-auto">
-          <div v-if="chatgptEnable && isToolEnabled('chatgpt')" class="flex items-center">
-            <Tooltip
-              placement="right"
-              small
-              :text="tooltipText"
+        <div v-if="chatgptEnable && isToolEnabled('chatgpt')" class="flex items-center">
+          <Tooltip
+            small
+            placement="right"
+            :text="tooltipText"
+          >
+            <button
+              class="disabled:text-blacks-40"
+              :class="[
+                isMobileScreen ? 'btn-icon-32' : 'btn-icon-24',
+                {
+                  '!hover:bg-transparent': !selectedText
+                }
+              ]"
+              value="chatgpt"
+              :disabled="!selectedText"
+              @mouseover="(e) => onMouseOver(e, 'chatgpt')"
+              @mouseout="onMouseOut"
+              @click="onChatGPTClick"
             >
-              <button
-                class="disabled:text-blacks-40"
-                :class="[
-                  isMobileScreen ? 'btn-icon-32' : 'btn-icon-24',
-                  {
-                    '!hover:bg-transparent': !selectedText
-                  }
-                ]"
-                value="chatgpt"
-                :disabled="!selectedText"
-                @mouseover="(e) => onMouseOver(e, 'chatgpt')"
-                @mouseout="onMouseOut"
-                @click="onChatGPTClick"
-              >
-                <span class="i-custom:chatgpt" :class="isMobileScreen ? 'w-6 h-6' : 'w-4.5 h-4.5'" />
-              </button>
-            </Tooltip>
-            <div class="h-5 mx-2 border-l border-blacks-20" />
-          </div>
+              <span class="i-custom:chatgpt" :class="isMobileScreen ? 'w-6 h-6' : 'w-4.5 h-4.5'" />
+            </button>
+          </Tooltip>
+          <div class="h-5 mx-2 border-l border-blacks-20" />
         </div>
-        <div class="flex justify-center gap-3 mr-auto">
+        <div class="flex justify-center gap-3">
           <button v-if="isToolEnabled('list-bullet')" class="ql-list" :class="isMobileScreen ? 'btn-icon-32' : 'btn-icon-24'" value="bullet">
             <span class="i-custom:list-bullet" :class="isMobileScreen ? 'w-6 h-6' : 'w-4.5 h-4.5'" />
           </button>
@@ -722,7 +720,7 @@ export default defineComponent({
 }
 
 .ql-toolbar {
-  @apply absolute top-0 left-0 right-0 z-1 h-12 p-2 m-[1px] bg-white rounded-t-xl sm:h-10;
+  @apply flex justify-center items-center absolute top-0 left-0 right-0 z-1 h-12 p-2 m-[1px] bg-white rounded-t-xl sm:h-10;
   transition: visibility 0.15s linear, opacity 0.15s linear;
 }
 .toolbar-button-group {
