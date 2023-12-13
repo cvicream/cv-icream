@@ -164,7 +164,7 @@ function copyToClipboard(val) {
         placement="left"
         text="Start generating results"
         :style="{
-          'visibility': 'visible',
+          'display': 'flex',
         }"
       >
         <button
