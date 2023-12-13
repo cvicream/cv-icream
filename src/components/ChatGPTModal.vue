@@ -51,7 +51,6 @@ function getOptionClass(index: number) {
 function toggle() {
   if (loading.value) return
   open.value = !open.value
-
   if (open.value) {
     setTimeout(() => {
       document.querySelector('#chatgpt-menu')?.scrollIntoView({ behavior: 'smooth', block: 'center' })
