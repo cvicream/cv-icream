@@ -59,6 +59,7 @@ export default defineComponent({
     const draftLink = ref('')
     const link = ref('')
     const datepicker = ref<DatePickerInstance>(null)
+    const isPresent = ref(false)
 
     const content = computed({
       get: () => {
@@ -312,6 +313,7 @@ export default defineComponent({
         const res: string[] = []
         if (startDate) res.push(startDate.toLocaleString('default', { year: 'numeric', month: 'long' }))
         if (endDate) res.push(endDate.toLocaleString('default', { year: 'numeric', month: 'long' }))
+        else if (isPresent.value) res.push('Present')
         return res.join(' - ')
       }
       else {
@@ -329,12 +331,14 @@ export default defineComponent({
       const res: string[] = []
       if (startData) res.push(new Date(startData.year, startData.month).toLocaleString('default', { year: 'numeric', month: 'long' }))
       if (endData) res.push(new Date(endData.year, endData.month).toLocaleString('default', { year: 'numeric', month: 'long' }))
+      else if (isPresent.value) res.push('Present')
       const text = res.join(' - ')
       if (editor.value) {
         const quill = (editor.value as Quill).getQuill()
         const selection = quill.getSelection()
         quill.insertText(selection.index, text)
       }
+      isPresent.value = false
     }
 
     return {
@@ -354,6 +358,7 @@ export default defineComponent({
       draftLink,
       link,
       datepicker,
+      isPresent,
       content,
       onFocus,
       onBlur,
@@ -469,6 +474,23 @@ export default defineComponent({
       @update:model-value="onDateChange"
     >
       <template #trigger />
+      <template #action-extra="{}">
+        <div class="flex items-center pl-6">
+          <input
+            id="isPresent"
+            v-model="isPresent"
+            type="checkbox"
+            class="w-5 h-5 accent-blacks-70"
+          >
+          <label
+            for="isPresent"
+            class="paragraph text-blacks-100 ml-3"
+            :style="{ 'line-height': '20px'}"
+          >
+            Present
+          </label>
+        </div>
+      </template>
     </VueDatePicker>
 
     <div
