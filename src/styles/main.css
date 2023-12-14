@@ -48,6 +48,9 @@
   --secondary-color: #FEF4F1;
   --shadow-color: #FCE8E1;
   --border-color: #FAD1C4;
+  --dp-font-family: "Mark Pro" !important;
+  --dp-overlay-col-padding: 4px !important;
+  --dp-action-row-padding: 16px !important;
 }
 
 html {

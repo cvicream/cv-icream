@@ -115,6 +115,8 @@ export default defineComponent({
       return style
     })
 
+    const isMobileDatePicker = computed(() => width.value < 500)
+
     onMounted(() => {
       if (editor.value) {
         const editorElement = (editor.value as Quill).getEditor()
@@ -316,9 +318,10 @@ export default defineComponent({
         else if (endDate) res.push(endDate.toLocaleString('default', { year: 'numeric', month: 'long' }))
         return res.join(' - ')
       }
-      else {
+      else if (value instanceof Date) {
         return value.toLocaleString('default', { year: 'numeric', month: 'long' })
       }
+      return ''
     }
 
     function toggleDatePicker() {
@@ -345,6 +348,7 @@ export default defineComponent({
       isMobileScreen,
       root,
       width,
+      isMobileDatePicker,
       editor,
       toolbarId,
       toolbarVisible,
@@ -466,7 +470,7 @@ export default defineComponent({
       multi-calendars
       hide-input-icon
       input-class-name="!h-0 !overflow-hidden"
-      :menu-class-name="width < 500 ? 'dp-custom-menu' : ''"
+      :menu-class-name="isMobileDatePicker ? 'dp-custom-menu' : ''"
       :clearable="false"
       :format="formatDate"
       :preview-format="formatDate"
@@ -474,21 +478,42 @@ export default defineComponent({
       @update:model-value="onDateChange"
     >
       <template #trigger />
-      <template #action-extra="{}">
-        <div class="flex items-center pl-6">
-          <input
-            id="isPresent"
-            v-model="isPresent"
-            type="checkbox"
-            class="w-5 h-5 accent-blacks-70"
+      <template #action-row="{ internalModelValue, selectDate, closePicker }">
+        <div class="flex-1">
+          <div class="flex items-center">
+            <input
+              id="isPresent"
+              v-model="isPresent"
+              type="checkbox"
+              class="w-5 h-5 accent-blacks-70"
+            >
+            <label
+              for="isPresent"
+              class="paragraph text-blacks-100 ml-3"
+              :style="{ 'line-height': '20px'}"
+            >
+              Present
+            </label>
+          </div>
+          <div
+            class="mt-4"
+            :class="isMobileDatePicker ? '' : 'flex justify-between items-center'"
           >
-          <label
-            for="isPresent"
-            class="paragraph text-blacks-100 ml-3"
-            :style="{ 'line-height': '20px'}"
-          >
-            Present
-          </label>
+            <p class="min-h-[22px] paragraph text-blacks-100">
+              {{ formatDate(internalModelValue) }}
+            </p>
+            <div
+              class="flex items-center gap-4"
+              :class="isMobileDatePicker ? 'justify-center mt-4' : 'justify-end'"
+            >
+              <button class="px-3 py-2 h-auto rounded-md btn-secondary" @click="closePicker">
+                Cancel
+              </button>
+              <button class="px-3 py-2 h-auto rounded-md btn-primary" @click="selectDate">
+                Select
+              </button>
+            </div>
+          </div>
         </div>
       </template>
     </VueDatePicker>
