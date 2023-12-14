@@ -312,8 +312,8 @@ export default defineComponent({
         const [startDate, endDate] = value
         const res: string[] = []
         if (startDate) res.push(startDate.toLocaleString('default', { year: 'numeric', month: 'long' }))
-        if (endDate) res.push(endDate.toLocaleString('default', { year: 'numeric', month: 'long' }))
-        else if (isPresent.value) res.push('Present')
+        if (isPresent.value) res.push('Present')
+        else if (endDate) res.push(endDate.toLocaleString('default', { year: 'numeric', month: 'long' }))
         return res.join(' - ')
       }
       else {
@@ -330,8 +330,8 @@ export default defineComponent({
       const [startData, endData] = modelData
       const res: string[] = []
       if (startData) res.push(new Date(startData.year, startData.month).toLocaleString('default', { year: 'numeric', month: 'long' }))
-      if (endData) res.push(new Date(endData.year, endData.month).toLocaleString('default', { year: 'numeric', month: 'long' }))
-      else if (isPresent.value) res.push('Present')
+      if (isPresent.value) res.push('Present')
+      else if (endData) res.push(new Date(endData.year, endData.month).toLocaleString('default', { year: 'numeric', month: 'long' }))
       const text = res.join(' - ')
       if (editor.value) {
         const quill = (editor.value as Quill).getQuill()
