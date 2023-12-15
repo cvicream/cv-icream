@@ -347,7 +347,7 @@ const handleRightPanelResize = (values) => {
   </div>
 </template>
 
-<style scoped>
+<style>
 .cv-preview ol {
   @apply pl-4;
   list-style: none;
