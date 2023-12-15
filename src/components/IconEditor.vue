@@ -96,7 +96,7 @@ const onClickOutsideHandler: [(evt: any) => void, OnClickOutsideOptions] = [
     font-family: Mark Pro;
     align-self: end;
     &:hover {
-      color: var(--black-70);
+       color: var(--black-70);
     }
   }
 }
