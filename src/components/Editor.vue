@@ -36,6 +36,10 @@ export default defineComponent({
       type: Boolean,
       default: false,
     },
+    showLinkTool: {
+      type: Boolean,
+      default: true,
+    },
   },
   emits: ['update:modelValue'],
   setup: (props, { emit }) => {
@@ -393,7 +397,7 @@ export default defineComponent({
         <button class="ql-background" :class="isMobileScreen ? 'btn-icon-32' : 'btn-icon-24'">
           <span class="i-origin:highlight" :class="isMobileScreen ? 'w-6 h-6' : 'w-4.5 h-4.5'" />
         </button>
-        <button class="ql-link" :class="isMobileScreen ? 'btn-icon-32' : 'btn-icon-24'">
+        <button v-if="showLinkTool" class="ql-link" :class="isMobileScreen ? 'btn-icon-32' : 'btn-icon-24'">
           <span class="i-custom:link" :class="isMobileScreen ? 'w-6 h-6' : 'w-4.5 h-4.5'" />
         </button>
       </div>

@@ -288,6 +288,7 @@ function clearIcon(index: number) {
             <Editor
               v-model="item.type"
               class-name="mt-[30px]"
+              :show-link-tool="false"
               :enable="item.isShow"
               :placeholder="DEFAULT_TEMPLATE.social.list[0].type"
               :is-single-line="true"

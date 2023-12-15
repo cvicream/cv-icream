@@ -167,7 +167,7 @@ export const DEFAULT_TEMPLATE = {
         isShow: true,
         isCollapsed: false,
         isEditing: false,
-        type: 'LinkedIn',
+        type: 'Link Title',
         link: 'http://',
         icon: 'linkedin',
       },

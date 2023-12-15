@@ -78,6 +78,9 @@ const onClickOutsideHandler: [(evt: any) => void, OnClickOutsideOptions] = [
     gap: 8px;
     .icon-container {
       min-width: 48px;
+      &:hover {
+        background: var(--secondary-color);
+      }
     }
   }
   .remove {
