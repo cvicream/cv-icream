@@ -4,6 +4,7 @@
 
 declare module 'vue' {
   export interface GlobalComponents {
+    ChatGPTModal: typeof import('./components/ChatGPTModal.vue')['default']
     CVPreview: typeof import('./components/CVPreview.vue')['default']
     CVPreviewSection: typeof import('./components/CVPreviewSection.vue')['default']
     DeleteBlockModal: typeof import('./components/DeleteBlockModal.vue')['default']
@@ -17,6 +18,7 @@ declare module 'vue' {
     Modal: typeof import('./components/Modal.vue')['default']
     MoreActions: typeof import('./components/MoreActions.vue')['default']
     Note: typeof import('./components/Note.vue')['default']
+    Notification: typeof import('./components/Notification.vue')['default']
     PaymentModal: typeof import('./components/PaymentModal.vue')['default']
     README: typeof import('./components/README.md')['default']
     Sidebar: typeof import('./components/Sidebar.vue')['default']
