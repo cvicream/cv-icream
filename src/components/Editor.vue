@@ -1,12 +1,15 @@
 <script lang="ts">
 import type { CSSProperties, PropType } from 'vue'
 import { computed, defineComponent, onMounted, ref, watch } from 'vue'
-import { onClickOutside } from '@vueuse/core'
+import { onClickOutside, useElementSize } from '@vueuse/core'
 import type { Quill } from '@vueup/vue-quill'
 import type { RangeStatic } from 'quill'
 import { QuillEditor } from '@vueup/vue-quill'
+import VueDatePicker from '@vuepic/vue-datepicker'
+import type { DatePickerInstance } from '@vuepic/vue-datepicker'
 import '@vueup/vue-quill/dist/vue-quill.snow.css'
 import '@vueup/vue-quill/dist/vue-quill.bubble.css'
+import '@vuepic/vue-datepicker/dist/main.css'
 import { v4 as uuidv4 } from 'uuid'
 import { storeToRefs } from 'pinia'
 import { cloneDeep } from 'lodash'
@@ -17,6 +20,7 @@ import { defaultChatGPTQuestionOptions, defaultEditorToolOptions } from '~/const
 export default defineComponent({
   components: {
     QuillEditor,
+    VueDatePicker,
   },
   props: {
     modelValue: {
@@ -57,6 +61,7 @@ export default defineComponent({
     const toolbar = useToolbarStore()
     const { isMobileScreen } = storeToRefs(toolbar)
     const root = ref<HTMLDivElement | null>(null)
+    const { width } = useElementSize(root)
     const editor = ref<HTMLDivElement | null>(null)
     const toolbarId = ref(`toolbar-${uuidv4().replaceAll('-', '')}`)
     const toolbarVisible = ref(false)
@@ -72,6 +77,8 @@ export default defineComponent({
     const draftLink = ref('')
     const link = ref('')
     const tooltipText = ref('')
+    const datepicker = ref<DatePickerInstance>(null)
+    const isPresent = ref(false)
 
     const content = computed({
       get: () => {
@@ -138,6 +145,8 @@ export default defineComponent({
       }
       return ''
     })
+
+    const isMobileDatePicker = computed(() => width.value < 500)
 
     onMounted(() => {
       if (editor.value) {
@@ -360,10 +369,47 @@ export default defineComponent({
       tooltipText.value = ''
     }
 
+    function formatDate(value) {
+      if (Array.isArray(value)) {
+        const [startDate, endDate] = value
+        const res: string[] = []
+        if (startDate) res.push(startDate.toLocaleString('default', { year: 'numeric', month: 'long' }))
+        if (isPresent.value) res.push('Present')
+        else if (endDate) res.push(endDate.toLocaleString('default', { year: 'numeric', month: 'long' }))
+        return res.join(' - ')
+      }
+      else if (value instanceof Date) {
+        return value.toLocaleString('default', { year: 'numeric', month: 'long' })
+      }
+      return ''
+    }
+
+    function toggleDatePicker() {
+      if (datepicker.value)
+        datepicker.value.toggleMenu()
+    }
+
+    function onDateChange(modelData) {
+      const [startData, endData] = modelData
+      const res: string[] = []
+      if (startData) res.push(new Date(startData.year, startData.month).toLocaleString('default', { year: 'numeric', month: 'long' }))
+      if (isPresent.value) res.push('Present')
+      else if (endData) res.push(new Date(endData.year, endData.month).toLocaleString('default', { year: 'numeric', month: 'long' }))
+      const text = res.join(' - ')
+      if (editor.value) {
+        const quill = (editor.value as Quill).getQuill()
+        const selection = quill.getSelection()
+        quill.insertText(selection.index, text)
+      }
+      isPresent.value = false
+    }
+
     return {
       isToolEnabled,
       isMobileScreen,
       root,
+      width,
+      isMobileDatePicker,
       editor,
       toolbarId,
       toolbarVisible,
@@ -380,6 +426,8 @@ export default defineComponent({
       selectedAnchor,
       draftLink,
       link,
+      datepicker,
+      isPresent,
       content,
       tooltipText,
       onFocus,
@@ -394,6 +442,9 @@ export default defineComponent({
       onChatGPTClick,
       onMouseOver,
       onMouseOut,
+      formatDate,
+      toggleDatePicker,
+      onDateChange,
     }
   },
 })
@@ -466,7 +517,7 @@ export default defineComponent({
           </Tooltip>
           <div class="h-5 mx-2 border-l border-blacks-20" />
         </div>
-        <div class="flex justify-center gap-3">
+        <div class="flex justify-center items-center gap-3">
           <button v-if="isToolEnabled('list-bullet')" class="ql-list" :class="isMobileScreen ? 'btn-icon-32' : 'btn-icon-24'" value="bullet">
             <span class="i-custom:list-bullet" :class="isMobileScreen ? 'w-6 h-6' : 'w-4.5 h-4.5'" />
           </button>
@@ -492,6 +543,21 @@ export default defineComponent({
             <span class="i-custom:link" :class="isMobileScreen ? 'w-6 h-6' : 'w-4.5 h-4.5'" />
           </button>
         </div>
+        <div class="flex items-center">
+          <div class="h-5 mx-2 border-l border-blacks-20" />
+          <Tooltip
+            small
+            placement="left"
+            text="Date Picker"
+          >
+            <button
+              :class="isMobileScreen ? 'btn-icon-32' : 'btn-icon-24'"
+              @click="toggleDatePicker"
+            >
+              <span class="i-custom:datepicker" :class="isMobileScreen ? 'w-6 h-6' : 'w-4.5 h-4.5'" />
+            </button>
+          </Tooltip>
+        </div>
       </div>
     </div>
 
@@ -504,6 +570,61 @@ export default defineComponent({
       class="absolute left-0 right-0 mt-2 z-20"
       @close="chatGPTEditVisible = false"
     />
+
+    <VueDatePicker
+      ref="datepicker"
+      range
+      month-picker
+      multi-calendars
+      hide-input-icon
+      input-class-name="!h-0 !overflow-hidden"
+      :menu-class-name="isMobileDatePicker ? 'dp-custom-menu' : ''"
+      :clearable="false"
+      :format="formatDate"
+      :preview-format="formatDate"
+      :enable-time-picker="false"
+      @update:model-value="onDateChange"
+    >
+      <template #trigger />
+      <template #action-row="{ internalModelValue, selectDate, closePicker }">
+        <div class="flex-1">
+          <div class="flex items-center">
+            <input
+              id="isPresent"
+              v-model="isPresent"
+              type="checkbox"
+              class="w-5 h-5 accent-blacks-70"
+            >
+            <label
+              for="isPresent"
+              class="paragraph text-blacks-100 ml-3"
+              :style="{ 'line-height': '20px'}"
+            >
+              Present
+            </label>
+          </div>
+          <div
+            class="mt-4"
+            :class="isMobileDatePicker ? '' : 'flex justify-between items-center'"
+          >
+            <p class="min-h-[22px] paragraph text-blacks-100">
+              {{ formatDate(internalModelValue) }}
+            </p>
+            <div
+              class="flex items-center gap-4"
+              :class="isMobileDatePicker ? 'justify-center mt-4' : 'justify-end'"
+            >
+              <button class="px-3 py-2 h-auto rounded-md btn-secondary" @click="closePicker">
+                Cancel
+              </button>
+              <button class="px-3 py-2 h-auto rounded-md btn-primary" @click="selectDate">
+                Select
+              </button>
+            </div>
+          </div>
+        </div>
+      </template>
+    </VueDatePicker>
 
     <div
       v-if="toolbarVisible && linkTooltipVisible && !linkEditVisible"
@@ -752,5 +873,13 @@ export default defineComponent({
   position: absolute;
   bottom: -32px;
   z-index: -1;
+}
+
+.dp__theme_light {
+  --dp-primary-color: var(--primary-color);
+}
+.dp-custom-menu .dp__flex_display {
+  display: flex;
+  flex-direction: column;
 }
 </style>
