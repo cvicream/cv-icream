@@ -4,6 +4,7 @@ import { storeToRefs } from 'pinia'
 import { useUserStore } from '~/stores/user'
 import { useToolbarStore } from '~/stores/toolbar'
 import { DEFAULT_TEMPLATE, HIDDEN_INFORMATION, TEMPLATE_LIST_ITEM } from '~/constants'
+import { addSuffixToParagraph } from '~/utils'
 
 const user = useUserStore()
 const { experience } = storeToRefs(user)
@@ -69,6 +70,7 @@ function addItem(index: number | null) {
       forceRerender()
     }
   })
+  scrollIntoView(index)
 }
 
 function toggleCollapseItem(index: number) {
@@ -87,9 +89,11 @@ function duplicateItem(index: number) {
   user.$patch((state) => {
     state.experience.list[index].isEditing = false
     const currentItem = JSON.parse(JSON.stringify(state.experience.list[index]))
+    currentItem.title = addSuffixToParagraph(currentItem.title, '(Copy)')
     state.experience.list.splice(index, 0, currentItem)
   })
   forceRerender()
+  scrollIntoView(index)
 }
 
 function deleteItem(index: number) {
@@ -99,6 +103,7 @@ function deleteItem(index: number) {
     state.experience.list.splice(index, 1)
   })
   forceRerender()
+  scrollIntoView(index - 1)
 }
 
 function toggleDeleteBlockModal() {
@@ -124,6 +129,10 @@ function swap(index1, index2) {
     state.experience.list[index1] = tmp
   })
   forceRerender()
+}
+
+function scrollIntoView(index) {
+  document.querySelector(`#experience-form-${index}`)?.scrollIntoView({ behavior: 'smooth' })
 }
 </script>
 
@@ -154,6 +163,7 @@ function swap(index1, index2) {
 
     <div
       v-for="(item, index) in experience.list"
+      :id="`experience-form-${index}`"
       :key="componentKey + '-' + index"
       class="transition ease-in-out"
       :class="[
@@ -264,6 +274,7 @@ function swap(index1, index2) {
             :enable="item.isShow"
             :placeholder="DEFAULT_TEMPLATE.experience.list[0].title"
             :is-single-line="true"
+            :chatgpt-enable="false"
           />
         </div>
         <div
@@ -278,6 +289,7 @@ function swap(index1, index2) {
               :enable="item.isShow"
               :placeholder="DEFAULT_TEMPLATE.experience.list[0].subtitle1"
               :is-single-line="true"
+              :chatgpt-enable="false"
             />
           </div>
           <div>
@@ -288,6 +300,7 @@ function swap(index1, index2) {
               :enable="item.isShow"
               :placeholder="DEFAULT_TEMPLATE.experience.list[0].subtitle2"
               :is-single-line="true"
+              :chatgpt-enable="false"
             />
           </div>
           <div>

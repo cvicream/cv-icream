@@ -3,7 +3,7 @@ import { onMounted, onUnmounted, ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useUserStore } from '~/stores/user'
 import { useToolbarStore } from '~/stores/toolbar'
-import { getJsonUpload, isMobileDevice, setStatus, stripHtml } from '~/utils'
+import { getJsonUpload, isMobileDevice, isSafari, setStatus, stripHtml } from '~/utils'
 import { DRAFT_FILE_TYPE } from '~/constants'
 
 defineProps<{
@@ -34,8 +34,6 @@ const {
   social,
 } = storeToRefs(user)
 const { currentState, noteList } = storeToRefs(toolbar)
-
-const isSafari = () => ('safari' in window)
 
 onMounted(() => {
   window.addEventListener('click', closeAction, false)
@@ -289,22 +287,11 @@ function togglePaymentModal() {
       </button>
     </div>
   </Modal>
-  <div
+
+  <Notification
     v-if="feedbackNotificationVisible"
-    class="fixed bottom-8 left-0 right-0 flex justify-center items-center z-99"
-  >
-    <div class="bg-primary-100 w-112 h-16 rounded-xl">
-      <div class="flex justify-between px-5 mt-4">
-        <div class=" text-white paragraph px-1 mt-1">
-          Your feedback has already been sent : )
-        </div>
-        <button class="w-10 h-8 rounded flex justify-center items-center gap-4" @click="toggleFeedbackNotification">
-          <span class="w-[1px] h-8 bg-blacks-20" />
-          <span
-            class="i-custom:cancel icon-24 bg-white"
-          />
-        </button>
-      </div>
-    </div>
-  </div>
+    message="Your feedback has already been sent :)"
+    :visible="feedbackNotificationVisible"
+    @close="feedbackNotificationVisible = false"
+  />
 </template>

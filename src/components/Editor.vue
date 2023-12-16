@@ -1,23 +1,22 @@
 <script lang="ts">
-import type { CSSProperties } from 'vue'
+import type { CSSProperties, PropType } from 'vue'
 import { computed, defineComponent, onMounted, ref, watch } from 'vue'
-import { onClickOutside, useElementSize } from '@vueuse/core'
+import { onClickOutside } from '@vueuse/core'
 import type { Quill } from '@vueup/vue-quill'
 import type { RangeStatic } from 'quill'
-import VueDatePicker from '@vuepic/vue-datepicker'
-import type { DatePickerInstance } from '@vuepic/vue-datepicker'
 import { QuillEditor } from '@vueup/vue-quill'
 import '@vueup/vue-quill/dist/vue-quill.snow.css'
 import '@vueup/vue-quill/dist/vue-quill.bubble.css'
-import '@vuepic/vue-datepicker/dist/main.css'
 import { v4 as uuidv4 } from 'uuid'
 import { storeToRefs } from 'pinia'
+import { cloneDeep } from 'lodash'
 import { useToolbarStore } from '~/stores/toolbar'
+import type { Option } from '~/types'
+import { defaultChatGPTQuestionOptions, defaultEditorToolOptions } from '~/constants'
 
 export default defineComponent({
   components: {
     QuillEditor,
-    VueDatePicker,
   },
   props: {
     modelValue: {
@@ -40,13 +39,24 @@ export default defineComponent({
       type: Boolean,
       default: false,
     },
+    chatgptEnable: {
+      type: Boolean,
+      default: true,
+    },
+    toolOptions: {
+      type: Array as PropType<Array<Option>>,
+      default: cloneDeep(defaultEditorToolOptions),
+    },
+    chatgptQuestionOptions: {
+      type: Array as PropType<Array<Option>>,
+      default: cloneDeep(defaultChatGPTQuestionOptions),
+    },
   },
   emits: ['update:modelValue'],
   setup: (props, { emit }) => {
     const toolbar = useToolbarStore()
     const { isMobileScreen } = storeToRefs(toolbar)
     const root = ref<HTMLDivElement | null>(null)
-    const { width } = useElementSize(root)
     const editor = ref<HTMLDivElement | null>(null)
     const toolbarId = ref(`toolbar-${uuidv4().replaceAll('-', '')}`)
     const toolbarVisible = ref(false)
@@ -55,11 +65,13 @@ export default defineComponent({
     const linkEdit = ref<HTMLDivElement | null>(null)
     const linkTooltipVisible = ref(false)
     const linkEditVisible = ref(false)
+    const chatGPTId = ref(`chatgpt-${uuidv4().replaceAll('-', '')}`)
+    const chatGPTEdit = ref<HTMLDivElement | null>(null)
+    const chatGPTEditVisible = ref(false)
     const selectedAnchor = ref<HTMLAnchorElement | null>(null)
     const draftLink = ref('')
     const link = ref('')
-    const datepicker = ref<DatePickerInstance>(null)
-    const isPresent = ref(false)
+    const tooltipText = ref('')
 
     const content = computed({
       get: () => {
@@ -115,7 +127,17 @@ export default defineComponent({
       return style
     })
 
-    const isMobileDatePicker = computed(() => width.value < 500)
+    const selectedText = computed(() => {
+      if (selectionRange.value) {
+        const { index, length } = selectionRange.value
+        if (length) {
+          const quill = (editor.value as Quill).getQuill()
+          const text = quill.getText(index, length)
+          return text
+        }
+      }
+      return ''
+    })
 
     onMounted(() => {
       if (editor.value) {
@@ -178,9 +200,17 @@ export default defineComponent({
       handleToolbarVisible()
     })
 
+    onClickOutside(chatGPTEdit, (event) => {
+      chatGPTEditVisible.value = false
+    })
+
     onClickOutside(linkEdit, (event) => {
       closeLinkEdit()
     })
+
+    function isToolEnabled(value: string) {
+      return props.toolOptions && props.toolOptions.find(option => option.value === value)
+    }
 
     function createAnchorListeners() {
       document.querySelectorAll('.ql-editor a').forEach((element) => {
@@ -309,46 +339,31 @@ export default defineComponent({
       closeLinkTooltip()
     }
 
-    function formatDate(value) {
-      if (Array.isArray(value)) {
-        const [startDate, endDate] = value
-        const res: string[] = []
-        if (startDate) res.push(startDate.toLocaleString('default', { year: 'numeric', month: 'long' }))
-        if (isPresent.value) res.push('Present')
-        else if (endDate) res.push(endDate.toLocaleString('default', { year: 'numeric', month: 'long' }))
-        return res.join(' - ')
+    function onChatGPTClick() {
+      if (selectedText.value) {
+        chatGPTEditVisible.value = true
+        setTimeout(() => {
+          document.querySelector(`#${chatGPTId.value}`)?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+        }, 100)
       }
-      else if (value instanceof Date) {
-        return value.toLocaleString('default', { year: 'numeric', month: 'long' })
-      }
-      return ''
     }
 
-    function toggleDatePicker() {
-      if (datepicker.value)
-        datepicker.value.toggleMenu()
+    function onMouseOver(event: MouseEvent, val: string) {
+      switch (val) {
+        case 'chatgpt':
+          tooltipText.value = !selectedText.value ? 'Select text to start with AI' : 'Write with AI'
+          break
+      }
     }
 
-    function onDateChange(modelData) {
-      const [startData, endData] = modelData
-      const res: string[] = []
-      if (startData) res.push(new Date(startData.year, startData.month).toLocaleString('default', { year: 'numeric', month: 'long' }))
-      if (isPresent.value) res.push('Present')
-      else if (endData) res.push(new Date(endData.year, endData.month).toLocaleString('default', { year: 'numeric', month: 'long' }))
-      const text = res.join(' - ')
-      if (editor.value) {
-        const quill = (editor.value as Quill).getQuill()
-        const selection = quill.getSelection()
-        quill.insertText(selection.index, text)
-      }
-      isPresent.value = false
+    function onMouseOut() {
+      tooltipText.value = ''
     }
 
     return {
+      isToolEnabled,
       isMobileScreen,
       root,
-      width,
-      isMobileDatePicker,
       editor,
       toolbarId,
       toolbarVisible,
@@ -358,12 +373,15 @@ export default defineComponent({
       linkEditVisible,
       linkTooltipStyle,
       linkEditStyle,
+      selectedText,
+      chatGPTId,
+      chatGPTEdit,
+      chatGPTEditVisible,
       selectedAnchor,
       draftLink,
       link,
-      datepicker,
-      isPresent,
       content,
+      tooltipText,
       onFocus,
       onBlur,
       onClear,
@@ -373,9 +391,9 @@ export default defineComponent({
       removeLink,
       resetLink,
       onEditorChange,
-      formatDate,
-      toggleDatePicker,
-      onDateChange,
+      onChatGPTClick,
+      onMouseOver,
+      onMouseOut,
     }
   },
 })
@@ -423,100 +441,69 @@ export default defineComponent({
       }"
     >
       <div class="toolbar-button-group">
-        <button class="ql-list" :class="isMobileScreen ? 'btn-icon-32' : 'btn-icon-24'" value="bullet">
-          <span class="i-custom:list-bullet" :class="isMobileScreen ? 'w-6 h-6' : 'w-4.5 h-4.5'" />
-        </button>
-        <button class="ql-list" :class="isMobileScreen ? 'btn-icon-32' : 'btn-icon-24'" value="ordered">
-          <span class="i-custom:list-number" :class="isMobileScreen ? 'w-6 h-6' : 'w-4.5 h-4.5'" />
-        </button>
-        <button class="ql-indent" :class="isMobileScreen ? 'btn-icon-32' : 'btn-icon-24'" value="+1">
-          <span class="i-custom:indent" :class="isMobileScreen ? 'w-6 h-6' : 'w-4.5 h-4.5'" />
-        </button>
-        <button class="ql-indent" :class="isMobileScreen ? 'btn-icon-32' : 'btn-icon-24'" value="-1">
-          <span class="i-custom:unindent" :class="isMobileScreen ? 'w-6 h-6' : 'w-4.5 h-4.5'" />
-        </button>
-        <button class="ql-bold" :class="isMobileScreen ? 'btn-icon-32' : 'btn-icon-24'">
-          <span class="i-custom:bold" :class="isMobileScreen ? 'w-6 h-6' : 'w-4.5 h-4.5'" />
-        </button>
-        <button class="ql-italic" :class="isMobileScreen ? 'btn-icon-32' : 'btn-icon-24'">
-          <span class="i-custom:italic" :class="isMobileScreen ? 'w-6 h-6' : 'w-4.5 h-4.5'" />
-        </button>
-        <button class="ql-background" :class="isMobileScreen ? 'btn-icon-32' : 'btn-icon-24'">
-          <span class="i-origin:highlight" :class="isMobileScreen ? 'w-6 h-6' : 'w-4.5 h-4.5'" />
-        </button>
-        <button class="ql-link" :class="isMobileScreen ? 'btn-icon-32' : 'btn-icon-24'">
-          <span class="i-custom:link" :class="isMobileScreen ? 'w-6 h-6' : 'w-4.5 h-4.5'" />
-        </button>
-        <div class="h-5 border-l border-blacks-20" />
-        <Tooltip
-          small
-          placement="left"
-          text="Date Picker"
-        >
-          <button
-            :class="isMobileScreen ? 'btn-icon-32' : 'btn-icon-24'"
-            @click="toggleDatePicker"
+        <div v-if="chatgptEnable && isToolEnabled('chatgpt')" class="flex items-center">
+          <Tooltip
+            small
+            placement="right"
+            :text="tooltipText"
           >
-            <span class="i-custom:datepicker" :class="isMobileScreen ? 'w-6 h-6' : 'w-4.5 h-4.5'" />
+            <button
+              class="disabled:text-blacks-40"
+              :class="[
+                isMobileScreen ? 'btn-icon-32' : 'btn-icon-24',
+                {
+                  '!hover:bg-transparent': !selectedText
+                }
+              ]"
+              value="chatgpt"
+              :disabled="!selectedText"
+              @mouseover="(e) => onMouseOver(e, 'chatgpt')"
+              @mouseout="onMouseOut"
+              @click="onChatGPTClick"
+            >
+              <span class="i-custom:chatgpt" :class="isMobileScreen ? 'w-6 h-6' : 'w-4.5 h-4.5'" />
+            </button>
+          </Tooltip>
+          <div class="h-5 mx-2 border-l border-blacks-20" />
+        </div>
+        <div class="flex justify-center gap-3">
+          <button v-if="isToolEnabled('list-bullet')" class="ql-list" :class="isMobileScreen ? 'btn-icon-32' : 'btn-icon-24'" value="bullet">
+            <span class="i-custom:list-bullet" :class="isMobileScreen ? 'w-6 h-6' : 'w-4.5 h-4.5'" />
           </button>
-        </Tooltip>
+          <button v-if="isToolEnabled('list-number')" class="ql-list" :class="isMobileScreen ? 'btn-icon-32' : 'btn-icon-24'" value="ordered">
+            <span class="i-custom:list-number" :class="isMobileScreen ? 'w-6 h-6' : 'w-4.5 h-4.5'" />
+          </button>
+          <button v-if="isToolEnabled('indent')" class="ql-indent" :class="isMobileScreen ? 'btn-icon-32' : 'btn-icon-24'" value="+1">
+            <span class="i-custom:indent" :class="isMobileScreen ? 'w-6 h-6' : 'w-4.5 h-4.5'" />
+          </button>
+          <button v-if="isToolEnabled('unindent')" class="ql-indent" :class="isMobileScreen ? 'btn-icon-32' : 'btn-icon-24'" value="-1">
+            <span class="i-custom:unindent" :class="isMobileScreen ? 'w-6 h-6' : 'w-4.5 h-4.5'" />
+          </button>
+          <button v-if="isToolEnabled('bold')" class="ql-bold" :class="isMobileScreen ? 'btn-icon-32' : 'btn-icon-24'">
+            <span class="i-custom:bold" :class="isMobileScreen ? 'w-6 h-6' : 'w-4.5 h-4.5'" />
+          </button>
+          <button v-if="isToolEnabled('italic')" class="ql-italic" :class="isMobileScreen ? 'btn-icon-32' : 'btn-icon-24'">
+            <span class="i-custom:italic" :class="isMobileScreen ? 'w-6 h-6' : 'w-4.5 h-4.5'" />
+          </button>
+          <button v-if="isToolEnabled('highlight')" class="ql-background" :class="isMobileScreen ? 'btn-icon-32' : 'btn-icon-24'">
+            <span class="i-origin:highlight" :class="isMobileScreen ? 'w-6 h-6' : 'w-4.5 h-4.5'" />
+          </button>
+          <button v-if="isToolEnabled('link')" class="ql-link" :class="isMobileScreen ? 'btn-icon-32' : 'btn-icon-24'">
+            <span class="i-custom:link" :class="isMobileScreen ? 'w-6 h-6' : 'w-4.5 h-4.5'" />
+          </button>
+        </div>
       </div>
     </div>
 
-    <VueDatePicker
-      ref="datepicker"
-      range
-      month-picker
-      multi-calendars
-      hide-input-icon
-      input-class-name="!h-0 !overflow-hidden"
-      :menu-class-name="isMobileDatePicker ? 'dp-custom-menu' : ''"
-      :clearable="false"
-      :format="formatDate"
-      :preview-format="formatDate"
-      :enable-time-picker="false"
-      @update:model-value="onDateChange"
-    >
-      <template #trigger />
-      <template #action-row="{ internalModelValue, selectDate, closePicker }">
-        <div class="flex-1">
-          <div class="flex items-center">
-            <input
-              id="isPresent"
-              v-model="isPresent"
-              type="checkbox"
-              class="w-5 h-5 accent-blacks-70"
-            >
-            <label
-              for="isPresent"
-              class="paragraph text-blacks-100 ml-3"
-              :style="{ 'line-height': '20px'}"
-            >
-              Present
-            </label>
-          </div>
-          <div
-            class="mt-4"
-            :class="isMobileDatePicker ? '' : 'flex justify-between items-center'"
-          >
-            <p class="min-h-[22px] paragraph text-blacks-100">
-              {{ formatDate(internalModelValue) }}
-            </p>
-            <div
-              class="flex items-center gap-4"
-              :class="isMobileDatePicker ? 'justify-center mt-4' : 'justify-end'"
-            >
-              <button class="px-3 py-2 h-auto rounded-md btn-secondary" @click="closePicker">
-                Cancel
-              </button>
-              <button class="px-3 py-2 h-auto rounded-md btn-primary" @click="selectDate">
-                Select
-              </button>
-            </div>
-          </div>
-        </div>
-      </template>
-    </VueDatePicker>
+    <ChatGPTModal
+      :id="chatGPTId"
+      ref="chatGPTEdit"
+      :visible="chatGPTEditVisible"
+      :text="selectedText"
+      :question-options="chatgptQuestionOptions"
+      class="absolute left-0 right-0 mt-2 z-20"
+      @close="chatGPTEditVisible = false"
+    />
 
     <div
       v-if="toolbarVisible && linkTooltipVisible && !linkEditVisible"
@@ -737,8 +724,9 @@ export default defineComponent({
   transition: visibility 0.15s linear, opacity 0.15s linear;
 }
 .toolbar-button-group {
-  @apply flex items-center gap-2;
+  @apply flex items-center;
   overflow-x: scroll;
+  overflow-y: hidden;
   scrollbar-width: none;    /* Firefox */
   -ms-overflow-style: none; /* IE 10+ */
 }
@@ -764,14 +752,5 @@ export default defineComponent({
   position: absolute;
   bottom: -32px;
   z-index: -1;
-}
-
-.dp__theme_light {
-  --dp-primary-color: var(--primary-color);
-}
-
-.dp-custom-menu .dp__flex_display {
-  display: flex;
-  flex-direction: column;
 }
 </style>

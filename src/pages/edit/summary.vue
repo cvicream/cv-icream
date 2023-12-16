@@ -4,6 +4,21 @@ import { useUserStore } from '~/stores/user'
 import { DEFAULT_TEMPLATE, HIDDEN_INFORMATION } from '~/constants'
 import Editor from '~/components/Editor.vue'
 
+const chatGPTQuestionOptions = [
+  {
+    value: 'find-synonyms',
+    label: 'Find synonyms',
+  },
+  {
+    value: 'fix-spelling-grammar',
+    label: 'Fix spelling & grammar',
+  },
+  {
+    value: 'translate-into-english',
+    label: 'Translate into English',
+  },
+]
+
 const user = useUserStore()
 const { summary } = storeToRefs(user)
 
@@ -64,6 +79,7 @@ function focusOut() {
             :enable="summary.isShow"
             :placeholder="DEFAULT_TEMPLATE.summary.hashtags[0]"
             :is-single-line="true"
+            :chatgpt-question-options="chatGPTQuestionOptions"
           />
         </div>
         <div>
@@ -74,6 +90,7 @@ function focusOut() {
             :enable="summary.isShow"
             :placeholder="DEFAULT_TEMPLATE.summary.hashtags[1]"
             :is-single-line="true"
+            :chatgpt-question-options="chatGPTQuestionOptions"
           />
         </div>
         <div>
@@ -84,6 +101,7 @@ function focusOut() {
             :enable="summary.isShow"
             :placeholder="DEFAULT_TEMPLATE.summary.hashtags[2]"
             :is-single-line="true"
+            :chatgpt-question-options="chatGPTQuestionOptions"
           />
         </div>
         <div>
