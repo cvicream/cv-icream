@@ -273,6 +273,7 @@ function scrollIntoView(index) {
             :enable="item.isShow"
             :placeholder="DEFAULT_TEMPLATE.project.list[0].title"
             :is-single-line="true"
+            :chatgpt-enable="false"
           />
         </div>
         <div
@@ -287,6 +288,7 @@ function scrollIntoView(index) {
               :enable="item.isShow"
               :placeholder="DEFAULT_TEMPLATE.project.list[0].subtitle1"
               :is-single-line="true"
+              :chatgpt-enable="false"
             />
           </div>
           <div>
@@ -297,6 +299,7 @@ function scrollIntoView(index) {
               :enable="item.isShow"
               :placeholder="DEFAULT_TEMPLATE.project.list[0].subtitle2"
               :is-single-line="true"
+              :chatgpt-enable="false"
             />
           </div>
           <div>
