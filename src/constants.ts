@@ -13,6 +13,72 @@ export const DEFAULT_TOP_PANEL_WIDTH = [75, 25] // value in percent
 export const DEFAULT_LEFT_PANEL_WIDTH = [25, 75] // value in percent
 export const DEFAULT_RIGHT_PANEL_WIDTH = [75, 25] // value in percent
 
+export const defaultEditorToolOptions = [
+  {
+    value: 'chatgpt',
+    label: 'chatgpt',
+  },
+  {
+    value: 'list-bullet',
+    label: 'list-bullet',
+  },
+  {
+    value: 'list-number',
+    label: 'list-number',
+  },
+  {
+    value: 'indent',
+    label: 'indent',
+  },
+  {
+    value: 'unindent',
+    label: 'unindent',
+  },
+  {
+    value: 'bold',
+    label: 'bold',
+  },
+  {
+    value: 'italic',
+    label: 'italic',
+  },
+  {
+    value: 'highlight',
+    label: 'highlight',
+  },
+  {
+    value: 'link',
+    label: 'link',
+  },
+]
+
+export const defaultChatGPTQuestionOptions = [
+  {
+    value: 'improve-writing',
+    label: 'Improve writing',
+  },
+  {
+    value: 'find-synonyms',
+    label: 'Find synonyms',
+  },
+  {
+    value: 'fix-spelling-grammar',
+    label: 'Fix spelling & grammar',
+  },
+  {
+    value: 'make-shorter',
+    label: 'Make shorter',
+  },
+  {
+    value: 'make-longer',
+    label: 'Make longer',
+  },
+  {
+    value: 'translate-into-english',
+    label: 'Translate into English',
+  },
+]
+
 export const LAYOUTS = [
   {
     id: 'layout-right',

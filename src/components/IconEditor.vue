@@ -39,7 +39,7 @@ const onClickOutsideHandler: [(evt: any) => void, OnClickOutsideOptions] = [
       <input v-else class="icon-input" placeholder="Icon">
       <div :class="className" />
     </div>
-    <div v-if="showIcons" v-on-click-outside="onClickOutsideHandler" class="icon-popover ql-container single-line ">
+    <div v-if="showIcons" v-on-click-outside="onClickOutsideHandler" class="icon-popover ql-container single-line disable-scrollbar">
       <div class="icon-list flex justify-between">
         <IconElement
           v-for="(item) in SOCIAL_MEDIA_ICONS"

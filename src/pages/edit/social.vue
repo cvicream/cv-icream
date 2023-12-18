@@ -60,10 +60,6 @@ function closeAction() {
   isMoreActionOpen.value = []
 }
 
-function scrollIntoView(index) {
-  document.querySelector(`#social-form-${index}`)?.scrollIntoView({ behavior: 'smooth' })
-}
-
 function addItem(index: number | null) {
   user.$patch((state) => {
     const newItem = JSON.parse(JSON.stringify(TEMPLATE_LIST_ITEM))
@@ -132,6 +128,10 @@ function swap(index1, index2) {
     state.social.list[index1] = tmp
   })
   forceRerender()
+}
+
+function scrollIntoView(index) {
+  document.querySelector(`#social-form-${index}`)?.scrollIntoView({ behavior: 'smooth' })
 }
 
 function changeIcon(icon: string, index: number) {
@@ -309,6 +309,7 @@ function clearIcon(index: number) {
               :enable="item.isShow"
               :placeholder="DEFAULT_TEMPLATE.social.list[0].link"
               :is-single-line="true"
+              :chatgpt-enable="false"
             >
           </div>
         </div>
