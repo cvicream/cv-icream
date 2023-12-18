@@ -2,7 +2,7 @@
 <script setup lang="ts">
 import { vOnClickOutside } from '@vueuse/components'
 import type { OnClickOutsideOptions } from '@vueuse/core'
-import { DEFAULT_TEMPLATE, SOCIAL_MEDIA_ICONS } from '~/constants'
+import { SOCIAL_MEDIA_ICONS } from '~/constants'
 
 const props = defineProps <{
   icon: string
@@ -74,6 +74,10 @@ const onClickOutsideHandler: [(evt: any) => void, OnClickOutsideOptions] = [
   gap: 12px;
   box-shadow: 2px 2px 10px 0px rgba(241, 139, 107, 0.20);
   margin-top: 8px;
+  width: unset;
+  left: 1rem;
+  right: 1rem;
+  border: none;
   .icon-list {
     gap: 8px;
     .icon-container {
