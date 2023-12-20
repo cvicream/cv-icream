@@ -39,8 +39,8 @@ const onClickOutsideHandler: [(evt: any) => void, OnClickOutsideOptions] = [
       <input v-else class="icon-input" placeholder="Icon">
       <div :class="className" />
     </div>
-    <div v-if="showIcons" v-on-click-outside="onClickOutsideHandler" class="icon-popover ql-container single-line">
-      <div class="icon-list flex justify-between disable-scrollbar">
+    <div v-if="showIcons" v-on-click-outside="onClickOutsideHandler" class="icon-popover ql-container single-line disable-scrollbar">
+      <div class="icon-list flex justify-between">
         <IconElement
           v-for="(item) in SOCIAL_MEDIA_ICONS"
           :key="item"
@@ -64,6 +64,7 @@ const onClickOutsideHandler: [(evt: any) => void, OnClickOutsideOptions] = [
 }
 .icon-popover {
   display: flex;
+  overflow-x: auto;
   flex-direction: column;
   max-width: 584px;
   height: 110px;
@@ -78,7 +79,6 @@ const onClickOutsideHandler: [(evt: any) => void, OnClickOutsideOptions] = [
   border: none;
   .icon-list {
     gap: 8px;
-    overflow-x: auto;
     .icon-container {
       min-width: 48px;
       &:hover {
@@ -87,6 +87,9 @@ const onClickOutsideHandler: [(evt: any) => void, OnClickOutsideOptions] = [
     }
   }
   .remove {
+    position: sticky;
+    left: calc(100% - 86px);
+    width: 86px;
     font-size: 14px;
     line-height: 18px;
     color: var(--black-70, #656565);
