@@ -109,6 +109,7 @@ export default defineConfig({
     'i-custom:mail',
     'i-custom:twitter-old',
     'i-custom:twitter-new',
+    'i-custom:github',
   ],
   theme: {
     fontSize: {

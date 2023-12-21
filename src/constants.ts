@@ -1009,5 +1009,5 @@ export const FONT_FAMILIES = [
 ]
 
 export const SOCIAL_MEDIA_ICONS = [
-  'mail', 'linkedin', 'whatsapp', 'facebook', 'instagram', 'twitter-new', 'twitter-old', 'youtube', 'behance', 'link',
+  'mail', 'linkedin', 'whatsapp', 'facebook', 'instagram', 'twitter-new', 'twitter-old', 'youtube', 'behance', 'github', 'link',
 ]
