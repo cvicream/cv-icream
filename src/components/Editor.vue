@@ -55,6 +55,10 @@ export default defineComponent({
       type: Array as PropType<Array<Option>>,
       default: cloneDeep(defaultChatGPTQuestionOptions),
     },
+    showLinkTool: {
+      type: Boolean,
+      default: true,
+    },
   },
   emits: ['update:modelValue'],
   setup: (props, { emit }) => {
@@ -539,7 +543,7 @@ export default defineComponent({
           <button v-if="isToolEnabled('highlight')" class="ql-background" :class="isMobileScreen ? 'btn-icon-32' : 'btn-icon-24'">
             <span class="i-origin:highlight" :class="isMobileScreen ? 'w-6 h-6' : 'w-4.5 h-4.5'" />
           </button>
-          <button v-if="isToolEnabled('link')" class="ql-link" :class="isMobileScreen ? 'btn-icon-32' : 'btn-icon-24'">
+          <button v-if="isToolEnabled('link') && showLinkTool" class="ql-link" :class="isMobileScreen ? 'btn-icon-32' : 'btn-icon-24'">
             <span class="i-custom:link" :class="isMobileScreen ? 'w-6 h-6' : 'w-4.5 h-4.5'" />
           </button>
         </div>

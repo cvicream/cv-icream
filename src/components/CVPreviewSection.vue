@@ -27,6 +27,8 @@ const isHover = ref(false)
 
 const router = useRouter()
 
+const socialLinkTagClass = (link: string) => `text-blacks-100 ${link ? '' : 'disabled'}`
+
 function getFontSizeClassName(id: string) {
   return {
     heading: `heading-${id}`,
@@ -497,9 +499,10 @@ function redirect(path) {
               v-if="item.isShow"
               :class="getFontSizeClassName(currentState.fontSize).paragraph"
             >
+              <IconElement v-if="social.list[index].icon" :icon="social.list[index].icon" />
               <a
                 v-if="showSection(item.isEditing, DEFAULT_TEMPLATE.social.list[0].type, item.type)"
-                class="text-blacks-100"
+                :class="socialLinkTagClass(item.link)"
                 :href="item.link"
                 target="_blank"
                 v-html="showSection(item.isEditing, DEFAULT_TEMPLATE.social.list[0].type, item.type)"
@@ -511,3 +514,35 @@ function redirect(path) {
     </section>
   </div>
 </template>
+
+<style lang="scss">
+  #social {
+    .paragraph-default {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      .icon-container {
+        width: 12px;
+        height: 12px;
+        padding: unset;
+        .icon-mask {
+          position: relative;
+          width: 12px;
+          height: 12px;
+          margin-right: 0px;
+          > span {
+            position: absolute;
+            top: 2px;
+            left: 2.5px;
+            width:7.5px;
+            height: 7.5px;
+          }
+        }
+      }
+      a.disabled {
+        pointer-events: none;
+        text-decoration: none;
+      }
+    }
+  }
+</style>

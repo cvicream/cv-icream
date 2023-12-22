@@ -133,6 +133,18 @@ function swap(index1, index2) {
 function scrollIntoView(index) {
   document.querySelector(`#social-form-${index}`)?.scrollIntoView({ behavior: 'smooth' })
 }
+
+function changeIcon(icon: string, index: number) {
+  user.$patch((state) => {
+    state.social.list[index].icon = icon
+  })
+}
+
+function clearIcon(index: number) {
+  user.$patch((state) => {
+    state.social.list[index].icon = ''
+  })
+}
 </script>
 
 <template>
@@ -265,16 +277,23 @@ function scrollIntoView(index) {
             </button>
           </Tooltip>
         </div>
-        <div class="-mt-2">
-          <label class="block note text-blacks-70">Type</label>
-          <Editor
-            v-model="item.type"
-            class-name="mt-1"
-            :enable="item.isShow"
-            :placeholder="DEFAULT_TEMPLATE.social.list[0].type"
-            :is-single-line="true"
-            :chatgpt-enable="false"
-          />
+        <div class="link-type-container">
+          <div
+            class="mt-6"
+            :class="item.isCollapsed ? 'hidden' : 'flex flex-col gap-6'"
+          >
+            <IconEditor :index="index" :icon="social.list[index].icon" :change-icon="changeIcon" :clear-icon="clearIcon" />
+          </div>
+          <div class="-mt-2">
+            <Editor
+              v-model="item.type"
+              class-name="mt-[30px]"
+              :show-link-tool="false"
+              :enable="item.isShow"
+              :placeholder="DEFAULT_TEMPLATE.social.list[0].type"
+              :is-single-line="true"
+            />
+          </div>
         </div>
         <div
           class="mt-6"
@@ -309,3 +328,42 @@ function scrollIntoView(index) {
 meta:
   layout: edit
 </route>
+
+<style lang="scss" scope>
+  .icons {
+    margin-top: 6px !important;
+  }
+  .link-type-container {
+    display: flex;
+    gap: 16px;
+     > div:nth-child(1) {
+      margin: 0;
+       > div:nth-child(1) {
+        height: 46px;
+        > div:nth-child(2) {
+          display: flex;
+          align-items: center;
+          gap: 32px;
+          >button {
+            width: 16px;
+            height: 16px;
+            > div {
+              width: 16px;
+              height: 16px;
+              > span {
+                width: 10px;
+                height: 10px;
+              }
+          }
+          }
+        }
+        > div:nth-child(2) {
+          margin-top: 0.25rem;
+        }
+       }
+      }
+      > div:nth-child(2) {
+       flex: 1;
+      }
+  }
+</style>

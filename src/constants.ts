@@ -227,13 +227,15 @@ export const DEFAULT_TEMPLATE = {
   social: {
     isShow: true,
     name: 'SOCIAL MEDIA',
+    icon: 'linkedin',
     list: [
       {
         isShow: true,
         isCollapsed: false,
         isEditing: false,
-        type: 'LinkedIn',
+        type: 'Link Title',
         link: 'http://',
+        icon: 'linkedin',
       },
     ],
   },
@@ -1004,4 +1006,8 @@ export const FONT_FAMILIES = [
     id: 'font-lato',
     label: 'Lato',
   },
+]
+
+export const SOCIAL_MEDIA_ICONS = [
+  'mail', 'linkedin', 'whatsapp', 'facebook', 'instagram', 'twitter-new', 'twitter-old', 'youtube', 'behance', 'github', 'link',
 ]

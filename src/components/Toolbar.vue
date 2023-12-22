@@ -5,7 +5,7 @@ import { useUserStore } from '~/stores/user'
 import { useToolbarStore } from '~/stores/toolbar'
 import { useUndoStore } from '~/stores/undo'
 import { useRedoStore } from '~/stores/redo'
-import { COLORS, FONT_SIZES, LAYOUTS } from '~/constants'
+import { COLORS, FONT_FAMILIES, FONT_SIZES, LAYOUTS } from '~/constants'
 import { getColor, isMobileDevice } from '~/utils'
 
 const props = defineProps<{
@@ -27,6 +27,11 @@ watch(path, () => {
   if (path.value !== router.currentRoute.value.path)
     router.push(path.value)
 })
+
+const fontFamilyOptions = FONT_FAMILIES.map(item => ({
+  label: item.label,
+  value: item.id,
+}))
 
 const onColorChange = (id: string) => {
   toolbar.changeColor(id)
@@ -271,8 +276,9 @@ function onCollapse() {
       </DropdownMenu>
       <DropdownMenu id="fontFamily" label="Font Family" icon="i-custom:font-family text-blacks-70" tooltip="Font Family">
         <div class="w-full h-22 overflow-auto custom-scrollbar">
-          <FontFamilyPicker
+          <Dropdown
             placement="top"
+            :options="fontFamilyOptions"
             :model-value="currentState.fontFamily"
             @update:model-value="onFontFamilyChange"
           />
