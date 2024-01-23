@@ -402,8 +402,9 @@ export default defineComponent({
       const text = res.join(' - ')
       if (editor.value) {
         const quill = (editor.value as Quill).getQuill()
-        const selection = quill.getSelection()
-        quill.insertText(selection.index, text)
+        const selection = quill.getSelection(true)
+        const index = selection ? selection.index : 0
+        quill.insertText(index, text)
       }
       isPresent.value = false
     }
