@@ -80,8 +80,8 @@ devDependencies:
     specifier: ^3.3.1
     version: 3.3.1(vite@2.9.0)(vue-i18n@9.1.9)
   '@netlify/plugin-lighthouse':
-    specifier: ^4.1.1
-    version: 4.1.1
+    specifier: ^6.0.0
+    version: 6.0.0
   '@types/markdown-it-link-attributes':
     specifier: ^3.0.1
     version: 3.0.1
@@ -1671,9 +1671,9 @@ packages:
       '@jridgewell/sourcemap-codec': 1.4.15
     dev: true
 
-  /@netlify/plugin-lighthouse@4.1.1:
-    resolution: {integrity: sha512-eFNzOBOkmNpN9oBro7PSYim/eGZNUJDfV4lJf32HcA2lCzv2fmuZECid7BlfAY3B1KGFh7oT66Z2Pa/OUVbnJw==}
-    engines: {node: '>=14.15 <20'}
+  /@netlify/plugin-lighthouse@6.0.0:
+    resolution: {integrity: sha512-Uqqy9A7huuDT+1RIBWDoWhp+ntlLE1ibp1jXFpiizWy8QProWkLm8E7PFLu0Bf+aAwgjV2eJPj6ocIbk+jBANQ==}
+    engines: {node: '>=18.14.0'}
     dependencies:
       chalk: 4.1.2
       chrome-launcher: 0.15.2
@@ -6618,7 +6618,7 @@ packages:
   /puppeteer@18.2.1:
     resolution: {integrity: sha512-7+UhmYa7wxPh2oMRwA++k8UGVDxh3YdWFB52r9C3tM81T6BU7cuusUSxImz0GEYSOYUKk/YzIhkQ6+vc0gHbxQ==}
     engines: {node: '>=14.1.0'}
-    deprecated: < 19.4.0 is no longer supported
+    deprecated: < 21.5.0 is no longer supported
     requiresBuild: true
     dependencies:
       https-proxy-agent: 5.0.1
