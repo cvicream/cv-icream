@@ -6,12 +6,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Use Node.js 16.x
+      - name: Use Node.js 20.x
         uses: actions/setup-node@v3
         with:
-          node-version: 16.x
+          node-version: 20.x
       - name: Install dependencies & build project
-        run: npx pnpm@6.32.3 i --store=node_modules/.pnpm-store && npx pnpm@6.32.3 run build
+        run: pnpm run build
       - name: Run Lighthouse CI
         run: |
           npm install -g @lhci/cli@0.11.x
