@@ -218,10 +218,6 @@ input[type="search"]:hover::-webkit-search-cancel-button {
     page-break-inside: avoid;
     page-break-after: always;
   }
-
-  .hashtag-print {
-    background: none !important;
-  }
 }
 
 /* Continue ordered list numbering across 2 seperated ordered list */
