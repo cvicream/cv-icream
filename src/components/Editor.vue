@@ -588,6 +588,7 @@ export default defineComponent({
       :format="formatDate"
       :preview-format="formatDate"
       :enable-time-picker="false"
+      :max-date="new Date()"
       @update:model-value="onDateChange"
     >
       <template #trigger />
