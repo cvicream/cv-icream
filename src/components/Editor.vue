@@ -16,6 +16,7 @@ import { cloneDeep } from 'lodash'
 import { useToolbarStore } from '~/stores/toolbar'
 import type { Option } from '~/types'
 import { defaultChatGPTQuestionOptions, defaultEditorToolOptions } from '~/constants'
+import { isSameMonth } from '~/utils'
 
 export default defineComponent({
   components: {
@@ -82,6 +83,7 @@ export default defineComponent({
     const link = ref('')
     const tooltipText = ref('')
     const datepicker = ref<DatePickerInstance>(null)
+    const internalDateRange = ref([])
     const isPresent = ref(false)
 
     const content = computed({
@@ -393,6 +395,11 @@ export default defineComponent({
         datepicker.value.toggleMenu()
     }
 
+    function onInternalDateChange(value) {
+      internalDateRange.value = value
+      isPresent.value = value && value[1] && isSameMonth(value[1], new Date())
+    }
+
     function onDateChange(modelData) {
       const [startData, endData] = modelData
       const res: string[] = []
@@ -406,7 +413,21 @@ export default defineComponent({
         const index = selection ? selection.index : 0
         quill.insertText(index, text)
       }
+    }
+
+    function onDateClosed() {
+      internalDateRange.value = []
       isPresent.value = false
+    }
+
+    function onPresentChange(event) {
+      isPresent.value = event.target.checked
+      if (datepicker.value && internalDateRange.value) {
+        if (isPresent.value && internalDateRange.value[0])
+          datepicker.value.updateInternalModelValue([internalDateRange.value[0], new Date()])
+        else if (internalDateRange.value[0])
+          datepicker.value.updateInternalModelValue([internalDateRange.value[0]])
+      }
     }
 
     return {
@@ -432,6 +453,7 @@ export default defineComponent({
       draftLink,
       link,
       datepicker,
+      internalDateRange,
       isPresent,
       content,
       tooltipText,
@@ -449,7 +471,10 @@ export default defineComponent({
       onMouseOut,
       formatDate,
       toggleDatePicker,
+      onInternalDateChange,
       onDateChange,
+      onDateClosed,
+      onPresentChange,
     }
   },
 })
@@ -589,7 +614,9 @@ export default defineComponent({
       :preview-format="formatDate"
       :enable-time-picker="false"
       :max-date="new Date()"
+      @internal-model-change="onInternalDateChange"
       @update:model-value="onDateChange"
+      @closed="onDateClosed"
     >
       <template #trigger />
       <template #action-row="{ internalModelValue, selectDate, closePicker }">
@@ -597,9 +624,10 @@ export default defineComponent({
           <div class="flex items-center">
             <input
               id="isPresent"
-              v-model="isPresent"
               type="checkbox"
               class="w-5 h-5 accent-blacks-70"
+              :checked="isPresent"
+              @input="onPresentChange"
             >
             <label
               for="isPresent"
