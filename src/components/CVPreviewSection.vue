@@ -71,11 +71,12 @@ function redirect(path) {
 
 <template>
   <div
+    class="cv-preview-section"
     @mouseover="isHover = readOnly ? false : true"
     @mouseout="isHover = false"
     @mouseup="redirect(`/edit/${element.key}`)"
   >
-    <div
+    <section
       v-if="element.key === 'about'"
       id="about"
       class="p-2 flex items-baseline flex-wrap gap-6 not-break-out sm:hover:bg-primary-10"
@@ -95,7 +96,7 @@ function redirect(path) {
         ]"
         v-html="isEditorEmpty(about.jobTitle) ? getHintText(about.isEditing, DEFAULT_TEMPLATE.about.jobTitle) : about.jobTitle"
       />
-    </div>
+    </section>
 
     <section
       v-else-if="element.key === 'summary' && summary.isShow"
@@ -516,6 +517,10 @@ function redirect(path) {
 </template>
 
 <style lang="scss">
+  .cv-preview-section:hover *[style*="background-color: var(--secondary-color);"] {
+    background-color: white !important;
+  }
+
   #social {
     .paragraph-default {
       display: flex;
