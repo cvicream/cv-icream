@@ -517,8 +517,8 @@ function redirect(path) {
 </template>
 
 <style lang="scss">
-  section[class*="bg-primary-10"] *[style*="background-color: var(--secondary-color);"],
-  div[class*="bg-primary-10"] *[style*="background-color: var(--secondary-color);"],
+  .cv-preview-section section[class*="bg-primary-10"] *[style*="background-color: var(--secondary-color);"],
+  .cv-preview-section div[class*="bg-primary-10"] *[style*="background-color: var(--secondary-color);"],
   .cv-preview-section:hover *[style*="background-color: var(--secondary-color);"] {
     background-color: white !important;
   }
