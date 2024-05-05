@@ -10,37 +10,83 @@
     url('../assets/fonts/mark-pro/@font-face/7200c6dd8ac604abe09f5159e53a40c0.ttf') format('truetype'), /* chrome、firefox、opera、Safari, Android, iOS 4.2+ */
     url('../assets/fonts/mark-pro/@font-face/7200c6dd8ac604abe09f5159e53a40c0.svg#Mark Pro') format('svg'); /* iOS 4.1- */
 }
+
 @font-face {
   font-family: 'Arial';
-  src: url('../assets/fonts/arial/arial-normal.ttf');
+  src: url('../assets/fonts/arial/ARIAL.TTF') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Arial';
+  src: url('../assets/fonts/arial/ARIALBD.TTF') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Georgia';
+  src: url('../assets/fonts/georgia/georgia.ttf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
 }
 @font-face {
   font-family: 'Georgia';
-  src: url('../assets/fonts/georgia/georgia-normal.ttf');
+  src: url('../assets/fonts/georgia/georgiab.ttf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Gill Sans';
+  src: url('../assets/fonts/gillsans/Gill Sans.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
 }
 @font-face {
   font-family: 'Gill Sans';
-  src: url('../assets/fonts/gillsans/GillSansStd.otf');
+  src: url('../assets/fonts/gillsans/Gill Sans Bold.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Helvetica';
+  src: url('../assets/fonts/helvetica/Helvetica.ttf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
 }
 @font-face {
   font-family: 'Helvetica';
-  src: url('../assets/fonts/helvetica/helvetica.ttf');
+  src: url('../assets/fonts/helvetica/Helvetica-Bold.ttf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Times New Roman';
+  src: url('../assets/fonts/times-new-roman/times new roman.ttf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
 }
 @font-face {
   font-family: 'Times New Roman';
-  src: url('../assets/fonts/times-new-roman/times-new-roman-400.ttf');
+  src: url('../assets/fonts/times-new-roman/times new roman bold.ttf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Lato';
+  src: url('../assets/fonts/lato/Lato-Regular.ttf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
 }
 @font-face {
   font-family: 'Lato';
+  src: url('../assets/fonts/lato/Lato-Bold.ttf') format('opentype');
+  font-weight: 700;
   font-style: normal;
-  font-weight: 400;
-  src: url('../assets/fonts/lato/@font-face/lato-v23-latin-regular.eot'); /* IE9 Compat Modes */
-  src: 
-    url('../assets/fonts/lato/@font-face/lato-v23-latin-regular.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
-    url('../assets/fonts/lato/@font-face/lato-v23-latin-regular.woff2') format('woff2'), /* Super Modern Browsers */
-    url('../assets/fonts/lato/@font-face/lato-v23-latin-regular.woff') format('woff'), /* Modern Browsers */
-    url('../assets/fonts/lato/@font-face/lato-v23-latin-regular.ttf') format('truetype'), /* Safari, Android, iOS */
-    url('../assets/fonts/lato/@font-face/lato-v23-latin-regular.svg#Lato') format('svg'); /* Legacy iOS */
 }
 
 :root {
@@ -186,10 +232,6 @@ input[type="search"]:hover::-webkit-search-cancel-button {
 
 #cv-preview-print {
   display: none;
-}
-
-strong {
-  font-weight: 900;
 }
 
 @media print {
