@@ -328,7 +328,7 @@ function toggleSidebar(isOpen) {
       <div
         id="left-side"
         ref="leftSide"
-        class="h-[calc(100%-8px)] bg-white px-3 pt-[52px] pb-7 overflow-auto custom-scrollbar flex-grow flex-shrink sm:px-7 sm:py-15 m-1 transition-all duration-200 relative"
+        class="h-[calc(100%-8px)] bg-white px-3 pt-[52px] pb-7 overflow-auto custom-scrollbar flex-grow flex-shrink sm:px-7 sm:pt-15 sm:pb-[132px] m-1 transition-all duration-200 relative"
         :class="{ 'absolute hidden': isMobileScreen && !isCVPreviewVisible }"
         :style="isMobileScreen ? 'width: 100%' : `width: ${leftWidth}px`"
       >
