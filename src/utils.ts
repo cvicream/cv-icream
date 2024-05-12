@@ -221,6 +221,25 @@ function addSuffixToParagraph(htmlString, suffix) {
   return `<p>${res.join(' ')}</p>`
 }
 
+/**
+ * Check if two dates are in the same month.
+ *
+ * @param {Date} date1 the first date
+ * @param {Date} date2 the second date
+ * @return {boolean} true if the two dates are in the same month, false otherwise
+ */
+function isSameMonth(date1: Date, date2: Date): boolean {
+  // check if two dates are in the same month
+  //
+  // Parameters:
+  //   date1 (Date): the first date
+  //   date2 (Date): the second date
+  //
+  // Returns:
+  //   (boolean): true if the two dates are in the same month, false otherwise
+  return date1.getFullYear() === date2.getFullYear() && date1.getMonth() === date2.getMonth()
+}
+
 export {
   hasStorage,
   getStorage,
@@ -244,4 +263,5 @@ export {
   isMac,
   isOutOfViewport,
   addSuffixToParagraph,
+  isSameMonth,
 }
