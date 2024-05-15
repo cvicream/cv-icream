@@ -3,6 +3,7 @@ import { onMounted, onUnmounted, ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useUserStore } from '~/stores/user'
 import { useToolbarStore } from '~/stores/toolbar'
+import { useNotificationStore } from '~/stores/notification'
 import { getJsonUpload, isMobileDevice, isSafari, setStatus, stripHtml } from '~/utils'
 import { DRAFT_FILE_TYPE } from '~/constants'
 
@@ -14,7 +15,6 @@ const isActionActive = ref(false)
 const feedbackVisible = ref(false)
 const paymentVisible = ref(false)
 const upload = ref(false)
-const feedbackNotificationVisible = ref(false)
 
 const router = useRouter()
 
@@ -34,6 +34,8 @@ const {
   social,
 } = storeToRefs(user)
 const { currentState, noteList } = storeToRefs(toolbar)
+const notification = useNotificationStore()
+const { notification: notificationRecord } = storeToRefs(notification)
 
 onMounted(() => {
   window.addEventListener('click', closeAction, false)
@@ -59,7 +61,7 @@ function toggleFeedbackModal() {
 }
 
 function toggleFeedbackNotification() {
-  feedbackNotificationVisible.value = !feedbackNotificationVisible.value
+  notification.set({ message: 'Your feedback has already been sent :)' })
 }
 
 function redirectToDownload() {
@@ -167,6 +169,10 @@ function closeAction() {
 
 function togglePaymentModal() {
   paymentVisible.value = !paymentVisible.value
+}
+
+function deleteNotification() {
+  notification.set(null)
 }
 </script>
 
@@ -289,9 +295,10 @@ function togglePaymentModal() {
   </Modal>
 
   <Notification
-    v-if="feedbackNotificationVisible"
-    message="Your feedback has already been sent :)"
-    :visible="feedbackNotificationVisible"
-    @close="feedbackNotificationVisible = false"
+    v-if="notificationRecord"
+    :message="notificationRecord.message"
+    :duration="notificationRecord.duration"
+    :visible="true"
+    @close="deleteNotification"
   />
 </template>
