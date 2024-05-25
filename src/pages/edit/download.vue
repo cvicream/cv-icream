@@ -154,6 +154,12 @@ async function generatePdf() {
       fontSize: currentState.value.fontSize,
     },
   )
+  fbq('track', 'export-pdf', {
+    layout: currentState.value.layout,
+    colour: currentState.value.color,
+    fontFamily: currentState.value.fontFamily,
+    fontSize: currentState.value.fontSize,
+  })
 
   loading.value = false
 }
