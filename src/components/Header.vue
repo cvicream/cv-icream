@@ -121,6 +121,12 @@ function exportJsonFile() {
       fontSize: currentState.value.fontSize,
     },
   )
+  fbq('track', 'download-as-draft', {
+    layout: currentState.value.layout,
+    colour: currentState.value.color,
+    fontFamily: currentState.value.fontFamily,
+    fontSize: currentState.value.fontSize,
+  })
 }
 
 async function importJsonFile() {
@@ -157,6 +163,7 @@ async function importJsonFile() {
   window.dataLayer.push({
     event: 'open-cv-draft',
   })
+  fbq('track', 'open-cv-draft')
 }
 
 function toggle() {
