@@ -238,7 +238,7 @@ function onMenuClick(id, path) {
         <vuedraggable
           v-model="draggableMenus"
           item-key="path"
-          tag="transition-group"
+          :animation="200"
           delay-on-touch-only
           :delay="isMobileDevice() ? 250 : 0"
           @start="drag = true"
