@@ -46,7 +46,7 @@ export default defineComponent({
     },
     chatgptEnable: {
       type: Boolean,
-      default: true,
+      default: false,
     },
     toolOptions: {
       type: Array as PropType<Array<Option>>,
