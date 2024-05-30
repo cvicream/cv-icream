@@ -27,6 +27,8 @@ const isHover = ref(false)
 
 const router = useRouter()
 
+const socialLinkTagClass = (link: string) => `text-blacks-100 ${link ? '' : 'disabled'}`
+
 function getFontSizeClassName(id: string) {
   return {
     heading: `heading-${id}`,
@@ -69,11 +71,12 @@ function redirect(path) {
 
 <template>
   <div
+    class="cv-preview-section"
     @mouseover="isHover = readOnly ? false : true"
     @mouseout="isHover = false"
     @mouseup="redirect(`/edit/${element.key}`)"
   >
-    <div
+    <section
       v-if="element.key === 'about'"
       id="about"
       class="p-2 flex items-baseline flex-wrap gap-6 not-break-out sm:hover:bg-primary-10"
@@ -93,7 +96,7 @@ function redirect(path) {
         ]"
         v-html="isEditorEmpty(about.jobTitle) ? getHintText(about.isEditing, DEFAULT_TEMPLATE.about.jobTitle) : about.jobTitle"
       />
-    </div>
+    </section>
 
     <section
       v-else-if="element.key === 'summary' && summary.isShow"
@@ -497,9 +500,10 @@ function redirect(path) {
               v-if="item.isShow"
               :class="getFontSizeClassName(currentState.fontSize).paragraph"
             >
+              <IconElement v-if="social.list[index].icon" :icon="social.list[index].icon" />
               <a
                 v-if="showSection(item.isEditing, DEFAULT_TEMPLATE.social.list[0].type, item.type)"
-                class="text-blacks-100"
+                :class="socialLinkTagClass(item.link)"
                 :href="item.link"
                 target="_blank"
                 v-html="showSection(item.isEditing, DEFAULT_TEMPLATE.social.list[0].type, item.type)"
@@ -511,3 +515,41 @@ function redirect(path) {
     </section>
   </div>
 </template>
+
+<style lang="scss">
+  .cv-preview-section section[class*="bg-primary-10"] *[style*="background-color: var(--secondary-color);"],
+  .cv-preview-section div[class*="bg-primary-10"] *[style*="background-color: var(--secondary-color);"],
+  .cv-preview-section:hover *[style*="background-color: var(--secondary-color);"] {
+    background-color: white !important;
+  }
+
+  #social {
+    .paragraph-default {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      .icon-container {
+        width: 12px;
+        height: 12px;
+        padding: unset;
+        .icon-mask {
+          position: relative;
+          width: 12px;
+          height: 12px;
+          margin-right: 0px;
+          > span {
+            position: absolute;
+            top: 2px;
+            left: 2.5px;
+            width:7.5px;
+            height: 7.5px;
+          }
+        }
+      }
+      a.disabled {
+        pointer-events: none;
+        text-decoration: none;
+      }
+    }
+  }
+</style>

@@ -13,6 +13,72 @@ export const DEFAULT_TOP_PANEL_WIDTH = [75, 25] // value in percent
 export const DEFAULT_LEFT_PANEL_WIDTH = [25, 75] // value in percent
 export const DEFAULT_RIGHT_PANEL_WIDTH = [75, 25] // value in percent
 
+export const defaultEditorToolOptions = [
+  {
+    value: 'chatgpt',
+    label: 'chatgpt',
+  },
+  {
+    value: 'list-bullet',
+    label: 'list-bullet',
+  },
+  {
+    value: 'list-number',
+    label: 'list-number',
+  },
+  {
+    value: 'indent',
+    label: 'indent',
+  },
+  {
+    value: 'unindent',
+    label: 'unindent',
+  },
+  {
+    value: 'bold',
+    label: 'bold',
+  },
+  {
+    value: 'italic',
+    label: 'italic',
+  },
+  {
+    value: 'highlight',
+    label: 'highlight',
+  },
+  {
+    value: 'link',
+    label: 'link',
+  },
+]
+
+export const defaultChatGPTQuestionOptions = [
+  {
+    value: 'improve-writing',
+    label: 'Improve writing',
+  },
+  {
+    value: 'find-synonyms',
+    label: 'Find synonyms',
+  },
+  {
+    value: 'fix-spelling-grammar',
+    label: 'Fix spelling & grammar',
+  },
+  {
+    value: 'make-shorter',
+    label: 'Make shorter',
+  },
+  {
+    value: 'make-longer',
+    label: 'Make longer',
+  },
+  {
+    value: 'translate-into-english',
+    label: 'Translate into English',
+  },
+]
+
 export const LAYOUTS = [
   {
     id: 'layout-right',
@@ -161,13 +227,15 @@ export const DEFAULT_TEMPLATE = {
   social: {
     isShow: true,
     name: 'SOCIAL MEDIA',
+    icon: 'linkedin',
     list: [
       {
         isShow: true,
         isCollapsed: false,
         isEditing: false,
-        type: 'LinkedIn',
+        type: 'Link Title',
         link: 'http://',
+        icon: 'linkedin',
       },
     ],
   },
@@ -938,4 +1006,8 @@ export const FONT_FAMILIES = [
     id: 'font-lato',
     label: 'Lato',
   },
+]
+
+export const SOCIAL_MEDIA_ICONS = [
+  'mail', 'linkedin', 'whatsapp', 'facebook', 'instagram', 'twitter-new', 'twitter-old', 'youtube', 'behance', 'github', 'link',
 ]

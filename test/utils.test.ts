@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { getColor, getFontSizeClassName, hexToRgb, isEditorEmpty, rgbToHex, stripHtml, validateEmail } from '~/utils'
+import { addSuffixToParagraph, getColor, getFontSizeClassName, hexToRgb, isEditorEmpty, isSameMonth, rgbToHex, stripHtml, validateEmail } from '~/utils'
 
 describe('Utils', () => {
   it('hexToRgb', () => {
@@ -45,5 +45,30 @@ describe('Utils', () => {
   it('validateEmail', () => {
     expect(validateEmail('admin@example.com')).toBeTruthy()
     expect(validateEmail('admin')).toBeFalsy()
+  })
+
+  it('addSuffixToParagraph', () => {
+    expect(addSuffixToParagraph('<p>Job title</p>', '(Copy)')).toEqual('<p>Job title (Copy)</p>')
+    expect(addSuffixToParagraph('<p>Job title</p>', '')).toEqual('<p>Job title</p>')
+    expect(addSuffixToParagraph('<p></p>', '(Copy)')).toEqual('<p>(Copy)</p>')
+    expect(addSuffixToParagraph('<p></p>', '')).toEqual('<p></p>')
+  })
+})
+
+describe('isSameMonth', () => {
+  // Returns true when both dates are in the same month and year
+  it('should return true when both dates are in the same month and year', () => {
+    const date1 = new Date(2022, 0, 15)
+    const date2 = new Date(2022, 0, 25)
+    const result = isSameMonth(date1, date2)
+    expect(result).toBe(true)
+  })
+
+  // Returns true when both dates are the same
+  it('should return true when both dates are the same', () => {
+    const date1 = new Date(2022, 0, 15)
+    const date2 = new Date(2022, 0, 15)
+    const result = isSameMonth(date1, date2)
+    expect(result).toBe(true)
   })
 })

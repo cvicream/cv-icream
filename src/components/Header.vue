@@ -3,7 +3,8 @@ import { onMounted, onUnmounted, ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useUserStore } from '~/stores/user'
 import { useToolbarStore } from '~/stores/toolbar'
-import { getJsonUpload, isMobileDevice, setStatus, stripHtml } from '~/utils'
+import { useNotificationStore } from '~/stores/notification'
+import { getJsonUpload, isMobileDevice, isSafari, setStatus, stripHtml } from '~/utils'
 import { DRAFT_FILE_TYPE } from '~/constants'
 
 defineProps<{
@@ -14,7 +15,6 @@ const isActionActive = ref(false)
 const feedbackVisible = ref(false)
 const paymentVisible = ref(false)
 const upload = ref(false)
-const feedbackNotificationVisible = ref(false)
 
 const router = useRouter()
 
@@ -34,8 +34,8 @@ const {
   social,
 } = storeToRefs(user)
 const { currentState, noteList } = storeToRefs(toolbar)
-
-const isSafari = () => ('safari' in window)
+const notification = useNotificationStore()
+const { notification: notificationRecord } = storeToRefs(notification)
 
 onMounted(() => {
   window.addEventListener('click', closeAction, false)
@@ -61,7 +61,7 @@ function toggleFeedbackModal() {
 }
 
 function toggleFeedbackNotification() {
-  feedbackNotificationVisible.value = !feedbackNotificationVisible.value
+  notification.set({ message: 'Your feedback has already been sent :)' })
 }
 
 function redirectToDownload() {
@@ -121,6 +121,12 @@ function exportJsonFile() {
       fontSize: currentState.value.fontSize,
     },
   )
+  fbq('track', 'download-as-draft', {
+    layout: currentState.value.layout,
+    colour: currentState.value.color,
+    fontFamily: currentState.value.fontFamily,
+    fontSize: currentState.value.fontSize,
+  })
 }
 
 async function importJsonFile() {
@@ -157,6 +163,7 @@ async function importJsonFile() {
   window.dataLayer.push({
     event: 'open-cv-draft',
   })
+  fbq('track', 'open-cv-draft')
 }
 
 function toggle() {
@@ -169,6 +176,10 @@ function closeAction() {
 
 function togglePaymentModal() {
   paymentVisible.value = !paymentVisible.value
+}
+
+function deleteNotification() {
+  notification.set(null)
 }
 </script>
 
@@ -289,22 +300,12 @@ function togglePaymentModal() {
       </button>
     </div>
   </Modal>
-  <div
-    v-if="feedbackNotificationVisible"
-    class="fixed bottom-8 left-0 right-0 flex justify-center items-center z-99"
-  >
-    <div class="bg-primary-100 w-112 h-16 rounded-xl">
-      <div class="flex justify-between px-5 mt-4">
-        <div class=" text-white paragraph px-1 mt-1">
-          Your feedback has already been sent : )
-        </div>
-        <button class="w-10 h-8 rounded flex justify-center items-center gap-4" @click="toggleFeedbackNotification">
-          <span class="w-[1px] h-8 bg-blacks-20" />
-          <span
-            class="i-custom:cancel icon-24 bg-white"
-          />
-        </button>
-      </div>
-    </div>
-  </div>
+
+  <Notification
+    v-if="notificationRecord"
+    :message="notificationRecord.message"
+    :duration="notificationRecord.duration"
+    :visible="true"
+    @close="deleteNotification"
+  />
 </template>
