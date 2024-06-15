@@ -112,56 +112,58 @@ function print() {
 }
 
 async function generatePdf() {
-  loading.value = true
+  toggleFeedbackModal()
 
-  const fileName = generateFileName()
-  const storage = getStorage()
-  const data = {
-    targetUrl: location.hostname === 'localhost' || location.hostname === '127.0.0.1' ? null : window.origin,
-    fileName,
-    data: storage,
-  }
+  // loading.value = true
 
-  const generatePdfUrl: string = import.meta.env.VITE_GENERATE_PDF_URL as string
-  if (generatePdfUrl) {
-    try {
-      const res = await axios({
-        method: 'POST',
-        url: generatePdfUrl,
-        data,
-        responseType: 'blob',
-      })
-      const url = window.URL.createObjectURL(new Blob([res.data]))
-      const link = document.createElement('a')
-      link.href = url
-      link.setAttribute('download', `${fileName}.pdf`)
-      document.body.appendChild(link)
-      link.click()
-      toggleFeedbackModal()
-    }
-    catch (error) {
-      console.error(error)
-    }
-  }
+  // const fileName = generateFileName()
+  // const storage = getStorage()
+  // const data = {
+  //   targetUrl: location.hostname === 'localhost' || location.hostname === '127.0.0.1' ? null : window.origin,
+  //   fileName,
+  //   data: storage,
+  // }
 
-  // push data to gtm
-  window.dataLayer.push(
-    {
-      event: 'export-pdf',
-      layout: currentState.value.layout,
-      colour: currentState.value.color,
-      fontFamily: currentState.value.fontFamily,
-      fontSize: currentState.value.fontSize,
-    },
-  )
-  fbq('track', 'export-pdf', {
-    layout: currentState.value.layout,
-    colour: currentState.value.color,
-    fontFamily: currentState.value.fontFamily,
-    fontSize: currentState.value.fontSize,
-  })
+  // const generatePdfUrl: string = import.meta.env.VITE_GENERATE_PDF_URL as string
+  // if (generatePdfUrl) {
+  //   try {
+  //     const res = await axios({
+  //       method: 'POST',
+  //       url: generatePdfUrl,
+  //       data,
+  //       responseType: 'blob',
+  //     })
+  //     const url = window.URL.createObjectURL(new Blob([res.data]))
+  //     const link = document.createElement('a')
+  //     link.href = url
+  //     link.setAttribute('download', `${fileName}.pdf`)
+  //     document.body.appendChild(link)
+  //     link.click()
+  //     toggleFeedbackModal()
+  //   }
+  //   catch (error) {
+  //     console.error(error)
+  //   }
+  // }
 
-  loading.value = false
+  // // push data to gtm
+  // window.dataLayer.push(
+  //   {
+  //     event: 'export-pdf',
+  //     layout: currentState.value.layout,
+  //     colour: currentState.value.color,
+  //     fontFamily: currentState.value.fontFamily,
+  //     fontSize: currentState.value.fontSize,
+  //   },
+  // )
+  // fbq('track', 'export-pdf', {
+  //   layout: currentState.value.layout,
+  //   colour: currentState.value.color,
+  //   fontFamily: currentState.value.fontFamily,
+  //   fontSize: currentState.value.fontSize,
+  // })
+
+  // loading.value = false
 }
 
 function generateFileName() {
@@ -253,6 +255,7 @@ function back() {
   </div>
 
   <FeedbackModal
+    v-if="feedbackVisible"
     title="Are you happy with our service?"
     subtitle="Leave a message to let us know if you are happy with our service or anything we can improve : )"
     :toggle="toggleFeedbackModal"
