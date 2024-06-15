@@ -110,7 +110,6 @@ export default defineConfig({
     'i-custom:twitter-old',
     'i-custom:twitter-new',
     'i-custom:github',
-    'i-custom:star',
   ],
   theme: {
     fontSize: {
