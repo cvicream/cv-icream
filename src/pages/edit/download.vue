@@ -253,7 +253,6 @@ function back() {
   </div>
 
   <FeedbackModal
-    v-if="feedbackVisible"
     title="Are you happy with our service?"
     subtitle="Leave a message to let us know if you are happy with our service or anything we can improve : )"
     :toggle="toggleFeedbackModal"
