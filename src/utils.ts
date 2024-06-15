@@ -240,6 +240,22 @@ function isSameMonth(date1: Date, date2: Date): boolean {
   return date1.getFullYear() === date2.getFullYear() && date1.getMonth() === date2.getMonth()
 }
 
+/**
+ * Check if a given text is a valid http url
+ *
+ * @param {String} text
+ * @return {boolean} true if the text is a valid http url, false otherwise
+ */
+function isValidHttpUrl(text: string) {
+  try {
+    const url = new URL(text)
+    return url.protocol === 'http:' || url.protocol === 'https:'
+  }
+  catch (error) {
+    return false
+  }
+}
+
 export {
   hasStorage,
   getStorage,
@@ -264,4 +280,5 @@ export {
   isOutOfViewport,
   addSuffixToParagraph,
   isSameMonth,
+  isValidHttpUrl,
 }

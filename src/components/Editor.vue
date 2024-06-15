@@ -16,7 +16,7 @@ import { cloneDeep } from 'lodash'
 import { useToolbarStore } from '~/stores/toolbar'
 import type { Option } from '~/types'
 import { defaultChatGPTQuestionOptions, defaultEditorToolOptions } from '~/constants'
-import { isSameMonth } from '~/utils'
+import { isSameMonth, isValidHttpUrl } from '~/utils'
 
 export default defineComponent({
   components: {
@@ -115,8 +115,11 @@ export default defineComponent({
       if (linkTooltip.value && selectedAnchor.value) {
         const anchor = selectedAnchor.value
         const parentWidth = root.value?.clientWidth
-        if (parentWidth)
-          style.top = `${anchor.offsetTop + anchor.offsetHeight + 8}px`
+        if (parentWidth) {
+          let top = anchor.offsetTop + anchor.offsetHeight
+          top = top > 220 ? 220 : top // max height of Editor component is 220px
+          style.top = `${top + 8}px`
+        }
       }
       return style
     })
@@ -153,6 +156,8 @@ export default defineComponent({
     })
 
     const isMobileDatePicker = computed(() => width.value < 500)
+
+    const isValidDraftLink = computed(() => isValidHttpUrl(draftLink.value))
 
     onMounted(() => {
       if (editor.value) {
@@ -278,6 +283,8 @@ export default defineComponent({
     }
 
     function onLinkChange() {
+      if (!isValidDraftLink.value) return
+
       if (selectedAnchor.value) {
         selectedAnchor.value.href = draftLink.value
       }
@@ -451,6 +458,7 @@ export default defineComponent({
       chatGPTEditVisible,
       selectedAnchor,
       draftLink,
+      isValidDraftLink,
       link,
       datepicker,
       internalDateRange,
@@ -716,7 +724,7 @@ export default defineComponent({
         >
         <button
           class="w-6 h-6 absolute top-[50%] right-2 -translate-y-1/2 transition-[opacity] duration-300"
-          :class="{'opacity-0': !draftLink}"
+          :class="{'opacity-0': !isValidDraftLink}"
           @click="onLinkChange"
         >
           <span class="i-custom:ok w-6 h-6 text-blacks-40 sm:hover:text-blacks-70" />
