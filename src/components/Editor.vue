@@ -69,6 +69,7 @@ export default defineComponent({
     const { width } = useElementSize(root)
     const editor = ref<HTMLDivElement | null>(null)
     const toolbarId = ref(`toolbar-${uuidv4().replaceAll('-', '')}`)
+    const isToolbarLoading = ref(false)
     const toolbarVisible = ref(false)
     const selectionRange = ref<RangeStatic | null>(null)
     const linkTooltip = ref<HTMLDivElement | null>(null)
@@ -236,6 +237,10 @@ export default defineComponent({
       document.querySelectorAll('.ql-editor a').forEach((element) => {
         element.addEventListener('click', (e) => {
           e.stopPropagation()
+
+          // do nothing if toolbar is loading
+          if (isToolbarLoading.value) return
+
           const anchor = (e.currentTarget as HTMLAnchorElement)
           openLinkTooltip(anchor)
         })
@@ -247,6 +252,12 @@ export default defineComponent({
       if (toolbarVisible.value) {
         editorElement.style.transition = 'padding 0.3s'
         editorElement.style.paddingTop = isMobileScreen.value ? '60px' : '52px'
+
+        // handle toolbar loading
+        isToolbarLoading.value = true
+        setTimeout(() => {
+          isToolbarLoading.value = false
+        }, 300)
       }
       else { editorElement.style.paddingTop = '12px' }
     }
@@ -445,6 +456,7 @@ export default defineComponent({
       isMobileDatePicker,
       editor,
       toolbarId,
+      isToolbarLoading,
       toolbarVisible,
       linkTooltip,
       linkEdit,
@@ -514,7 +526,7 @@ export default defineComponent({
     />
 
     <button
-      v-if="enable && content !== '<p><br></p>'"
+      v-if="enable && toolbarVisible && !isToolbarLoading && content !== '<p><br></p>'"
       class="btn-clear i-custom:cancel w-6 h-6 absolute right-2 bg-blacks-40 opacity-0 transition-[top] duration-300"
       :class="isSingleLine ? (toolbarVisible ? 'top-[50%] top-[71px] sm:top-[63px] -translate-y-1/2' : 'top-[50%] -translate-y-1/2') : (toolbarVisible ? 'top-[59px] sm:top-[51px]' : 'top-[11px]')"
       @click="onClear"
