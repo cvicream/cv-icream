@@ -742,8 +742,17 @@ export default defineComponent({
           <span class="i-custom:ok w-6 h-6 text-blacks-40 sm:hover:text-blacks-70" />
         </button>
       </div>
-      <div v-if="link" class="text-right mt-3">
+      <div class="mt-3 flex justify-between items-center">
+        <div>
+          <p
+            v-if="draftLink && !isValidDraftLink"
+            class="note text-warning"
+          >
+            It doesn't look quite right.
+          </p>
+        </div>
         <button
+          v-if="link"
           class="note text-blacks-40 sm:hover:text-blacks-70 transition-[color] duration-300"
           @click="removeLink"
         >
