@@ -54,30 +54,37 @@ const noteClasses = computed(() => {
   return classes
 })
 
+const onRemove = () => {
+  toolbar.removeNote(props.note.id)
+}
+
+const onSave = () => {
+  if (!value.value) {
+    onRemove()
+  }
+  else {
+    toolbar.modifyNote({
+      ...props.note,
+      value: value.value,
+    })
+  }
+
+  show.value = false
+}
+
 const onToggleNote = () => {
   if (isDragging.value) {
     isDragging.value = false
     return
   }
-  if (value.value !== props.note.value) {
+  if (!value.value) {
+    onRemove()
+  }
+  else if (value.value !== props.note.value) {
     value.value = props.note.value
     show.value = false
-    return
   }
-  if (!props.isNoteEditing)
-    show.value = !show.value
-}
-
-const onSave = () => {
-  toolbar.modifyNote({
-    ...props.note,
-    value: value.value,
-  })
-  show.value = false
-}
-
-const onRemove = () => {
-  toolbar.removeNote(props.note.id)
+  else if (!props.isNoteEditing) { show.value = !show.value }
 }
 
 onClickOutside(noteRef, (event) => {
@@ -193,7 +200,7 @@ function onMouseUp(event: MouseEvent) {
       </div>
       <textarea
         ref="editorRef"
-        v-model="value"
+        v-model.trim="value"
         placeholder="Note down here..."
         class="form-textarea h-[130px] custom-scrollbar"
       />
