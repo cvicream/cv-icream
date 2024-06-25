@@ -133,7 +133,9 @@ export default defineComponent({
 
       if (selectedAnchor.value) {
         const anchor = selectedAnchor.value
-        style.top = `${anchor.offsetTop + anchor.offsetHeight + 8}px`
+        let top = anchor.offsetTop + anchor.offsetHeight
+        top = top > 220 ? 220 : top // max height of Editor component is 220px
+        style.top = `${top + 8}px`
       }
       else if (editor.value && selectionRange.value) {
         const { index, length } = selectionRange.value
@@ -707,6 +709,7 @@ export default defineComponent({
           Remove
         </button>
       </div>
+      <div class="fix-margin-bottom" style="top: 100%; bottom: 0; left: 0;" />
     </div>
 
     <div
@@ -759,7 +762,7 @@ export default defineComponent({
           Remove Link
         </button>
       </div>
-      <div class="fix-margin-bottom" style="top: 126px; bottom: 0; left: 0;" />
+      <div class="fix-margin-bottom" style="top: 100%; bottom: 0; left: 0;" />
     </div>
   </div>
 </template>
