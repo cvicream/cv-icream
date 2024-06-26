@@ -22,6 +22,23 @@ const left = ref(props.note.location.left)
 const top = ref(props.note.location.top)
 const shiftX = ref(0)
 const shiftY = ref(0)
+const hasTransition = ref(false)
+
+const noteClasses = computed(() => {
+  const classes: string[] = []
+
+  if (props.note.location.left > 0.6)
+    classes.push('note-left')
+  else
+    classes.push('note-right')
+
+  if (props.note.location.top > 0.8)
+    classes.push('note-bottom')
+  else
+    classes.push('note-top')
+
+  return classes.join(' ')
+})
 
 watch(() => value.value !== props.note.value, (isEditing) => {
   emit('update:isNoteEditing', isEditing)
@@ -41,19 +58,8 @@ watch(editorRef, () => {
     (editorRef.value as HTMLTextAreaElement).focus()
 })
 
-const noteClasses = computed(() => {
-  let classes = 'note-form bg-yellow'
-  if (props.note.location.left > 0.6)
-    classes += ' note-left'
-  else
-    classes += ' note-right'
-
-  if (props.note.location.top > 0.8)
-    classes += ' note-bottom'
-  else
-    classes += ' note-top'
-
-  return classes
+watch(noteClasses, (newVal, oldVal) => {
+  hasTransition.value = newVal !== oldVal
 })
 
 const onRemove = () => {
@@ -145,6 +151,8 @@ function onMouseDown(event: MouseEvent) {
 }
 
 function onMouseMove(event: MouseEvent) {
+  hasTransition.value = false // disable transition when dragging
+
   const parentContainerElement = document.getElementById('left-side')
   const parentElement = document.getElementById('cv-preview')
 
@@ -195,7 +203,11 @@ function onMouseUp(event: MouseEvent) {
     >
       <span class="i-custom:note w-8 h-8" />
     </button>
-    <div v-if="show" :class="noteClasses">
+    <div
+      v-if="show"
+      class="note-form bg-yellow"
+      :class="[noteClasses, { 'note-move-transition': hasTransition }]"
+    >
       <div class="flex justify-between items-center">
         <span class="note text-blacks-70">Note</span>
         <div class="flex items-center gap-3">
@@ -233,6 +245,9 @@ function onMouseUp(event: MouseEvent) {
   z-index: 2;
   top: calc(v-bind('top') * 100%);
 
+  &.note-move-transition {
+    transition: all 0.3s;
+  }
   &.note-right {
     left: calc((v-bind('left')) * 100% + 40px);
   }
