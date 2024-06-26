@@ -96,11 +96,9 @@ const onToggleNote = () => {
 }
 
 onClickOutside(noteRef, (event) => {
-  if (!value.value && !props.isNoteEditing) toolbar.removeNote(props.note.id)
-  else if (value.value === props.note.value)
-    show.value = false
-  else if (editorRef.value)
-    (editorRef.value as HTMLTextAreaElement).focus()
+  if (!value.value && !props.isNoteEditing) onRemove()
+  else if (value.value === props.note.value) show.value = false
+  else if (editorRef.value) (editorRef.value as HTMLTextAreaElement).focus()
 })
 
 const onDragStart = () => {
