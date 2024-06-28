@@ -16,7 +16,6 @@ import { cloneDeep } from 'lodash'
 import { useToolbarStore } from '~/stores/toolbar'
 import type { Option } from '~/types'
 import { defaultChatGPTQuestionOptions, defaultEditorToolOptions } from '~/constants'
-import { isSameMonth, isValidHttpUrl } from '~/utils'
 
 export default defineComponent({
   components: {
@@ -46,7 +45,7 @@ export default defineComponent({
     },
     chatgptEnable: {
       type: Boolean,
-      default: false,
+      default: true,
     },
     toolOptions: {
       type: Array as PropType<Array<Option>>,
@@ -69,7 +68,6 @@ export default defineComponent({
     const { width } = useElementSize(root)
     const editor = ref<HTMLDivElement | null>(null)
     const toolbarId = ref(`toolbar-${uuidv4().replaceAll('-', '')}`)
-    const isToolbarLoading = ref(false)
     const toolbarVisible = ref(false)
     const selectionRange = ref<RangeStatic | null>(null)
     const linkTooltip = ref<HTMLDivElement | null>(null)
@@ -84,7 +82,6 @@ export default defineComponent({
     const link = ref('')
     const tooltipText = ref('')
     const datepicker = ref<DatePickerInstance>(null)
-    const internalDateRange = ref([])
     const isPresent = ref(false)
 
     const content = computed({
@@ -116,11 +113,8 @@ export default defineComponent({
       if (linkTooltip.value && selectedAnchor.value) {
         const anchor = selectedAnchor.value
         const parentWidth = root.value?.clientWidth
-        if (parentWidth) {
-          let top = anchor.offsetTop + anchor.offsetHeight
-          top = top > 220 ? 220 : top // max height of Editor component is 220px
-          style.top = `${top + 8}px`
-        }
+        if (parentWidth)
+          style.top = `${anchor.offsetTop + anchor.offsetHeight + 8}px`
       }
       return style
     })
@@ -133,9 +127,7 @@ export default defineComponent({
 
       if (selectedAnchor.value) {
         const anchor = selectedAnchor.value
-        let top = anchor.offsetTop + anchor.offsetHeight
-        top = top > 220 ? 220 : top // max height of Editor component is 220px
-        style.top = `${top + 8}px`
+        style.top = `${anchor.offsetTop + anchor.offsetHeight + 8}px`
       }
       else if (editor.value && selectionRange.value) {
         const { index, length } = selectionRange.value
@@ -159,8 +151,6 @@ export default defineComponent({
     })
 
     const isMobileDatePicker = computed(() => width.value < 500)
-
-    const isValidDraftLink = computed(() => isValidHttpUrl(draftLink.value))
 
     onMounted(() => {
       if (editor.value) {
@@ -239,10 +229,6 @@ export default defineComponent({
       document.querySelectorAll('.ql-editor a').forEach((element) => {
         element.addEventListener('click', (e) => {
           e.stopPropagation()
-
-          // do nothing if toolbar is loading
-          if (isToolbarLoading.value) return
-
           const anchor = (e.currentTarget as HTMLAnchorElement)
           openLinkTooltip(anchor)
         })
@@ -254,12 +240,6 @@ export default defineComponent({
       if (toolbarVisible.value) {
         editorElement.style.transition = 'padding 0.3s'
         editorElement.style.paddingTop = isMobileScreen.value ? '60px' : '52px'
-
-        // handle toolbar loading
-        isToolbarLoading.value = true
-        setTimeout(() => {
-          isToolbarLoading.value = false
-        }, 300)
       }
       else { editorElement.style.paddingTop = '12px' }
     }
@@ -296,8 +276,6 @@ export default defineComponent({
     }
 
     function onLinkChange() {
-      if (!isValidDraftLink.value) return
-
       if (selectedAnchor.value) {
         selectedAnchor.value.href = draftLink.value
       }
@@ -415,11 +393,6 @@ export default defineComponent({
         datepicker.value.toggleMenu()
     }
 
-    function onInternalDateChange(value) {
-      internalDateRange.value = value
-      isPresent.value = value && value[1] && isSameMonth(value[1], new Date())
-    }
-
     function onDateChange(modelData) {
       const [startData, endData] = modelData
       const res: string[] = []
@@ -433,21 +406,7 @@ export default defineComponent({
         const index = selection ? selection.index : 0
         quill.insertText(index, text)
       }
-    }
-
-    function onDateClosed() {
-      internalDateRange.value = []
       isPresent.value = false
-    }
-
-    function onPresentChange(event) {
-      isPresent.value = event.target.checked
-      if (datepicker.value && internalDateRange.value) {
-        if (isPresent.value && internalDateRange.value[0])
-          datepicker.value.updateInternalModelValue([internalDateRange.value[0], new Date()])
-        else if (internalDateRange.value[0])
-          datepicker.value.updateInternalModelValue([internalDateRange.value[0]])
-      }
     }
 
     return {
@@ -458,7 +417,6 @@ export default defineComponent({
       isMobileDatePicker,
       editor,
       toolbarId,
-      isToolbarLoading,
       toolbarVisible,
       linkTooltip,
       linkEdit,
@@ -472,10 +430,8 @@ export default defineComponent({
       chatGPTEditVisible,
       selectedAnchor,
       draftLink,
-      isValidDraftLink,
       link,
       datepicker,
-      internalDateRange,
       isPresent,
       content,
       tooltipText,
@@ -493,10 +449,7 @@ export default defineComponent({
       onMouseOut,
       formatDate,
       toggleDatePicker,
-      onInternalDateChange,
       onDateChange,
-      onDateClosed,
-      onPresentChange,
     }
   },
 })
@@ -528,7 +481,7 @@ export default defineComponent({
     />
 
     <button
-      v-if="enable && toolbarVisible && !isToolbarLoading && content !== '<p><br></p>'"
+      v-if="enable && content !== '<p><br></p>'"
       class="btn-clear i-custom:cancel w-6 h-6 absolute right-2 bg-blacks-40 opacity-0 transition-[top] duration-300"
       :class="isSingleLine ? (toolbarVisible ? 'top-[50%] top-[71px] sm:top-[63px] -translate-y-1/2' : 'top-[50%] -translate-y-1/2') : (toolbarVisible ? 'top-[59px] sm:top-[51px]' : 'top-[11px]')"
       @click="onClear"
@@ -635,10 +588,7 @@ export default defineComponent({
       :format="formatDate"
       :preview-format="formatDate"
       :enable-time-picker="false"
-      :max-date="new Date()"
-      @internal-model-change="onInternalDateChange"
       @update:model-value="onDateChange"
-      @closed="onDateClosed"
     >
       <template #trigger />
       <template #action-row="{ internalModelValue, selectDate, closePicker }">
@@ -646,10 +596,9 @@ export default defineComponent({
           <div class="flex items-center">
             <input
               id="isPresent"
+              v-model="isPresent"
               type="checkbox"
               class="w-5 h-5 accent-blacks-70"
-              :checked="isPresent"
-              @input="onPresentChange"
             >
             <label
               for="isPresent"
@@ -709,7 +658,6 @@ export default defineComponent({
           Remove
         </button>
       </div>
-      <div class="fix-margin-bottom" style="top: 100%; bottom: 0; left: 0;" />
     </div>
 
     <div
@@ -739,30 +687,21 @@ export default defineComponent({
         >
         <button
           class="w-6 h-6 absolute top-[50%] right-2 -translate-y-1/2 transition-[opacity] duration-300"
-          :class="{'opacity-0': !isValidDraftLink}"
+          :class="{'opacity-0': !draftLink}"
           @click="onLinkChange"
         >
           <span class="i-custom:ok w-6 h-6 text-blacks-40 sm:hover:text-blacks-70" />
         </button>
       </div>
-      <div class="mt-3 flex justify-between items-center">
-        <div>
-          <p
-            v-if="draftLink && !isValidDraftLink"
-            class="note text-warning"
-          >
-            It doesn't look quite right.
-          </p>
-        </div>
+      <div v-if="link" class="text-right mt-3">
         <button
-          v-if="link"
           class="note text-blacks-40 sm:hover:text-blacks-70 transition-[color] duration-300"
           @click="removeLink"
         >
           Remove Link
         </button>
       </div>
-      <div class="fix-margin-bottom" style="top: 100%; bottom: 0; left: 0;" />
+      <div class="fix-margin-bottom" style="top: 126px; bottom: 0; left: 0;" />
     </div>
   </div>
 </template>
