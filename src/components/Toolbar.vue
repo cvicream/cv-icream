@@ -111,8 +111,8 @@ function createNote(event: MouseEvent) {
 
     rootElement.removeEventListener('click', createNote)
     document.removeEventListener('keydown', removeClickListener)
-    // rootElement.classList.remove('adding-note-mode')
-    // noteBtnRef.value!.classList.remove('adding-note-mode')
+    rootElement.classList.remove('adding-note-mode')
+    noteBtnRef.value!.classList.remove('adding-note-mode')
   }
 }
 
