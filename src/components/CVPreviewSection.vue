@@ -68,7 +68,8 @@ function redirect(path) {
   if (!props.readOnly) router.push(path)
 }
 
-function onMouseUp() {
+function onMouseUp(event: MouseEvent) {
+  event.preventDefault()
   const rootElement = document.getElementById('cv-preview')
   if (rootElement && rootElement.classList.contains('adding-note-mode')) return
 
