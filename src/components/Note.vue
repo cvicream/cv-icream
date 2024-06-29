@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { onMounted } from 'vue'
 import { onClickOutside } from '@vueuse/core'
 import { useToolbarStore } from '~/stores/toolbar'
 import type { Note } from '~/types'
@@ -13,7 +14,8 @@ const props = defineProps<{
 
 const toolbar = useToolbarStore()
 const noteRef = ref(null)
-const noteIconRef = ref<HTMLTextAreaElement | null>(null)
+const noteIconRef = ref<HTMLButtonElement | null>(null)
+const noteFormRef = ref<HTMLDivElement | null>(null)
 const editorRef = ref<HTMLTextAreaElement | null>(null)
 const show = ref(props.isOpen)
 const value = ref(props.note.value)
@@ -60,6 +62,22 @@ watch(editorRef, () => {
 
 watch(noteClasses, (newVal, oldVal) => {
   hasTransition.value = newVal !== oldVal
+})
+
+watch(show, () => {
+  if (show.value) {
+    setTimeout(() => {
+      noteFormRef.value?.scrollIntoView({ behavior: 'smooth' })
+    }, 0)
+  }
+})
+
+onMounted(() => {
+  if (noteFormRef.value && show.value) {
+    setTimeout(() => {
+      noteFormRef.value?.scrollIntoView({ behavior: 'smooth' })
+    }, 0)
+  }
 })
 
 const onRemove = () => {
@@ -202,7 +220,8 @@ function onMouseUp(event: MouseEvent) {
       <span class="i-custom:note w-8 h-8" />
     </button>
     <div
-      v-if="show"
+      v-show="show"
+      ref="noteFormRef"
       class="note-form bg-yellow"
       :class="[noteClasses, { 'note-move-transition': hasTransition }]"
     >

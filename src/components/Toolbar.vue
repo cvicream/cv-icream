@@ -97,7 +97,6 @@ const removeClickListener = (event: KeyboardEvent) => {
 }
 
 function createNote(event: MouseEvent) {
-  event.preventDefault()
   const rootElement = getRootElement()
   if (rootElement) {
     const boundingBox = rootElement.getBoundingClientRect()!
