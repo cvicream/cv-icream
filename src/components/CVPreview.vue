@@ -153,7 +153,7 @@ const handleRightPanelResize = (values) => {
     :class="{ 'cv-preview-read-only': readOnly }"
     style="min-height: inherit;"
   >
-    <div v-if="!readOnly && !isMobileScreen && !isMobileDevice()">
+    <template v-if="!readOnly && !isMobileScreen && !isMobileDevice()">
       <Note
         v-for="note in noteList"
         :key="note.id"
@@ -161,7 +161,7 @@ const handleRightPanelResize = (values) => {
         :note="note"
         :is-open="newNoteId === note.id"
       />
-    </div>
+    </template>
     <div
       class="w-full h-full"
       :class="currentState.fontFamily"
