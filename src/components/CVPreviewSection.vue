@@ -69,7 +69,6 @@ function redirect(path) {
 }
 
 function onMouseUp(event: MouseEvent) {
-  event.preventDefault()
   const rootElement = document.getElementById('cv-preview')
   if (rootElement && rootElement.classList.contains('adding-note-mode')) return
 
