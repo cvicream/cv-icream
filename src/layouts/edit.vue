@@ -22,6 +22,7 @@ const { isCVPreviewVisible, currentState, isMobileScreen, noteList } = storeToRe
 
 const isDesignBarOpen = ref(true)
 const scale = ref(100)
+
 const isNoteEditing = ref(false)
 const newNoteId = ref(0)
 
