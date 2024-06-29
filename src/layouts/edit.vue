@@ -18,10 +18,17 @@ import {
 
 const user = useUserStore()
 const toolbar = useToolbarStore()
-const { isCVPreviewVisible, currentState, isMobileScreen } = storeToRefs(toolbar)
+const { isCVPreviewVisible, currentState, isMobileScreen, noteList } = storeToRefs(toolbar)
 
 const isDesignBarOpen = ref(true)
 const scale = ref(100)
+const isNoteEditing = ref(false)
+const newNoteId = ref(0)
+
+toolbar.$onAction(({ name, args }) => {
+  if (name === 'addNote')
+    newNoteId.value = args[0].id
+})
 
 const scaleText = computed(() => {
   return `${scale.value.toString().replace(/[^0-9]/g, '')}%`
@@ -47,6 +54,13 @@ const isShortPage = ref<boolean>(false)
 watch(height, () => {
   const pages = Math.ceil(height.value / scaleA4Height.value)
   extraPages.value = pages > 0 ? pages - 1 : 0
+})
+
+watch(noteList, (newVal, oldVal) => {
+  if (newVal.length < oldVal.length) {
+    // make status of note editing to false when a note is removed
+    isNoteEditing.value = false
+  }
 })
 
 const resizer = ref<any>(null)
@@ -351,6 +365,15 @@ function toggleSidebar(isOpen) {
             }"
           >
             <CVPreview id="cv-preview" />
+            <div v-if="!isMobileScreen && !isMobileDevice()">
+              <Note
+                v-for="note in noteList"
+                :key="note.id"
+                v-model:is-note-editing="isNoteEditing"
+                :note="note"
+                :is-open="newNoteId === note.id"
+              />
+            </div>
           </div>
           <div
             v-for="index in extraPages"
