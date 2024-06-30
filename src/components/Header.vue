@@ -216,7 +216,7 @@ function deleteNotification() {
     </div>
     <div v-if="isEdit" class="leading-56px" @click="toggle">
       <button
-        class="w-14 h-8 rounded flex justify-center items-center gap-1 sm:hover:bg-primary-10"
+        class="w-14 h-8 rounded flex justify-center items-center gap-1 sm:hover:bg-primary-10 outline-none"
         @click.stop="toggle"
       >
         <span class="i-custom:download w-6 h-6 text-blacks-70" />
