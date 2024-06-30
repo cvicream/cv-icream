@@ -126,6 +126,13 @@ const topPanelStyle = computed(() => {
   return {}
 })
 
+watch(noteList, (newVal, oldVal) => {
+  if (newVal.length < oldVal.length) {
+    // make status of note editing to false when a note is removed
+    isNoteEditing.value = false
+  }
+})
+
 const handleTopPanelResized = (values) => {
   if (values.length === 2)
     toolbar.setTopPanelWidth(values.map(val => val.size))

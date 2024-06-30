@@ -67,6 +67,13 @@ function isObjectEmpty(obj) {
 function redirect(path) {
   if (!props.readOnly) router.push(path)
 }
+
+function onMouseUp(event: MouseEvent) {
+  const rootElement = document.getElementById('cv-preview')
+  if (rootElement && rootElement.classList.contains('adding-note-mode')) return
+
+  redirect(`/edit/${props.element.key}`)
+}
 </script>
 
 <template>
@@ -74,7 +81,7 @@ function redirect(path) {
     class="cv-preview-section"
     @mouseover="isHover = readOnly ? false : true"
     @mouseout="isHover = false"
-    @mouseup="redirect(`/edit/${element.key}`)"
+    @mouseup="onMouseUp"
   >
     <section
       v-if="element.key === 'about'"
