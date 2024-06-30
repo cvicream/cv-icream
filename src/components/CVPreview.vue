@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, nextTick } from 'vue'
 import { storeToRefs } from 'pinia'
 import vuedraggable from 'vuedraggable'
 import { Pane, Splitpanes } from 'splitpanes'
@@ -32,8 +32,17 @@ const newNoteId = ref(0)
 const isNoteEditing = ref(false)
 
 toolbar.$onAction(({ name, args }) => {
-  if (name === 'addNote')
+  if (name === 'addNote') {
+    const scrollContainer = document.getElementById('left-side')
+    const scrollTop = scrollContainer?.scrollTop
+    console.log(scrollTop)
     newNoteId.value = args[0].id
+
+    nextTick(() => {
+      console.log(scrollContainer, scrollTop)
+      if (scrollContainer && scrollTop) scrollContainer.scrollTop = scrollTop
+    })
+  }
 })
 
 const content = computed(() => {
