@@ -366,15 +366,15 @@ function toggleSidebar(isOpen) {
             }"
           >
             <CVPreview id="cv-preview" />
-          </div>
-          <div v-if="!isMobileScreen && !isMobileDevice()">
-            <Note
-              v-for="note in noteList"
-              :key="note.id"
-              v-model:is-note-editing="isNoteEditing"
-              :note="note"
-              :is-open="newNoteId === note.id"
-            />
+            <div v-if="!isMobileScreen && !isMobileDevice()">
+              <Note
+                v-for="note in noteList"
+                :key="note.id"
+                v-model:is-note-editing="isNoteEditing"
+                :note="note"
+                :is-open="newNoteId === note.id"
+              />
+            </div>
           </div>
           <div
             v-for="index in extraPages"
