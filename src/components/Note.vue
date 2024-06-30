@@ -14,7 +14,6 @@ const props = defineProps<{
 const toolbar = useToolbarStore()
 const noteRef = ref(null)
 const noteIconRef = ref<HTMLButtonElement | null>(null)
-const noteFormRef = ref<HTMLDivElement | null>(null)
 const editorRef = ref<HTMLTextAreaElement | null>(null)
 const show = ref(props.isOpen)
 const value = ref(props.note.value)
@@ -204,7 +203,6 @@ function onMouseUp(event: MouseEvent) {
     </button>
     <div
       v-show="show"
-      ref="noteFormRef"
       class="note-form bg-yellow"
       :class="[noteClasses, { 'note-move-transition': hasTransition }]"
     >
