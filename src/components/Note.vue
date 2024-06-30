@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { onMounted } from 'vue'
 import { onClickOutside } from '@vueuse/core'
 import { useToolbarStore } from '~/stores/toolbar'
 import type { Note } from '~/types'
@@ -62,22 +61,6 @@ watch(editorRef, () => {
 
 watch(noteClasses, (newVal, oldVal) => {
   hasTransition.value = newVal !== oldVal
-})
-
-watch(show, () => {
-  if (show.value) {
-    setTimeout(() => {
-      noteFormRef.value?.scrollIntoView({ behavior: 'smooth' })
-    }, 0)
-  }
-})
-
-onMounted(() => {
-  if (noteFormRef.value && show.value) {
-    setTimeout(() => {
-      noteFormRef.value?.scrollIntoView({ behavior: 'smooth' })
-    }, 0)
-  }
 })
 
 const onRemove = () => {
