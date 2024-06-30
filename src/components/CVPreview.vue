@@ -27,7 +27,14 @@ defineProps({
 const user = useUserStore()
 const { splitIndex, about, summary, experience, project, skill, education, certificate, contact, social } = storeToRefs(user)
 const toolbar = useToolbarStore()
-const { currentState } = storeToRefs(toolbar)
+const { currentState, isMobileScreen, noteList } = storeToRefs(toolbar)
+const newNoteId = ref(0)
+const isNoteEditing = ref(false)
+
+// toolbar.$onAction(({ name, args }) => {
+//   if (name === 'addNote')
+//     newNoteId.value = args[0].id
+// })
 
 const content = computed(() => {
   return [
@@ -119,6 +126,13 @@ const topPanelStyle = computed(() => {
   return {}
 })
 
+// watch(noteList, (newVal, oldVal) => {
+//   if (newVal.length < oldVal.length) {
+//     // make status of note editing to false when a note is removed
+//     isNoteEditing.value = false
+//   }
+// })
+
 const handleTopPanelResized = (values) => {
   if (values.length === 2)
     toolbar.setTopPanelWidth(values.map(val => val.size))
@@ -139,6 +153,15 @@ const handleRightPanelResize = (values) => {
     :class="{ 'cv-preview-read-only': readOnly }"
     style="min-height: inherit;"
   >
+    <!-- <div v-if="!readOnly && !isMobileScreen && !isMobileDevice()">
+      <Note
+        v-for="note in noteList"
+        :key="note.id"
+        v-model:is-note-editing="isNoteEditing"
+        :note="note"
+        :is-open="newNoteId === note.id"
+      />
+    </div> -->
     <div
       class="w-full h-full"
       :class="currentState.fontFamily"
