@@ -13,13 +13,32 @@ const props = defineProps<{
 
 const toolbar = useToolbarStore()
 const noteRef = ref(null)
-const noteIconRef = ref<HTMLTextAreaElement | null>(null)
+const noteIconRef = ref<HTMLButtonElement | null>(null)
 const editorRef = ref<HTMLTextAreaElement | null>(null)
 const show = ref(props.isOpen)
 const value = ref(props.note.value)
 const isDragging = ref(false)
 const left = ref(props.note.location.left)
 const top = ref(props.note.location.top)
+const shiftX = ref(0)
+const shiftY = ref(0)
+const hasTransition = ref(false)
+
+const noteClasses = computed(() => {
+  const classes: string[] = []
+
+  if (props.note.location.left > 0.6)
+    classes.push('note-left')
+  else
+    classes.push('note-right')
+
+  if (props.note.location.top > 0.8)
+    classes.push('note-bottom')
+  else
+    classes.push('note-top')
+
+  return classes.join(' ')
+})
 
 watch(() => value.value !== props.note.value, (isEditing) => {
   emit('update:isNoteEditing', isEditing)
@@ -39,53 +58,47 @@ watch(editorRef, () => {
     (editorRef.value as HTMLTextAreaElement).focus()
 })
 
-const noteClasses = computed(() => {
-  let classes = 'note-form bg-yellow'
-  if (props.note.location.left > 0.6)
-    classes += ' note-left'
-  else
-    classes += ' note-right'
-
-  if (props.note.location.top > 0.8)
-    classes += ' note-bottom'
-  else
-    classes += ' note-top'
-
-  return classes
+watch(noteClasses, (newVal, oldVal) => {
+  hasTransition.value = newVal !== oldVal
 })
+
+const onRemove = () => {
+  toolbar.removeNote(props.note.id)
+}
+
+const onSave = () => {
+  if (!value.value) {
+    onRemove()
+  }
+  else {
+    toolbar.modifyNote({
+      ...props.note,
+      value: value.value,
+    })
+  }
+
+  show.value = false
+}
 
 const onToggleNote = () => {
   if (isDragging.value) {
     isDragging.value = false
     return
   }
-  if (value.value !== props.note.value) {
+  if (!value.value) {
+    onRemove()
+  }
+  else if (value.value !== props.note.value) {
     value.value = props.note.value
     show.value = false
-    return
   }
-  if (!props.isNoteEditing)
-    show.value = !show.value
-}
-
-const onSave = () => {
-  toolbar.modifyNote({
-    ...props.note,
-    value: value.value,
-  })
-  show.value = false
-}
-
-const onRemove = () => {
-  toolbar.removeNote(props.note.id)
+  else if (!props.isNoteEditing) { show.value = !show.value }
 }
 
 onClickOutside(noteRef, (event) => {
-  if (!value.value && !props.isNoteEditing) toolbar.removeNote(props.note.id)
-  else if (value.value === props.note.value)
-    show.value = false
-  else if (editorRef.value)
-    (editorRef.value as HTMLTextAreaElement).focus()
+  if (!value.value && !props.isNoteEditing) onRemove()
+  else if (value.value === props.note.value) show.value = false
+  else if (editorRef.value) (editorRef.value as HTMLTextAreaElement).focus()
 })
 
 const onDragStart = () => {
@@ -128,25 +141,34 @@ function onMouseDown(event: MouseEvent) {
   document.addEventListener('mousemove', onMouseMove)
   document.addEventListener('mouseup', onMouseUp)
 
-  if (noteIconRef.value)
+  if (noteIconRef.value) {
+    shiftX.value = event.clientX - noteIconRef.value.getBoundingClientRect().x
+    shiftY.value = event.clientY - noteIconRef.value.getBoundingClientRect().y
     onDragStart()
+  }
 }
 
 function onMouseMove(event: MouseEvent) {
+  hasTransition.value = false // disable transition when dragging
+
   const parentContainerElement = document.getElementById('left-side')
   const parentElement = document.getElementById('cv-preview')
+
   if (noteIconRef.value && parentContainerElement && parentElement) {
     if (!isDragging.value) isDragging.value = true
+
     const parentRect = parentElement.getBoundingClientRect()
     const rect = noteIconRef.value.getBoundingClientRect()
-    const offsetLeft = event.clientX - parentRect.x
-    const offsetTop = event.clientY - parentRect.y
+    const offsetLeft = event.clientX - parentRect.x - shiftX.value
+    const offsetTop = event.clientY - parentRect.y - shiftY.value
+
     if (offsetLeft < 0
       || (offsetLeft + rect.width > parentRect.width)
       || offsetTop < 0
       || (parentRect.top >= 0 && offsetTop + parentRect.top + rect.width > parentRect.bottom)
       || (parentRect.top < 0 && offsetTop + rect.height > parentRect.height)
     ) return
+
     left.value = offsetLeft / parentRect.width
     top.value = offsetTop / parentRect.height
   }
@@ -163,24 +185,27 @@ function onMouseUp(event: MouseEvent) {
   document.removeEventListener('mousemove', onMouseMove)
   document.removeEventListener('mouseup', onMouseUp)
   onDragEnd()
+
+  shiftX.value = 0
+  shiftY.value = 0
 }
 </script>
 
 <template>
-  <div
-    ref="noteRef"
-  >
+  <div ref="noteRef">
     <button
       ref="noteIconRef"
       class="note-icon bg-yellow"
       @click="onToggleNote"
       @mousedown="onMouseDown"
     >
-      <span
-        class="i-custom:note w-8 h-8"
-      />
+      <span class="i-custom:note w-8 h-8" />
     </button>
-    <div v-if="show" :class="noteClasses">
+    <div
+      v-show="show"
+      class="note-form bg-yellow"
+      :class="[noteClasses, { 'note-move-transition': hasTransition }]"
+    >
       <div class="flex justify-between items-center">
         <span class="note text-blacks-70">Note</span>
         <div class="flex items-center gap-3">
@@ -193,7 +218,7 @@ function onMouseUp(event: MouseEvent) {
       </div>
       <textarea
         ref="editorRef"
-        v-model="value"
+        v-model.trim="value"
         placeholder="Note down here..."
         class="form-textarea h-[130px] custom-scrollbar"
       />
@@ -217,6 +242,10 @@ function onMouseUp(event: MouseEvent) {
   padding: 16px;
   z-index: 2;
   top: calc(v-bind('top') * 100%);
+
+  &.note-move-transition {
+    transition: all 0.3s;
+  }
   &.note-right {
     left: calc((v-bind('left')) * 100% + 40px);
   }

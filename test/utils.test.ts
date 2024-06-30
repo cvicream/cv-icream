@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { addSuffixToParagraph, getColor, getFontSizeClassName, hexToRgb, isEditorEmpty, isSameMonth, rgbToHex, stripHtml, validateEmail } from '~/utils'
+import { addSuffixToParagraph, getColor, getFontSizeClassName, hexToRgb, isEditorEmpty, isSameMonth, isValidHttpUrl, rgbToHex, stripHtml, validateEmail } from '~/utils'
 
 describe('Utils', () => {
   it('hexToRgb', () => {
@@ -70,5 +70,20 @@ describe('isSameMonth', () => {
     const date2 = new Date(2022, 0, 15)
     const result = isSameMonth(date1, date2)
     expect(result).toBe(true)
+  })
+})
+
+describe('isValidHttpUrl', () => {
+  it('should return false when given a invalid http URL', () => {
+    const invalidUrl = 'text'
+    expect(isValidHttpUrl(invalidUrl)).toBe(false)
+  })
+  it('should return true when given a valid http URL', () => {
+    const validUrl = 'http://example.com'
+    expect(isValidHttpUrl(validUrl)).toBe(true)
+  })
+  it('should return false when given a URL without protocol', () => {
+    const invalidUrl = 'www.example.com'
+    expect(isValidHttpUrl(invalidUrl)).toBe(false)
   })
 })
