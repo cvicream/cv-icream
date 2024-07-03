@@ -223,6 +223,22 @@ export default defineComponent({
       handleToolbarVisible()
     })
 
+    watch(linkEditVisible, () => {
+      if (linkEditVisible.value) {
+        setTimeout(() => {
+          linkEdit.value?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+        })
+      }
+    })
+
+    watch(linkTooltipVisible, () => {
+      if (linkTooltipVisible.value) {
+        setTimeout(() => {
+          linkTooltip.value?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+        })
+      }
+    })
+
     onClickOutside(chatGPTEdit, (event) => {
       chatGPTEditVisible.value = false
     })
