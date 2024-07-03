@@ -414,8 +414,8 @@ export default defineComponent({
       if (datepicker.value) {
         datepicker.value.toggleMenu()
         setTimeout(() => {
-          datepicker.value?.$el.scrollIntoView({ behavior: 'smooth' })
-        }, 100)
+          datepicker.value?.$el.scrollIntoView({ behavior: 'smooth', block: 'center' })
+        })
       }
     }
 
