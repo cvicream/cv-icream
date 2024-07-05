@@ -223,6 +223,22 @@ export default defineComponent({
       handleToolbarVisible()
     })
 
+    watch(linkEditVisible, () => {
+      if (linkEditVisible.value) {
+        setTimeout(() => {
+          linkEdit.value?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+        })
+      }
+    })
+
+    watch(linkTooltipVisible, () => {
+      if (linkTooltipVisible.value) {
+        setTimeout(() => {
+          linkTooltip.value?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+        })
+      }
+    })
+
     onClickOutside(chatGPTEdit, (event) => {
       chatGPTEditVisible.value = false
     })
@@ -411,8 +427,12 @@ export default defineComponent({
     }
 
     function toggleDatePicker() {
-      if (datepicker.value)
+      if (datepicker.value) {
         datepicker.value.toggleMenu()
+        setTimeout(() => {
+          datepicker.value?.$el.scrollIntoView({ behavior: 'smooth', block: 'center' })
+        })
+      }
     }
 
     function onInternalDateChange(value) {
@@ -630,6 +650,7 @@ export default defineComponent({
       multi-calendars
       hide-input-icon
       input-class-name="!h-0 !overflow-hidden"
+      :auto-position="false"
       :menu-class-name="isMobileDatePicker ? 'dp-custom-menu' : ''"
       :clearable="false"
       :format="formatDate"
@@ -943,6 +964,7 @@ export default defineComponent({
 
 .dp__theme_light {
   --dp-primary-color: var(--primary-color);
+  margin-bottom: 32px;
 }
 .dp-custom-menu .dp__flex_display {
   display: flex;
