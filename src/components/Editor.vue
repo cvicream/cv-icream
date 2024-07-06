@@ -48,6 +48,10 @@ export default defineComponent({
       type: Boolean,
       default: false,
     },
+    datepickerEnable: {
+      type: Boolean,
+      default: false,
+    },
     toolOptions: {
       type: Array as PropType<Array<Option>>,
       default: cloneDeep(defaultEditorToolOptions),
@@ -84,7 +88,7 @@ export default defineComponent({
     const link = ref('')
     const tooltipText = ref('')
     const datepicker = ref<DatePickerInstance>(null)
-    const internalDateRange = ref([])
+    const internalDateRange = ref<Date | Date[]>([])
     const isPresent = ref(false)
 
     const content = computed({
@@ -435,12 +439,12 @@ export default defineComponent({
       }
     }
 
-    function onInternalDateChange(value) {
+    function onInternalDateChange(value: Date | Date[]) {
       internalDateRange.value = value
       isPresent.value = value && value[1] && isSameMonth(value[1], new Date())
     }
 
-    function onDateChange(modelData) {
+    function onDateChange(modelData: { year: number; month: number }[]) {
       const [startData, endData] = modelData
       const res: string[] = []
       if (startData) res.push(new Date(startData.year, startData.month).toLocaleString('default', { year: 'numeric', month: 'long' }))
@@ -564,8 +568,12 @@ export default defineComponent({
       }"
     >
       <div class="toolbar-button-group">
-        <div v-if="chatgptEnable && isToolEnabled('chatgpt')" class="flex items-center">
+        <div
+          v-if="chatgptEnable || datepickerEnable"
+          class="flex items-center"
+        >
           <Tooltip
+            v-if="chatgptEnable"
             small
             placement="right"
             :text="tooltipText"
@@ -585,6 +593,19 @@ export default defineComponent({
               @click="onChatGPTClick"
             >
               <span class="i-custom:chatgpt" :class="isMobileScreen ? 'w-6 h-6' : 'w-4.5 h-4.5'" />
+            </button>
+          </Tooltip>
+          <Tooltip
+            v-if="datepickerEnable"
+            small
+            placement="right"
+            text="Date Picker"
+          >
+            <button
+              :class="isMobileScreen ? 'btn-icon-32' : 'btn-icon-24'"
+              @click="toggleDatePicker"
+            >
+              <span class="i-custom:datepicker" :class="isMobileScreen ? 'w-6 h-6' : 'w-4.5 h-4.5'" />
             </button>
           </Tooltip>
           <div class="h-5 mx-2 border-l border-blacks-20" />
@@ -614,21 +635,6 @@ export default defineComponent({
           <button v-if="isToolEnabled('link') && showLinkTool" class="ql-link" :class="isMobileScreen ? 'btn-icon-32' : 'btn-icon-24'">
             <span class="i-custom:link" :class="isMobileScreen ? 'w-6 h-6' : 'w-4.5 h-4.5'" />
           </button>
-        </div>
-        <div class="flex items-center">
-          <div class="h-5 mx-2 border-l border-blacks-20" />
-          <Tooltip
-            small
-            placement="left"
-            text="Date Picker"
-          >
-            <button
-              :class="isMobileScreen ? 'btn-icon-32' : 'btn-icon-24'"
-              @click="toggleDatePicker"
-            >
-              <span class="i-custom:datepicker" :class="isMobileScreen ? 'w-6 h-6' : 'w-4.5 h-4.5'" />
-            </button>
-          </Tooltip>
         </div>
       </div>
     </div>

@@ -15,6 +15,10 @@ export const DEFAULT_RIGHT_PANEL_WIDTH = [75, 25] // value in percent
 
 export const defaultEditorToolOptions = [
   {
+    value: 'datepicker',
+    label: 'datepicker',
+  },
+  {
     value: 'chatgpt',
     label: 'chatgpt',
   },
