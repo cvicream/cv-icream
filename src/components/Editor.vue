@@ -415,13 +415,13 @@ export default defineComponent({
       tooltipText.value = ''
     }
 
-    function formatDate(value) {
+    function formatDate(value: Date | Date[]) {
       if (Array.isArray(value)) {
         const [startDate, endDate] = value
         const res: string[] = []
         if (startDate) res.push(startDate.toLocaleString('default', { year: 'numeric', month: 'long' }))
         if (isPresent.value) res.push('Present')
-        else if (endDate) res.push(endDate.toLocaleString('default', { year: 'numeric', month: 'long' }))
+        else if (endDate && !isSameMonth(startDate, endDate)) res.push(endDate.toLocaleString('default', { year: 'numeric', month: 'long' }))
         return res.join(' - ')
       }
       else if (value instanceof Date) {
@@ -445,11 +445,11 @@ export default defineComponent({
     }
 
     function onDateChange(modelData: { year: number; month: number }[]) {
-      const [startData, endData] = modelData
+      const [startDate, endDate] = modelData
       const res: string[] = []
-      if (startData) res.push(new Date(startData.year, startData.month).toLocaleString('default', { year: 'numeric', month: 'long' }))
+      if (startDate) res.push(new Date(startDate.year, startDate.month).toLocaleString('default', { year: 'numeric', month: 'long' }))
       if (isPresent.value) res.push('Present')
-      else if (endData) res.push(new Date(endData.year, endData.month).toLocaleString('default', { year: 'numeric', month: 'long' }))
+      else if (endDate && (endDate.year !== startDate.year || endDate.month !== startDate.month)) res.push(new Date(endDate.year, endDate.month).toLocaleString('default', { year: 'numeric', month: 'long' }))
       const text = res.join(' - ')
       if (editor.value) {
         const quill = (editor.value as Quill).getQuill()
