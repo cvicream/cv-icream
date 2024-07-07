@@ -978,4 +978,9 @@ export default defineComponent({
   display: flex;
   flex-direction: column;
 }
+.dp__overlay_cell_disabled,
+.dp__overlay_cell_disabled:hover {
+  color: #D3D3D3;
+  background-color: white;
+}
 </style>
