@@ -39,7 +39,7 @@ const sidebarMenus = computed(() => {
       id: 'about',
       name: 'About',
       path: '/edit/about',
-      icon: 'i-origin:about',
+      icon: 'i-custom:about',
       order: 0, // set to 0 if draggable is false
       draggable: false,
       ...getObjectProperties(about.value),
@@ -48,7 +48,7 @@ const sidebarMenus = computed(() => {
       id: 'contact',
       name: 'Contact',
       path: '/edit/contact',
-      icon: 'i-origin:contact',
+      icon: 'i-origin:contact', // the disabled style of 'i-custom:contact' icon is not working for some reason
       order: 1,
       draggable: props.draggable,
       ...getObjectProperties(contact.value),
@@ -57,7 +57,8 @@ const sidebarMenus = computed(() => {
       id: 'summary',
       name: 'Summary',
       path: '/edit/summary',
-      icon: 'i-origin:summary',
+      icon: 'i-custom:summary',
+      disabledIcon: 'i-custom:summary',
       order: 2,
       draggable: props.draggable,
       ...getObjectProperties(summary.value),
@@ -66,7 +67,7 @@ const sidebarMenus = computed(() => {
       id: 'experience',
       name: 'Experience',
       path: '/edit/experience',
-      icon: 'i-origin:experience',
+      icon: 'i-custom:experience',
       order: 3,
       draggable: props.draggable,
       ...getObjectProperties(experience.value),
@@ -75,7 +76,7 @@ const sidebarMenus = computed(() => {
       id: 'project',
       name: 'Project',
       path: '/edit/project',
-      icon: 'i-origin:project',
+      icon: 'i-custom:project',
       order: 4,
       draggable: props.draggable,
       ...getObjectProperties(project.value),
@@ -84,7 +85,7 @@ const sidebarMenus = computed(() => {
       id: 'skill',
       name: 'Skill',
       path: '/edit/skill',
-      icon: 'i-origin:skill',
+      icon: 'i-custom:skill',
       order: 5,
       draggable: props.draggable,
       ...getObjectProperties(skill.value),
@@ -93,7 +94,7 @@ const sidebarMenus = computed(() => {
       id: 'education',
       name: 'Education',
       path: '/edit/education',
-      icon: 'i-origin:education',
+      icon: 'i-custom:education',
       order: 6,
       draggable: props.draggable,
       ...getObjectProperties(education.value),
@@ -102,7 +103,7 @@ const sidebarMenus = computed(() => {
       id: 'certificate',
       name: 'Certificate',
       path: '/edit/certificate',
-      icon: 'i-origin:certificate',
+      icon: 'i-custom:certificate',
       order: 7,
       draggable: props.draggable,
       ...getObjectProperties(certificate.value),
@@ -111,7 +112,7 @@ const sidebarMenus = computed(() => {
       id: 'social',
       name: 'Social Media',
       path: '/edit/social',
-      icon: 'i-origin:social',
+      icon: 'i-custom:social',
       order: 8,
       draggable: props.draggable,
       ...getObjectProperties(social.value),
@@ -135,7 +136,9 @@ const draggableMenus = computed({
 
 const sidebar = ref<any>(null)
 const drag = ref(true)
-const expandTooltip = ref(false)
+const isTooltipVisible = ref(false)
+const tooltipTop = ref<number>(0)
+const tooltipText = ref<string>('')
 
 const menuOpenWidth = computed(() => {
   return props.isOpen && !props.isMobile ? 236 : 64
@@ -164,12 +167,31 @@ function resize() {
     props.setOpen(false)
 }
 
+function showTooltip(event: MouseEvent, text: string) {
+  if (props.isOpen && !text.includes('Sidebar')) return
+
+  const target = event.target as HTMLElement
+  if (target.offsetTop && target.offsetHeight) {
+    const top = target.offsetTop + target.offsetHeight / 2
+    tooltipTop.value = top
+    tooltipText.value = text
+    isTooltipVisible.value = true
+  }
+}
+
+function hideTooltip() {
+  isTooltipVisible.value = false
+  tooltipText.value = ''
+}
+
 function toggleSidebar() {
   const value = !props.isOpen
   props.setOpen(value)
 
   if (!props.isMobile)
     props.toggle(value)
+
+  hideTooltip()
 }
 
 function isActivePath(targetPath: string) {
@@ -192,10 +214,14 @@ function onMenuClick(id, path) {
 
 <template>
   <div ref="sidebar" class="sidebar w-full h-full bg-white relative flex">
-    <div v-if="expandTooltip" class="absolute top-[34px]">
+    <div
+      v-if="isTooltipVisible"
+      class="absolute"
+      :style="`top: ${tooltipTop}px`"
+    >
       <Tooltip
         :placement="isOpen ? 'left': 'right'"
-        :text="isOpen ? 'Hide Sidebar' : 'Open Sidebar'"
+        :text="tooltipText"
         :class="isOpen ? 'left-48':'left-13'"
         style="display: block;"
       />
@@ -205,10 +231,11 @@ function onMenuClick(id, path) {
       :class="isOpen ? 'sm:w-[236px] px-5' : 'sm:w-[64px] px-1'"
     >
       <button
+        class="w-6 h-6"
         :class="isOpen ? 'self-end' : 'self-center'"
-        @click="toggleSidebar(); expandTooltip = false"
-        @mouseover="expandTooltip = true"
-        @mouseout="expandTooltip = false"
+        @click="toggleSidebar"
+        @mouseover="showTooltip($event, isOpen ? 'Hide Sidebar' : 'Open Sidebar')"
+        @mouseout="hideTooltip"
       >
         <span
           v-if="isOpen"
@@ -233,6 +260,8 @@ function onMenuClick(id, path) {
           :show-only-icon="!isOpen"
           :disabled="!user[element.id]?.isShow"
           :click="onMenuClick"
+          @mouseover="showTooltip($event, element.name)"
+          @mouseout="hideTooltip"
         />
 
         <vuedraggable
@@ -254,6 +283,8 @@ function onMenuClick(id, path) {
               :show-only-icon="!isOpen"
               :disabled="!user[element.id]?.isShow"
               :click="onMenuClick"
+              @mouseover="showTooltip($event, element.name)"
+              @mouseout="hideTooltip"
             />
           </template>
         </vuedraggable>
