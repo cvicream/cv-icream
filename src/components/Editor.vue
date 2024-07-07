@@ -455,6 +455,8 @@ export default defineComponent({
         const quill = (editor.value as Quill).getQuill()
         const selection = quill.getSelection(true)
         const index = selection ? selection.index : 0
+        const length = selection ? selection.length : 0
+        if (length) quill.deleteText(index, length) // delete selected text
         quill.insertText(index, text)
       }
     }
