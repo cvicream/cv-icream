@@ -241,6 +241,7 @@ function onMenuClick(id, path) {
           delay-on-touch-only
           :delay="isMobileDevice() ? 250 : 0"
           :animation="200"
+          class="flex flex-col gap-4"
           @start="drag = true"
           @end="drag = false"
         >
