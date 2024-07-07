@@ -97,6 +97,7 @@ export default defineConfig({
   safelist: [
     'prose', 'prose-sm', 'm-auto', 'text-left',
     'i-custom:layout-right', 'i-custom:layout-left', 'i-custom:layout-full',
+    'i-origin:experience', 'i-origin:project', 'i-origin:skill', 'i-origin:education', 'i-origin:certificate', 'i-origin:social',
     'i-custom:idea',
     'font-arial', 'font-georgia', 'font-gill-sans', 'font-helvetica', 'font-times-new-roman', 'font-lato',
     'w-[262px]', 'w-[260px]', 'rounded-t-xl', 'rounded-b-xl',
