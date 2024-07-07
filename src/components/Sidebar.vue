@@ -194,10 +194,10 @@ function onMenuClick(id, path) {
   <div ref="sidebar" class="sidebar w-full h-full bg-white relative flex">
     <div v-if="expandTooltip" class="absolute top-[34px]">
       <Tooltip
-        :placement="isOpen ?'left': 'right'"
+        :placement="isOpen ? 'left': 'right'"
         :text="isOpen ? 'Hide Sidebar' : 'Open Sidebar'"
-        :class="isOpen ? 'left-48':'left-13' "
-        style="display:block;"
+        :class="isOpen ? 'left-48':'left-13'"
+        style="display: block;"
       />
     </div>
     <div
