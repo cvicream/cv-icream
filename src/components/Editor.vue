@@ -16,7 +16,7 @@ import { cloneDeep } from 'lodash'
 import { useToolbarStore } from '~/stores/toolbar'
 import type { Option } from '~/types'
 import { defaultChatGPTQuestionOptions, defaultEditorToolOptions } from '~/constants'
-import { isSameMonth, isValidHttpUrl } from '~/utils'
+import { isSameMonth, isValidDate, isValidHttpUrl } from '~/utils'
 
 export default defineComponent({
   components: {
@@ -433,10 +433,26 @@ export default defineComponent({
     function toggleDatePicker() {
       if (datepicker.value) {
         datepicker.value.toggleMenu()
+        // check if date is selected
+        const selectedDates = parseSelectedDateString(selectedText.value)
+        if (selectedDates.length)
+          datepicker.value.updateInternalModelValue(selectedDates)
+
         setTimeout(() => {
           datepicker.value?.$el.scrollIntoView({ behavior: 'smooth', block: 'center' })
         })
       }
+    }
+
+    function parseSelectedDateString(text: string): Date[] {
+      if (!text) return []
+
+      const [startDateString, endDateString] = text.split(' - ').map(v => v.trim())
+      const res: Date[] = []
+      if (isValidDate(startDateString)) res.push(new Date(startDateString))
+      if (endDateString === 'Present') res.push(new Date())
+      else if (isValidDate(endDateString)) res.push(new Date(endDateString))
+      return res
     }
 
     function onInternalDateChange(value: Date | Date[]) {
