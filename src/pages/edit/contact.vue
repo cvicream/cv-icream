@@ -63,7 +63,6 @@ function focusOut(index) {
               class-name="mt-1"
               :enable="item.isShow"
               :placeholder="DEFAULT_TEMPLATE.contact.list[0].paragraph"
-              :chatgpt-enable="false"
             />
           </div>
         </div>

@@ -243,7 +243,7 @@ function isSameMonth(date1: Date, date2: Date): boolean {
 /**
  * Check if a given text is a valid http url
  *
- * @param {String} text
+ * @param {string} text
  * @return {boolean} true if the text is a valid http url, false otherwise
  */
 function isValidHttpUrl(text: string) {
@@ -254,6 +254,16 @@ function isValidHttpUrl(text: string) {
   catch (error) {
     return false
   }
+}
+
+/**
+ * Check if a given text is a valid date
+ *
+ * @param {string} text
+ * @return {boolean} true if the text is a valid date, false otherwise
+ */
+function isValidDate(text: string): boolean {
+  return new Date(text).toString() !== 'Invalid Date'
 }
 
 export {
@@ -281,4 +291,5 @@ export {
   addSuffixToParagraph,
   isSameMonth,
   isValidHttpUrl,
+  isValidDate,
 }
