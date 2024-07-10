@@ -202,14 +202,6 @@ export default defineComponent({
           delta.ops = ops
           return delta
         })
-
-        editorElement.addEventListener('keydown', (event) => {
-          const keyboardEvent = event as KeyboardEvent
-          if (['Equal', 'Minus'].includes(keyboardEvent.code)) {
-            // prevent zoom in/out
-            keyboardEvent.stopPropagation()
-          }
-        })
       }
 
       createAnchorListeners()
