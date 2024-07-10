@@ -4,6 +4,7 @@ import { ref } from 'vue'
 import { useClipboard } from '@vueuse/core'
 import axios from 'axios'
 import type { Option } from '~/types'
+import { useNotificationStore } from '~/stores/notification'
 import { isMobileDevice, isSafari } from '~/utils'
 
 const emit = defineEmits(['close'])
@@ -34,7 +35,7 @@ const loading = ref(false)
 const abortController = ref<AbortController>()
 const resultVisible = ref(false)
 const result = ref('')
-const notificationVisible = ref(false)
+const notification = useNotificationStore()
 
 function closeModal() {
   emit('close')
@@ -117,7 +118,10 @@ function cancelRequest() {
 
 function copyToClipboard(val) {
   copy(val)
-  notificationVisible.value = true
+  notification.set({
+    message: 'The result has been copied!',
+    duration: 4000,
+  })
 }
 </script>
 
@@ -233,14 +237,6 @@ function copyToClipboard(val) {
         </div>
       </div>
     </div>
-
-    <Notification
-      v-if="notificationVisible"
-      message="The result has been copied!"
-      :visible="notificationVisible"
-      :duration="4000"
-      @close="notificationVisible = false"
-    />
 
     <div class="fix-margin-bottom" style="top: 100%; left: 0;" />
   </div>

@@ -133,20 +133,25 @@ onUnmounted(() => {
   window.removeEventListener('resize', resize)
 })
 
+function hasCtrlKey(event) {
+  if (isMac()) return event.metaKey || event.ctrlKey
+  else return event.ctrlKey
+}
+
 function overrideDefaultZoom() {
   document.addEventListener('keydown', (event) => {
     // use `event.code` to check if it needs to zoom in/out
-    if (['Equal'].includes(event.code)) {
+    if (hasCtrlKey(event) && ['Equal'].includes(event.code)) {
       zoomIn()
       event.preventDefault()
     }
-    else if (['Minus'].includes(event.code)) {
+    else if (hasCtrlKey(event) && ['Minus'].includes(event.code)) {
       zoomOut()
       event.preventDefault()
     }
   })
   document.addEventListener('wheel', (event) => {
-    if ((isMac() && (event.metaKey || event.ctrlKey)) || (!isMac() && event.ctrlKey)) {
+    if (hasCtrlKey(event)) {
       if (event.deltaY < 0) zoomIn(5)
       else if (event.deltaY > 0) zoomOut(5)
 
@@ -328,12 +333,12 @@ function toggleSidebar(isOpen) {
       <div
         id="left-side"
         ref="leftSide"
-        class="h-[calc(100%-8px)] bg-white px-3 pt-[52px] pb-7 overflow-auto custom-scrollbar flex-grow flex-shrink sm:px-7 sm:py-15 m-1 transition-all duration-200 relative"
+        class="h-[calc(100%-8px)] bg-white px-3 pt-[52px] pb-7 overflow-auto custom-scrollbar flex-grow flex-shrink sm:px-7 sm:pt-15 sm:pb-[132px] m-1 transition-all duration-200"
         :class="{ 'absolute hidden': isMobileScreen && !isCVPreviewVisible }"
         :style="isMobileScreen ? 'width: 100%' : `width: ${leftWidth}px`"
       >
         <div
-          class="mx-auto"
+          class="mx-auto relative"
           :style="{
             width: cvPreviewWidth,
             height: cvPreviewHeight,

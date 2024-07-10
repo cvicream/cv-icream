@@ -221,6 +221,51 @@ function addSuffixToParagraph(htmlString, suffix) {
   return `<p>${res.join(' ')}</p>`
 }
 
+/**
+ * Check if two dates are in the same month.
+ *
+ * @param {Date} date1 the first date
+ * @param {Date} date2 the second date
+ * @return {boolean} true if the two dates are in the same month, false otherwise
+ */
+function isSameMonth(date1: Date, date2: Date): boolean {
+  // check if two dates are in the same month
+  //
+  // Parameters:
+  //   date1 (Date): the first date
+  //   date2 (Date): the second date
+  //
+  // Returns:
+  //   (boolean): true if the two dates are in the same month, false otherwise
+  return date1.getFullYear() === date2.getFullYear() && date1.getMonth() === date2.getMonth()
+}
+
+/**
+ * Check if a given text is a valid http url
+ *
+ * @param {string} text
+ * @return {boolean} true if the text is a valid http url, false otherwise
+ */
+function isValidHttpUrl(text: string) {
+  try {
+    const url = new URL(text)
+    return url.protocol === 'http:' || url.protocol === 'https:'
+  }
+  catch (error) {
+    return false
+  }
+}
+
+/**
+ * Check if a given text is a valid date
+ *
+ * @param {string} text
+ * @return {boolean} true if the text is a valid date, false otherwise
+ */
+function isValidDate(text: string): boolean {
+  return new Date(text).toString() !== 'Invalid Date'
+}
+
 export {
   hasStorage,
   getStorage,
@@ -244,4 +289,7 @@ export {
   isMac,
   isOutOfViewport,
   addSuffixToParagraph,
+  isSameMonth,
+  isValidHttpUrl,
+  isValidDate,
 }

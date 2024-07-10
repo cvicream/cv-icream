@@ -23,7 +23,7 @@ function handleClick() {
 <template>
   <button
     :key="path"
-    class="flex items-center px-3 py-2 user-select-none sm:hover:bg-primary-10 sm:hover:rounded"
+    class="w-full flex items-center px-3 py-2 user-select-none sm:hover:bg-primary-10 sm:hover:rounded"
     :class="isActivePath(path) && 'bg-primary-10 rounded'"
     @click="handleClick"
   >

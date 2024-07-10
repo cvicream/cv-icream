@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { addSuffixToParagraph, getColor, getFontSizeClassName, hexToRgb, isEditorEmpty, rgbToHex, stripHtml, validateEmail } from '~/utils'
+import { addSuffixToParagraph, getColor, getFontSizeClassName, hexToRgb, isEditorEmpty, isSameMonth, isValidDate, isValidHttpUrl, rgbToHex, stripHtml, validateEmail } from '~/utils'
 
 describe('Utils', () => {
   it('hexToRgb', () => {
@@ -52,5 +52,49 @@ describe('Utils', () => {
     expect(addSuffixToParagraph('<p>Job title</p>', '')).toEqual('<p>Job title</p>')
     expect(addSuffixToParagraph('<p></p>', '(Copy)')).toEqual('<p>(Copy)</p>')
     expect(addSuffixToParagraph('<p></p>', '')).toEqual('<p></p>')
+  })
+})
+
+describe('isSameMonth', () => {
+  // Returns true when both dates are in the same month and year
+  it('should return true when both dates are in the same month and year', () => {
+    const date1 = new Date(2022, 0, 15)
+    const date2 = new Date(2022, 0, 25)
+    const result = isSameMonth(date1, date2)
+    expect(result).toBe(true)
+  })
+
+  // Returns true when both dates are the same
+  it('should return true when both dates are the same', () => {
+    const date1 = new Date(2022, 0, 15)
+    const date2 = new Date(2022, 0, 15)
+    const result = isSameMonth(date1, date2)
+    expect(result).toBe(true)
+  })
+})
+
+describe('isValidHttpUrl', () => {
+  it('should return false when given a invalid http URL', () => {
+    const invalidUrl = 'text'
+    expect(isValidHttpUrl(invalidUrl)).toBe(false)
+  })
+  it('should return true when given a valid http URL', () => {
+    const validUrl = 'http://example.com'
+    expect(isValidHttpUrl(validUrl)).toBe(true)
+  })
+  it('should return false when given a URL without protocol', () => {
+    const invalidUrl = 'www.example.com'
+    expect(isValidHttpUrl(invalidUrl)).toBe(false)
+  })
+})
+
+describe('isValidDate', () => {
+  it('should return false when given an invalid date', () => {
+    const invalidDate = 'invalid-date'
+    expect(isValidDate(invalidDate)).toBe(false)
+  })
+  it('should return true when given a valid date', () => {
+    const validDate = '2024-07-07'
+    expect(isValidDate(validDate)).toBe(true)
   })
 })

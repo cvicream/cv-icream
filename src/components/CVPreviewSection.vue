@@ -67,15 +67,23 @@ function isObjectEmpty(obj) {
 function redirect(path) {
   if (!props.readOnly) router.push(path)
 }
+
+function onMouseUp(event: MouseEvent) {
+  const rootElement = document.getElementById('cv-preview')
+  if (rootElement && rootElement.classList.contains('adding-note-mode')) return
+
+  redirect(`/edit/${props.element.key}`)
+}
 </script>
 
 <template>
   <div
+    class="cv-preview-section"
     @mouseover="isHover = readOnly ? false : true"
     @mouseout="isHover = false"
-    @mouseup="redirect(`/edit/${element.key}`)"
+    @mouseup="onMouseUp"
   >
-    <div
+    <section
       v-if="element.key === 'about'"
       id="about"
       class="p-2 flex items-baseline flex-wrap gap-6 not-break-out sm:hover:bg-primary-10"
@@ -95,7 +103,7 @@ function redirect(path) {
         ]"
         v-html="isEditorEmpty(about.jobTitle) ? getHintText(about.isEditing, DEFAULT_TEMPLATE.about.jobTitle) : about.jobTitle"
       />
-    </div>
+    </section>
 
     <section
       v-else-if="element.key === 'summary' && summary.isShow"
@@ -516,6 +524,12 @@ function redirect(path) {
 </template>
 
 <style lang="scss">
+  .cv-preview-section section[class*="bg-primary-10"] *[style*="background-color: var(--secondary-color);"],
+  .cv-preview-section div[class*="bg-primary-10"] *[style*="background-color: var(--secondary-color);"],
+  .cv-preview-section:hover *[style*="background-color: var(--secondary-color);"] {
+    background-color: white !important;
+  }
+
   #social {
     .paragraph-default {
       display: flex;

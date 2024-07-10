@@ -24,3 +24,8 @@ export interface Note {
   }
   value: string
 }
+
+export interface Notification {
+  message: string
+  duration?: number
+}

@@ -44,7 +44,6 @@ function focusOut() {
           class-name="mt-1"
           :placeholder="stripHtml(DEFAULT_TEMPLATE.about.name)"
           :is-single-line="true"
-          :chatgpt-enable="false"
         />
       </div>
       <div>
@@ -54,7 +53,6 @@ function focusOut() {
           class-name="mt-1"
           :placeholder="stripHtml(DEFAULT_TEMPLATE.about.jobTitle)"
           :is-single-line="true"
-          :chatgpt-enable="false"
         />
       </div>
     </div>
