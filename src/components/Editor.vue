@@ -16,7 +16,7 @@ import { cloneDeep } from 'lodash'
 import { useToolbarStore } from '~/stores/toolbar'
 import type { Option } from '~/types'
 import { defaultChatGPTQuestionOptions, defaultEditorToolOptions } from '~/constants'
-import { isSameMonth, isValidHttpUrl } from '~/utils'
+import { isSameMonth, isValidDate, isValidHttpUrl } from '~/utils'
 
 export default defineComponent({
   components: {
@@ -45,6 +45,10 @@ export default defineComponent({
       default: false,
     },
     chatgptEnable: {
+      type: Boolean,
+      default: false,
+    },
+    datepickerEnable: {
       type: Boolean,
       default: false,
     },
@@ -84,7 +88,7 @@ export default defineComponent({
     const link = ref('')
     const tooltipText = ref('')
     const datepicker = ref<DatePickerInstance>(null)
-    const internalDateRange = ref([])
+    const internalDateRange = ref<Date | Date[]>([])
     const isPresent = ref(false)
 
     const content = computed({
@@ -202,14 +206,6 @@ export default defineComponent({
           delta.ops = ops
           return delta
         })
-
-        editorElement.addEventListener('keydown', (event) => {
-          const keyboardEvent = event as KeyboardEvent
-          if (['Equal', 'Minus'].includes(keyboardEvent.code)) {
-            // prevent zoom in/out
-            keyboardEvent.stopPropagation()
-          }
-        })
       }
 
       createAnchorListeners()
@@ -221,6 +217,22 @@ export default defineComponent({
 
     watch(toolbarVisible, () => {
       handleToolbarVisible()
+    })
+
+    watch(linkEditVisible, () => {
+      if (linkEditVisible.value) {
+        setTimeout(() => {
+          linkEdit.value?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+        })
+      }
+    })
+
+    watch(linkTooltipVisible, () => {
+      if (linkTooltipVisible.value) {
+        setTimeout(() => {
+          linkTooltip.value?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+        })
+      }
     })
 
     onClickOutside(chatGPTEdit, (event) => {
@@ -395,13 +407,13 @@ export default defineComponent({
       tooltipText.value = ''
     }
 
-    function formatDate(value) {
+    function formatDate(value: Date | Date[]) {
       if (Array.isArray(value)) {
         const [startDate, endDate] = value
         const res: string[] = []
         if (startDate) res.push(startDate.toLocaleString('default', { year: 'numeric', month: 'long' }))
         if (isPresent.value) res.push('Present')
-        else if (endDate) res.push(endDate.toLocaleString('default', { year: 'numeric', month: 'long' }))
+        else if (endDate && !isSameMonth(startDate, endDate)) res.push(endDate.toLocaleString('default', { year: 'numeric', month: 'long' }))
         return res.join(' - ')
       }
       else if (value instanceof Date) {
@@ -411,26 +423,48 @@ export default defineComponent({
     }
 
     function toggleDatePicker() {
-      if (datepicker.value)
+      if (datepicker.value) {
         datepicker.value.toggleMenu()
+        // check if date is selected
+        const selectedDates = parseSelectedDateString(selectedText.value)
+        if (selectedDates.length)
+          datepicker.value.updateInternalModelValue(selectedDates)
+
+        setTimeout(() => {
+          datepicker.value?.$el.scrollIntoView({ behavior: 'smooth', block: 'center' })
+        })
+      }
     }
 
-    function onInternalDateChange(value) {
+    function parseSelectedDateString(text: string): Date[] {
+      if (!text) return []
+
+      const [startDateString, endDateString] = text.split(' - ').map(v => v.trim())
+      const res: Date[] = []
+      if (isValidDate(startDateString)) res.push(new Date(startDateString))
+      if (endDateString === 'Present') res.push(new Date())
+      else if (isValidDate(endDateString)) res.push(new Date(endDateString))
+      return res
+    }
+
+    function onInternalDateChange(value: Date | Date[]) {
       internalDateRange.value = value
       isPresent.value = value && value[1] && isSameMonth(value[1], new Date())
     }
 
-    function onDateChange(modelData) {
-      const [startData, endData] = modelData
+    function onDateChange(modelData: { year: number; month: number }[]) {
+      const [startDate, endDate] = modelData
       const res: string[] = []
-      if (startData) res.push(new Date(startData.year, startData.month).toLocaleString('default', { year: 'numeric', month: 'long' }))
+      if (startDate) res.push(new Date(startDate.year, startDate.month).toLocaleString('default', { year: 'numeric', month: 'long' }))
       if (isPresent.value) res.push('Present')
-      else if (endData) res.push(new Date(endData.year, endData.month).toLocaleString('default', { year: 'numeric', month: 'long' }))
+      else if (endDate && (endDate.year !== startDate.year || endDate.month !== startDate.month)) res.push(new Date(endDate.year, endDate.month).toLocaleString('default', { year: 'numeric', month: 'long' }))
       const text = res.join(' - ')
       if (editor.value) {
         const quill = (editor.value as Quill).getQuill()
         const selection = quill.getSelection(true)
         const index = selection ? selection.index : 0
+        const length = selection ? selection.length : 0
+        if (length) quill.deleteText(index, length) // delete selected text
         quill.insertText(index, text)
       }
     }
@@ -544,8 +578,12 @@ export default defineComponent({
       }"
     >
       <div class="toolbar-button-group">
-        <div v-if="chatgptEnable && isToolEnabled('chatgpt')" class="flex items-center">
+        <div
+          v-if="chatgptEnable || datepickerEnable"
+          class="flex items-center"
+        >
           <Tooltip
+            v-if="chatgptEnable"
             small
             placement="right"
             :text="tooltipText"
@@ -565,6 +603,19 @@ export default defineComponent({
               @click="onChatGPTClick"
             >
               <span class="i-custom:chatgpt" :class="isMobileScreen ? 'w-6 h-6' : 'w-4.5 h-4.5'" />
+            </button>
+          </Tooltip>
+          <Tooltip
+            v-if="datepickerEnable"
+            small
+            placement="right"
+            text="Date Picker"
+          >
+            <button
+              :class="isMobileScreen ? 'btn-icon-32' : 'btn-icon-24'"
+              @click="toggleDatePicker"
+            >
+              <span class="i-custom:datepicker" :class="isMobileScreen ? 'w-6 h-6' : 'w-4.5 h-4.5'" />
             </button>
           </Tooltip>
           <div class="h-5 mx-2 border-l border-blacks-20" />
@@ -595,21 +646,6 @@ export default defineComponent({
             <span class="i-custom:link" :class="isMobileScreen ? 'w-6 h-6' : 'w-4.5 h-4.5'" />
           </button>
         </div>
-        <div class="flex items-center">
-          <div class="h-5 mx-2 border-l border-blacks-20" />
-          <Tooltip
-            small
-            placement="left"
-            text="Date Picker"
-          >
-            <button
-              :class="isMobileScreen ? 'btn-icon-32' : 'btn-icon-24'"
-              @click="toggleDatePicker"
-            >
-              <span class="i-custom:datepicker" :class="isMobileScreen ? 'w-6 h-6' : 'w-4.5 h-4.5'" />
-            </button>
-          </Tooltip>
-        </div>
       </div>
     </div>
 
@@ -630,6 +666,7 @@ export default defineComponent({
       multi-calendars
       hide-input-icon
       input-class-name="!h-0 !overflow-hidden"
+      :auto-position="false"
       :menu-class-name="isMobileDatePicker ? 'dp-custom-menu' : ''"
       :clearable="false"
       :format="formatDate"
@@ -943,9 +980,15 @@ export default defineComponent({
 
 .dp__theme_light {
   --dp-primary-color: var(--primary-color);
+  margin-bottom: 32px;
 }
 .dp-custom-menu .dp__flex_display {
   display: flex;
   flex-direction: column;
+}
+.dp__overlay_cell_disabled,
+.dp__overlay_cell_disabled:hover {
+  color: #D3D3D3;
+  background-color: white;
 }
 </style>

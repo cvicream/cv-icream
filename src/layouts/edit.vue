@@ -133,20 +133,25 @@ onUnmounted(() => {
   window.removeEventListener('resize', resize)
 })
 
+function hasCtrlKey(event) {
+  if (isMac()) return event.metaKey || event.ctrlKey
+  else return event.ctrlKey
+}
+
 function overrideDefaultZoom() {
   document.addEventListener('keydown', (event) => {
     // use `event.code` to check if it needs to zoom in/out
-    if (['Equal'].includes(event.code)) {
+    if (hasCtrlKey(event) && ['Equal'].includes(event.code)) {
       zoomIn()
       event.preventDefault()
     }
-    else if (['Minus'].includes(event.code)) {
+    else if (hasCtrlKey(event) && ['Minus'].includes(event.code)) {
       zoomOut()
       event.preventDefault()
     }
   })
   document.addEventListener('wheel', (event) => {
-    if ((isMac() && (event.metaKey || event.ctrlKey)) || (!isMac() && event.ctrlKey)) {
+    if (hasCtrlKey(event)) {
       if (event.deltaY < 0) zoomIn(5)
       else if (event.deltaY > 0) zoomOut(5)
 
