@@ -35,6 +35,8 @@ declare module 'vue' {
     ToggleSwitch: typeof import('./components/ToggleSwitch.vue')['default']
     Toolbar: typeof import('./components/Toolbar.vue')['default']
     Tooltip: typeof import('./components/Tooltip.vue')['default']
+    Wizard: typeof import('./components/Wizard.vue')['default']
+    WizardOption: typeof import('./components/WizardOption.vue')['default']
   }
 }
 

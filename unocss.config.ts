@@ -23,6 +23,7 @@ export default defineConfig({
     ['note', 'font-mark font-normal text-sm leading-[1.125rem]'],
     ['btn-primary', 'h-12 px-10 rounded-xl text-white bg-primary-100 border-1 border-transparent transition duration-300 ease-out sm:hover:border-primary-20'],
     ['btn-secondary', 'h-12 px-10 rounded-xl text-blacks-100 bg-white border-1 border-primary-100 transition duration-300 ease-out sm:hover:bg-primary-10'],
+    ['btn-disabled', 'h-12 px-10 rounded-xl text-white bg-blacks-10'],
     ['btn-icon-48', 'w-12 h-12 p-2 rounded-full text-blacks-70 bg-white shadow-custom sm:hover:bg-primary-10'],
     ['btn-icon-48-fill', 'w-12 h-12 p-[calc(0.5rem-1px)] rounded-full text-white bg-primary-100 shadow-custom border-1 border-transparent sm:hover:border-primary-20'],
     ['btn-icon-32', 'w-8 h-8 flex flex-shrink-0 justify-center items-center text-blacks-70 rounded-full outline-none sm:hover:bg-primary-10'],

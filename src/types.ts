@@ -58,3 +58,14 @@ export interface CreateCV {
   description: string
   content: string
 }
+export interface Step {
+  id: string
+  title: string
+  description?: string
+  options: Option[]
+  multi?: {
+    maximumChoice?: number
+  }
+}
+
+export type Survey = Record<number, string[] | undefined>

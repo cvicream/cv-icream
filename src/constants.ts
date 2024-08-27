@@ -1,3 +1,5 @@
+import type { Step } from './types'
+
 export const LOCAL_STORAGE_KEY = 'cvicream'
 export const DRAFT_FILE_TYPE = 'cvicream'
 export const HIDDEN_INFORMATION = 'This section is currently hidden on CV. Click the toggle if you would like to show it on CV.'
@@ -1015,3 +1017,76 @@ export const FONT_FAMILIES = [
 export const SOCIAL_MEDIA_ICONS = [
   'mail', 'linkedin', 'whatsapp', 'facebook', 'instagram', 'twitter-new', 'twitter-old', 'youtube', 'behance', 'github', 'link',
 ]
+
+export const SIGN_UP_SURVEY: Step[] = [{
+  id: '1',
+  title: 'How did you hear about us?',
+  description: '(Choose all that apply)',
+  multi: {},
+  options: [{
+    label: 'Google',
+    value: 'Google',
+  }, {
+    label: 'Facebook',
+    value: 'Facebook',
+  }, {
+    label: 'Webinar',
+    value: 'Webinar',
+  }, {
+    label: 'Friend\'s referral',
+    value: 'Friend\'s referral',
+  }, {
+    label: 'Others',
+    value: 'Others',
+  }],
+}, {
+  id: '2',
+  title: 'Have you ever used below online CV tools?',
+  description: '(Choose all that apply)',
+  multi: {},
+  options: [{
+    label: 'Zety',
+    value: 'Zety',
+  }, {
+    label: 'CV Maker',
+    value: 'CV Maker',
+  }, {
+    label: 'LiveCareer',
+    value: 'LiveCareer',
+  }, {
+    label: 'Canvas',
+    value: 'Canvas',
+  }, {
+    label: 'I prefer to use offline tools (i.e. illustrator, Word)',
+    value: 'I prefer to use offline tools (i.e. illustrator, Word)',
+  }, {
+    label: 'Others',
+    value: 'Others',
+  }],
+}, {
+  id: '3',
+  title: 'Which functions do you think are very important for a CV builder?',
+  description: '(Select up to 3 options)',
+  multi: {
+    maximumChoice: 3,
+  },
+  options: [{
+    label: 'Applicant Tracking System (ATS) scanning',
+    value: 'Applicant Tracking System (ATS) scanning',
+  }, {
+    label: 'Leaving comments',
+    value: 'Leaving comments',
+  }, {
+    label: 'AI assistant',
+    value: 'AI assistant',
+  }, {
+    label: 'Various templates and colours for choosing',
+    value: 'Various templates and colours for choosing',
+  }, {
+    label: 'Mobile-friendly version',
+    value: 'Mobile-friendly version',
+  }, {
+    label: 'Others',
+    value: 'Others',
+  }],
+}]
