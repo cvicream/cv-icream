@@ -3,16 +3,17 @@ import type { Option } from '~/types'
 
 const props = defineProps<{
   option: Option
+  selected: boolean
   canSelect: boolean
 }>()
 
 const emit = defineEmits(['clickOption'])
 
-const isSelected = ref<Boolean>(false)
+const isSelected = ref<Boolean>(props.selected)
 
 function getOptionClasses(value: string) {
   const classes: string[]
-    = ['min-w-[321px] border-1 rounded-xl border-blacks-20 flex gap-10 p-[12px] hover:bg-primary-10 w-100% cursor-pointer text-start']
+    = ['min-w-[321px] border-1 rounded-xl border-blacks-20 flex gap-[24px] p-[12px] hover:bg-primary-10 w-100% cursor-pointer text-start']
   if (isSelected.value)
     classes.push('border-1 border-primary-100 rounded')
 

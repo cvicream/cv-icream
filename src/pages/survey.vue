@@ -18,6 +18,7 @@ onUnmounted(() => {
 
 function submit(value: Survey) {
   hasSubmitted.value = true
+  console.log(value, 'submit value')
 }
 
 function resize() {
@@ -47,7 +48,7 @@ const logoClass = computed(() => ({
       <Wizard :steps="steps" @submit="submit" />
     </div>
     <div v-else class="text-center flex flex-col">
-      <div class="heading2-mobile sm:heading2 ">
+      <div class="heading2-mobile sm:heading2">
         Thanks for your feedback!
       </div>
       <div class="note text-blacks-70 mt-[4px]">

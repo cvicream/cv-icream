@@ -1057,8 +1057,8 @@ export const SIGN_UP_SURVEY: Step[] = [{
     label: 'Canvas',
     value: 'Canvas',
   }, {
-    label: 'I prefer to use offline tools (i.e. illustrator, Word)',
-    value: 'I prefer to use offline tools (i.e. illustrator, Word)',
+    label: 'Offline tools (i.e. Illustrator, word)',
+    value: 'Offline tools (i.e. Illustrator, word)',
   }, {
     label: 'Others',
     value: 'Others',

@@ -19,8 +19,20 @@ watch(currentStep, (newValue, oldValue) => {
     result.push(`Others_${otherValue.value}`)
     survey.value[oldValue.id] = result
   }
+  if (stepIndex.value === props.steps.length) {
+    emit('submit', survey.value)
+    return
+  }
+
+  let newOtherValue = survey.value[newValue.id]?.find(el => el.startsWith('Others_')) || ''
+  if (newOtherValue) {
+    newOtherValue = newOtherValue.split('Others_')[1]
+    showOtherInput.value = true
+    otherValue.value = newOtherValue
+    return
+  }
   showOtherInput.value = false
-  otherValue.value = survey.value[newValue.id]?.find(el => !el.startsWith('Others_')) || ''
+  otherValue.value = ''
 })
 
 const canSelect = computed(() => {
@@ -30,6 +42,12 @@ const canSelect = computed(() => {
     return dataLen < maximumChoice
   return true
 })
+
+function isSelected(value: any) {
+  return value !== 'Others'
+    ? survey.value[currentStep.value.id]?.includes(value)
+    : survey.value[currentStep.value.id]?.find(el => el.startsWith('Others_'))
+}
 
 function getProgressBarClasses(index: number) {
   const classes: string[] = ['rounded-full border-2.5 border-primary-20 w-[24px] h-[24px] cursor-not-allowed']
@@ -79,13 +97,6 @@ function clickOption(value: string, checked: boolean) {
   }
 }
 
-function onSubmit() {
-  const result = survey.value[currentStep.value.id].filter(el => !el.startsWith('Others_'))
-  result.push(`Others_${otherValue.value}`)
-  survey.value[currentStep.value.id] = result
-  emit('submit', survey.value)
-}
-
 </script>
 
 <template>
@@ -101,7 +112,7 @@ function onSubmit() {
     </div>
     <div class="flex justify-center items-start text-center">
       <div>
-        <div class="leading">
+        <div class="heading2-mobile sm:heading2">
           {{ currentStep.title }}
         </div>
         <div class="note text-blacks-60">
@@ -111,7 +122,7 @@ function onSubmit() {
     </div>
     <div class="text-left flex flex-col gap-5 text-blacks-70">
       <template v-for="option in currentStep.options" :key="`${currentStep.id}_${option.value}`">
-        <WizardOption :option="option" :can-select="canSelect" @click-option="clickOption" />
+        <WizardOption :option="option" :can-select="canSelect" :selected="isSelected(option.value)" @click-option="clickOption" />
       </template>
       <Transition name="others">
         <div v-if="showOtherInput" class="min-w-[321px] border-1 rounded-xl border-blacks-20 w-100% cursor-pointer p-[12px]">
@@ -121,23 +132,12 @@ function onSubmit() {
     </div>
     <div class="flex flex-col gap-5">
       <button
-        v-if="stepIndex === steps.length - 1"
-        :disabled="!survey[currentStep.id]?.length"
-        class="w-[294px] btn-primary disabled:btn-disabled"
-        @click="onSubmit"
-      >
-        <span class="subleading vertical-text-top ml-2">
-          Submit
-        </span>
-      </button>
-      <button
-        v-if="stepIndex !== steps.length - 1"
         :disabled="!survey[currentStep.id]?.length"
         class="w-[294px] btn-primary disabled:btn-disabled"
         @click="onNext"
       >
         <span class="subleading vertical-text-top ml-2">
-          Next
+          {{ stepIndex === steps.length - 1 ? 'Submit' : 'Next' }}
         </span>
       </button>
       <button
