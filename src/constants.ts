@@ -1041,7 +1041,7 @@ export const SIGN_UP_SURVEY: Step[] = [{
   }],
 }, {
   id: '2',
-  title: 'Have you ever used below online CV tools?',
+  title: 'Which of the following online CV tools have you used before?',
   description: '(Choose all that apply)',
   multi: {},
   options: [{
@@ -1057,31 +1057,31 @@ export const SIGN_UP_SURVEY: Step[] = [{
     label: 'Canvas',
     value: 'Canvas',
   }, {
-    label: 'Offline tools (i.e. Illustrator, word)',
-    value: 'Offline tools (i.e. Illustrator, word)',
+    label: 'Offline tools (i.e. Illustrator, Word)',
+    value: 'Offline tools (i.e. Illustrator, Word)',
   }, {
     label: 'Others',
     value: 'Others',
   }],
 }, {
   id: '3',
-  title: 'Which functions do you think are very important for a CV builder?',
+  title: 'Which features do you consider essential in a CV builder?',
   description: '(Select up to 3 options)',
   multi: {
     maximumChoice: 3,
   },
   options: [{
-    label: 'Applicant Tracking System (ATS) scanning',
-    value: 'Applicant Tracking System (ATS) scanning',
+    label: 'ATS-friendly CV',
+    value: 'ATS-friendly CV',
   }, {
-    label: 'Leaving comments',
-    value: 'Leaving comments',
+    label: 'Collaborate - Add notes',
+    value: 'Collaborate - Add notes',
   }, {
     label: 'AI assistant',
     value: 'AI assistant',
   }, {
-    label: 'Various templates and colours for choosing',
-    value: 'Various templates and colours for choosing',
+    label: 'Templates & design options',
+    value: 'Templates & design options',
   }, {
     label: 'Mobile-friendly version',
     value: 'Mobile-friendly version',
