@@ -8,6 +8,7 @@ const { t } = useI18n()
     <h2 class="heading2 mt-4">
       {{ t('not-found') }}
     </h2>
+    <div>test</div>
   </div>
 </template>
 
