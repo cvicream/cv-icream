@@ -45,8 +45,8 @@ const canSelect = computed(() => {
 
 function isSelected(value: any) {
   return value !== 'Others'
-    ? survey.value[currentStep.value.id]?.includes(value)
-    : survey.value[currentStep.value.id]?.find(el => el.startsWith('Others_'))
+    ? !!survey.value[currentStep.value.id]?.includes(value)
+    : !!survey.value[currentStep.value.id]?.find(el => el.startsWith('Others_'))
 }
 
 function getProgressBarClasses(index: number) {

@@ -18,7 +18,6 @@ onUnmounted(() => {
 
 function submit(value: Survey) {
   hasSubmitted.value = true
-  console.log(value, 'submit value')
 }
 
 function resize() {
