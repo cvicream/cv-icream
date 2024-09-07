@@ -13,7 +13,7 @@ const isSelected = ref<Boolean>(props.selected)
 
 function getOptionClasses(value: string) {
   const classes: string[]
-    = ['min-w-[321px] border-1 rounded-xl border-blacks-20 flex gap-[24px] p-[12px] hover:bg-primary-10 w-100% cursor-pointer text-start']
+    = ['sm:min-w-[351px] border-1 rounded-xl border-blacks-20 flex gap-[24px] p-[12px] hover:bg-primary-10 w-100% cursor-pointer text-start']
   if (isSelected.value)
     classes.push('border-1 border-primary-100 rounded')
 
@@ -41,7 +41,7 @@ function onClickOption(value) {
       v-else
       class="min-w-[24px] min-h-[24px] h-[24px] i-origin:survey-checkbox"
     />
-    <div class="subleading mr-2">
+    <div class="subleading mr-[11px]">
       {{ option.label }}
     </div>
   </div>

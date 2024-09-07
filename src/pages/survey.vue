@@ -36,10 +36,10 @@ const logoClass = computed(() => ({
     <div class="flex justify-center items-center">
       <span :class="logoClass" />
     </div>
-    <div v-if="!hasSubmitted" class="flex flex-col gap-[32px] sm:gap-[42px]">
+    <div v-if="!hasSubmitted" class="sm:w-[500px] flex flex-col gap-[32px] sm:gap-[42px]">
       <div class="text-center">
         <h3 class="heading2-mobile sm:heading2">
-          Welcome to CVIcream!
+          Welcome to CV Icream!
         </h3>
         <p class="note text-blacks-70">
           Just a few more questions left to create your CV

@@ -58,8 +58,7 @@ function getProgressBarClasses(index: number) {
 }
 
 function onNext() {
-  if (survey.value[currentStep.value.id].length)
-    stepIndex.value += 1
+  stepIndex.value += 1
 }
 
 function onBack() {
@@ -101,7 +100,7 @@ function clickOption(value: string, checked: boolean) {
 
 <template>
   <div class="min-w-[352px] bg-white text-center flex flex-col gap-[48px] items-center">
-    <div class="flex items-center w-[321px]">
+    <div class="flex items-center w-100%  sm:w-[468px]">
       <template
         v-for="(item, index) in steps"
         :key="item.id"
@@ -121,34 +120,37 @@ function clickOption(value: string, checked: boolean) {
       </div>
     </div>
     <div class="text-left flex flex-col gap-5 text-blacks-70">
+      <div class="skip text-right cursor-pointer" @click="onNext">
+        Skip
+      </div>
       <template v-for="option in currentStep.options" :key="`${currentStep.id}_${option.value}`">
         <WizardOption :option="option" :can-select="canSelect" :selected="isSelected(option.value)" @click-option="clickOption" />
       </template>
       <Transition name="others">
-        <div v-if="showOtherInput" class="min-w-[321px] border-1 rounded-xl border-blacks-20 w-100% cursor-pointer p-[12px]">
+        <div v-if="showOtherInput" class="sm:min-w-[351px] border-1 rounded-xl border-blacks-20 w-100% cursor-pointer p-[12px]">
           <input v-model="otherValue" placeholder="*Your answer..." type="text" class="w-100% h-100% outline-none">
         </div>
       </Transition>
-    </div>
-    <div class="flex flex-col gap-5">
-      <button
-        :disabled="!survey[currentStep.id]?.length"
-        class="w-[294px] btn-primary disabled:btn-disabled"
-        @click="onNext"
-      >
-        <span class="subleading vertical-text-top ml-2">
-          {{ stepIndex === steps.length - 1 ? 'Submit' : 'Next' }}
-        </span>
-      </button>
-      <button
-        v-if="stepIndex !== 0"
-        class="w-[294px] btn-secondary"
-        @click="onBack"
-      >
-        <span class="subleading vertical-text-top ml-2">
-          Back
-        </span>
-      </button>
+      <div class="flex flex-col gap-5 mt-[32px]">
+        <button
+          :disabled="!survey[currentStep.id]?.length"
+          class="btn-primary disabled:btn-disabled"
+          @click="onNext"
+        >
+          <span class="subleading vertical-text-top ml-2">
+            {{ stepIndex === steps.length - 1 ? 'Submit' : 'Next' }}
+          </span>
+        </button>
+        <button
+          v-if="stepIndex !== 0"
+          class="btn-secondary"
+          @click="onBack"
+        >
+          <span class="subleading vertical-text-top ml-2">
+            Back
+          </span>
+        </button>
+      </div>
     </div>
   </div>
 </template>
