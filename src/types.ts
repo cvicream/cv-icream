@@ -29,3 +29,25 @@ export interface Notification {
   message: string
   duration?: number
 }
+
+export interface User {
+  id: string
+  firstName: string
+  lastName: string
+  email: string
+  avatar: string
+  provider: string
+  providerId: string
+  createdAt: string
+  updatedAt: string
+}
+
+export interface CV {
+  id: string
+  userId: number
+  title: string
+  description: string
+  content: string
+  createdAt: string
+  updatedAt: string
+}

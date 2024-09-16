@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted, ref } from 'vue'
 import { storeToRefs } from 'pinia'
+import { useAuthStore } from '~/stores/auth'
 import { useUserStore } from '~/stores/user'
 import { useToolbarStore } from '~/stores/toolbar'
 import { useNotificationStore } from '~/stores/notification'
@@ -18,6 +19,8 @@ const upload = ref(false)
 
 const router = useRouter()
 
+const auth = useAuthStore()
+const { user: authUser } = storeToRefs(auth)
 const user = useUserStore()
 const toolbar = useToolbarStore()
 const {
@@ -181,6 +184,11 @@ function togglePaymentModal() {
 function deleteNotification() {
   notification.set(null)
 }
+
+function logout() {
+  auth.logout()
+  router.push('/sign-in')
+}
 </script>
 
 <template>
@@ -214,6 +222,13 @@ function deleteNotification() {
         </button>
       </Tooltip>
     </div>
+
+    <div v-if="authUser">
+      <button @click="logout">
+        Log out
+      </button>
+    </div>
+
     <div v-if="isEdit" class="leading-56px" @click="toggle">
       <button
         class="w-14 h-8 rounded flex justify-center items-center gap-1 sm:hover:bg-primary-10 outline-none"

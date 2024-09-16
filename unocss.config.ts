@@ -124,6 +124,7 @@ export default defineConfig({
     },
     colors: {
       primary: { // class="text-primary-100"
+        5: '#FEF9F8',
         10: 'var(--secondary-color)',
         20: '#FCE8E1',
         40: 'var(--border-color)',
@@ -131,6 +132,7 @@ export default defineConfig({
         100: 'var(--primary-color)',
       },
       blacks: { // class="text-blacks-100"
+        3: '#F8F8F8',
         5: '#F4F4F4',
         10: '#E9E9E9',
         20: '#D3D3D3',
@@ -147,6 +149,7 @@ export default defineConfig({
       success: '#72B355',
       warning: '#DE6D6D',
       payment: '#FFC43A',
+      link: '#1B61D4',
     },
     boxShadow: {
       custom: '2px 2px 10px var(--shadow-color)',
