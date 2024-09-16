@@ -1,10 +1,10 @@
 <script setup lang="ts">
 const signInWithGoogle = () => {
-  window.location.href = `${import.meta.env.VITE_API_BASE_URL}/api/auth/google`
+  window.location.href = `${import.meta.env.VITE_API_BASE_URL}/api/auth/google?redirect=${window.location.origin}`
 }
 
 const signInWithLinkedIn = () => {
-  window.location.href = `${import.meta.env.VITE_API_BASE_URL}/api/auth/linkedin`
+  window.location.href = `${import.meta.env.VITE_API_BASE_URL}/api/auth/linkedin?redirect=${window.location.origin}`
 }
 </script>
 
