@@ -11,14 +11,14 @@ const emit = defineEmits(['clickOption'])
 
 const isSelected = ref<Boolean>(props.selected)
 
-function getOptionClasses(value: string) {
+const getOptionClasses = computed(() => {
   const classes: string[]
     = ['sm:min-w-[351px] border-1 rounded-xl border-blacks-20 flex gap-[24px] p-[12px] hover:bg-primary-10 w-100% cursor-pointer text-start']
   if (isSelected.value)
     classes.push('border-1 border-primary-100 rounded')
 
   return classes.join(' ')
-}
+})
 
 function onClickOption(value) {
   if (!props.canSelect && !isSelected.value) return
@@ -30,7 +30,7 @@ function onClickOption(value) {
 <template>
   <div
     :key="option.value"
-    :class="getOptionClasses(option.value)"
+    :class="getOptionClasses"
     @click="onClickOption(option.value)"
   >
     <div

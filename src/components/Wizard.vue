@@ -2,6 +2,7 @@
 import type { Step, Survey } from '~/types'
 
 const emit = defineEmits(['submit'])
+const router = useRouter()
 
 const props = defineProps<{
   steps: Step[]
@@ -10,10 +11,22 @@ const props = defineProps<{
 const stepIndex = ref(0)
 const survey = ref<Survey>({})
 const showOtherInput = ref(false)
+const showModal = ref(false)
 const otherValue = ref('')
+const hasEmptyValue = ref(false)
 
 const currentStep = computed(() => props.steps[stepIndex.value])
+const getOtherOptionStyles = computed(() => {
+  const styles: string[] = ['sm:min-w-[351px] border-1 rounded-xl w-100% cursor-pointer p-[12px]']
+  if (hasEmptyValue.value)
+    styles.push('border-warning-20')
+  else
+    styles.push('border-blacks-20 ')
+
+  return styles.join(' ')
+})
 watch(currentStep, (newValue, oldValue) => {
+  hasEmptyValue.value = false
   if (otherValue.value) {
     const result = survey.value[oldValue.id].filter(el => !el.startsWith('Others_'))
     result.push(`Others_${otherValue.value}`)
@@ -58,6 +71,10 @@ function getProgressBarClasses(index: number) {
 }
 
 function onNext() {
+  if (survey.value[currentStep.value.id]?.find(el => el.startsWith('Others_')) && !otherValue.value) {
+    hasEmptyValue.value = true
+    return
+  }
   stepIndex.value += 1
 }
 
@@ -96,9 +113,43 @@ function clickOption(value: string, checked: boolean) {
   }
 }
 
+function toggleModal() { showModal.value = !showModal.value }
+
 </script>
 
 <template>
+  <Modal
+    v-if="showModal"
+    class="select-none"
+    @close="toggleModal"
+  >
+    <div class="flex flex-col gap-[24px]">
+      <div class="leading text-primary-100">
+        Are you sure you want to skip?
+      </div>
+      <div class="text-blacks-70">
+        This survey only takes 30 seconds to complete, but it will help us to improve your future experience.
+      </div>
+      <div class="flex flex-col gap-5 sm:gap-6 mt-8 sm:flex-row sm:justify-between">
+        <button
+          class="btn-secondary px-8 w-[164px]"
+          @click="toggleModal"
+        >
+          <span class="subleading">
+            Cancel
+          </span>
+        </button>
+        <button
+          class="btn-primary px-8 w-[164px]"
+          @click="router.push('/dashboard')"
+        >
+          <span class="subleading">
+            Skip
+          </span>
+        </button>
+      </div>
+    </div>
+  </Modal>
   <div class="min-w-[352px] bg-white text-center flex flex-col gap-[48px] items-center">
     <div class="flex items-center w-100%  sm:w-[468px]">
       <template
@@ -110,7 +161,7 @@ function clickOption(value: string, checked: boolean) {
       </template>
     </div>
     <div class="flex justify-center items-start text-center">
-      <div>
+      <div class="flex flex-col gap-[5px]">
         <div class="heading2-mobile sm:heading2">
           {{ currentStep.title }}
         </div>
@@ -120,17 +171,20 @@ function clickOption(value: string, checked: boolean) {
       </div>
     </div>
     <div class="text-left flex flex-col gap-5 text-blacks-70">
-      <div class="skip text-right cursor-pointer" @click="onNext">
+      <div v-if="stepIndex === 0" class="skip text-right cursor-pointer" @click="toggleModal">
         Skip
       </div>
       <template v-for="option in currentStep.options" :key="`${currentStep.id}_${option.value}`">
         <WizardOption :option="option" :can-select="canSelect" :selected="isSelected(option.value)" @click-option="clickOption" />
       </template>
       <Transition name="others">
-        <div v-if="showOtherInput" class="sm:min-w-[351px] border-1 rounded-xl border-blacks-20 w-100% cursor-pointer p-[12px]">
+        <div v-if="showOtherInput" :class="getOtherOptionStyles">
           <input v-model="otherValue" placeholder="*Your answer..." type="text" class="w-100% h-100% outline-none">
         </div>
       </Transition>
+      <div v-if="showOtherInput && hasEmptyValue" class="text-warning mt-[-12px]">
+        This answer is required.
+      </div>
       <div class="flex flex-col gap-5 mt-[32px]">
         <button
           :disabled="!survey[currentStep.id]?.length"

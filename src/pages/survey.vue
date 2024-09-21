@@ -36,12 +36,12 @@ const logoClass = computed(() => ({
       <span :class="logoClass" />
     </div>
     <div v-if="!hasSubmitted" class="sm:w-[500px] flex flex-col gap-[32px] sm:gap-[42px]">
-      <div class="text-center">
+      <div class="text-center flex flex-col gap-[4px]">
         <h3 class="heading2-mobile sm:heading2">
           Welcome to CV Icream!
         </h3>
         <p class="note text-blacks-70">
-          Just a few more questions left to create your CV
+          It takes 30 seconds to complete this 3 questions survey
         </p>
       </div>
       <Wizard :steps="steps" @submit="submit" />
