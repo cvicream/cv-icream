@@ -21,7 +21,8 @@ const getOptionClasses = computed(() => {
 })
 
 function onClickOption(value) {
-  if (!props.canSelect && !isSelected.value) return
+  if (!props.canSelect && !isSelected.value)
+    return
   emit('clickOption', value, !isSelected.value)
   isSelected.value = !isSelected.value
 }

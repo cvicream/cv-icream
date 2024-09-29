@@ -121,15 +121,11 @@ function toggleModal() { showModal.value = !showModal.value }
   <Modal
     v-if="showModal"
     class="select-none"
+    title="Are you sure you want to skip?"
+    subtitle="This survey only takes 30 seconds to complete, but it will help us to improve your future experience."
     @close="toggleModal"
   >
     <div class="flex flex-col gap-[24px]">
-      <div class="leading text-primary-100">
-        Are you sure you want to skip?
-      </div>
-      <div class="text-blacks-70">
-        This survey only takes 30 seconds to complete, but it will help us to improve your future experience.
-      </div>
       <div class="flex flex-col gap-5 sm:gap-6 mt-8 sm:flex-row sm:justify-between">
         <button
           class="btn-secondary px-8 w-[164px]"
@@ -170,7 +166,7 @@ function toggleModal() { showModal.value = !showModal.value }
         </div>
       </div>
     </div>
-    <div class="text-left flex flex-col gap-5 text-blacks-70">
+    <div class="text-left flex flex-col gap-[16px] text-blacks-70">
       <div v-if="stepIndex === 0" class="skip text-right cursor-pointer" @click="toggleModal">
         Skip
       </div>
@@ -179,10 +175,10 @@ function toggleModal() { showModal.value = !showModal.value }
       </template>
       <Transition name="others">
         <div v-if="showOtherInput" :class="getOtherOptionStyles">
-          <input v-model="otherValue" placeholder="*Your answer..." type="text" class="w-100% h-100% outline-none">
+          <input v-model="otherValue" placeholder="*Your answer..." type="text" class="w-100% h-100% outline-none paragraph">
         </div>
       </Transition>
-      <div v-if="showOtherInput && hasEmptyValue" class="text-warning mt-[-12px]">
+      <div v-if="showOtherInput && hasEmptyValue" class="text-warning mt-[-12px] note">
         This answer is required.
       </div>
       <div class="flex flex-col gap-5 mt-[32px]">
