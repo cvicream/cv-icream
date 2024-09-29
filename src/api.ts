@@ -16,7 +16,7 @@ apiInstance.interceptors.request.use((config) => {
 apiInstance.interceptors.response.use((response) => {
   return response
 }, (error) => {
-  if (error.response.status === 401)
+  if (error.response.status === 401 && window.location.pathname !== '/sign-in')
     window.location.href = '/sign-in'
   return error
 })
