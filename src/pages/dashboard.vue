@@ -34,20 +34,17 @@ function getQueryParam(name) {
     <div class="flex justify-between py-11">
       <div>
         <h2 class="heading2 text-blacks-100">
-          Hi, {{ displayName }}! 👋 Are you ready to
-          <br>
-          dive into your CV today?
+          Hi, {{ displayName }}! 👋<br>
+          Ready to jump into your CV today?
         </h2>
         <p class="subleading text-blacks-100 mt-2">
-          Take a little time to invest in yourself; you're one
-          <br>
-          step closer to achieving your dream job!
+          Take a little time to invest in yourself; you're one step closer to achieving your dream job!
         </p>
       </div>
       <div class="flex flex-col gap-5">
         <button class="flex justify-center items-center btn-primary">
           <span class="i-custom:plus w-6 h-6 text-white mr-3" />
-          <span class="leading text-white">Add New CV</span>
+          <span class="leading text-white">Create a New CV</span>
         </button>
         <button class="flex justify-center items-center btn-secondary">
           <span class="i-custom:upload w-6 h-6 text-blacks-70 mr-3" />
