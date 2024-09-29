@@ -24,7 +24,7 @@ function closeModal() {
           <div class="leading text-primary-100" :style="titleStyle">
             {{ title }}
           </div>
-          <div class="paragraph text-blacks-70 mt-4" :style="subtitleStyle">
+          <div class="paragraph text-blacks-70 mt-40" :style="subtitleStyle">
             {{ subtitle }}
           </div>
         </div>
