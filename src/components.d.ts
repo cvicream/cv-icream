@@ -6,6 +6,7 @@ declare module 'vue' {
   export interface GlobalComponents {
     Avatar: typeof import('./components/Avatar.vue')['default']
     ChatGPTModal: typeof import('./components/ChatGPTModal.vue')['default']
+    ContactModal: typeof import('./components/ContactModal.vue')['default']
     CVPreview: typeof import('./components/CVPreview.vue')['default']
     CVPreviewSection: typeof import('./components/CVPreviewSection.vue')['default']
     DeleteBlockModal: typeof import('./components/DeleteBlockModal.vue')['default']

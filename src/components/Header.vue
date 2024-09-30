@@ -15,6 +15,7 @@ defineProps<{
 const isActionActive = ref(false)
 const feedbackVisible = ref(false)
 const paymentVisible = ref(false)
+const contactVisible = ref(false)
 const upload = ref(false)
 
 const router = useRouter()
@@ -185,6 +186,10 @@ function togglePaymentModal() {
   paymentVisible.value = !paymentVisible.value
 }
 
+function toggleContactModal() {
+  contactVisible.value = !contactVisible.value
+}
+
 function deleteNotification() {
   notification.set(null)
 }
@@ -287,6 +292,7 @@ function logout() {
             </button>
             <button
               class="w-full h-[45px] flex justify-start items-center px-4 py-3 sm:hover:bg-primary-10"
+              @mousedown="toggleContactModal"
             >
               <span class="paragraph text-blacks-100">Contact Us</span>
             </button>
@@ -338,6 +344,13 @@ function logout() {
   <PaymentModal
     v-if="paymentVisible"
     :toggle="togglePaymentModal"
+  />
+
+  <ContactModal
+    v-if="contactVisible"
+    title="Have a Problem or Need Help?"
+    subtitle="Leave us a message. We will get back to you as soon as possible : )"
+    :toggle="toggleContactModal"
   />
 
   <Modal
