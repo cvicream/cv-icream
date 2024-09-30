@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, onUnmounted, ref } from 'vue'
+import { computed, onMounted, onUnmounted, ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useAuthStore } from '~/stores/auth'
 import { useUserStore } from '~/stores/user'
@@ -20,7 +20,7 @@ const upload = ref(false)
 const router = useRouter()
 
 const auth = useAuthStore()
-const { user: authUser } = storeToRefs(auth)
+const { user: authUser, displayName } = storeToRefs(auth)
 const user = useUserStore()
 const toolbar = useToolbarStore()
 const {
@@ -39,6 +39,10 @@ const {
 const { currentState, noteList } = storeToRefs(toolbar)
 const notification = useNotificationStore()
 const { notification: notificationRecord } = storeToRefs(notification)
+
+const isDashboard = computed(() => {
+  return router.currentRoute.value.name === 'dashboard'
+})
 
 onMounted(() => {
   window.addEventListener('click', closeAction, false)
@@ -185,9 +189,20 @@ function deleteNotification() {
   notification.set(null)
 }
 
+function redirectToDashboard() {
+  router.push('/dashboard')
+  closeAction()
+}
+
+function redirectToAccount() {
+  router.push('/profile')
+  closeAction()
+}
+
 function logout() {
   auth.logout()
   router.push('/sign-in')
+  closeAction()
 }
 </script>
 
@@ -223,54 +238,89 @@ function logout() {
       </Tooltip>
     </div>
 
-    <div v-if="authUser">
-      <button @click="logout">
-        Log out
-      </button>
-    </div>
-
-    <div v-if="isEdit" class="leading-56px" @click="toggle">
+    <div class="leading-56px" @click="toggle">
       <button
-        class="w-14 h-8 rounded flex justify-center items-center gap-1 sm:hover:bg-primary-10 outline-none"
+        v-if="authUser && isDashboard"
+        class="px-2 py-1 rounded-xl flex items-center gap-3 sm:hover:bg-primary-10"
         @click.stop="toggle"
       >
-        <span class="i-custom:download w-6 h-6 text-blacks-70" />
-        <span class="w-[1px] h-4 bg-blacks-20" />
-        <span
-          class="i-custom:arrow-down w-4 h-4 text-blacks-70 transition"
-          :class="isActionActive ? 'rotate-180' : 'rotate-0'"
-        />
+        <Avatar :src="authUser.avatar" />
+        <span class="subleading text-blacks-100">{{ displayName }}</span>
       </button>
+
+      <div v-else-if="isEdit" class="flex items-center">
+        <Avatar :src="authUser ? authUser.avatar : ''" class="mr-4" />
+        <button
+          class="h-8 rounded flex justify-center items-center gap-1 sm:hover:bg-primary-10 outline-none"
+          @click.stop="toggle"
+        >
+          <span class="i-custom:download w-6 h-6 text-blacks-70" />
+          <span class="w-[1px] h-4 bg-blacks-20" />
+          <span
+            class="i-custom:arrow-down w-4 h-4 text-blacks-70 transition"
+            :class="isActionActive ? 'rotate-180' : 'rotate-0'"
+          />
+        </button>
+      </div>
 
       <div
         v-if="isActionActive"
-        class="absolute right-2 top-[64px] z-3"
+        class="absolute right-6 top-[64px] z-3"
       >
         <div
           class="bg-white rounded-xl overflow-hidden"
           :class="isSafari() || isMobileDevice() ? 'w-[262px] border-1 border-blacks-100' : 'w-[260px] outline outline-1 outline-blacks-100'"
         >
-          <button
-            class="w-full h-[45px] flex justify-start items-center px-4 py-3 sm:hover:bg-primary-10"
-            :class="isSafari() || isMobileDevice() ? 'rounded-t-[11px]' : 'rounded-t-xl'"
-            @mousedown="redirectToDownload"
-          >
-            <span class="paragraph text-blacks-100">Export as PDF</span>
-          </button>
-          <button
-            id="download-as-draft"
-            class="w-full h-[46px] flex justify-start items-center px-4 py-3 sm:hover:bg-primary-10"
-            @mousedown="exportJsonFile"
-          >
-            <span class="paragraph text-blacks-100">Download as Draft</span>
-          </button>
-          <button
-            class="w-full h-[45px] flex justify-start items-center px-4 py-3 sm:hover:bg-primary-10"
-            :class="isSafari() || isMobileDevice() ? 'rounded-b-[11px]' : 'rounded-b-xl'"
-            @mousedown="importJsonFile"
-          >
-            <span class="paragraph text-blacks-100">Open CV Draft</span>
-          </button>
+          <template v-if="isDashboard">
+            <button
+              class="w-full h-[45px] flex justify-start items-center px-4 py-3 sm:hover:bg-primary-10"
+              :class="isSafari() || isMobileDevice() ? 'rounded-t-[11px]' : 'rounded-t-xl'"
+              @mousedown="redirectToDashboard"
+            >
+              <span class="paragraph text-blacks-100">Dashboard</span>
+            </button>
+            <button
+              class="w-full h-[45px] flex justify-start items-center px-4 py-3 sm:hover:bg-primary-10"
+              @mousedown="redirectToAccount"
+            >
+              <span class="paragraph text-blacks-100">Account</span>
+            </button>
+            <button
+              class="w-full h-[45px] flex justify-start items-center px-4 py-3 sm:hover:bg-primary-10"
+            >
+              <span class="paragraph text-blacks-100">Contact Us</span>
+            </button>
+            <button
+              class="w-full h-[45px] flex justify-start items-center px-4 py-3 sm:hover:bg-primary-10"
+              :class="isSafari() || isMobileDevice() ? 'rounded-b-[11px]' : 'rounded-b-xl'"
+              @mousedown="logout"
+            >
+              <span class="paragraph text-warning">Log out</span>
+            </button>
+          </template>
+          <template v-else>
+            <button
+              class="w-full h-[45px] flex justify-start items-center px-4 py-3 sm:hover:bg-primary-10"
+              :class="isSafari() || isMobileDevice() ? 'rounded-t-[11px]' : 'rounded-t-xl'"
+              @mousedown="redirectToDownload"
+            >
+              <span class="paragraph text-blacks-100">Download as PDF</span>
+            </button>
+            <button
+              id="download-as-draft"
+              class="w-full h-[46px] flex justify-start items-center px-4 py-3 sm:hover:bg-primary-10"
+              @mousedown="exportJsonFile"
+            >
+              <span class="paragraph text-blacks-100">Save draft to local device</span>
+            </button>
+            <button
+              class="w-full h-[45px] flex justify-start items-center pl-4 py-3 sm:hover:bg-primary-10"
+              :class="isSafari() || isMobileDevice() ? 'rounded-b-[11px]' : 'rounded-b-xl'"
+              @mousedown="importJsonFile"
+            >
+              <span class="paragraph text-blacks-100">Import draft from local device</span>
+            </button>
+          </template>
         </div>
       </div>
     </div>
