@@ -159,14 +159,10 @@ function logout() {
 </template>
 
 <style lang="scss" scoped>
-  /* button {
-    &:disabled {
-      color:
-    }
-  } */
 </style>
 
 <route lang="yaml">
 meta:
   layout: account
+  requiresAuth: true
 </route>
