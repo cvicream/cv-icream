@@ -214,7 +214,7 @@ function redirectToDashboard() {
 }
 
 function redirectToAccount() {
-  router.push('/profile')
+  router.push('/account')
   closeAction()
 }
 
