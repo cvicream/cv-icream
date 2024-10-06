@@ -2,9 +2,11 @@
 import { computed, onBeforeMount, onMounted, onUnmounted, ref } from 'vue'
 import { useElementSize } from '@vueuse/core'
 import { storeToRefs } from 'pinia'
+import { useAuthStore } from '~/stores/auth'
+import { useCVStore } from '~/stores/cv'
 import { useUserStore } from '~/stores/user'
 import { useToolbarStore } from '~/stores/toolbar'
-import { getColor, getStorage, hasStorage, isEditing, isMac, isMobileDevice, setCssVariable, setStatus } from '~/utils'
+import { getColor, getEditingCVId, getStorage, hasStorage, isEditing, isMac, isMobileDevice, setCssVariable, setStatus } from '~/utils'
 import {
   A4_HEIGHT_PX,
   A4_WIDTH_PX,
@@ -16,6 +18,10 @@ import {
   PAGE_BREAKPOINT,
 } from '~/constants'
 
+const auth = useAuthStore()
+const { user: authUser } = storeToRefs(auth)
+const cv = useCVStore()
+const { cv: cvData } = storeToRefs(cv)
 const user = useUserStore()
 const toolbar = useToolbarStore()
 const { isCVPreviewVisible, currentState, isMobileScreen } = storeToRefs(toolbar)
@@ -72,8 +78,41 @@ function toggleCVPreview() {
   })
 }
 
-onBeforeMount(() => {
-  if (!isEditing() && hasStorage()) {
+onBeforeMount(async() => {
+  if (authUser.value) {
+    // load cv from database
+    const cvId = getEditingCVId()
+    if (!cvId) return
+    if (!cvData.value)
+      await cv.get(cvId)
+    if (!cvData.value || !cvData.value.content) return
+    const content = JSON.parse(cvData.value.content)
+    Object.keys(content).forEach((key) => {
+      if (key === 'user') {
+        const subObj = content[key]
+        Object.keys(subObj).forEach((subKey) => {
+          user.$patch((state) => {
+            state[subKey] = subObj[subKey]
+          })
+        })
+        user.updateTimestamp()
+      }
+      else if (key === 'toolbar') {
+        const subObj = content[key]
+        Object.keys(subObj).forEach((subKey) => {
+          if (subKey === 'currentState') {
+            toolbar.setCurrentState(subObj[subKey])
+          }
+          else {
+            toolbar.$patch((state) => {
+              state[subKey] = subObj[subKey]
+            })
+          }
+        })
+      }
+    })
+  }
+  else if (!isEditing() && hasStorage()) {
     const storage = getStorage()
     Object.keys(storage).forEach((key) => {
       if (key === 'user') {

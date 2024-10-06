@@ -53,8 +53,21 @@ const signInWithLinkedIn = () => {
 
         <p class="note text-blacks-60 mt-4">
           By signing up, you agree to the
-          <a class="border-b border-blacks-60 cursor-pointer">Terms & Conditions</a> and
-          <a class="border-b border-blacks-60 cursor-pointer">Privacy Policy</a>.
+          <a
+            class="border-b border-blacks-60 cursor-pointer"
+            href="https://verbena-band-ffd.notion.site/Terms-Conditions-106c54182f4180ce98d1d1d8d5092a2f"
+            target="_blank"
+          >
+            Terms & Conditions
+          </a>
+          &nbsp;and
+          <a
+            class="border-b border-blacks-60 cursor-pointer"
+            href="https://verbena-band-ffd.notion.site/Privacy-Policy-106c54182f4180c189dbd3a10243b9fd"
+            target="_blank"
+          >
+            Privacy Policy
+          </a>.
         </p>
 
         <hr class="border-t border-blacks-10 my-6">
