@@ -4,6 +4,7 @@ import { storeToRefs } from 'pinia'
 import { useAuthStore } from '~/stores/auth'
 import { useCVStore } from '~/stores/cv'
 
+const router = useRouter()
 const auth = useAuthStore()
 const cv = useCVStore()
 const { user } = storeToRefs(auth)
@@ -33,7 +34,7 @@ function getQueryParam(name) {
 }
 
 const createCV = () => {
-  // TODO: Implement
+  router.push('/template')
 }
 </script>
 
@@ -50,7 +51,10 @@ const createCV = () => {
         </p>
       </div>
       <div class="flex flex-col gap-5">
-        <button class="flex justify-center items-center px-7 py-5 rounded-[24px] text-white bg-primary-100 border-1 border-transparent transition duration-300 ease-out sm:hover:border-primary-20">
+        <button
+          class="flex justify-center items-center px-7 py-5 rounded-[24px] text-white bg-primary-100 border-1 border-transparent transition duration-300 ease-out sm:hover:border-primary-20"
+          @click="createCV"
+        >
           <span class="i-custom:plus w-6 h-6 text-white mr-3" />
           <span class="leading text-white">Create a New CV</span>
         </button>
@@ -122,11 +126,17 @@ const createCV = () => {
         </Tooltip>
       </div>
 
-      <div class="py-16">
-        <div v-if="cvs &&cvs.length">
-          CVs
+      <div v-if="cvs &&cvs.length" class="pt-5 pb-6">
+        <div class="flex flex-wrap gap-5">
+          <DashboardCV
+            v-for="item in cvs"
+            :key="item.id"
+            :data="item"
+          />
         </div>
-        <p v-else class="paragraph text-blacks-60 text-center">
+      </div>
+      <div v-else class="py-16">
+        <p class="paragraph text-blacks-60 text-center">
           You don't have any CVs saved here.
           <button
             class="text-link border-b border-link"

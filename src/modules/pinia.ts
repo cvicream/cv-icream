@@ -16,7 +16,7 @@ export const install: UserModule = ({ app }) => {
       // persist the whole state to the local storage whenever it changes
       if (isEditing()) {
         // exclude `undo` and `redo`
-        const savedState = _.cloneDeep(_.omit(state, ['undo', 'redo']))
+        const savedState = _.cloneDeep(_.omit(state, ['undo', 'redo', 'auth', 'cv', 'notification']))
         const undoStore = useUndoStore()
         const redoStore = useRedoStore()
         setStorage(savedState)

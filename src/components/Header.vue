@@ -2,10 +2,11 @@
 import { computed, onMounted, onUnmounted, ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useAuthStore } from '~/stores/auth'
+import { useCVStore } from '~/stores/cv'
 import { useUserStore } from '~/stores/user'
 import { useToolbarStore } from '~/stores/toolbar'
 import { useNotificationStore } from '~/stores/notification'
-import { getJsonUpload, isMobileDevice, isSafari, setStatus, stripHtml } from '~/utils'
+import { formatDate, getJsonUpload, isMobileDevice, isSafari, setStatus, stripHtml } from '~/utils'
 import { DRAFT_FILE_TYPE } from '~/constants'
 
 defineProps<{
@@ -22,6 +23,8 @@ const router = useRouter()
 
 const auth = useAuthStore()
 const { user: authUser, displayName } = storeToRefs(auth)
+const cv = useCVStore()
+const { cv: cvData } = storeToRefs(cv)
 const user = useUserStore()
 const toolbar = useToolbarStore()
 const {
@@ -41,8 +44,19 @@ const { currentState, noteList } = storeToRefs(toolbar)
 const notification = useNotificationStore()
 const { notification: notificationRecord } = storeToRefs(notification)
 
-const isDashboard = computed(() => {
-  return router.currentRoute.value.name === 'dashboard'
+const displayCVName = computed(() => {
+  const res: string[] = []
+  if (cvData.value?.title) return cvData.value.title
+  if (about.value?.name) res.push(stripHtml(about.value.name))
+  else res.push('Your Name')
+  if (about.value?.jobTitle) res.push(stripHtml(about.value.jobTitle))
+  else res.push('Job Title')
+  return res.join('_')
+})
+
+const displayUpdatedAt = computed(() => {
+  if (!cvData.value?.updatedAt) return ''
+  return `saved at ${formatDate(cvData.value.updatedAt)}`
 })
 
 onMounted(() => {
@@ -243,9 +257,14 @@ function logout() {
       </Tooltip>
     </div>
 
+    <div v-if="isEdit">
+      <span class="leading text-blacks-100">{{ displayCVName }}</span>
+      <span class="subleading text-blacks-60 ml-3">{{ displayUpdatedAt }}</span>
+    </div>
+
     <div class="leading-56px" @click="toggle">
       <button
-        v-if="authUser && isDashboard"
+        v-if="authUser"
         class="px-2 py-1 rounded-xl flex items-center gap-3 sm:hover:bg-primary-10"
         @click.stop="toggle"
       >
@@ -276,7 +295,7 @@ function logout() {
           class="bg-white rounded-xl overflow-hidden"
           :class="isSafari() || isMobileDevice() ? 'w-[262px] border-1 border-blacks-100' : 'w-[260px] outline outline-1 outline-blacks-100'"
         >
-          <template v-if="isDashboard">
+          <template v-if="authUser">
             <button
               class="w-full h-[45px] flex justify-start items-center px-4 py-3 sm:hover:bg-primary-10"
               :class="isSafari() || isMobileDevice() ? 'rounded-t-[11px]' : 'rounded-t-xl'"

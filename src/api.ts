@@ -1,5 +1,5 @@
 import axios from 'axios'
-import type { CV, User } from './types'
+import type { CV, CreateCV, User } from './types'
 
 const apiInstance = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL as string,
@@ -16,8 +16,10 @@ apiInstance.interceptors.request.use((config) => {
 apiInstance.interceptors.response.use((response) => {
   return response
 }, (error) => {
-  if (error.response.status === 401 && window.location.pathname !== '/sign-in')
+  if (error.response.status === 401 && window.location.pathname !== '/sign-in') {
+    localStorage.removeItem('token')
     window.location.href = '/sign-in'
+  }
   return error
 })
 
@@ -61,7 +63,7 @@ export const getCV = async(id: string): Promise<CV | null> => {
   }
 }
 
-export const createCV = async(cv: CV): Promise<CV | null> => {
+export const createCV = async(cv: CreateCV): Promise<CV | null> => {
   try {
     const { data } = await apiInstance.post('/api/cv', cv)
     return data
@@ -73,7 +75,7 @@ export const createCV = async(cv: CV): Promise<CV | null> => {
 
 export const updateCV = async(cv: CV): Promise<CV | null> => {
   try {
-    const { data } = await apiInstance.put('/api/cv', cv)
+    const { data } = await apiInstance.put(`/api/cv/${cv.id}`, cv)
     return data
   }
   catch (error) {

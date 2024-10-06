@@ -40,7 +40,7 @@ router.beforeEach(async(to, from, next) => {
   }
   if (to.meta.requiresAuth) {
     if (tokenFromStorage) next()
-    else next('/sign-in')
+    else if (from.path !== '/sign-in') next('/sign-in')
   }
   else if (['/sign-in', '/sign-up'].includes(to.path) && tokenFromStorage) {
     next('/dashboard')

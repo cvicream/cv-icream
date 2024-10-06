@@ -31,7 +31,7 @@ export interface Notification {
 }
 
 export interface User {
-  id: string
+  id: number
   firstName: string
   lastName: string
   email: string
@@ -50,4 +50,11 @@ export interface CV {
   content: string
   createdAt: string
   updatedAt: string
+}
+
+export interface CreateCV {
+  userId: number
+  title: string
+  description: string
+  content: string
 }

@@ -1,19 +1,21 @@
 <script setup lang="ts">
+const emit = defineEmits(['yes'])
 
 defineProps<{
   visible: boolean
-  deleteIdx: number
   toggle: () => void
-  deleteItem: (index: number) => void
 }>()
 
+const deleteCV = () => {
+  emit('yes')
+}
 </script>
 
 <template>
   <Modal
     v-show="visible"
-    title="Are You Sure?"
-    subtitle="Delete a block can’t be recovered. Are you sure to delete it?"
+    title="You’re about to delete this CV"
+    subtitle="This action cannot be undone."
     subtitle-style="margin-top: 4;"
     @close="toggle"
   >
@@ -26,9 +28,9 @@ defineProps<{
       </button>
       <button
         class="btn-primary px-6 flex-grow flex-shrink-0 text-white bg-primary-100"
-        @click="() => deleteItem(deleteIdx)"
+        @click="deleteCV"
       >
-        <span class="subleading text-white">Yes, delete it</span>
+        <span class="subleading text-white">Delete</span>
       </button>
     </div>
   </Modal>
