@@ -24,7 +24,8 @@ const { path } = storeToRefs(user)
 const { isCVPreviewVisible, currentState, isMobileScreen } = storeToRefs(toolbar)
 
 watch(path, () => {
-  if (path.value !== router.currentRoute.value.path)
+  // exclude dashboard path
+  if (!['/dashboard', router.currentRoute.value.path].includes(path.value))
     router.push(path.value)
 })
 
