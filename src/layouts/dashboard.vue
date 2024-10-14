@@ -1,3 +1,21 @@
+<script setup lang="ts">
+import { onBeforeMount } from 'vue'
+import { getColor, setCssVariable } from '~/utils'
+
+onBeforeMount(() => {
+  // make sure style change back to default
+  const color = getColor('default')
+  setCssVariable('--primary-color', color.primary)
+  setCssVariable('--primary-70-color', color.primary70)
+  setCssVariable('--primary-40-color', color.primary40)
+  setCssVariable('--primary-20-color', color.primary20)
+  setCssVariable('--primary-10-color', color.primary10)
+  setCssVariable('--secondary-color', color.secondary)
+  setCssVariable('--shadow-color', color.shadow)
+  setCssVariable('--border-color', color.border)
+})
+</script>
+
 <template>
   <main class="h-full">
     <Header />
