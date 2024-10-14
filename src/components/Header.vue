@@ -46,16 +46,20 @@ const { notification: notificationRecord } = storeToRefs(notification)
 
 const displayCVName = computed(() => {
   const res: string[] = []
-  if (cvData.value?.title) return cvData.value.title
-  if (about.value?.name) res.push(stripHtml(about.value.name))
+  if (cvData.value?.title)
+    return cvData.value.title
+  if (about.value?.name)
+    res.push(stripHtml(about.value.name))
   else res.push('Your Name')
-  if (about.value?.jobTitle) res.push(stripHtml(about.value.jobTitle))
+  if (about.value?.jobTitle)
+    res.push(stripHtml(about.value.jobTitle))
   else res.push('Job Title')
   return res.join('_')
 })
 
 const displayUpdatedAt = computed(() => {
-  if (!cvData.value?.updatedAt) return ''
+  if (!cvData.value?.updatedAt)
+    return ''
   return `saved at ${formatDate(cvData.value.updatedAt)}`
 })
 
@@ -124,8 +128,10 @@ function exportJsonFile() {
   const dataUri = `data:application/${DRAFT_FILE_TYPE};charset=utf-8,${encodeURIComponent(dataStr)}`
 
   const fileNames = ['CV']
-  if (about.value.name) fileNames.push(stripHtml(about.value.name))
-  if (about.value.jobTitle) fileNames.push(stripHtml(about.value.jobTitle))
+  if (about.value.name)
+    fileNames.push(stripHtml(about.value.name))
+  if (about.value.jobTitle)
+    fileNames.push(stripHtml(about.value.jobTitle))
   const exportFileDefaultName = `${fileNames.join('_')}.${DRAFT_FILE_TYPE}`
 
   const linkElement = document.createElement('a')
@@ -273,7 +279,6 @@ function logout() {
       </button>
 
       <div v-else-if="isEdit" class="flex items-center">
-        <Avatar :src="authUser ? authUser.avatar : ''" class="mr-4" />
         <button
           class="h-8 rounded flex justify-center items-center gap-1 sm:hover:bg-primary-10 outline-none"
           @click.stop="toggle"
