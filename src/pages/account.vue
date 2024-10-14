@@ -56,58 +56,60 @@ function logout() {
 </script>
 
 <template>
-  <div class="w-[358px] h-[851px] md:w-[700px] md:h-[730px] mt-[32px] bg-primary-5 rounded-[24px] p-[32px] gap-[32px] flex flex-col relative">
-    <button class="w-6 h-6 float-right absolute right-[26px] top-[26px]" @click="router.push('/dashboard')">
-      <span
-        class="i-custom:cancel icon-24"
-      />
-    </button>
-    <div class="leading">
-      Your Account
-    </div>
-    <img width="100" height="100" class="rounded-full" :src="authUser?.avatar ?? ''">
-    <div class="flex gap-[24px]">
-      <Input v-model="firstName" label="First Name" />
-      <Input v-model="lastName" label="Last Name" />
-    </div>
-    <div>
-      <Input v-model="email" label="Email" :disabled="true" />
-      <div v-if="isGoogle" class="note text-blacks-40 mt-[4px]">
-        You're currently using your Google account to log in.
+  <div class="flex flex-col items-center">
+    <div class="w-[358px] h-[851px] md:w-[700px] md:h-[730px] mt-[32px] bg-primary-5 rounded-[24px] p-[32px] gap-[32px] flex flex-col relative">
+      <button class="w-6 h-6 float-right absolute right-[26px] top-[26px]" @click="router.push('/dashboard')">
+        <span
+          class="i-custom:cancel icon-24"
+        />
+      </button>
+      <div class="leading">
+        Your Account
       </div>
-    </div>
-    <div class="flex justify-end gap-[20px] mt-[32px]">
-      <button
-        class="btn-secondary w-[137px]"
-        @click="router.push('/dashboard')"
-      >
-        <span class="subleading">Cancel</span>
-      </button>
-      <button
-        :disabled="!hasChanged"
-        class="btn-primary w-[137px]"
-        :class="!hasChanged && 'text-blacks-40 bg-blacks-10'"
-        @click="() => onSave()"
-      >
-        <span class="subleading">Save</span>
-      </button>
-    </div>
-    <div class="width-[100%] border border-blacks-10 " />
-    <div class="flex flex-col gap-[24px]">
+      <img width="100" height="100" class="rounded-full" :src="authUser?.avatar ?? ''">
+      <div class="flex gap-[24px]">
+        <Input v-model="firstName" label="First Name" />
+        <Input v-model="lastName" label="Last Name" />
+      </div>
       <div>
-        <a class="text-primary-100 border-b border-primary-100 cursor-pointer" @click="openLogoutModal">
-          Log out Account
-        </a>
-        <div class="note text-blacks-60">
-          Temporarily suspend your account. You can access it again anytime by signing back in.
+        <Input v-model="email" label="Email" :disabled="true" />
+        <div v-if="isGoogle" class="note text-blacks-40 mt-[4px]">
+          You're currently using your Google account to log in.
         </div>
       </div>
-      <div>
-        <a class="text-primary-100 border-b border-primary-100 cursor-pointer" @click="openDeleteModal">
-          Delete Account
-        </a>
-        <div class="note text-blacks-60">
-          Permanently delete your account and all of your content.
+      <div class="flex justify-end gap-[20px] mt-[32px]">
+        <button
+          class="btn-secondary w-[137px]"
+          @click="router.push('/dashboard')"
+        >
+          <span class="subleading">Cancel</span>
+        </button>
+        <button
+          :disabled="!hasChanged"
+          class="btn-primary w-[137px]"
+          :class="!hasChanged && 'text-blacks-40 bg-blacks-10'"
+          @click="() => onSave()"
+        >
+          <span class="subleading">Save</span>
+        </button>
+      </div>
+      <div class="width-[100%] border border-blacks-10 " />
+      <div class="flex flex-col gap-[24px]">
+        <div>
+          <a class="text-primary-100 border-b border-primary-100 cursor-pointer" @click="openLogoutModal">
+            Log out Account
+          </a>
+          <div class="note text-blacks-60">
+            Temporarily suspend your account. You can access it again anytime by signing back in.
+          </div>
+        </div>
+        <div>
+          <a class="text-primary-100 border-b border-primary-100 cursor-pointer" @click="openDeleteModal">
+            Delete Account
+          </a>
+          <div class="note text-blacks-60">
+            Permanently delete your account and all of your content.
+          </div>
         </div>
       </div>
     </div>
@@ -163,6 +165,6 @@ function logout() {
 
 <route lang="yaml">
 meta:
-  layout: account
+  layout: dashboard
   requiresAuth: true
 </route>
