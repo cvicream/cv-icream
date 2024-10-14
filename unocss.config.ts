@@ -23,6 +23,7 @@ export default defineConfig({
     ['note', 'font-mark font-normal text-sm leading-[1.125rem]'],
     ['btn-primary', 'h-12 px-10 rounded-xl text-white bg-primary-100 border-1 border-transparent transition duration-300 ease-out sm:hover:border-primary-20'],
     ['btn-secondary', 'h-12 px-10 rounded-xl text-blacks-100 bg-white border-1 border-primary-100 transition duration-300 ease-out sm:hover:bg-primary-10'],
+    ['btn-disabled', 'h-12 px-10 rounded-xl text-white bg-blacks-10'],
     ['btn-icon-48', 'w-12 h-12 p-2 rounded-full text-blacks-70 bg-white shadow-custom sm:hover:bg-primary-10'],
     ['btn-icon-48-fill', 'w-12 h-12 p-[calc(0.5rem-1px)] rounded-full text-white bg-primary-100 shadow-custom border-1 border-transparent sm:hover:border-primary-20'],
     ['btn-icon-32', 'w-8 h-8 flex flex-shrink-0 justify-center items-center text-blacks-70 rounded-full outline-none sm:hover:bg-primary-10'],
@@ -46,6 +47,7 @@ export default defineConfig({
     ['title-large', 'font-normal text-size-[22px] leading-[30px]'],
     ['subtitle-large', 'font-normal text-size-[18px] leading-[24px]'],
     ['paragraph-large', 'font-normal text-size-[16px] leading-[22px]'],
+    ['skip', 'text-size-[12px] text-link'],
 
     ['form-label', 'font-normal text-sm text-blacks-70 leading-[1.125rem] block'],
     ['form-input', 'w-full h-[46px] bg-white rounded-xl appearance-none outline-none font-normal text-base text-blacks-100 disabled:text-blacks-40 placeholder-blacks-40 focus:placeholder-transparent pl-4 pr-2 py-3 border-1 border-transparent sm:hover:border-blacks-100 sm:hover:disabled:border-white focus:text-blacks-100'],

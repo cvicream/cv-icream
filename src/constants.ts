@@ -1,3 +1,5 @@
+import type { Step } from './types'
+
 export const LOCAL_STORAGE_KEY = 'cvicream'
 export const DRAFT_FILE_TYPE = 'cvicream'
 export const HIDDEN_INFORMATION = 'This section is currently hidden on CV. Click the toggle if you would like to show it on CV.'
@@ -1015,3 +1017,76 @@ export const FONT_FAMILIES = [
 export const SOCIAL_MEDIA_ICONS = [
   'mail', 'linkedin', 'whatsapp', 'facebook', 'instagram', 'twitter-new', 'twitter-old', 'youtube', 'behance', 'github', 'link',
 ]
+
+export const SIGN_UP_SURVEY: Step[] = [{
+  id: '1',
+  title: 'How did you hear about us?',
+  description: '(Choose all that apply)',
+  multi: {},
+  options: [{
+    label: 'Google',
+    value: 'Google',
+  }, {
+    label: 'Facebook',
+    value: 'Facebook',
+  }, {
+    label: 'Webinar',
+    value: 'Webinar',
+  }, {
+    label: 'Friend\'s referral',
+    value: 'Friend\'s referral',
+  }, {
+    label: 'Others',
+    value: 'Others',
+  }],
+}, {
+  id: '2',
+  title: 'Which of the following online CV tools have you used before?',
+  description: '(Choose all that apply)',
+  multi: {},
+  options: [{
+    label: 'Zety',
+    value: 'Zety',
+  }, {
+    label: 'CV Maker',
+    value: 'CV Maker',
+  }, {
+    label: 'LiveCareer',
+    value: 'LiveCareer',
+  }, {
+    label: 'Canvas',
+    value: 'Canvas',
+  }, {
+    label: 'Offline tools (i.e. Illustrator, Word)',
+    value: 'Offline tools (i.e. Illustrator, Word)',
+  }, {
+    label: 'Others',
+    value: 'Others',
+  }],
+}, {
+  id: '3',
+  title: 'Which features do you consider essential in a CV builder?',
+  description: '(Select up to 3 options)',
+  multi: {
+    maximumChoice: 3,
+  },
+  options: [{
+    label: 'ATS-friendly CV',
+    value: 'ATS-friendly CV',
+  }, {
+    label: 'Collaborate - Add notes',
+    value: 'Collaborate - Add notes',
+  }, {
+    label: 'AI assistant',
+    value: 'AI assistant',
+  }, {
+    label: 'Templates & design options',
+    value: 'Templates & design options',
+  }, {
+    label: 'Mobile-friendly version',
+    value: 'Mobile-friendly version',
+  }, {
+    label: 'Others',
+    value: 'Others',
+  }],
+}]
