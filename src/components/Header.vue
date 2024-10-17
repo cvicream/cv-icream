@@ -63,6 +63,10 @@ const displayUpdatedAt = computed(() => {
   return `saved at ${formatDate(cvData.value.updatedAt)}`
 })
 
+const isDashboard = computed(() => {
+  return router.currentRoute.value.name === 'dashboard'
+})
+
 onMounted(() => {
   window.addEventListener('click', closeAction, false)
 
@@ -302,6 +306,7 @@ function logout() {
         >
           <template v-if="authUser">
             <button
+              v-if="!isDashboard"
               class="w-full h-[45px] flex justify-start items-center px-4 py-3 sm:hover:bg-primary-10"
               :class="isSafari() || isMobileDevice() ? 'rounded-t-[11px]' : 'rounded-t-xl'"
               @mousedown="redirectToDashboard"
