@@ -87,7 +87,8 @@ function getJsonUpload() {
 
     inputFileElement.addEventListener('change', (event) => {
       const { files } = event.target as HTMLInputElement
-      if (!files) return
+      if (!files)
+        return
       const fileName = files[0].name
       const fileType = fileName.slice(-DRAFT_FILE_TYPE.length)
       if (fileType === DRAFT_FILE_TYPE)
@@ -221,13 +222,16 @@ function isOutOfViewport(element: HTMLElement) {
 }
 
 function addSuffixToParagraph(htmlString, suffix) {
-  if (!suffix) return htmlString
+  if (!suffix)
+    return htmlString
 
   const parser = new DOMParser()
   const html = parser.parseFromString(htmlString, 'text/html')
   const res: string[] = []
-  if (html.body.textContent) res.push(html.body.textContent)
-  if (suffix) res.push(suffix)
+  if (html.body.textContent)
+    res.push(html.body.textContent)
+  if (suffix)
+    res.push(suffix)
   return `<p>${res.join(' ')}</p>`
 }
 
@@ -277,8 +281,23 @@ function isValidDate(text: string): boolean {
 }
 
 function formatDate(date: string) {
-  if (dayjs(date).isSame(dayjs(), 'day')) return dayjs(date).format('hh:mm')
+  if (dayjs(date).isSame(dayjs(), 'day'))
+    return dayjs(date).format('hh:mm')
   return dayjs(date).format('hh:mm DD/MM/YYYY')
+}
+
+function generateFileName(userName: string, userJobTitle: string) {
+  let name = stripHtml(userName)
+  name = name.replace(/\n/g, '') // remove line break
+  let jobTitle = stripHtml(userJobTitle)
+  jobTitle = jobTitle.replace(/\n/g, '') // remove line break
+  if (name && jobTitle)
+    return `CV_${name}_${jobTitle}`
+  else if (name && !jobTitle)
+    return `CV_${name}`
+  else if (!name && jobTitle)
+    return `CV_NAME_${jobTitle}`
+  else return 'CV_NAME_Job Title'
 }
 
 export {
@@ -309,4 +328,5 @@ export {
   isValidHttpUrl,
   isValidDate,
   formatDate,
+  generateFileName,
 }

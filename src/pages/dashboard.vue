@@ -4,6 +4,8 @@ import { storeToRefs } from 'pinia'
 import { useAuthStore } from '~/stores/auth'
 import { useCVStore } from '~/stores/cv'
 import { MAX_UNPAID_CV_NUM } from '~/constants'
+import { generateFileName, getJsonUpload } from '~/utils'
+import type { CreateCV } from '~/types'
 
 const router = useRouter()
 const auth = useAuthStore()
@@ -39,6 +41,27 @@ function getQueryParam(name) {
 const createCV = () => {
   router.push('/template')
 }
+
+const importCV = async() => {
+  if (!user.value)
+    return
+
+  try {
+    const json = await getJsonUpload()
+    const obj = JSON.parse(json as string)
+    const newCV: CreateCV = {
+      userId: user.value.id,
+      title: generateFileName(obj?.user?.about?.name, obj?.user?.about?.jobTitle),
+      description: '',
+      content: json as string,
+    }
+    await cv.create(newCV)
+    await cv.getAll()
+  }
+  catch (error) {
+    // TODO: handle error
+  }
+}
 </script>
 
 <template>
@@ -73,6 +96,7 @@ const createCV = () => {
           <button
             :disabled="isMaxNum"
             class="w-[260px] flex justify-center items-center px-7 py-5 rounded-[24px] text-blacks-100 bg-white border-1 border-primary-100 transition duration-300 ease-out sm:hover:bg-primary-10 disabled:bg-blacks-10 disabled:hover:bg-blacks-10 disabled:text-blacks-40 disabled:border-transparent"
+            @click="importCV"
           >
             <span class="i-custom:upload w-6 h-6 mr-2" />
             <span class="leading">Import CV Draft</span>
