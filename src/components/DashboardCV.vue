@@ -1,10 +1,13 @@
 <script setup lang="ts">
 import type { PropType } from 'vue'
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import { onClickOutside } from '@vueuse/core'
+import { storeToRefs } from 'pinia'
+import axios from 'axios'
 import { useCVStore } from '~/stores/cv'
 import { formatDate, setStatus } from '~/utils'
-import type { CV } from '~/types'
+import type { CV, CreateCV } from '~/types'
+import { MAX_UNPAID_CV_NUM } from '~/constants'
 
 const props = defineProps({
   data: {
@@ -15,9 +18,14 @@ const props = defineProps({
 
 const router = useRouter()
 const cv = useCVStore()
+const { cvs } = storeToRefs(cv)
+const titleInput = ref<HTMLInputElement | null>(null)
+const title = ref(props.data.title)
 const isMoreActionOpen = ref<boolean>(false)
 const moreActionRef = ref(null)
 const deleteModalVisible = ref<boolean>(false)
+
+const isMaxNum = computed(() => Array.isArray(cvs.value) && cvs.value.length >= MAX_UNPAID_CV_NUM)
 
 onClickOutside(moreActionRef, (event) => {
   isMoreActionOpen.value = false
@@ -35,9 +43,35 @@ const toggleDeleteModal = () => {
   deleteModalVisible.value = !deleteModalVisible.value
 }
 
-const download = () => {
-  // TODO: Implement
-  closeMoreAction()
+const download = async() => {
+  const fileName = props.data.title
+  const data = {
+    targetUrl: location.hostname === 'localhost' || location.hostname === '127.0.0.1' ? null : window.origin,
+    fileName,
+    data: props.data.content,
+  }
+
+  const generatePdfUrl: string = import.meta.env.VITE_GENERATE_PDF_URL as string
+  if (generatePdfUrl) {
+    try {
+      const res = await axios({
+        method: 'POST',
+        url: generatePdfUrl,
+        data,
+        responseType: 'blob',
+      })
+      const url = window.URL.createObjectURL(new Blob([res.data]))
+      const link = document.createElement('a')
+      link.href = url
+      link.setAttribute('download', `${fileName}.pdf`)
+      document.body.appendChild(link)
+      link.click()
+      closeMoreAction()
+    }
+    catch (error) {
+      console.error(error)
+    }
+  }
 }
 
 const edit = () => {
@@ -46,14 +80,29 @@ const edit = () => {
   closeMoreAction()
 }
 
-const duplicate = () => {
-  // TODO: Implement
+const duplicate = async() => {
+  const newCV: CreateCV = {
+    userId: props.data.userId,
+    title: `Copy of ${props.data.title}`,
+    description: props.data.description,
+    content: props.data.content,
+  }
+  await cv.create(newCV)
+  await cv.getAll()
   closeMoreAction()
 }
 
 const rename = () => {
-  // TODO: Implement
+  titleInput.value?.focus()
   closeMoreAction()
+}
+
+const saveTitle = async() => {
+  if (!title.value || title.value === props.data.title)
+    return
+
+  await cv.update({ ...props.data, title: title.value })
+  await cv.getAll()
 }
 
 const prepareDelete = () => {
@@ -69,13 +118,21 @@ const deleteCV = async() => {
 
 <template>
   <div
-    class="w-[calc(100%*(1/4)-15px)] rounded-[20px] border-1 border-blacks-40 p-5 hover:bg-primary-10 hover:border-primary-100 transition duration-300 ease-out"
+    class="w-[calc(100%*(1/4)-15px)] rounded-[20px] border-1 border-blacks-40 p-5 hover:bg-primary-10 hover:border-primary-100 transition duration-300 ease-out group"
+    @dblclick="edit"
   >
     <ResponsiveCVPreview :id="`responsive-cv-preview-${data.id}`" read-only />
     <div class="mt-4">
       <div class="flex justify-between items-center">
-        <div class="subleading text-blacks-100 mr-2 text-ellipsis whitespace-nowrap overflow-hidden">
-          {{ data.title }}
+        <div>
+          <input
+            ref="titleInput"
+            v-model="title"
+            type="text"
+            class="w-full h-full subleading text-blacks-100 group-hover:bg-primary-10 mr-2 text-ellipsis whitespace-nowrap overflow-hidden outline-none rounded-none"
+            @keyup.enter="saveTitle"
+            @focusout="saveTitle"
+          >
         </div>
         <div class="relative">
           <button class="w-6 h-6" @click="toggleMoreAction">
@@ -99,6 +156,7 @@ const deleteCV = async() => {
               <span class="paragraph text-blacks-100 ml-2">Edit</span>
             </button>
             <button
+              v-if="!isMaxNum"
               class="flex items-center px-4 py-3 hover:bg-primary-10"
               @click="duplicate"
             >

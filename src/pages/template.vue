@@ -4,15 +4,16 @@ import { storeToRefs } from 'pinia'
 import { useAuthStore } from '~/stores/auth'
 import { useUserStore } from '~/stores/user'
 import { useToolbarStore } from '~/stores/toolbar'
+import { useCVStore } from '~/stores/cv'
 import { DEFAULT_TEMPLATE, MOBILE_BREAKPOINT, TEMPLATES } from '~/constants'
 import { getStorage, hasStorage, setStatus, stripHtml } from '~/utils'
-import { createCV } from '~/api'
 import type { CreateCV } from '~/types'
 
 const auth = useAuthStore()
 const { user: authUser } = storeToRefs(auth)
 const user = useUserStore()
 const toolbar = useToolbarStore()
+const cv = useCVStore()
 
 const { t } = useI18n()
 const router = useRouter()
@@ -54,8 +55,9 @@ async function onNext() {
       description: '',
       content: JSON.stringify(content),
     }
-    const cv = await createCV(newCV)
-    if (cv) setStatus({ id: cv.id })
+    const cvData = await cv.create(newCV)
+    if (cvData)
+      setStatus({ id: cvData.id })
   }
   else {
     let isNewTemplate = true

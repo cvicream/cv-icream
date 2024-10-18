@@ -14,6 +14,7 @@ export const PAGE_BREAKPOINT = 1340
 export const DEFAULT_TOP_PANEL_WIDTH = [75, 25] // value in percent
 export const DEFAULT_LEFT_PANEL_WIDTH = [25, 75] // value in percent
 export const DEFAULT_RIGHT_PANEL_WIDTH = [75, 25] // value in percent
+export const MAX_UNPAID_CV_NUM = 8
 
 export const defaultEditorToolOptions = [
   {

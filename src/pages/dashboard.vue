@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import { onMounted } from 'vue'
+import { computed, onMounted } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useAuthStore } from '~/stores/auth'
 import { useCVStore } from '~/stores/cv'
+import { MAX_UNPAID_CV_NUM } from '~/constants'
 
 const router = useRouter()
 const auth = useAuthStore()
@@ -17,6 +18,8 @@ const displayName = computed(() => {
     return user.value.lastName
   return 'Friend'
 })
+
+const isMaxNum = computed(() => Array.isArray(cvs.value) && cvs.value.length >= MAX_UNPAID_CV_NUM)
 
 onMounted(async() => {
   const token = getQueryParam('token')
@@ -52,16 +55,29 @@ const createCV = () => {
       </div>
       <div class="flex flex-col gap-5">
         <button
-          class="flex justify-center items-center px-7 py-5 rounded-[24px] text-white bg-primary-100 border-1 border-transparent transition duration-300 ease-out sm:hover:border-primary-20"
+          class="w-[260px] flex justify-center items-center px-7 py-5 rounded-[24px] text-white bg-primary-100 border-1 border-transparent transition duration-300 ease-out sm:hover:border-primary-20 disabled:bg-blacks-10 disabled:text-blacks-40"
+          :disabled="isMaxNum"
           @click="createCV"
         >
-          <span class="i-custom:plus w-6 h-6 text-white mr-3" />
-          <span class="leading text-white">Create a New CV</span>
+          <span class="i-custom:plus w-6 h-6 mr-2" />
+          <span class="leading">Create a New CV</span>
         </button>
-        <button class="flex justify-center items-center px-7 py-5 rounded-[24px] text-blacks-100 bg-white border-1 border-primary-100 transition duration-300 ease-out sm:hover:bg-primary-10">
-          <span class="i-custom:upload w-6 h-6 text-blacks-70 mr-3" />
-          <span class="leading text-blacks-100">Import CV Draft</span>
-        </button>
+        <Tooltip
+          placement="bottom"
+          style="max-width: 260px;"
+          :text="isMaxNum
+            ? 'You\'ve reached the maximum CV limit. Please delete one to create a new CV.'
+            : 'Import the CV saved on your local device. This option is only available for files with the .cvicream extension.'
+          "
+        >
+          <button
+            :disabled="isMaxNum"
+            class="w-[260px] flex justify-center items-center px-7 py-5 rounded-[24px] text-blacks-100 bg-white border-1 border-primary-100 transition duration-300 ease-out sm:hover:bg-primary-10 disabled:bg-blacks-10 disabled:hover:bg-blacks-10 disabled:text-blacks-40 disabled:border-transparent"
+          >
+            <span class="i-custom:upload w-6 h-6 mr-2" />
+            <span class="leading">Import CV Draft</span>
+          </button>
+        </Tooltip>
       </div>
     </div>
     <div class="flex gap-5 mt-5">
@@ -114,6 +130,7 @@ const createCV = () => {
           Your CV
         </p>
         <Tooltip
+          v-if="!isMaxNum"
           placement="bottom"
           text="Create a New CV"
         >

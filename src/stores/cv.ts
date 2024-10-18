@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import type { CV } from '../types'
+import type { CV, CreateCV } from '../types'
 import { createCV, deleteCV, getCV, getCVs, updateCV } from '~/api'
 
 export const useCVStore = defineStore('cv', {
@@ -10,18 +10,20 @@ export const useCVStore = defineStore('cv', {
   actions: {
     async getAll() {
       this.cvs = await getCVs()
+      return this.cvs
     },
     async get(id: string) {
       this.cv = await getCV(id)
+      return this.cv
     },
-    async create(cv: CV) {
-      await createCV(cv)
+    async create(cv: CreateCV) {
+      return await createCV(cv)
     },
     async update(cv: CV) {
-      await updateCV(cv)
+      return await updateCV(cv)
     },
     async delete(id: string) {
-      await deleteCV(id)
+      return await deleteCV(id)
     },
   },
 })
