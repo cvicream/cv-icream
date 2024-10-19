@@ -35,6 +35,7 @@ onUnmounted(() => {
 })
 
 async function onNext() {
+  // check if user is logged in
   if (authUser.value) {
     // create new CV in database
     const defaultTemplate = TEMPLATES.find(t => t.template === selectedTemplate.value)
@@ -56,8 +57,10 @@ async function onNext() {
       content: JSON.stringify(content),
     }
     const cvData = await cv.create(newCV)
-    if (cvData)
+    if (cvData) {
+      // store cv id in local storage
       setStatus({ id: cvData.id })
+    }
   }
   else {
     let isNewTemplate = true

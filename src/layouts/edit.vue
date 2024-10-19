@@ -79,67 +79,26 @@ function toggleCVPreview() {
 }
 
 onBeforeMount(async() => {
+  let content = null
+
+  // check if user is logged in
   if (authUser.value) {
-    // load cv from database
+    // get cv id from local storage
     const cvId = getEditingCVId()
-    if (!cvId) return
+    if (!cvId)
+      return
     if (!cvData.value)
       await cv.get(cvId)
-    if (!cvData.value || !cvData.value.content) return
-    const content = JSON.parse(cvData.value.content)
-    Object.keys(content).forEach((key) => {
-      if (key === 'user') {
-        const subObj = content[key]
-        Object.keys(subObj).forEach((subKey) => {
-          user.$patch((state) => {
-            state[subKey] = subObj[subKey]
-          })
-        })
-        user.updateTimestamp()
-      }
-      else if (key === 'toolbar') {
-        const subObj = content[key]
-        Object.keys(subObj).forEach((subKey) => {
-          if (subKey === 'currentState') {
-            toolbar.setCurrentState(subObj[subKey])
-          }
-          else {
-            toolbar.$patch((state) => {
-              state[subKey] = subObj[subKey]
-            })
-          }
-        })
-      }
-    })
+    if (!cvData.value || !cvData.value.content)
+      return
+
+    content = JSON.parse(cvData.value.content)
   }
   else if (!isEditing() && hasStorage()) {
-    const storage = getStorage()
-    Object.keys(storage).forEach((key) => {
-      if (key === 'user') {
-        const subObj = storage[key]
-        Object.keys(subObj).forEach((subKey) => {
-          user.$patch((state) => {
-            state[subKey] = subObj[subKey]
-          })
-        })
-        user.updateTimestamp()
-      }
-      else if (key === 'toolbar') {
-        const subObj = storage[key]
-        Object.keys(subObj).forEach((subKey) => {
-          if (subKey === 'currentState') {
-            toolbar.setCurrentState(subObj[subKey])
-          }
-          else {
-            toolbar.$patch((state) => {
-              state[subKey] = subObj[subKey]
-            })
-          }
-        })
-      }
-    })
+    content = getStorage()
   }
 
+  loadCVToStore(content)
   window.addEventListener('beforeunload', onBeforeUnload)
   resize()
   initializeWidth()
@@ -172,8 +131,36 @@ onUnmounted(() => {
   window.removeEventListener('resize', resize)
 })
 
+function loadCVToStore(storage) {
+  Object.keys(storage).forEach((key) => {
+    if (key === 'user') {
+      const subObj = storage[key]
+      Object.keys(subObj).forEach((subKey) => {
+        user.$patch((state) => {
+          state[subKey] = subObj[subKey]
+        })
+      })
+      user.updateTimestamp()
+    }
+    else if (key === 'toolbar') {
+      const subObj = storage[key]
+      Object.keys(subObj).forEach((subKey) => {
+        if (subKey === 'currentState') {
+          toolbar.setCurrentState(subObj[subKey])
+        }
+        else {
+          toolbar.$patch((state) => {
+            state[subKey] = subObj[subKey]
+          })
+        }
+      })
+    }
+  })
+}
+
 function hasCtrlKey(event) {
-  if (isMac()) return event.metaKey || event.ctrlKey
+  if (isMac())
+    return event.metaKey || event.ctrlKey
   else return event.ctrlKey
 }
 
@@ -191,8 +178,10 @@ function overrideDefaultZoom() {
   })
   document.addEventListener('wheel', (event) => {
     if (hasCtrlKey(event)) {
-      if (event.deltaY < 0) zoomIn(5)
-      else if (event.deltaY > 0) zoomOut(5)
+      if (event.deltaY < 0)
+        zoomIn(5)
+      else if (event.deltaY > 0)
+        zoomOut(5)
 
       event.preventDefault()
     }
@@ -308,8 +297,10 @@ function getElementMarginX(element) {
 function handleScaleChange(event) {
   const value = parseInt(event.target.value.replace(/[^0-9]/g, ''))
   if (value) {
-    if (value >= MAX_SCALE) scale.value = MAX_SCALE
-    else if (value <= MIN_SCALE) scale.value = MIN_SCALE
+    if (value >= MAX_SCALE)
+      scale.value = MAX_SCALE
+    else if (value <= MIN_SCALE)
+      scale.value = MIN_SCALE
     else scale.value = value
   }
 }
