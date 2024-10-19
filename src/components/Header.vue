@@ -279,7 +279,7 @@ function logout() {
         @click.stop="toggle"
       >
         <Avatar :src="authUser.avatar" />
-        <span class="subleading text-blacks-100">{{ displayName }}</span>
+        <span class="hidden sm:block subleading text-blacks-100">{{ displayName }}</span>
       </button>
 
       <div v-else-if="isEdit" class="flex items-center">

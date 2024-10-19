@@ -65,20 +65,21 @@ const importCV = async() => {
 </script>
 
 <template>
-  <div class="max-w-[1184px] px-8 py-6 mx-auto">
-    <div class="flex justify-between py-11">
-      <div class="max-w-[540px]">
+  <div class="max-w-[1184px] p-8 sm:p-16 mx-auto">
+    <div class="sm:flex sm:justify-between">
+      <div class="max-w-[540px] sm:mr-6">
         <h2 class="heading2 text-blacks-100">
           Hi, {{ displayName }}! 👋<br>
-          Ready to jump into your CV today?
+          <span class="hidden sm:block">Ready to jump into your CV today?</span>
+          <span class="sm:hidden">Are you ready to dive into your CV today?</span>
         </h2>
-        <p class="subleading text-blacks-100 mt-2">
+        <p class="hidden sm:block subleading text-blacks-100 mt-2">
           Take a little time to invest in yourself; you're one step closer to achieving your dream job!
         </p>
       </div>
-      <div class="flex flex-col gap-5">
+      <div class="flex flex-col gap-5 mt-5 sm:mt-0">
         <button
-          class="w-[260px] flex justify-center items-center px-7 py-5 rounded-[24px] text-white bg-primary-100 border-1 border-transparent transition duration-300 ease-out sm:hover:border-primary-20 disabled:bg-blacks-10 disabled:text-blacks-40"
+          class="w-full sm:w-[260px] flex justify-center items-center px-7 py-5 rounded-[24px] text-white bg-primary-100 border-1 border-transparent transition duration-300 ease-out sm:hover:border-primary-20 disabled:bg-blacks-10 disabled:text-blacks-40"
           :disabled="isMaxNum"
           @click="createCV"
         >
@@ -87,6 +88,7 @@ const importCV = async() => {
         </button>
         <Tooltip
           placement="bottom"
+          class="hidden sm:block"
           style="max-width: 260px;"
           :text="isMaxNum
             ? 'You\'ve reached the maximum CV limit. Please delete one to create a new CV.'
@@ -104,8 +106,8 @@ const importCV = async() => {
         </Tooltip>
       </div>
     </div>
-    <div class="flex gap-5 mt-5">
-      <div class="px-8 py-6 bg-white rounded-[24px] flex-1">
+    <div class="flex flex-col sm:flex-row gap-5 mt-5 sm:mt-13">
+      <div class="px-8 py-6 bg-white rounded-[24px] flex-1 border border-white hover:border-primary-100 transition duration-300 ease-out">
         <p class="leading text-blacks-100">
           Workshops  🎄
         </p>
@@ -115,7 +117,7 @@ const importCV = async() => {
           now!
         </p>
       </div>
-      <div class="px-8 py-6 bg-white rounded-[24px] flex-1">
+      <div class="px-8 py-6 bg-white rounded-[24px] flex-1 border border-white hover:border-primary-100 transition duration-300 ease-out">
         <p class="leading text-blacks-100">
           Tips  👀
         </p>
@@ -130,7 +132,7 @@ const importCV = async() => {
           handy and actionable tips on making a perfect CV in our Medium publication.
         </p>
       </div>
-      <div class="px-8 py-6 bg-white rounded-[24px] flex-1">
+      <div class="px-8 py-6 bg-white rounded-[24px] flex-1 border border-white hover:border-primary-100 transition duration-300 ease-out">
         <p class="leading text-blacks-100">
           Community  🪂
         </p>
@@ -168,7 +170,7 @@ const importCV = async() => {
       </div>
 
       <div v-if="cvs &&cvs.length" class="pt-5 pb-6">
-        <div class="flex flex-wrap gap-5">
+        <div class="flex flex-col sm:flex-row sm:flex-wrap gap-5">
           <DashboardCV
             v-for="item in cvs"
             :key="item.id"
@@ -176,11 +178,12 @@ const importCV = async() => {
           />
         </div>
       </div>
-      <div v-else class="py-16">
+      <div v-else class="py-5 sm:py-16">
         <p class="paragraph text-blacks-60 text-center">
           You don't have any CVs saved here.
+          <br class="block sm:hidden">
           <button
-            class="text-link border-b border-link"
+            class="text-link border-b border-link mt-1 sm:mt-0"
             @click="createCV"
           >
             Create a new CV

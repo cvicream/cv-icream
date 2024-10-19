@@ -118,18 +118,18 @@ const deleteCV = async() => {
 
 <template>
   <div
-    class="w-[calc(100%*(1/4)-15px)] rounded-[20px] border-1 border-blacks-40 p-5 hover:bg-primary-10 hover:border-primary-100 transition duration-300 ease-out group"
+    class="sm:w-[calc(100%*(1/4)-15px)] rounded-[20px] border-1 border-blacks-40 p-5 hover:bg-primary-10 hover:border-primary-100 transition duration-300 ease-out group"
     @dblclick="edit"
   >
-    <ResponsiveCVPreview :id="`responsive-cv-preview-${data.id}`" read-only />
-    <div class="mt-4">
+    <ResponsiveCVPreview :id="`responsive-cv-preview-${data.id}`" read-only class="hidden sm:block mb-4" />
+    <div>
       <div class="flex justify-between items-center">
-        <div>
+        <div class="flex-1 mr-2">
           <input
             ref="titleInput"
             v-model="title"
             type="text"
-            class="w-full h-full subleading text-blacks-100 group-hover:bg-primary-10 mr-2 text-ellipsis whitespace-nowrap overflow-hidden outline-none rounded-none"
+            class="w-full h-full subleading text-blacks-100 group-hover:bg-primary-10 text-ellipsis whitespace-nowrap overflow-hidden outline-none rounded-none"
             @keyup.enter="saveTitle"
             @focusout="saveTitle"
           >
