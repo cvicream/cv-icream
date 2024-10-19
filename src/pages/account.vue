@@ -21,15 +21,18 @@ const hasChanged = computed(() => {
   || email?.value !== authUser.value.email
 })
 
-function onSave() {
-  console.log(firstName?.value, 'firstName')
-  console.log(lastName?.value, 'lastName')
-  console.log(email?.value, 'email')
+async function onSave() {
+  await auth.updateUser({
+    ...authUser.value!,
+    firstName: firstName?.value ?? '',
+    lastName: lastName?.value ?? '',
+    email: email?.value ?? '',
+  })
 }
 
-function onDelete() {
-  console.log(authUser.value?.id, 'id')
-  showDeleteModal.value = false
+async function onDelete() {
+  await auth.deleteUser()
+  logout()
 }
 
 function openDeleteModal() {

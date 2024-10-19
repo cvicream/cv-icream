@@ -1,8 +1,13 @@
 <script setup lang="ts">
+import { storeToRefs } from 'pinia'
+import { createSurvey } from '~/api'
 import { MOBILE_BREAKPOINT, SIGN_UP_SURVEY } from '~/constants'
+import { useAuthStore } from '~/stores/auth'
 import type { Step, Survey } from '~/types'
 
 const router = useRouter()
+const auth = useAuthStore()
+const { user } = storeToRefs(auth)
 
 const isSmallWindow = ref(false)
 const steps = ref<Step[]>(SIGN_UP_SURVEY)
@@ -16,7 +21,11 @@ onUnmounted(() => {
   window.removeEventListener('resize', resize)
 })
 
-function submit(value: Survey) {
+async function submit(value: Survey) {
+  await createSurvey({
+    userId: user.value!.id,
+    survey: JSON.stringify(value),
+  })
   hasSubmitted.value = true
 }
 
@@ -66,4 +75,5 @@ const logoClass = computed(() => ({
 <route lang="yaml">
 meta:
   layout: survey
+  requiresAuth: true
 </route>
