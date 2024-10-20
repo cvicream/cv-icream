@@ -1,19 +1,20 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
+import { useNotificationStore } from '~/stores/notification'
 import { validateEmail } from '~/utils'
 
-defineProps<{
+const props = defineProps<{
   title: string
   subtitle: string
   toggle: () => void
 }>()
 
+const notification = useNotificationStore()
 const content = ref('')
 const name = ref('')
 const email = ref('')
 const loading = ref(false)
 const isEmailFocus = ref(false)
-const isSent = ref(false)
 
 const isEmailValid = computed(() => {
   return validateEmail(email.value.trim())
@@ -29,12 +30,12 @@ function reset() {
 }
 
 async function sendFeedback() {
-  if (loading.value) return
+  if (loading.value)
+    return
 
   loading.value = true
   try {
-    const url = 'https://script.google.com/macros/s/AKfycbzoDaaxPWVOgHuUAMr0uYSmiANj12Enk01f008NyVnSRLzbr_PEmLl6b7g9r_3a6r-U/exec'
-    await fetch(`${url}?${new URLSearchParams({
+    await fetch(`${import.meta.env.VITE_FEEDBACK_URL}?${new URLSearchParams({
       name: name.value.trim(),
       email: email.value.trim(),
       content: content.value,
@@ -42,9 +43,11 @@ async function sendFeedback() {
     })}`)
 
     reset()
-    isSent.value = true
+    props.toggle()
+    notification.set({ message: 'Your feedback has already been sent :)' })
   }
   catch (error) {
+    // TODO: handle error
     console.error(error)
   }
   loading.value = false
@@ -53,8 +56,8 @@ async function sendFeedback() {
 
 <template>
   <Modal
-    :title="isSent ? '' : title"
-    :subtitle="isSent ? '' : subtitle"
+    :title="title"
+    :subtitle="subtitle"
     subtitle-style="margin-top: 0;"
     @close="toggle"
   >
