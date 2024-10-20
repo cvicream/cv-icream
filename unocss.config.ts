@@ -23,6 +23,7 @@ export default defineConfig({
     ['note', 'font-mark font-normal text-sm leading-[1.125rem]'],
     ['btn-primary', 'h-12 px-10 rounded-xl text-white bg-primary-100 border-1 border-transparent transition duration-300 ease-out sm:hover:border-primary-20'],
     ['btn-secondary', 'h-12 px-10 rounded-xl text-blacks-100 bg-white border-1 border-primary-100 transition duration-300 ease-out sm:hover:bg-primary-10'],
+    ['btn-disabled', 'h-12 px-10 rounded-xl text-white bg-blacks-10'],
     ['btn-icon-48', 'w-12 h-12 p-2 rounded-full text-blacks-70 bg-white shadow-custom sm:hover:bg-primary-10'],
     ['btn-icon-48-fill', 'w-12 h-12 p-[calc(0.5rem-1px)] rounded-full text-white bg-primary-100 shadow-custom border-1 border-transparent sm:hover:border-primary-20'],
     ['btn-icon-32', 'w-8 h-8 flex flex-shrink-0 justify-center items-center text-blacks-70 rounded-full outline-none sm:hover:bg-primary-10'],
@@ -46,6 +47,8 @@ export default defineConfig({
     ['title-large', 'font-normal text-size-[22px] leading-[30px]'],
     ['subtitle-large', 'font-normal text-size-[18px] leading-[24px]'],
     ['paragraph-large', 'font-normal text-size-[16px] leading-[22px]'],
+    ['skip', 'text-size-[12px] text-link'],
+    ['link/med', 'text-size-[16px] h-[22px] underline cursor-pointer inline-block'],
 
     ['form-label', 'font-normal text-sm text-blacks-70 leading-[1.125rem] block'],
     ['form-input', 'w-full h-[46px] bg-white rounded-xl appearance-none outline-none font-normal text-base text-blacks-100 disabled:text-blacks-40 placeholder-blacks-40 focus:placeholder-transparent pl-4 pr-2 py-3 border-1 border-transparent sm:hover:border-blacks-100 sm:hover:disabled:border-white focus:text-blacks-100'],
@@ -124,6 +127,7 @@ export default defineConfig({
     },
     colors: {
       primary: { // class="text-primary-100"
+        5: '#FEF9F8',
         10: 'var(--secondary-color)',
         20: '#FCE8E1',
         40: 'var(--border-color)',
@@ -131,6 +135,7 @@ export default defineConfig({
         100: 'var(--primary-color)',
       },
       blacks: { // class="text-blacks-100"
+        3: '#F8F8F8',
         5: '#F4F4F4',
         10: '#E9E9E9',
         20: '#D3D3D3',
@@ -147,6 +152,7 @@ export default defineConfig({
       success: '#72B355',
       warning: '#DE6D6D',
       payment: '#FFC43A',
+      link: '#1B61D4',
     },
     boxShadow: {
       custom: '2px 2px 10px var(--shadow-color)',

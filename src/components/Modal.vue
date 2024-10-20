@@ -19,22 +19,21 @@ function closeModal() {
     style="background-color: rgba(241, 139, 107, 0.1);"
   >
     <div class="w-[352px] sm:w-[400px] p-6 bg-white rounded-2xl">
-      <div class="flex justify-between items-start">
-        <div>
+      <div>
+        <div class="flex justify-between items-start">
           <div class="leading text-primary-100" :style="titleStyle">
             {{ title }}
           </div>
-          <div class="paragraph text-blacks-70 mt-4" :style="subtitleStyle">
-            {{ subtitle }}
-          </div>
+          <button class="w-6 h-6" @click="closeModal">
+            <span
+              class="i-custom:cancel icon-24"
+            />
+          </button>
         </div>
-        <button class="w-6 h-6" @click="closeModal">
-          <span
-            class="i-custom:cancel icon-24"
-          />
-        </button>
+        <div class="paragraph text-blacks-70 mt-4" :style="subtitleStyle">
+          {{ subtitle }}
+        </div>
       </div>
-
       <slot />
     </div>
   </div>

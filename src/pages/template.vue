@@ -1,10 +1,16 @@
 <script setup lang="ts">
 import { onBeforeMount } from 'vue'
+import { storeToRefs } from 'pinia'
+import { useAuthStore } from '~/stores/auth'
 import { useUserStore } from '~/stores/user'
 import { useToolbarStore } from '~/stores/toolbar'
 import { DEFAULT_TEMPLATE, MOBILE_BREAKPOINT, TEMPLATES } from '~/constants'
-import { getStorage, hasStorage, setStatus } from '~/utils'
+import { getStorage, hasStorage, setStatus, stripHtml } from '~/utils'
+import { createCV } from '~/api'
+import type { CreateCV } from '~/types'
 
+const auth = useAuthStore()
+const { user: authUser } = storeToRefs(auth)
 const user = useUserStore()
 const toolbar = useToolbarStore()
 
@@ -27,48 +33,73 @@ onUnmounted(() => {
   window.removeEventListener('resize', resize)
 })
 
-function onNext() {
-  let isNewTemplate = true
-
-  if (hasStorage()) {
-    const storage = getStorage()
-    if (selectedTemplate.value === storage.user.template) {
-      // load previous state from storage
-      isNewTemplate = false
-      Object.keys(storage).forEach((key) => {
-        if (key === 'user') {
-          const subObj = storage[key]
-          Object.keys(subObj).forEach((subKey) => {
-            user.$patch((state) => {
-              state[subKey] = subObj[subKey]
-            })
-          })
-          user.updateTimestamp()
-        }
-        else if (key === 'toolbar') {
-          const subObj = storage[key]
-          Object.keys(subObj).forEach((subKey) => {
-            if (subKey === 'currentState') {
-              toolbar.setCurrentState(subObj[subKey])
-            }
-            else {
-              toolbar.$patch((state) => {
-                state[subKey] = subObj[subKey]
-              })
-            }
-          })
-        }
-      })
-    }
-  }
-
-  if (isNewTemplate) {
+async function onNext() {
+  if (authUser.value) {
+    // create new CV in database
     const defaultTemplate = TEMPLATES.find(t => t.template === selectedTemplate.value)
     if (defaultTemplate) {
       user.$patch((state) => {
         Object.assign(state, defaultTemplate)
       })
       toolbar.setCurrentState(defaultTemplate.style)
+    }
+
+    const content = {
+      user: user.$state,
+      toolbar: toolbar.$state,
+    }
+    const newCV: CreateCV = {
+      userId: authUser.value.id,
+      title: `${stripHtml(defaultTemplate.about.name)}_${stripHtml(defaultTemplate.about.jobTitle)}`,
+      description: '',
+      content: JSON.stringify(content),
+    }
+    const cv = await createCV(newCV)
+    if (cv) setStatus({ id: cv.id })
+  }
+  else {
+    let isNewTemplate = true
+
+    if (hasStorage()) {
+      const storage = getStorage()
+      if (selectedTemplate.value === storage.user.template) {
+        // load previous state from storage
+        isNewTemplate = false
+        Object.keys(storage).forEach((key) => {
+          if (key === 'user') {
+            const subObj = storage[key]
+            Object.keys(subObj).forEach((subKey) => {
+              user.$patch((state) => {
+                state[subKey] = subObj[subKey]
+              })
+            })
+            user.updateTimestamp()
+          }
+          else if (key === 'toolbar') {
+            const subObj = storage[key]
+            Object.keys(subObj).forEach((subKey) => {
+              if (subKey === 'currentState') {
+                toolbar.setCurrentState(subObj[subKey])
+              }
+              else {
+                toolbar.$patch((state) => {
+                  state[subKey] = subObj[subKey]
+                })
+              }
+            })
+          }
+        })
+      }
+    }
+
+    if (isNewTemplate) {
+      const defaultTemplate = TEMPLATES.find(t => t.template === selectedTemplate.value)
+      if (defaultTemplate) {
+        user.$patch((state) => {
+          Object.assign(state, defaultTemplate)
+        })
+        toolbar.setCurrentState(defaultTemplate.style)
+      }
     }
   }
 

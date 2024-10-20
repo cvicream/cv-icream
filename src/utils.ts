@@ -1,4 +1,5 @@
 import _ from 'lodash'
+import dayjs from 'dayjs'
 import { COLORS, DRAFT_FILE_TYPE, LOCAL_STORAGE_KEY } from '~/constants'
 
 function hasStorage() {
@@ -64,6 +65,15 @@ function getPreviousUrl() {
   if (statusStr) {
     const status = JSON.parse(statusStr)
     return status.previousUrl
+  }
+  return ''
+}
+
+function getEditingCVId() {
+  const statusStr = getStatus()
+  if (statusStr) {
+    const status = JSON.parse(statusStr)
+    return status.id
   }
   return ''
 }
@@ -266,6 +276,11 @@ function isValidDate(text: string): boolean {
   return new Date(text).toString() !== 'Invalid Date'
 }
 
+function formatDate(date: string) {
+  if (dayjs(date).isSame(dayjs(), 'day')) return dayjs(date).format('hh:mm')
+  return dayjs(date).format('hh:mm DD/MM/YYYY')
+}
+
 export {
   hasStorage,
   getStorage,
@@ -275,6 +290,7 @@ export {
   omitArray,
   isEditing,
   getPreviousUrl,
+  getEditingCVId,
   getJsonUpload,
   rgbToHex,
   hexToRgb,
@@ -292,4 +308,5 @@ export {
   isSameMonth,
   isValidHttpUrl,
   isValidDate,
+  formatDate,
 }
