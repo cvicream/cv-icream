@@ -16,9 +16,6 @@ const model = defineModel()
 </template>
 
 <style lang="scss" scoped>
-  .test123 {
-
-  }
   input {
     padding: 12px 16px;
     &:disabled {
