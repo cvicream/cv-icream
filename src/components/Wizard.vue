@@ -207,13 +207,6 @@ function toggleModal() { showModal.value = !showModal.value }
 </template>
 
 <style lang="scss" scoped>
-.progress-bar-circle {
-  border-radius: 50%;
-  position: absolute;
-  z-index: 1;
-  top: calc(v-bind('top') * 100%);
-  left: calc(v-bind('left') * 100%);
-}
 .others-enter-active,
 .others-leave-active {
   transition: all 0.3s ease;

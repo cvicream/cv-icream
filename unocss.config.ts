@@ -48,6 +48,7 @@ export default defineConfig({
     ['subtitle-large', 'font-normal text-size-[18px] leading-[24px]'],
     ['paragraph-large', 'font-normal text-size-[16px] leading-[22px]'],
     ['skip', 'text-size-[12px] text-link'],
+    ['link/med', 'text-size-[16px] h-[22px] underline cursor-pointer inline-block'],
 
     ['form-label', 'font-normal text-sm text-blacks-70 leading-[1.125rem] block'],
     ['form-input', 'w-full h-[46px] bg-white rounded-xl appearance-none outline-none font-normal text-base text-blacks-100 disabled:text-blacks-40 placeholder-blacks-40 focus:placeholder-transparent pl-4 pr-2 py-3 border-1 border-transparent sm:hover:border-blacks-100 sm:hover:disabled:border-white focus:text-blacks-100'],

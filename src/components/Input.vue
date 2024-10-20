@@ -1,6 +1,7 @@
 <script setup lang="ts">
 const props = defineProps <{
   label: string
+  name: string
   disabled?: boolean
 }>()
 const model = defineModel()
@@ -9,8 +10,8 @@ const model = defineModel()
 
 <template>
   <div class="flex-1">
-    <label :for="label" class="block note text-blacks-70 mb-[4px]">{{ label }}</label>
-    <input :id="label" v-model="model" :disabled="disabled" class="w-[100%] paragraph rounded-[12px]" :name="label" placeholder="edit me">
+    <label :for="name" class="block note text-blacks-70 mb-[4px]">{{ label }}</label>
+    <input :id="name" v-model="model" :disabled="disabled" class="w-[100%] paragraph rounded-[12px]" :name="label" placeholder="edit me">
   </div>
 </template>
 
