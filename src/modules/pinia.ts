@@ -19,7 +19,7 @@ export const install: UserModule = ({ app }) => {
       newCV.content = JSON.stringify(storage)
       await cvStore.update(newCV)
     }
-  }, 4000)
+  }, 2000)
 
   watch(
     pinia.state,
