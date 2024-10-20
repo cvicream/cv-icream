@@ -50,7 +50,7 @@ const logoClass = computed(() => ({
           Welcome to CV Icream!
         </h3>
         <p class="note text-blacks-70">
-          It takes 30 seconds to complete this 3 questions survey
+          It takes 30 seconds to complete this 3 questions survey.
         </p>
       </div>
       <Wizard :steps="steps" @submit="submit" />
