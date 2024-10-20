@@ -1,7 +1,9 @@
 import { createPinia } from 'pinia'
 import _ from 'lodash'
-import type { UserModule } from '~/types'
-import { isEditing, setStorage } from '~/utils'
+import type { CV, UserModule } from '~/types'
+import { getStorage, isEditing, setStorage } from '~/utils'
+import { useAuthStore } from '~/stores/auth'
+import { useCVStore } from '~/stores/cv'
 import { useUndoStore } from '~/stores/undo'
 import { useRedoStore } from '~/stores/redo'
 
@@ -9,6 +11,15 @@ import { useRedoStore } from '~/stores/redo'
 // https://pinia.esm.dev/
 export const install: UserModule = ({ app }) => {
   const pinia = createPinia()
+  const updateCV = _.debounce(async() => {
+    const cvStore = useCVStore()
+    const newCV: CV = cvStore.cv as CV
+    const storage = getStorage()
+    if (!_.isEqual(_.omit(storage, ['user.timestamp']), _.omit(JSON.parse(newCV.content), ['user.timestamp']))) {
+      newCV.content = JSON.stringify(storage)
+      await cvStore.update(newCV)
+    }
+  }, 2000)
 
   watch(
     pinia.state,
@@ -16,11 +27,19 @@ export const install: UserModule = ({ app }) => {
       // persist the whole state to the local storage whenever it changes
       if (isEditing()) {
         // exclude `undo` and `redo`
-        const savedState = _.cloneDeep(_.omit(state, ['undo', 'redo']))
+        const savedState = _.cloneDeep(_.omit(state, ['undo', 'redo', 'auth', 'cv', 'notification']))
+        const authStore = useAuthStore()
+        const cvStore = useCVStore()
         const undoStore = useUndoStore()
         const redoStore = useRedoStore()
-        setStorage(savedState)
+        const currentState = getStorage()
 
+        if (!_.isEqual(savedState, currentState)) {
+          setStorage(savedState)
+
+          if (authStore.user && cvStore.cv)
+            updateCV()
+        }
         if (['undo', 'redo'].includes(state.user.action)) {
           state.user.action = ''
           if (redoStore.list.length === 1 && redoStore.maxRestore === 0)

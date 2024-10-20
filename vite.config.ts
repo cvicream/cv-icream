@@ -129,4 +129,15 @@ export default defineConfig({
       inline: ['@vue', '@vueuse', 'vue-demi'],
     },
   },
+
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks(id) {
+          if (id.includes('node_modules'))
+            return 'vendor'
+        },
+      },
+    },
+  },
 })

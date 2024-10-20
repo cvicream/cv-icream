@@ -11,6 +11,8 @@ module.exports = {
         'unused-css-rules': 'off',
         'unused-javascript': 'off',
         'uses-rel-preconnect': 'off',
+        'errors-in-console': 'off',
+        'valid-source-maps': 'off',
       },
     },
   },

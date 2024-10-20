@@ -5,7 +5,7 @@ import { jsPDF as JsPDF } from 'jspdf'
 import { storeToRefs } from 'pinia'
 import { useUserStore } from '~/stores/user'
 import { useToolbarStore } from '~/stores/toolbar'
-import { getPreviousUrl, getStorage, setStatus, stripHtml } from '~/utils'
+import { generateFileName, getPreviousUrl, getStorage, setStatus, stripHtml } from '~/utils'
 import { A4_WIDTH_PX } from '~/constants'
 import arial from '~/assets/fonts/arial/arial-normal'
 import georgia from '~/assets/fonts/georgia/georgia-normal'
@@ -114,7 +114,7 @@ function print() {
 async function generatePdf() {
   loading.value = true
 
-  const fileName = generateFileName()
+  const fileName = generateFileName(about.value.name, about.value.jobTitle)
   const storage = getStorage()
   const data = {
     targetUrl: location.hostname === 'localhost' || location.hostname === '127.0.0.1' ? null : window.origin,
@@ -162,17 +162,6 @@ async function generatePdf() {
   })
 
   loading.value = false
-}
-
-function generateFileName() {
-  let name = stripHtml(about.value.name)
-  name = name.replace(/\n/g, '') // remove line break
-  let jobTitle = stripHtml(about.value.jobTitle)
-  jobTitle = jobTitle.replace(/\n/g, '') // remove line break
-  if (name && jobTitle) return `CV_${name}_${jobTitle}`
-  else if (name && !jobTitle) return `CV_${name}`
-  else if (!name && jobTitle) return `CV_NAME_${jobTitle}`
-  else return 'CV_NAME_Job Title'
 }
 
 function back() {
