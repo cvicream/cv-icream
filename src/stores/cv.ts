@@ -20,7 +20,8 @@ export const useCVStore = defineStore('cv', {
       return await createCV(cv)
     },
     async update(cv: CV) {
-      return await updateCV(cv)
+      this.cv = await updateCV(cv)
+      return this.cv
     },
     async delete(id: string) {
       return await deleteCV(id)

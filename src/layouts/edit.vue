@@ -87,8 +87,7 @@ onBeforeMount(async() => {
     const cvId = getEditingCVId()
     if (!cvId)
       return
-    if (!cvData.value)
-      await cv.get(cvId)
+    await cv.get(cvId)
     if (!cvData.value || !cvData.value.content)
       return
 
