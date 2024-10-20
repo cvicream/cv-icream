@@ -66,7 +66,11 @@ function logout() {
       <div class="leading">
         Your Account
       </div>
-      <img width="100" height="100" class="rounded-full" :src="authUser?.avatar ?? ''">
+      <Avatar
+        format="base64"
+        class="!w-25 !h-25"
+        :src="authUser?.avatar"
+      />
       <div class="flex gap-[24px]">
         <Input v-model="firstName" label="First Name" />
         <Input v-model="lastName" label="Last Name" />

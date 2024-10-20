@@ -278,7 +278,7 @@ function logout() {
         class="px-2 py-1 rounded-xl flex items-center gap-3 sm:hover:bg-primary-10"
         @click.stop="toggle"
       >
-        <Avatar :src="authUser.avatar" />
+        <Avatar format="base64" :src="authUser.avatar" />
         <span class="hidden sm:block subleading text-blacks-100">{{ displayName }}</span>
       </button>
 
