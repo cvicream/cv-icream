@@ -7,6 +7,10 @@ import { MAX_UNPAID_CV_NUM } from '~/constants'
 import { generateFileName, getJsonUpload } from '~/utils'
 import type { CreateCV } from '~/types'
 
+const eventURL = import.meta.env.VITE_EVENT_URL
+const mediumURL = import.meta.env.VITE_MEDIUM_URL
+const discordURL = import.meta.env.VITE_DISCORD_URL
+
 const router = useRouter()
 const auth = useAuthStore()
 const cv = useCVStore()
@@ -62,6 +66,12 @@ const importCV = async() => {
     // TODO: handle error
   }
 }
+
+const openInNewTab = (url) => {
+  if (!url)
+    return
+  window.open(url, '_blank')
+}
 </script>
 
 <template>
@@ -107,24 +117,36 @@ const importCV = async() => {
       </div>
     </div>
     <div class="flex flex-col sm:flex-row gap-5 mt-5 sm:mt-13">
-      <div class="px-8 py-6 bg-white rounded-[24px] flex-1 border border-white hover:border-primary-100 transition duration-300 ease-out">
+      <div
+        class="px-8 py-6 bg-white rounded-[24px] flex-1 border border-white cursor-pointer hover:border-primary-100 transition duration-300 ease-out"
+        @click="openInNewTab(eventURL)"
+      >
         <p class="leading text-blacks-100">
           Workshops  🎄
         </p>
         <p class="note text-blacks-100 mt-2">
           Join us for a sweet chat! Don’t miss our upcoming online event, 'Make Your CV Shine'.
-          <a class="border-b border-blacks-100 cursor-pointer">Register</a>
+          <a
+            class="border-b border-blacks-100 cursor-pointer"
+            :href="eventURL"
+            target="_blank"
+          >
+            Register
+          </a>
           now!
         </p>
       </div>
-      <div class="px-8 py-6 bg-white rounded-[24px] flex-1 border border-white hover:border-primary-100 transition duration-300 ease-out">
+      <div
+        class="px-8 py-6 bg-white rounded-[24px] flex-1 border border-white cursor-pointer hover:border-primary-100 transition duration-300 ease-out"
+        @click="openInNewTab(mediumURL)"
+      >
         <p class="leading text-blacks-100">
           Tips  👀
         </p>
         <p class="note text-blacks-100 mt-2">
           <a
             class="border-b border-blacks-100 cursor-pointer"
-            href="https://medium.com/cv-icream"
+            :href="mediumURL"
             target="_blank"
           >
             Discover
@@ -132,7 +154,10 @@ const importCV = async() => {
           handy and actionable tips on making a perfect CV in our Medium publication.
         </p>
       </div>
-      <div class="px-8 py-6 bg-white rounded-[24px] flex-1 border border-white hover:border-primary-100 transition duration-300 ease-out">
+      <div
+        class="px-8 py-6 bg-white rounded-[24px] flex-1 border border-white cursor-pointer hover:border-primary-100 transition duration-300 ease-out"
+        @click="openInNewTab(discordURL)"
+      >
         <p class="leading text-blacks-100">
           Community  🪂
         </p>
@@ -141,7 +166,7 @@ const importCV = async() => {
           <br>
           <a
             class="border-b border-blacks-100 cursor-pointer"
-            href="https://discord.com/invite/mjVdcp6f"
+            :href="discordURL"
             target="_blank"
           >
             Join
