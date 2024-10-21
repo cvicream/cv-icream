@@ -7,7 +7,8 @@ const apiInstance = axios.create({
 
 apiInstance.interceptors.request.use((config) => {
   const token = localStorage.getItem('token')
-  if (token && config.headers) config.headers.Authorization = `Bearer ${token}`
+  if (token && config.headers)
+    config.headers.Authorization = `Bearer ${token}`
   return config
 }, (error) => {
   return Promise.reject(error)
@@ -36,6 +37,16 @@ export const getAuthUser = async(): Promise<User | null> => {
 export const updateUser = async(user: User): Promise<User | null> => {
   try {
     const { data } = await apiInstance.put('/api/auth/user', user)
+    return data
+  }
+  catch (error) {
+    return null
+  }
+}
+
+export const deleteUser = async(): Promise<User | null> => {
+  try {
+    const { data } = await apiInstance.delete('/api/auth/user')
     return data
   }
   catch (error) {
@@ -90,5 +101,15 @@ export const deleteCV = async(id: string): Promise<boolean> => {
   }
   catch (error) {
     return false
+  }
+}
+
+export const createSurvey = async(survey: { userId: number; survey: string }): Promise<any | null> => {
+  try {
+    const { data } = await apiInstance.post('/api/survey', survey)
+    return data
+  }
+  catch (error) {
+    return null
   }
 }

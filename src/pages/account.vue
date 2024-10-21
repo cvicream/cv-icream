@@ -21,15 +21,18 @@ const hasChanged = computed(() => {
   || email?.value !== authUser.value.email
 })
 
-function onSave() {
-  console.log(firstName?.value, 'firstName')
-  console.log(lastName?.value, 'lastName')
-  console.log(email?.value, 'email')
+async function onSave() {
+  await auth.updateUser({
+    ...authUser.value!,
+    firstName: firstName?.value ?? '',
+    lastName: lastName?.value ?? '',
+    email: email?.value ?? '',
+  })
 }
 
-function onDelete() {
-  console.log(authUser.value?.id, 'id')
-  showDeleteModal.value = false
+async function onDelete() {
+  await auth.deleteUser()
+  logout()
 }
 
 function openDeleteModal() {
@@ -58,7 +61,7 @@ function logout() {
 <template>
   <div class="flex flex-col items-center">
     <div class="w-[358px] h-[851px] md:w-[700px] md:h-[730px] mt-[32px] bg-primary-5 rounded-[24px] p-[32px] gap-[32px] flex flex-col relative">
-      <button class="w-6 h-6 float-right absolute right-[26px] top-[26px]" @click="router.push('/dashboard')">
+      <button class="w-6 h-6 float-right absolute right-[20px] top-[20px]" @click="router.push('/dashboard')">
         <span
           class="i-custom:cancel icon-24"
         />
@@ -72,11 +75,11 @@ function logout() {
         :src="authUser?.avatar"
       />
       <div class="flex gap-[24px]">
-        <Input v-model="firstName" label="First Name" />
-        <Input v-model="lastName" label="Last Name" />
+        <Input v-model="firstName" name="first-name" label="First Name" />
+        <Input v-model="lastName" name="last-name" label="Last Name" />
       </div>
-      <div>
-        <Input v-model="email" label="Email" :disabled="true" />
+      <div class="mt-[-8px]">
+        <Input v-model="email" name="email" label="Email" :disabled="true" />
         <div v-if="isGoogle" class="note text-blacks-40 mt-[4px]">
           You're currently using your Google account to log in.
         </div>
@@ -97,18 +100,18 @@ function logout() {
           <span class="subleading">Save</span>
         </button>
       </div>
-      <div class="width-[100%] border border-blacks-10 " />
+      <div class="width-[100%] border-t-1 border-blacks-10 " />
       <div class="flex flex-col gap-[24px]">
-        <div>
-          <a class="text-primary-100 border-b border-primary-100 cursor-pointer" @click="openLogoutModal">
+        <div class="flex flex-col gap-[4px]">
+          <a class="link/med text-warning" @click="openLogoutModal">
             Log out Account
           </a>
           <div class="note text-blacks-60">
-            Temporarily suspend your account. You can access it again anytime by signing back in.
+            Temporarily logged out. You can sign back in anytime to restore access.
           </div>
         </div>
-        <div>
-          <a class="text-primary-100 border-b border-primary-100 cursor-pointer" @click="openDeleteModal">
+        <div class="flex flex-col gap-[4px]">
+          <a class="link/med text-warning" @click="openDeleteModal">
             Delete Account
           </a>
           <div class="note text-blacks-60">
@@ -143,7 +146,7 @@ function logout() {
   <Modal
     v-show="showLogoutModal"
     title="You’re about to log out."
-    subtitle="Your account will be temporarily suspended and can be reactivated anytime by signing in."
+    subtitle="You can log back in anytime to restore access."
     subtitle-style="margin-top: 4;"
     @close="closeLogoutModal"
   >
@@ -164,7 +167,13 @@ function logout() {
   </Modal>
 </template>
 
-<style lang="scss" scoped>
+<style lang="scss">
+#first-name, #last-name, #email {
+  &:focus-visible, &:hover {
+    outline: 1px solid;
+    outline-color: var(--black-100);
+  }
+}
 </style>
 
 <route lang="yaml">

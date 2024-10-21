@@ -26,6 +26,7 @@ const getOtherOptionStyles = computed(() => {
   return styles.join(' ')
 })
 watch(currentStep, (newValue, oldValue) => {
+  document.querySelector('.custom-scrollbar')?.scrollTo({ top: 0, left: 0, behavior: 'smooth' })
   hasEmptyValue.value = false
   if (otherValue.value) {
     const result = survey.value[oldValue.id].filter(el => !el.startsWith('Others_'))
@@ -121,26 +122,26 @@ function toggleModal() { showModal.value = !showModal.value }
   <Modal
     v-if="showModal"
     class="select-none"
-    title="Are you sure you want to skip?"
-    subtitle="This survey only takes 30 seconds to complete, but it will help us to improve your future experience."
+    title="Wait, your feedback matters!"
+    subtitle="It takes 30 seconds to help us create a better CV editing experience for you."
     @close="toggleModal"
   >
     <div class="flex flex-col gap-[24px]">
       <div class="flex flex-col gap-5 sm:gap-6 mt-8 sm:flex-row sm:justify-between">
         <button
-          class="btn-secondary px-8 w-[164px]"
-          @click="toggleModal"
-        >
-          <span class="subleading">
-            Cancel
-          </span>
-        </button>
-        <button
-          class="btn-primary px-8 w-[164px]"
+          class="btn-secondary px-0 w-[164px]"
           @click="router.push('/dashboard')"
         >
           <span class="subleading">
-            Skip
+            Skip for now
+          </span>
+        </button>
+        <button
+          class="btn-primary px-0 w-[164px]"
+          @click="toggleModal"
+        >
+          <span class="subleading">
+            Sure, I'll help!
           </span>
         </button>
       </div>
@@ -206,13 +207,6 @@ function toggleModal() { showModal.value = !showModal.value }
 </template>
 
 <style lang="scss" scoped>
-.progress-bar-circle {
-  border-radius: 50%;
-  position: absolute;
-  z-index: 1;
-  top: calc(v-bind('top') * 100%);
-  left: calc(v-bind('left') * 100%);
-}
 .others-enter-active,
 .others-leave-active {
   transition: all 0.3s ease;
