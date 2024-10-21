@@ -88,14 +88,24 @@ const openInNewTab = (url) => {
         </p>
       </div>
       <div class="flex flex-col gap-5 mt-5 sm:mt-0">
-        <button
-          class="w-full sm:w-[260px] flex justify-center items-center px-7 py-5 rounded-[24px] text-white bg-primary-100 border-1 border-transparent transition duration-300 ease-out sm:hover:border-primary-20 disabled:bg-blacks-10 disabled:text-blacks-40"
-          :disabled="isMaxNum"
-          @click="createCV"
+        <Tooltip
+          placement="bottom"
+          class="hidden sm:block"
+          style="max-width: 260px;"
+          :text="isMaxNum
+            ? 'You\'ve reached the maximum CV limit. Please delete one to create a new CV.'
+            : 'Import the CV saved on your local device. This option is only available for files with the .cvicream extension.'
+          "
         >
-          <span class="i-custom:plus w-6 h-6 mr-2" />
-          <span class="leading">Create a New CV</span>
-        </button>
+          <button
+            class="w-full sm:w-[260px] flex justify-center items-center px-7 py-5 rounded-[24px] text-white bg-primary-100 border-1 border-transparent transition duration-300 ease-out sm:hover:border-primary-20 disabled:bg-blacks-10 disabled:text-blacks-40"
+            :disabled="isMaxNum"
+            @click="createCV"
+          >
+            <span class="i-custom:plus w-6 h-6 mr-2" />
+            <span class="leading">Create a New CV</span>
+          </button>
+        </Tooltip>
         <Tooltip
           placement="bottom"
           class="hidden sm:block"
