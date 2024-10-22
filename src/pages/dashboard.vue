@@ -90,7 +90,6 @@ const openInNewTab = (url) => {
       <div class="flex flex-col gap-5 mt-5 sm:mt-0">
         <Tooltip
           placement="bottom"
-          class="hidden sm:block"
           style="max-width: 260px;"
           :text="isMaxNum
             ? 'You\'ve reached the maximum CV limit. Please delete one to create a new CV.'
