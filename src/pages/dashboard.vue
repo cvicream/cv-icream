@@ -98,7 +98,7 @@ const openInNewTab = (url) => {
           "
         >
           <button
-            class="w-full sm:w-[260px] flex justify-center items-center px-7 py-5 rounded-[24px] text-white bg-primary-100 border-1 border-transparent transition duration-300 ease-out sm:hover:border-primary-20 disabled:bg-blacks-10 disabled:text-blacks-40"
+            class="w-full sm:w-[260px] flex justify-center items-center px-7 py-5 rounded-[24px] text-white bg-primary-100 border-1 border-transparent transition duration-300 ease-out sm:hover:border-primary-20 disabled:bg-blacks-10 disabled:hover:border-transparent disabled:text-blacks-40"
             :disabled="isMaxNum"
             @click="createCV"
           >

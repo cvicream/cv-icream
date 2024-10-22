@@ -48,7 +48,7 @@ const download = async() => {
   const data = {
     targetUrl: location.hostname === 'localhost' || location.hostname === '127.0.0.1' ? null : window.origin,
     fileName,
-    data: props.data.content,
+    data: JSON.parse(props.data.content),
   }
 
   const generatePdfUrl: string = import.meta.env.VITE_GENERATE_PDF_URL as string

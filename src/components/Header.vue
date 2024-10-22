@@ -13,7 +13,8 @@ defineProps<{
   isEdit?: boolean
 }>()
 
-const isActionActive = ref(false)
+const isUserMenuOpen = ref(false)
+const isActionMenuOpen = ref(false)
 const feedbackVisible = ref(false)
 const paymentVisible = ref(false)
 const contactVisible = ref(false)
@@ -68,22 +69,26 @@ const isDashboard = computed(() => {
 })
 
 onMounted(() => {
-  window.addEventListener('click', closeAction, false)
+  window.addEventListener('click', closeUserMenu, false)
+  window.addEventListener('click', closeActionMenu, false)
 
   if (isSafari())
     window.addEventListener('click', onWindowClick, false)
 })
 
 onUnmounted(() => {
-  window.removeEventListener('click', closeAction)
+  window.removeEventListener('click', closeUserMenu)
+  window.removeEventListener('click', closeActionMenu)
 
   if (isSafari())
     window.removeEventListener('click', onWindowClick)
 })
 
 function onWindowClick() {
-  if (isActionActive.value)
-    closeAction()
+  if (isUserMenuOpen.value)
+    closeUserMenu()
+  if (isActionMenuOpen.value)
+    closeActionMenu()
 }
 
 function toggleFeedbackModal() {
@@ -100,11 +105,11 @@ function redirectToDownload() {
   })
   setStatus({ previousUrl: window.location.href })
   router.push('/edit/download')
-  closeAction()
+  closeActionMenu()
 }
 
 function exportJsonFile() {
-  closeAction()
+  closeActionMenu()
   const currentStateData = Object.keys(currentState.value).reduce((acc, cur) => {
     acc[cur] = currentState.value[cur]
     return acc
@@ -162,7 +167,7 @@ function exportJsonFile() {
 }
 
 async function importJsonFile() {
-  closeAction()
+  closeActionMenu()
   upload.value = false
   try {
     const json = await getJsonUpload()
@@ -198,12 +203,24 @@ async function importJsonFile() {
   fbq('track', 'open-cv-draft')
 }
 
-function toggle() {
-  isActionActive.value = !isActionActive.value
+function toggleUserMenu() {
+  isUserMenuOpen.value = !isUserMenuOpen.value
+  if (isUserMenuOpen.value)
+    closeActionMenu()
 }
 
-function closeAction() {
-  isActionActive.value = false
+function closeUserMenu() {
+  isUserMenuOpen.value = false
+}
+
+function toggleActionMenu() {
+  isActionMenuOpen.value = !isActionMenuOpen.value
+  if (isActionMenuOpen.value)
+    closeUserMenu()
+}
+
+function closeActionMenu() {
+  isActionMenuOpen.value = false
 }
 
 function togglePaymentModal() {
@@ -220,18 +237,18 @@ function deleteNotification() {
 
 function redirectToDashboard() {
   router.push('/dashboard')
-  closeAction()
+  closeUserMenu()
 }
 
 function redirectToAccount() {
   router.push('/account')
-  closeAction()
+  closeUserMenu()
 }
 
 function logout() {
   auth.logout()
   router.push('/sign-in')
-  closeAction()
+  closeUserMenu()
 }
 </script>
 
@@ -272,39 +289,28 @@ function logout() {
       <span class="subleading text-blacks-60 ml-3">{{ displayUpdatedAt }}</span>
     </div>
 
-    <div class="leading-56px" @click="toggle">
-      <button
-        v-if="authUser"
-        class="px-2 py-1 rounded-xl flex items-center gap-3 sm:hover:bg-primary-10"
-        @click.stop="toggle"
-      >
-        <Avatar format="base64" :src="authUser.avatar" />
-        <span class="hidden sm:block subleading text-blacks-100">{{ displayName }}</span>
-      </button>
-
-      <div v-else-if="isEdit" class="flex items-center">
-        <button
-          class="h-8 rounded flex justify-center items-center gap-1 sm:hover:bg-primary-10 outline-none"
-          @click.stop="toggle"
-        >
-          <span class="i-custom:download w-6 h-6 text-blacks-70" />
-          <span class="w-[1px] h-4 bg-blacks-20" />
-          <span
-            class="i-custom:arrow-down w-4 h-4 text-blacks-70 transition"
-            :class="isActionActive ? 'rotate-180' : 'rotate-0'"
-          />
-        </button>
-      </div>
-
+    <div class="flex items-center">
       <div
-        v-if="isActionActive"
-        class="absolute right-6 top-[64px] z-3"
+        v-if="authUser"
+        class="leading-56px"
+        @click="toggleUserMenu"
       >
-        <div
-          class="bg-white rounded-xl overflow-hidden"
-          :class="isSafari() || isMobileDevice() ? 'w-[262px] border-1 border-blacks-100' : 'w-[260px] outline outline-1 outline-blacks-100'"
+        <button
+          :class="isDashboard ? 'px-2 py-1 rounded-xl flex items-center gap-3 sm:hover:bg-primary-10': 'mr-4'"
+          @click.stop="toggleUserMenu"
         >
-          <template v-if="authUser">
+          <Avatar format="base64" :src="authUser.avatar" />
+          <span v-if="isDashboard" class="hidden sm:block subleading text-blacks-100">{{ displayName }}</span>
+        </button>
+
+        <div
+          v-if="isUserMenuOpen"
+          class="absolute right-[90px] top-[64px] z-3"
+        >
+          <div
+            class="bg-white rounded-xl overflow-hidden"
+            :class="isSafari() || isMobileDevice() ? 'w-[262px] border-1 border-blacks-100' : 'w-[260px] outline outline-1 outline-blacks-100'"
+          >
             <button
               v-if="!isDashboard"
               class="w-full h-[45px] flex justify-start items-center px-4 py-3 sm:hover:bg-primary-10"
@@ -332,8 +338,33 @@ function logout() {
             >
               <span class="paragraph text-warning">Log out</span>
             </button>
-          </template>
-          <template v-else>
+          </div>
+        </div>
+      </div>
+
+      <div class="leading-56px" @click="toggleActionMenu">
+        <div v-if="isEdit" class="flex items-center">
+          <button
+            class="h-8 rounded flex justify-center items-center gap-1 sm:hover:bg-primary-10 outline-none"
+            @click.stop="toggleActionMenu"
+          >
+            <span class="i-custom:download w-6 h-6 text-blacks-70" />
+            <span class="w-[1px] h-4 bg-blacks-20" />
+            <span
+              class="i-custom:arrow-down w-4 h-4 text-blacks-70 transition"
+              :class="isActionMenuOpen ? 'rotate-180' : 'rotate-0'"
+            />
+          </button>
+        </div>
+
+        <div
+          v-if="isActionMenuOpen"
+          class="absolute right-6 top-[64px] z-3"
+        >
+          <div
+            class="bg-white rounded-xl overflow-hidden"
+            :class="isSafari() || isMobileDevice() ? 'w-[262px] border-1 border-blacks-100' : 'w-[260px] outline outline-1 outline-blacks-100'"
+          >
             <button
               class="w-full h-[45px] flex justify-start items-center px-4 py-3 sm:hover:bg-primary-10"
               :class="isSafari() || isMobileDevice() ? 'rounded-t-[11px]' : 'rounded-t-xl'"
@@ -355,7 +386,7 @@ function logout() {
             >
               <span class="paragraph text-blacks-100">Import draft from local device</span>
             </button>
-          </template>
+          </div>
         </div>
       </div>
     </div>

@@ -75,7 +75,7 @@ const signInWithLinkedIn = () => {
 
           <button
             class="w-full btn-secondary"
-            @click="$router.push('/')"
+            @click="$router.push('/create')"
           >
             <span class="subleading text-blacks-100 ml-4">Continue as Guest</span>
           </button>
