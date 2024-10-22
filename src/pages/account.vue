@@ -60,11 +60,9 @@ function logout() {
 
 <template>
   <div class="flex flex-col items-center">
-    <div class="w-[358px] h-[851px] md:w-[700px] md:h-[730px] mt-[32px] bg-primary-5 rounded-[24px] p-[32px] gap-[32px] flex flex-col relative">
-      <button class="w-6 h-6 float-right absolute right-[20px] top-[20px]" @click="router.push('/dashboard')">
-        <span
-          class="i-custom:cancel icon-24"
-        />
+    <div class="w-[358px] h-[851px] md:w-[700px] md:h-[730px] mt-8 bg-primary-5 rounded-6 p-8 gap-8 flex flex-col relative">
+      <button class="w-6 h-6 float-right absolute right-5 top-5" @click="router.push('/dashboard')">
+        <span class="i-custom:cancel icon-24" />
       </button>
       <div class="leading">
         Your Account
@@ -74,26 +72,26 @@ function logout() {
         class="!w-25 !h-25"
         :src="authUser?.avatar"
       />
-      <div class="flex gap-[24px]">
+      <div class="flex flex-col sm:flex-row gap-6">
         <Input v-model="firstName" name="first-name" label="First Name" />
         <Input v-model="lastName" name="last-name" label="Last Name" />
       </div>
-      <div class="mt-[-8px]">
+      <div class="-mt-2">
         <Input v-model="email" name="email" label="Email" :disabled="true" />
-        <div v-if="isGoogle" class="note text-blacks-40 mt-[4px]">
+        <div v-if="isGoogle" class="note text-blacks-40 mt-1">
           You're currently using your Google account to log in.
         </div>
       </div>
-      <div class="flex justify-end gap-[20px] mt-[32px]">
+      <div class="flex flex-col sm:flex-row justify-end gap-3 sm:gap-5 sm:mt-8">
         <button
-          class="btn-secondary w-[137px]"
+          class="btn-secondary w-full sm:w-[137px]"
           @click="router.push('/dashboard')"
         >
           <span class="subleading">Cancel</span>
         </button>
         <button
           :disabled="!hasChanged"
-          class="btn-primary w-[137px]"
+          class="btn-primary w-full sm:w-[137px]"
           :class="!hasChanged && 'text-blacks-40 bg-blacks-10'"
           @click="() => onSave()"
         >
@@ -101,8 +99,8 @@ function logout() {
         </button>
       </div>
       <div class="width-[100%] border-t-1 border-blacks-10 " />
-      <div class="flex flex-col gap-[24px]">
-        <div class="flex flex-col gap-[4px]">
+      <div class="flex flex-col gap-6">
+        <div class="flex flex-col gap-1">
           <a class="link/med text-warning" @click="openLogoutModal">
             Log out Account
           </a>
@@ -110,7 +108,7 @@ function logout() {
             Temporarily logged out. You can sign back in anytime to restore access.
           </div>
         </div>
-        <div class="flex flex-col gap-[4px]">
+        <div class="flex flex-col gap-1">
           <a class="link/med text-warning" @click="openDeleteModal">
             Delete Account
           </a>

@@ -1,6 +1,12 @@
 <script setup lang="ts">
-import { onBeforeMount } from 'vue'
+import { computed, onBeforeMount } from 'vue'
 import { getColor, setCssVariable } from '~/utils'
+
+const router = useRouter()
+
+const isAccountPage = computed(() => {
+  return router.currentRoute.value.name === 'account'
+})
 
 onBeforeMount(() => {
   // make sure style change back to default
@@ -19,7 +25,10 @@ onBeforeMount(() => {
 <template>
   <main class="h-full">
     <Header />
-    <div class="h-[calc(100%-57px)] custom-scrollbar bg-blacks-5 overflow-auto">
+    <div
+      class="h-[calc(100%-57px)] custom-scrollbar overflow-auto"
+      :class="isAccountPage ? 'bg-white' : 'bg-blacks-5'"
+    >
       <router-view />
       <div class="mt-8 p-16 sm:p-25 text-center">
         <span class="i-origin:logo-background w-[140px] h-[38px]" />
