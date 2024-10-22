@@ -409,8 +409,8 @@ function logout() {
     </div>
   </header>
   <div
-    class="border-b border-b-blacks-20"
-    :class="isAccountPage ? 'border-b-white' : 'border-b-blacks-20'"
+    class="border-b border-b-blacks-20 border-b-blacks-20"
+    :class="{ 'sm:border-b-white': isAccountPage }"
   />
 
   <FeedbackModal
