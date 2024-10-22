@@ -2,6 +2,7 @@
 import { computed, onBeforeMount, onMounted, onUnmounted, ref } from 'vue'
 import { useElementSize } from '@vueuse/core'
 import { storeToRefs } from 'pinia'
+import _ from 'lodash'
 import { useAuthStore } from '~/stores/auth'
 import { useCVStore } from '~/stores/cv'
 import { useUserStore } from '~/stores/user'
@@ -124,8 +125,19 @@ onMounted(() => {
   overrideDefaultZoom()
 })
 
-onUnmounted(() => {
+onUnmounted(async() => {
   setStatus({ isEditing: false })
+
+  if (authUser.value) {
+    const newCV: CV = _.cloneDeep(cvData.value)
+    const storage = getStorage()
+    if (!_.isEqual(_.omit(storage, ['user.timestamp']), _.omit(JSON.parse(newCV.content), ['user.timestamp']))) {
+      // save data to database only if it is changed
+      newCV.content = JSON.stringify(storage)
+      await cvStore.update(newCV)
+    }
+  }
+
   window.removeEventListener('beforeunload', onBeforeUnload)
   window.removeEventListener('resize', resize)
 })
