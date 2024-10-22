@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import { computed, onBeforeMount } from 'vue'
+import { computed, onBeforeMount, ref } from 'vue'
 import { getColor, setCssVariable } from '~/utils'
 
 const router = useRouter()
+const content = ref<HTMLElement | null>(null)
 
 const isAccountPage = computed(() => {
   return router.currentRoute.value.name === 'account'
@@ -20,12 +21,17 @@ onBeforeMount(() => {
   setCssVariable('--shadow-color', color.shadow)
   setCssVariable('--border-color', color.border)
 })
+
+onUpdated(() => {
+  content.value?.scrollTo({ top: 0, behavior: 'smooth' })
+})
 </script>
 
 <template>
   <main class="h-full">
     <Header />
     <div
+      ref="content"
       class="h-[calc(100%-57px)] custom-scrollbar overflow-auto"
       :class="isAccountPage ? 'bg-white' : 'bg-blacks-5'"
     >
