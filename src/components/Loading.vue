@@ -1,8 +1,10 @@
 <template>
   <div class="loader flex-inline gap-3 flex-shrink-0">
-    <span class="w-2.5 h-2.5 bg-white rounded-full" />
-    <span class="w-2.5 h-2.5 bg-white rounded-full" />
-    <span class="w-2.5 h-2.5 bg-white rounded-full" />
+    <span
+      v-for="i in 3"
+      :key="i"
+      class="w-2.5 h-2.5 bg-current rounded-full"
+    />
   </div>
 </template>
 

@@ -65,12 +65,14 @@ function isObjectEmpty(obj) {
 }
 
 function redirect(path) {
-  if (!props.readOnly) router.push(path)
+  if (!props.readOnly)
+    router.push(path)
 }
 
 function onMouseUp(event: MouseEvent) {
   const rootElement = document.getElementById('cv-preview')
-  if (rootElement && rootElement.classList.contains('adding-note-mode')) return
+  if (rootElement && rootElement.classList.contains('adding-note-mode'))
+    return
 
   redirect(`/edit/${props.element.key}`)
 }
@@ -86,8 +88,11 @@ function onMouseUp(event: MouseEvent) {
     <section
       v-if="element.key === 'about'"
       id="about"
-      class="p-2 flex items-baseline flex-wrap gap-6 not-break-out sm:hover:bg-primary-10"
-      :class="getEditingStyle(about.isEditing)"
+      class="p-2 flex items-baseline flex-wrap gap-6 not-break-out"
+      :class="[
+        getEditingStyle(about.isEditing),
+        { 'sm:hover:bg-primary-10': !readOnly }
+      ]"
     >
       <div
         v-if="about.name"

@@ -47,7 +47,10 @@ function resize() {
       :id="previewId"
       class="w-[210mm] min-w-[210mm] min-h-[297mm] overflow-hidden rounded-xl shadow-custom"
     >
-      <CVPreview :id="cvPreviewId" read-only />
+      <CVPreview
+        :id="cvPreviewId"
+        read-only
+      />
     </div>
   </div>
 </template>

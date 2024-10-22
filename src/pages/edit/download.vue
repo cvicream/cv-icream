@@ -233,7 +233,7 @@ function back() {
       :disabled="loading"
       @click="generatePdf"
     >
-      <Loading v-if="loading" />
+      <Loading v-if="loading" class="text-white" />
       <template v-else>
         <span class="i-custom:download w-6 h-6" />
         <span class="subleading">Export</span>

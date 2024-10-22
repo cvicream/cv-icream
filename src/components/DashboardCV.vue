@@ -24,6 +24,7 @@ const title = ref(props.data.title)
 const isMoreActionOpen = ref<boolean>(false)
 const moreActionRef = ref(null)
 const deleteModalVisible = ref<boolean>(false)
+const loading = ref<boolean>(false)
 
 const isMaxNum = computed(() => Array.isArray(cvs.value) && cvs.value.length >= MAX_UNPAID_CV_NUM)
 
@@ -44,6 +45,8 @@ const toggleDeleteModal = () => {
 }
 
 const download = async() => {
+  loading.value = true
+
   const fileName = props.data.title
   const data = {
     targetUrl: location.hostname === 'localhost' || location.hostname === '127.0.0.1' ? null : window.origin,
@@ -72,6 +75,8 @@ const download = async() => {
       console.error(error)
     }
   }
+
+  loading.value = false
 }
 
 const edit = () => {
@@ -118,67 +123,95 @@ const deleteCV = async() => {
 
 <template>
   <div
-    class="sm:w-[calc(100%*(1/4)-15px)] rounded-[20px] border-1 border-blacks-40 p-5 hover:bg-primary-10 hover:border-primary-100 transition duration-300 ease-out group"
+    class="relative sm:w-[calc(100%*(1/4)-15px)] sm:w-[calc(100%*(1/4)-15px)] rounded-[20px] border-1 border-blacks-40 hover:border-primary-100 hover:bg-primary-10 transition duration-300 ease-out group"
     @dblclick="edit"
   >
-    <ResponsiveCVPreview :id="`responsive-cv-preview-${data.id}`" read-only class="hidden sm:block mb-4" />
-    <div>
-      <div class="flex justify-between items-center">
-        <div class="flex-1 mr-2">
-          <input
-            ref="titleInput"
-            v-model="title"
-            type="text"
-            class="w-full h-full subleading text-blacks-100 group-hover:bg-primary-10 text-ellipsis whitespace-nowrap overflow-hidden outline-none rounded-none"
-            @keyup.enter="saveTitle"
-            @focusout="saveTitle"
-          >
-        </div>
-        <div class="relative">
-          <button class="w-6 h-6" @click="toggleMoreAction">
-            <span class="i-custom:dots w-6 h-6 text-blacks-40 hover:text-blacks-70" />
-          </button>
-          <div
-            v-show="isMoreActionOpen"
-            ref="moreActionRef"
-            class="absolute top-12 right-0 mt-2 w-[175px] bg-white border border-blacks-100 rounded-xl shadow-custom z-10 flex flex-col overflow-hidden"
-          >
-            <button
-              class="flex items-center px-4 py-3 hover:bg-primary-10"
-              @click="download"
+    <div class="p-5">
+      <ResponsiveCVPreview
+        :id="`responsive-cv-preview-${data.id}`"
+        :loading="loading"
+        class="hidden sm:block mb-4"
+      />
+      <div>
+        <div class="flex justify-between items-center">
+          <div class="flex-1 mr-2">
+            <input
+              ref="titleInput"
+              v-model="title"
+              type="text"
+              class="w-full h-full subleading text-blacks-100 group-hover:bg-primary-10 text-ellipsis whitespace-nowrap overflow-hidden outline-none rounded-none"
+              @keyup.enter="saveTitle"
+              @focusout="saveTitle"
             >
-              <span class="paragraph text-blacks-100 ml-2">Download</span>
+          </div>
+          <div class="relative">
+            <button class="w-6 h-6" @click="toggleMoreAction">
+              <span class="i-custom:dots w-6 h-6 text-blacks-40 hover:text-blacks-70" />
             </button>
-            <button
-              class="flex items-center px-4 py-3 hover:bg-primary-10"
-              @click="edit"
+            <div
+              v-show="isMoreActionOpen"
+              ref="moreActionRef"
+              class="absolute top-12 right-0 mt-2 w-[175px] bg-white border border-blacks-100 rounded-xl shadow-custom z-10 flex flex-col overflow-hidden"
             >
-              <span class="paragraph text-blacks-100 ml-2">Edit</span>
-            </button>
-            <button
-              v-if="!isMaxNum"
-              class="flex items-center px-4 py-3 hover:bg-primary-10"
-              @click="duplicate"
-            >
-              <span class="paragraph text-blacks-100 ml-2">Duplicate</span>
-            </button>
-            <button
-              class="flex items-center px-4 py-3 hover:bg-primary-10"
-              @click="rename"
-            >
-              <span class="paragraph text-blacks-100 ml-2">Rename</span>
-            </button>
-            <button
-              class="flex items-center px-4 py-3 hover:bg-primary-10"
-              @click="prepareDelete"
-            >
-              <span class="paragraph text-warning ml-2">Delete</span>
-            </button>
+              <button
+                class="h-[46px] flex items-center px-4 py-3 hover:bg-primary-10"
+                :class="{ 'justify-center': loading }"
+                @click="download"
+              >
+                <Loading v-if="loading" class="text-primary-100" />
+                <span v-else class="paragraph text-blacks-100 ml-2">Download</span>
+              </button>
+
+              <button
+                class="h-[46px] flex items-center px-4 py-3 hover:bg-primary-10"
+                @click="edit"
+              >
+                <span class="paragraph text-blacks-100 ml-2">Edit</span>
+              </button>
+              <button
+                v-if="!isMaxNum"
+                class="h-[46px] flex items-center px-4 py-3 hover:bg-primary-10"
+                @click="duplicate"
+              >
+                <span class="paragraph text-blacks-100 ml-2">Duplicate</span>
+              </button>
+              <button
+                class="h-[46px] flex items-center px-4 py-3 hover:bg-primary-10"
+                @click="rename"
+              >
+                <span class="paragraph text-blacks-100 ml-2">Rename</span>
+              </button>
+              <button
+                class="h-[46px] flex items-center px-4 py-3 hover:bg-primary-10"
+                @click="prepareDelete"
+              >
+                <span class="paragraph text-warning ml-2">Delete</span>
+              </button>
+            </div>
           </div>
         </div>
+        <div class="note text-blacks-70 mt-1">
+          Edited at {{ formatDate(data.updatedAt) }}
+        </div>
       </div>
-      <div class="note text-blacks-70 mt-1">
-        Edited at {{ formatDate(data.updatedAt) }}
+
+      <div
+        class="absolute top-0 bottom-0 left-0 right-0 z-1"
+        :class="loading ? 'visible' : 'invisible'"
+      >
+        <div
+          class="absolute top-0 -bottom-[1px] left-0 right-0 rounded-[20px] opacity-[0.2] transition"
+          :class="loading ? 'bg-primary-100 opacity-[0.2]' : 'bg-transparent'"
+        />
+        <div
+          class="absolute top-0 bottom-0 left-0 right-0 flex flex-col justify-center items-center"
+          :class="loading ? 'text-blacks-100' : 'text-transparent'"
+        >
+          <span class="i-custom:download w-6 h-6 transition" />
+          <p class="paragraph mt-2 transition">
+            Downloading...
+          </p>
+        </div>
       </div>
     </div>
 
