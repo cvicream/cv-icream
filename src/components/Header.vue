@@ -64,8 +64,16 @@ const displayUpdatedAt = computed(() => {
   return `saved at ${formatDate(cvData.value.updatedAt)}`
 })
 
-const isDashboard = computed(() => {
+const isDashboardPage = computed(() => {
   return router.currentRoute.value.name === 'dashboard'
+})
+
+const isAccountPage = computed(() => {
+  return router.currentRoute.value.name === 'account'
+})
+
+const displayNameVisible = computed(() => {
+  return isDashboardPage.value || isAccountPage.value
 })
 
 onMounted(() => {
@@ -296,23 +304,29 @@ function logout() {
         @click="toggleUserMenu"
       >
         <button
-          :class="isDashboard ? 'px-2 py-1 rounded-xl flex items-center gap-3 sm:hover:bg-primary-10': 'mr-4'"
+          :class="displayNameVisible ? 'px-2 py-1 rounded-xl flex items-center gap-3 sm:hover:bg-primary-10': 'mr-4'"
           @click.stop="toggleUserMenu"
         >
           <Avatar format="base64" :src="authUser.avatar" />
-          <span v-if="isDashboard" class="hidden sm:block subleading text-blacks-100">{{ displayName }}</span>
+          <span
+            v-if="displayNameVisible"
+            class="hidden sm:block subleading text-blacks-100"
+          >
+            {{ displayName }}
+          </span>
         </button>
 
         <div
           v-if="isUserMenuOpen"
           class="absolute right-[90px] top-[64px] z-3"
+          :class="displayNameVisible ? 'right-6' : 'right-[90px]'"
         >
           <div
             class="bg-white rounded-xl overflow-hidden"
             :class="isSafari() || isMobileDevice() ? 'w-[262px] border-1 border-blacks-100' : 'w-[260px] outline outline-1 outline-blacks-100'"
           >
             <button
-              v-if="!isDashboard"
+              v-if="!isDashboardPage"
               class="w-full h-[45px] flex justify-start items-center px-4 py-3 sm:hover:bg-primary-10"
               :class="isSafari() || isMobileDevice() ? 'rounded-t-[11px]' : 'rounded-t-xl'"
               @mousedown="redirectToDashboard"
