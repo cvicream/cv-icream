@@ -292,7 +292,7 @@ function logout() {
     <div class="flex items-center">
       <div
         v-if="authUser"
-        class="leading-56px"
+        class="flex items-center"
         @click="toggleUserMenu"
       >
         <button
@@ -342,7 +342,10 @@ function logout() {
         </div>
       </div>
 
-      <div class="leading-56px" @click="toggleActionMenu">
+      <div
+        class="flex items-center"
+        @click="toggleActionMenu"
+      >
         <div v-if="isEdit" class="flex items-center">
           <button
             class="h-8 rounded flex justify-center items-center gap-1 sm:hover:bg-primary-10 outline-none"
