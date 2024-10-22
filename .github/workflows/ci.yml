@@ -14,7 +14,7 @@ jobs:
         run: npx pnpm@9.5.0 i --store=node_modules/.pnpm-store && npx pnpm@9.5.0 run build
       - name: Run Lighthouse CI
         run: |
-          npm install -g @lhci/cli@0.11.x
+          npm install -g @lhci/cli@0.14.x
           lhci autorun
         env:
           LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}

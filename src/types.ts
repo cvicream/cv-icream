@@ -29,3 +29,43 @@ export interface Notification {
   message: string
   duration?: number
 }
+
+export interface User {
+  id: number
+  firstName: string
+  lastName: string
+  email: string
+  avatar: string
+  provider: string
+  providerId: string
+  createdAt: string
+  updatedAt: string
+}
+
+export interface CV {
+  id: string
+  userId: number
+  title: string
+  description: string
+  content: string
+  createdAt: string
+  updatedAt: string
+}
+
+export interface CreateCV {
+  userId: number
+  title: string
+  description: string
+  content: string
+}
+export interface Step {
+  id: string
+  title: string
+  description?: string
+  options: Option[]
+  multi?: {
+    maximumChoice?: number
+  }
+}
+
+export type Survey = Record<number, string[] | undefined>

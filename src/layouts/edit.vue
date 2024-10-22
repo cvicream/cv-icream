@@ -2,9 +2,12 @@
 import { computed, onBeforeMount, onMounted, onUnmounted, ref } from 'vue'
 import { useElementSize } from '@vueuse/core'
 import { storeToRefs } from 'pinia'
+import _ from 'lodash'
+import { useAuthStore } from '~/stores/auth'
+import { useCVStore } from '~/stores/cv'
 import { useUserStore } from '~/stores/user'
 import { useToolbarStore } from '~/stores/toolbar'
-import { getColor, getStorage, hasStorage, isEditing, isMac, isMobileDevice, setCssVariable, setStatus } from '~/utils'
+import { getColor, getEditingCVId, getStorage, hasStorage, isEditing, isMac, isMobileDevice, setCssVariable, setStatus } from '~/utils'
 import {
   A4_HEIGHT_PX,
   A4_WIDTH_PX,
@@ -16,6 +19,10 @@ import {
   PAGE_BREAKPOINT,
 } from '~/constants'
 
+const auth = useAuthStore()
+const { user: authUser } = storeToRefs(auth)
+const cv = useCVStore()
+const { cv: cvData } = storeToRefs(cv)
 const user = useUserStore()
 const toolbar = useToolbarStore()
 const { isCVPreviewVisible, currentState, isMobileScreen } = storeToRefs(toolbar)
@@ -72,35 +79,26 @@ function toggleCVPreview() {
   })
 }
 
-onBeforeMount(() => {
-  if (!isEditing() && hasStorage()) {
-    const storage = getStorage()
-    Object.keys(storage).forEach((key) => {
-      if (key === 'user') {
-        const subObj = storage[key]
-        Object.keys(subObj).forEach((subKey) => {
-          user.$patch((state) => {
-            state[subKey] = subObj[subKey]
-          })
-        })
-        user.updateTimestamp()
-      }
-      else if (key === 'toolbar') {
-        const subObj = storage[key]
-        Object.keys(subObj).forEach((subKey) => {
-          if (subKey === 'currentState') {
-            toolbar.setCurrentState(subObj[subKey])
-          }
-          else {
-            toolbar.$patch((state) => {
-              state[subKey] = subObj[subKey]
-            })
-          }
-        })
-      }
-    })
+onBeforeMount(async() => {
+  let content = null
+
+  // check if user is logged in
+  if (authUser.value) {
+    // get cv id from local storage
+    const cvId = getEditingCVId()
+    if (!cvId)
+      return
+    await cv.get(cvId)
+    if (!cvData.value || !cvData.value.content)
+      return
+
+    content = JSON.parse(cvData.value.content)
+  }
+  else if (!isEditing() && hasStorage()) {
+    content = getStorage()
   }
 
+  loadCVToStore(content)
   window.addEventListener('beforeunload', onBeforeUnload)
   resize()
   initializeWidth()
@@ -127,14 +125,53 @@ onMounted(() => {
   overrideDefaultZoom()
 })
 
-onUnmounted(() => {
+onUnmounted(async() => {
   setStatus({ isEditing: false })
+
+  if (authUser.value) {
+    const newCV: CV = _.cloneDeep(cvData.value)
+    const storage = getStorage()
+    if (!_.isEqual(_.omit(storage, ['user.timestamp']), _.omit(JSON.parse(newCV.content), ['user.timestamp']))) {
+      // save data to database only if it is changed
+      newCV.content = JSON.stringify(storage)
+      await cvStore.update(newCV)
+    }
+  }
+
   window.removeEventListener('beforeunload', onBeforeUnload)
   window.removeEventListener('resize', resize)
 })
 
+function loadCVToStore(storage) {
+  Object.keys(storage).forEach((key) => {
+    if (key === 'user') {
+      const subObj = storage[key]
+      Object.keys(subObj).forEach((subKey) => {
+        user.$patch((state) => {
+          state[subKey] = subObj[subKey]
+        })
+      })
+      user.updateTimestamp()
+    }
+    else if (key === 'toolbar') {
+      const subObj = storage[key]
+      Object.keys(subObj).forEach((subKey) => {
+        if (subKey === 'currentState') {
+          toolbar.setCurrentState(subObj[subKey])
+        }
+        else {
+          toolbar.$patch((state) => {
+            state[subKey] = subObj[subKey]
+          })
+        }
+      })
+    }
+  })
+}
+
 function hasCtrlKey(event) {
-  if (isMac()) return event.metaKey || event.ctrlKey
+  if (isMac())
+    return event.metaKey || event.ctrlKey
   else return event.ctrlKey
 }
 
@@ -152,8 +189,10 @@ function overrideDefaultZoom() {
   })
   document.addEventListener('wheel', (event) => {
     if (hasCtrlKey(event)) {
-      if (event.deltaY < 0) zoomIn(5)
-      else if (event.deltaY > 0) zoomOut(5)
+      if (event.deltaY < 0)
+        zoomIn(5)
+      else if (event.deltaY > 0)
+        zoomOut(5)
 
       event.preventDefault()
     }
@@ -269,8 +308,10 @@ function getElementMarginX(element) {
 function handleScaleChange(event) {
   const value = parseInt(event.target.value.replace(/[^0-9]/g, ''))
   if (value) {
-    if (value >= MAX_SCALE) scale.value = MAX_SCALE
-    else if (value <= MIN_SCALE) scale.value = MIN_SCALE
+    if (value >= MAX_SCALE)
+      scale.value = MAX_SCALE
+    else if (value <= MIN_SCALE)
+      scale.value = MIN_SCALE
     else scale.value = value
   }
 }

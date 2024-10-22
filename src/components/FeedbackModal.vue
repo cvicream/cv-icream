@@ -28,8 +28,10 @@ const enable = computed(() => {
 })
 
 function handleStarClick(n: number) {
-  if (n === 1 && star.value === 1) star.value = 0
-  else if (n === star.value) star.value = star.value ? star.value - 1 : n
+  if (n === 1 && star.value === 1)
+    star.value = 0
+  else if (n === star.value)
+    star.value = star.value ? star.value - 1 : n
   else star.value = n
 }
 
@@ -40,12 +42,12 @@ function reset() {
 }
 
 async function sendFeedback() {
-  if (loading.value) return
+  if (loading.value)
+    return
 
   loading.value = true
   try {
-    const url = 'https://script.google.com/macros/s/AKfycbzoDaaxPWVOgHuUAMr0uYSmiANj12Enk01f008NyVnSRLzbr_PEmLl6b7g9r_3a6r-U/exec'
-    await fetch(`${url}?${new URLSearchParams({
+    await fetch(`${import.meta.env.VITE_FEEDBACK_URL}?${new URLSearchParams({
       name: name.value.trim(),
       email: email.value.trim(),
       content: content.value,

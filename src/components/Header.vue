@@ -1,23 +1,31 @@
 <script setup lang="ts">
-import { onMounted, onUnmounted, ref } from 'vue'
+import { computed, onMounted, onUnmounted, ref } from 'vue'
 import { storeToRefs } from 'pinia'
+import { useAuthStore } from '~/stores/auth'
+import { useCVStore } from '~/stores/cv'
 import { useUserStore } from '~/stores/user'
 import { useToolbarStore } from '~/stores/toolbar'
 import { useNotificationStore } from '~/stores/notification'
-import { getJsonUpload, isMobileDevice, isSafari, setStatus, stripHtml } from '~/utils'
+import { formatDate, getJsonUpload, isMobileDevice, isSafari, setStatus, stripHtml } from '~/utils'
 import { DRAFT_FILE_TYPE } from '~/constants'
 
 defineProps<{
   isEdit?: boolean
 }>()
 
-const isActionActive = ref(false)
+const isUserMenuOpen = ref(false)
+const isActionMenuOpen = ref(false)
 const feedbackVisible = ref(false)
 const paymentVisible = ref(false)
+const contactVisible = ref(false)
 const upload = ref(false)
 
 const router = useRouter()
 
+const auth = useAuthStore()
+const { user: authUser, displayName } = storeToRefs(auth)
+const cv = useCVStore()
+const { cv: cvData } = storeToRefs(cv)
 const user = useUserStore()
 const toolbar = useToolbarStore()
 const {
@@ -37,23 +45,58 @@ const { currentState, noteList } = storeToRefs(toolbar)
 const notification = useNotificationStore()
 const { notification: notificationRecord } = storeToRefs(notification)
 
+const displayCVName = computed(() => {
+  const res: string[] = []
+  if (cvData.value?.title)
+    return cvData.value.title
+  if (about.value?.name)
+    res.push(stripHtml(about.value.name))
+  else res.push('Your Name')
+  if (about.value?.jobTitle)
+    res.push(stripHtml(about.value.jobTitle))
+  else res.push('Job Title')
+  return res.join('_')
+})
+
+const displayUpdatedAt = computed(() => {
+  if (!cvData.value?.updatedAt)
+    return ''
+  return `saved at ${formatDate(cvData.value.updatedAt)}`
+})
+
+const isDashboardPage = computed(() => {
+  return router.currentRoute.value.name === 'dashboard'
+})
+
+const isAccountPage = computed(() => {
+  return router.currentRoute.value.name === 'account'
+})
+
+const displayNameVisible = computed(() => {
+  return isDashboardPage.value || isAccountPage.value
+})
+
 onMounted(() => {
-  window.addEventListener('click', closeAction, false)
+  window.addEventListener('click', closeUserMenu, false)
+  window.addEventListener('click', closeActionMenu, false)
 
   if (isSafari())
     window.addEventListener('click', onWindowClick, false)
 })
 
 onUnmounted(() => {
-  window.removeEventListener('click', closeAction)
+  window.removeEventListener('click', closeUserMenu)
+  window.removeEventListener('click', closeActionMenu)
 
   if (isSafari())
     window.removeEventListener('click', onWindowClick)
 })
 
 function onWindowClick() {
-  if (isActionActive.value)
-    closeAction()
+  if (isUserMenuOpen.value)
+    closeUserMenu()
+  if (isActionMenuOpen.value)
+    closeActionMenu()
 }
 
 function toggleFeedbackModal() {
@@ -70,11 +113,11 @@ function redirectToDownload() {
   })
   setStatus({ previousUrl: window.location.href })
   router.push('/edit/download')
-  closeAction()
+  closeActionMenu()
 }
 
 function exportJsonFile() {
-  closeAction()
+  closeActionMenu()
   const currentStateData = Object.keys(currentState.value).reduce((acc, cur) => {
     acc[cur] = currentState.value[cur]
     return acc
@@ -102,8 +145,10 @@ function exportJsonFile() {
   const dataUri = `data:application/${DRAFT_FILE_TYPE};charset=utf-8,${encodeURIComponent(dataStr)}`
 
   const fileNames = ['CV']
-  if (about.value.name) fileNames.push(stripHtml(about.value.name))
-  if (about.value.jobTitle) fileNames.push(stripHtml(about.value.jobTitle))
+  if (about.value.name)
+    fileNames.push(stripHtml(about.value.name))
+  if (about.value.jobTitle)
+    fileNames.push(stripHtml(about.value.jobTitle))
   const exportFileDefaultName = `${fileNames.join('_')}.${DRAFT_FILE_TYPE}`
 
   const linkElement = document.createElement('a')
@@ -130,7 +175,7 @@ function exportJsonFile() {
 }
 
 async function importJsonFile() {
-  closeAction()
+  closeActionMenu()
   upload.value = false
   try {
     const json = await getJsonUpload()
@@ -166,20 +211,52 @@ async function importJsonFile() {
   fbq('track', 'open-cv-draft')
 }
 
-function toggle() {
-  isActionActive.value = !isActionActive.value
+function toggleUserMenu() {
+  isUserMenuOpen.value = !isUserMenuOpen.value
+  if (isUserMenuOpen.value)
+    closeActionMenu()
 }
 
-function closeAction() {
-  isActionActive.value = false
+function closeUserMenu() {
+  isUserMenuOpen.value = false
+}
+
+function toggleActionMenu() {
+  isActionMenuOpen.value = !isActionMenuOpen.value
+  if (isActionMenuOpen.value)
+    closeUserMenu()
+}
+
+function closeActionMenu() {
+  isActionMenuOpen.value = false
 }
 
 function togglePaymentModal() {
   paymentVisible.value = !paymentVisible.value
 }
 
+function toggleContactModal() {
+  contactVisible.value = !contactVisible.value
+}
+
 function deleteNotification() {
   notification.set(null)
+}
+
+function redirectToDashboard() {
+  router.push('/dashboard')
+  closeUserMenu()
+}
+
+function redirectToAccount() {
+  router.push('/account')
+  closeUserMenu()
+}
+
+function logout() {
+  auth.logout()
+  router.push('/sign-in')
+  closeUserMenu()
 }
 </script>
 
@@ -214,53 +291,127 @@ function deleteNotification() {
         </button>
       </Tooltip>
     </div>
-    <div v-if="isEdit" class="leading-56px" @click="toggle">
-      <button
-        class="w-14 h-8 rounded flex justify-center items-center gap-1 sm:hover:bg-primary-10 outline-none"
-        @click.stop="toggle"
+
+    <div v-if="isEdit">
+      <span class="leading text-blacks-100">{{ displayCVName }}</span>
+      <span class="subleading text-blacks-60 ml-3">{{ displayUpdatedAt }}</span>
+    </div>
+
+    <div class="flex items-center">
+      <div
+        v-if="authUser"
+        class="flex items-center"
+        @click="toggleUserMenu"
       >
-        <span class="i-custom:download w-6 h-6 text-blacks-70" />
-        <span class="w-[1px] h-4 bg-blacks-20" />
-        <span
-          class="i-custom:arrow-down w-4 h-4 text-blacks-70 transition"
-          :class="isActionActive ? 'rotate-180' : 'rotate-0'"
-        />
-      </button>
+        <button
+          :class="displayNameVisible ? 'px-2 py-1 rounded-xl flex items-center gap-3 sm:hover:bg-primary-10': 'mr-4'"
+          @click.stop="toggleUserMenu"
+        >
+          <Avatar format="base64" :src="authUser.avatar" />
+          <span
+            v-if="displayNameVisible"
+            class="hidden sm:block subleading text-blacks-100"
+          >
+            {{ displayName }}
+          </span>
+        </button>
+
+        <div
+          v-if="isUserMenuOpen"
+          class="absolute right-[90px] top-[64px] z-3"
+          :class="displayNameVisible ? 'right-6' : 'right-[90px]'"
+        >
+          <div
+            class="bg-white rounded-xl overflow-hidden"
+            :class="isSafari() || isMobileDevice() ? 'w-[262px] border-1 border-blacks-100' : 'w-[260px] outline outline-1 outline-blacks-100'"
+          >
+            <button
+              v-if="!isDashboardPage"
+              class="w-full h-[45px] flex justify-start items-center px-4 py-3 sm:hover:bg-primary-10"
+              :class="isSafari() || isMobileDevice() ? 'rounded-t-[11px]' : 'rounded-t-xl'"
+              @mousedown="redirectToDashboard"
+            >
+              <span class="paragraph text-blacks-100">Dashboard</span>
+            </button>
+            <button
+              class="w-full h-[45px] flex justify-start items-center px-4 py-3 sm:hover:bg-primary-10"
+              @mousedown="redirectToAccount"
+            >
+              <span class="paragraph text-blacks-100">Account</span>
+            </button>
+            <button
+              class="w-full h-[45px] flex justify-start items-center px-4 py-3 sm:hover:bg-primary-10"
+              @mousedown="toggleContactModal"
+            >
+              <span class="paragraph text-blacks-100">Contact Us</span>
+            </button>
+            <button
+              class="w-full h-[45px] flex justify-start items-center px-4 py-3 sm:hover:bg-primary-10"
+              :class="isSafari() || isMobileDevice() ? 'rounded-b-[11px]' : 'rounded-b-xl'"
+              @mousedown="logout"
+            >
+              <span class="paragraph text-warning">Log out</span>
+            </button>
+          </div>
+        </div>
+      </div>
 
       <div
-        v-if="isActionActive"
-        class="absolute right-2 top-[64px] z-3"
+        class="flex items-center"
+        @click="toggleActionMenu"
       >
+        <div v-if="isEdit" class="flex items-center">
+          <button
+            class="h-8 rounded flex justify-center items-center gap-1 sm:hover:bg-primary-10 outline-none"
+            @click.stop="toggleActionMenu"
+          >
+            <span class="i-custom:download w-6 h-6 text-blacks-70" />
+            <span class="w-[1px] h-4 bg-blacks-20" />
+            <span
+              class="i-custom:arrow-down w-4 h-4 text-blacks-70 transition"
+              :class="isActionMenuOpen ? 'rotate-180' : 'rotate-0'"
+            />
+          </button>
+        </div>
+
         <div
-          class="bg-white rounded-xl overflow-hidden"
-          :class="isSafari() || isMobileDevice() ? 'w-[262px] border-1 border-blacks-100' : 'w-[260px] outline outline-1 outline-blacks-100'"
+          v-if="isActionMenuOpen"
+          class="absolute right-6 top-[64px] z-3"
         >
-          <button
-            class="w-full h-[45px] flex justify-start items-center px-4 py-3 sm:hover:bg-primary-10"
-            :class="isSafari() || isMobileDevice() ? 'rounded-t-[11px]' : 'rounded-t-xl'"
-            @mousedown="redirectToDownload"
+          <div
+            class="bg-white rounded-xl overflow-hidden"
+            :class="isSafari() || isMobileDevice() ? 'w-[262px] border-1 border-blacks-100' : 'w-[260px] outline outline-1 outline-blacks-100'"
           >
-            <span class="paragraph text-blacks-100">Export as PDF</span>
-          </button>
-          <button
-            id="download-as-draft"
-            class="w-full h-[46px] flex justify-start items-center px-4 py-3 sm:hover:bg-primary-10"
-            @mousedown="exportJsonFile"
-          >
-            <span class="paragraph text-blacks-100">Download as Draft</span>
-          </button>
-          <button
-            class="w-full h-[45px] flex justify-start items-center px-4 py-3 sm:hover:bg-primary-10"
-            :class="isSafari() || isMobileDevice() ? 'rounded-b-[11px]' : 'rounded-b-xl'"
-            @mousedown="importJsonFile"
-          >
-            <span class="paragraph text-blacks-100">Open CV Draft</span>
-          </button>
+            <button
+              class="w-full h-[45px] flex justify-start items-center px-4 py-3 sm:hover:bg-primary-10"
+              :class="isSafari() || isMobileDevice() ? 'rounded-t-[11px]' : 'rounded-t-xl'"
+              @mousedown="redirectToDownload"
+            >
+              <span class="paragraph text-blacks-100">Download as PDF</span>
+            </button>
+            <button
+              id="download-as-draft"
+              class="w-full h-[46px] flex justify-start items-center px-4 py-3 sm:hover:bg-primary-10"
+              @mousedown="exportJsonFile"
+            >
+              <span class="paragraph text-blacks-100">Save draft to local device</span>
+            </button>
+            <button
+              class="w-full h-[45px] flex justify-start items-center pl-4 py-3 sm:hover:bg-primary-10"
+              :class="isSafari() || isMobileDevice() ? 'rounded-b-[11px]' : 'rounded-b-xl'"
+              @mousedown="importJsonFile"
+            >
+              <span class="paragraph text-blacks-100">Import draft from local device</span>
+            </button>
+          </div>
         </div>
       </div>
     </div>
   </header>
-  <div class="border-b border-b-blacks-20" />
+  <div
+    class="border-b border-b-blacks-20 border-b-blacks-20"
+    :class="{ 'sm:border-b-white': isAccountPage }"
+  />
 
   <FeedbackModal
     v-if="feedbackVisible"
@@ -273,6 +424,13 @@ function deleteNotification() {
   <PaymentModal
     v-if="paymentVisible"
     :toggle="togglePaymentModal"
+  />
+
+  <ContactModal
+    v-if="contactVisible"
+    title="Have a Problem or Need Help?"
+    subtitle="Leave us a message. We will get back to you as soon as possible : )"
+    :toggle="toggleContactModal"
   />
 
   <Modal
